@@ -6,13 +6,13 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeUserVC.h"
+#import "HeRecommendVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 
 #define TextLineHeight 1.2f
 
-@interface HeUserVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface HeRecommendVC ()<UITableViewDelegate,UITableViewDataSource>
 {
     BOOL requestReply; //是否已经完成
 }
@@ -23,12 +23,11 @@
 
 @end
 
-@implementation HeUserVC
+@implementation HeRecommendVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
 @synthesize iconDataSource;
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,10 +40,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的";
+        label.text = @"推荐";
         [label sizeToFit];
         
-        self.title = @"我的";
+        self.title = @"推荐";
     }
     return self;
 }
@@ -61,28 +60,28 @@
     tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
     
-    dataSource = @[@[@"我的相册",@"我的发布",@"我的参与"],@[@"设置"]];
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
+    
     
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataSource[section] count];
+    return [dataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [dataSource count];
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeUserCellIndentifier";
+    static NSString *cellIndentifier = @"DiscoverIndentifier";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     
     
@@ -93,12 +92,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    UIFont *textFont = [UIFont systemFontOfSize:16.0];
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(5, (cellSize.height - 3) / 2.0, 3, 3)];
-    circleView.backgroundColor = [UIColor colorWithRed:164.0 / 255.0 green:57 / 255.0 blue:5.0 / 255.0 alpha:1.0];
-    circleView.layer.cornerRadius = 1.5;
-    circleView.layer.masksToBounds = YES;
-    [cell.contentView addSubview:circleView];
+    
     
     
     
@@ -122,7 +116,7 @@
     
     
     
-    return 30;
+    return 50;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

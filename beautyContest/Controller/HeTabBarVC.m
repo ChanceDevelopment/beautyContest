@@ -18,7 +18,10 @@
 @end
 
 @implementation HeTabBarVC
-
+@synthesize userVC;
+@synthesize beautyZoneVC;
+@synthesize recommendVC;
+@synthesize discoverVC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -64,7 +67,21 @@
 //设置根控制器的四个子控制器
 - (void)setupSubviews
 {
+    beautyZoneVC = [[HeBeautyZoneVC alloc] init];
+    CustomNavigationController *beautyZoneNav = [[CustomNavigationController alloc] initWithRootViewController:beautyZoneVC];
     
+    recommendVC = [[HeRecommendVC alloc] init];
+    CustomNavigationController *recommendNav = [[CustomNavigationController alloc] initWithRootViewController:recommendVC];
+    
+    discoverVC = [[HeDiscoverVC alloc] init];
+    CustomNavigationController *discoverNav = [[CustomNavigationController alloc] initWithRootViewController:discoverVC];
+    
+    userVC = [[HeUserVC alloc] init];
+    CustomNavigationController *userNav = [[CustomNavigationController alloc]
+                                           initWithRootViewController:userVC];
+    
+    [self setViewControllers:@[beautyZoneNav,recommendNav,discoverNav,userNav]];
+    [self customizeTabBarForController];
 }
 
 //设置底部的tabbar
@@ -72,7 +89,7 @@
     //    tabbar_normal_background   tabbar_selected_background
     UIImage *finishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
     UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
-    NSArray *tabBarItemImages = @[@"tabar_log_icon", @"tabar_plaza_icon", @"tabar_album_icon", @"tabar_user_icon"];
+    NSArray *tabBarItemImages = @[@"tabar_beautyZone_icon", @"tabar_recommend_icon", @"tabar_discover_icon", @"tabar_user_icon"];
     
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[self tabBar] items]) {

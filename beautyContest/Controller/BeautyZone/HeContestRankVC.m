@@ -6,29 +6,27 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeUserVC.h"
+#import "HeContestRankVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
+#import "HeContestantDetailVC.h"
+#import "HeContestantTableCell.h"
 
 #define TextLineHeight 1.2f
 
-@interface HeUserVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface HeContestRankVC ()<UITableViewDelegate,UITableViewDataSource>
 {
     BOOL requestReply; //是否已经完成
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
-@property(strong,nonatomic)NSArray *dataSource;
-@property(strong,nonatomic)NSArray *iconDataSource;
 
 @end
 
-@implementation HeUserVC
+@implementation HeContestRankVC
+@synthesize contestDict;
 @synthesize tableview;
 @synthesize sectionHeaderView;
-@synthesize dataSource;
-@synthesize iconDataSource;
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,10 +39,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的";
+        label.text = @"我的排名";
         [label sizeToFit];
         
-        self.title = @"我的";
+        self.title = @"我的排名";
     }
     return self;
 }
@@ -61,7 +59,6 @@
     tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
     
-    dataSource = @[@[@"我的相册",@"我的发布",@"我的参与"],@[@"设置"]];
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
@@ -70,25 +67,25 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataSource[section] count];
+    return 4;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [dataSource count];
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeUserCellIndentifier";
+    static NSString *cellIndentifier = @"HeContestantTableCell";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     
     
-    HeBaseTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeContestantTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeBaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
+        cell = [[HeContestantTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -120,9 +117,19 @@
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     
+    UIFont *textFont = [UIFont systemFontOfSize:16.0];
+    NSString *title = [contestDict objectForKey:@"title"];
+    if ([title isMemberOfClass:[NSNull class]] || title == nil) {
+        title = @"";
+    }
+    CGFloat titleW = SCREENWIDTH - 33;
+    CGFloat titleH = [MLLinkLabel getViewSizeByString:title maxWidth:titleW font:textFont lineHeight:TextLineHeight lines:0].height;
+    if (titleH < 30) {
+        titleH = 30;
+    }
+    CGFloat margin = 10;
     
-    
-    return 30;
+    return titleH + 2 * margin;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -131,7 +138,9 @@
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     
-    
+    HeContestantDetailVC *contestantDetailVC = [[HeContestantDetailVC alloc] init];
+    contestantDetailVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:contestantDetailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

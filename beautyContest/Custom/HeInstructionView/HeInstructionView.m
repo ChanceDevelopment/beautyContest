@@ -35,7 +35,7 @@
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"华幼通";
+        label.text = @"选美-颜值榜";
         [label sizeToFit];
     }
     return self;
@@ -51,7 +51,7 @@
     myscrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGH)];
     myscrollView.backgroundColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:230.0f/255.0f];
     pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 36)];
-    images = [NSMutableArray arrayWithObjects:@"ios_guide_step_1",@"ios_guide_step_2",@"ios_guide_step_3",@"ios_guide_step_4", nil];
+    images = [NSMutableArray arrayWithObjects:@"ios_guide_step_1",@"ios_guide_step_2", nil];
     
     [self.view addSubview:myscrollView];
     [self setupPage];
@@ -122,7 +122,7 @@
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         if (nimages == [images count] - 1) {
             enterButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [enterButton setTitle:@"马上体验" forState:UIControlStateNormal];
+            [enterButton setTitle:@"立即体验" forState:UIControlStateNormal];
             [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             
             UIScreen *mainScreen = [UIScreen mainScreen];
@@ -134,8 +134,9 @@
             
             enterButton.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
             [enterButton defaultStyle];
+            [enterButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor clearColor] withImageSize:enterButton.frame.size] forState:UIControlStateNormal];
             enterButton.layer.borderWidth = 0.5;
-            enterButton.layer.borderColor = [UIColor blackColor].CGColor;
+            enterButton.layer.borderColor = APPDEFAULTORANGE.CGColor;
             myscrollView.userInteractionEnabled = YES;
             imageView.userInteractionEnabled = YES;
             [enterButton addTarget:self action:@selector(enterButtonClick:) forControlEvents:UIControlEventTouchUpInside];

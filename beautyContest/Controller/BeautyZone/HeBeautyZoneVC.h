@@ -7,7 +7,13 @@
 //
 
 #import "HeBaseViewController.h"
+#import "EGORefreshTableFootView.h"
+#import "EGORefreshTableHeaderView.h"
 
-@interface HeBeautyZoneVC : HeBaseViewController
+@interface HeBeautyZoneVC : HeBaseViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,EGORefreshTableFootDelegate,EGORefreshTableHeaderDelegate>
+{
+    int updateOption;  //1:上拉刷新   2:下拉加载
+    BOOL _reloading;
+}
 
 @end

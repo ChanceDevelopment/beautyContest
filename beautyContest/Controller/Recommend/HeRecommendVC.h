@@ -1,5 +1,5 @@
 //
-//  HeCommentVC.h
+//  HeRecommendVC.h
 //  beautyContest
 //
 //  Created by HeDongMing on 16/7/30.
@@ -8,6 +8,6 @@
 
 #import "HeBaseViewController.h"
 
-@interface HeCommentVC : HeBaseViewController
+@interface HeRecommendVC : HeBaseViewController
 
 @end

@@ -6,29 +6,24 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeUserVC.h"
+#import "HeContestantDetailVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 
 #define TextLineHeight 1.2f
 
-@interface HeUserVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface HeContestantDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 {
     BOOL requestReply; //是否已经完成
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
-@property(strong,nonatomic)NSArray *dataSource;
-@property(strong,nonatomic)NSArray *iconDataSource;
 
 @end
 
-@implementation HeUserVC
+@implementation HeContestantDetailVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
-@synthesize dataSource;
-@synthesize iconDataSource;
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,10 +36,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的";
+        label.text = @"参赛者详情";
         [label sizeToFit];
         
-        self.title = @"我的";
+        self.title = @"参赛者详情";
     }
     return self;
 }
@@ -61,7 +56,6 @@
     tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
     
-    dataSource = @[@[@"我的相册",@"我的发布",@"我的参与"],@[@"设置"]];
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
@@ -70,19 +64,19 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataSource[section] count];
+    return 4;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [dataSource count];
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeUserCellIndentifier";
+    static NSString *cellIndentifier = @"HeContestantDetailIndentifier";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     
     

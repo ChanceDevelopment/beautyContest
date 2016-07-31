@@ -52,7 +52,7 @@
             }
             [sectionBtn  setTitle:sectionBtnTitle forState:UIControlStateNormal];
             [sectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            sectionBtn.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+            sectionBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
             [self addSubview:sectionBtn];
             
             UIImageView *sectionBtnIv = [[UIImageView alloc] initWithFrame:CGRectMake(sectionWidth * i +(sectionWidth - 26), (self.frame.size.height-12)/2, 12, 12)];

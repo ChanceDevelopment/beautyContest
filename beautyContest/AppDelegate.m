@@ -20,6 +20,7 @@
 #import "WXApi.h"
 #import "WeiboSDK.h"
 #import "BrowserView.h"
+#import "BBLaunchAdMonitor.h"
 
 @interface AppDelegate ()
 
@@ -30,6 +31,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    
     
     [self initialization];
     [self initShareSDK];
