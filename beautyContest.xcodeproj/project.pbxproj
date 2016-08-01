@@ -498,6 +498,7 @@
 		EAC2CED11D4AF71900E282A8 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CEC81D4AF71900E282A8 /* UIResponder+Router.m */; };
 		EAC2CED21D4AF71900E282A8 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */; };
 		EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */; };
+		EAD0B1BF1D4F200D0017C20B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B1BE1D4F200D0017C20B /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1408,6 +1409,7 @@
 		EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		EAC2CECB1D4AF71900E282A8 /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
+		EAD0B1BE1D4F200D0017C20B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1685,6 +1687,7 @@
 				EAC2C90F1D4AF0E600E282A8 /* Assets.xcassets */,
 				EAC2C9111D4AF0E600E282A8 /* LaunchScreen.storyboard */,
 				EAC2C9141D4AF0E600E282A8 /* Info.plist */,
+				EAD0B1BE1D4F200D0017C20B /* Images.xcassets */,
 				EAC2C9031D4AF0E600E282A8 /* Supporting Files */,
 			);
 			path = beautyContest;
@@ -3555,6 +3558,7 @@
 				EAC2CD191D4AF5D800E282A8 /* LICENSE.txt in Resources */,
 				EAC2CEB01D4AF5EE00E282A8 /* zbar-back.png in Resources */,
 				EA4D017C1D4D8FF100A0CCA1 /* index7.jpg in Resources */,
+				EAD0B1BF1D4F200D0017C20B /* Images.xcassets in Resources */,
 				EA4D01401D4CE47400A0CCA1 /* HeRecommendVC.xib in Resources */,
 				EAC2CD171D4AF5D800E282A8 /* whiteArrow.png in Resources */,
 				EA4D01631D4CF0A300A0CCA1 /* tabar_beautyZone_icon_active@2x.png in Resources */,
@@ -4086,6 +4090,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: jun zhou (ZM3AW8VQ6N)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: jun zhou (ZM3AW8VQ6N)";
 				ENABLE_BITCODE = NO;
@@ -4120,6 +4125,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
 				ENABLE_BITCODE = NO;
@@ -4238,6 +4244,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
 				ENABLE_BITCODE = NO;
