@@ -9,5 +9,9 @@
 #import "HeBaseTableViewCell.h"
 
 @interface HeBeautyContestTableCell : HeBaseTableViewCell
+@property(strong,nonatomic)UIImageView *bgImage;
+@property(strong,nonatomic)UIImageView *detailImage;
+@property(strong,nonatomic)UILabel *topicLabel;
+@property(strong,nonatomic)UILabel *tipLabel;
 
 @end

@@ -498,6 +498,16 @@
 		EAC2CED11D4AF71900E282A8 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CEC81D4AF71900E282A8 /* UIResponder+Router.m */; };
 		EAC2CED21D4AF71900E282A8 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */; };
 		EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */; };
+		EACC98341D50E5DB00E627B8 /* icon_nearby_beauty.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98311D50E5DB00E627B8 /* icon_nearby_beauty.png */; };
+		EACC98351D50E5DB00E627B8 /* icon_nearby_message.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98321D50E5DB00E627B8 /* icon_nearby_message.png */; };
+		EACC98361D50E5DB00E627B8 /* icon_nearby_supporter.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98331D50E5DB00E627B8 /* icon_nearby_supporter.png */; };
+		EACC98391D50E7E400E627B8 /* icon_put.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98381D50E7E400E627B8 /* icon_put.png */; };
+		EACC983B1D50E7ED00E627B8 /* icon_participation.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC983A1D50E7ED00E627B8 /* icon_participation.png */; };
+		EACC983D1D50E7F400E627B8 /* icon_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC983C1D50E7F400E627B8 /* icon_setting.png */; };
+		EACC983F1D50E82200E627B8 /* icon_album.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC983E1D50E82200E627B8 /* icon_album.png */; };
+		EACC98421D50F4D700E627B8 /* icon_add.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98411D50F4D700E627B8 /* icon_add.png */; };
+		EACC98461D50F59400E627B8 /* HeDistributeContestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EACC98441D50F59400E627B8 /* HeDistributeContestVC.m */; };
+		EACC98471D50F59400E627B8 /* HeDistributeContestVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EACC98451D50F59400E627B8 /* HeDistributeContestVC.xib */; };
 		EAD0B1BF1D4F200D0017C20B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B1BE1D4F200D0017C20B /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -1409,6 +1419,17 @@
 		EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		EAC2CECB1D4AF71900E282A8 /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
+		EACC98311D50E5DB00E627B8 /* icon_nearby_beauty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nearby_beauty.png; sourceTree = "<group>"; };
+		EACC98321D50E5DB00E627B8 /* icon_nearby_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nearby_message.png; sourceTree = "<group>"; };
+		EACC98331D50E5DB00E627B8 /* icon_nearby_supporter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nearby_supporter.png; sourceTree = "<group>"; };
+		EACC98381D50E7E400E627B8 /* icon_put.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_put.png; sourceTree = "<group>"; };
+		EACC983A1D50E7ED00E627B8 /* icon_participation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_participation.png; sourceTree = "<group>"; };
+		EACC983C1D50E7F400E627B8 /* icon_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_setting.png; sourceTree = "<group>"; };
+		EACC983E1D50E82200E627B8 /* icon_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_album.png; sourceTree = "<group>"; };
+		EACC98411D50F4D700E627B8 /* icon_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_add.png; sourceTree = "<group>"; };
+		EACC98431D50F59400E627B8 /* HeDistributeContestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeDistributeContestVC.h; sourceTree = "<group>"; };
+		EACC98441D50F59400E627B8 /* HeDistributeContestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeDistributeContestVC.m; sourceTree = "<group>"; };
+		EACC98451D50F59400E627B8 /* HeDistributeContestVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeDistributeContestVC.xib; sourceTree = "<group>"; };
 		EAD0B1BE1D4F200D0017C20B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1481,6 +1502,9 @@
 		EA0E9CF51D4C258A009CBF64 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				EACC98401D50F4C800E627B8 /* BeautyZone */,
+				EACC98371D50E7B700E627B8 /* User */,
+				EACC98301D50E5B500E627B8 /* Discover */,
 				EA4D016C1D4D8F6D00A0CCA1 /* DemoImage */,
 				EA4D016B1D4D8F1700A0CCA1 /* GuidelineImage */,
 				EA0E9D0B1D4C2685009CBF64 /* NavigationBar */,
@@ -1542,6 +1566,9 @@
 				EA4D01941D4D9ABF00A0CCA1 /* HeContestantDetailVC.h */,
 				EA4D01951D4D9ABF00A0CCA1 /* HeContestantDetailVC.m */,
 				EA4D01961D4D9ABF00A0CCA1 /* HeContestantDetailVC.xib */,
+				EACC98431D50F59400E627B8 /* HeDistributeContestVC.h */,
+				EACC98441D50F59400E627B8 /* HeDistributeContestVC.m */,
+				EACC98451D50F59400E627B8 /* HeDistributeContestVC.xib */,
 			);
 			path = BeautyZone;
 			sourceTree = "<group>";
@@ -3368,6 +3395,35 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
+		EACC98301D50E5B500E627B8 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				EACC98311D50E5DB00E627B8 /* icon_nearby_beauty.png */,
+				EACC98321D50E5DB00E627B8 /* icon_nearby_message.png */,
+				EACC98331D50E5DB00E627B8 /* icon_nearby_supporter.png */,
+			);
+			name = Discover;
+			sourceTree = "<group>";
+		};
+		EACC98371D50E7B700E627B8 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				EACC983E1D50E82200E627B8 /* icon_album.png */,
+				EACC983C1D50E7F400E627B8 /* icon_setting.png */,
+				EACC983A1D50E7ED00E627B8 /* icon_participation.png */,
+				EACC98381D50E7E400E627B8 /* icon_put.png */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		EACC98401D50F4C800E627B8 /* BeautyZone */ = {
+			isa = PBXGroup;
+			children = (
+				EACC98411D50F4D700E627B8 /* icon_add.png */,
+			);
+			name = BeautyZone;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3477,6 +3533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EACC983B1D50E7ED00E627B8 /* icon_participation.png in Resources */,
 				EA0E9D0A1D4C2676009CBF64 /* tabbar_normal_background@2x.png in Resources */,
 				EAC2CDE91D4AF5D800E282A8 /* SVProgressHUD.bundle in Resources */,
 				EA4D01761D4D8FF100A0CCA1 /* index1.jpg in Resources */,
@@ -3488,17 +3545,22 @@
 				EA4D01651D4CF0A300A0CCA1 /* tabar_discover_icon_active@2x.png in Resources */,
 				EA4D01681D4CF0A300A0CCA1 /* tabar_recommend_icon_normal@2x.png in Resources */,
 				EAC2CEAC1D4AF5EE00E282A8 /* ShareSDK.bundle in Resources */,
+				EACC98421D50F4D700E627B8 /* icon_add.png in Resources */,
 				EAC2C9C81D4AF5CC00E282A8 /* HeBaseViewController.xib in Resources */,
 				EA4D017A1D4D8FF100A0CCA1 /* index5.jpg in Resources */,
 				EA4D01661D4CF0A300A0CCA1 /* tabar_discover_icon_normal@2x.png in Resources */,
+				EACC983F1D50E82200E627B8 /* icon_album.png in Resources */,
 				EAC2CD611D4AF5D800E282A8 /* arrow_down1.png in Resources */,
 				EAC2CDF91D4AF5D800E282A8 /* TZImagePickerController.bundle in Resources */,
+				EACC98391D50E7E400E627B8 /* icon_put.png in Resources */,
 				EA0E9D111D4C269E009CBF64 /* NavBarIOS7_white.png in Resources */,
+				EACC98341D50E5DB00E627B8 /* icon_nearby_beauty.png in Resources */,
 				EAC2CEBC1D4AF5FC00E282A8 /* loading_anim2.png in Resources */,
 				EA0E9D131D4C269E009CBF64 /* navigationBar_back_icon.png in Resources */,
 				EA4D01471D4CEB9600A0CCA1 /* ios_guide_step_1.png in Resources */,
 				EAC2CD221D4AF5D800E282A8 /* IQActionSheetPickerView.xib in Resources */,
 				EA4D01891D4D93E500A0CCA1 /* HeBaseTableViewCell.xib in Resources */,
+				EACC98351D50E5DB00E627B8 /* icon_nearby_message.png in Resources */,
 				EAC2CD111D4AF5D800E282A8 /* blueArrow.png in Resources */,
 				EAC2CDF21D4AF5D800E282A8 /* ProvincesAndCities.plist in Resources */,
 				EAC2CEA31D4AF5EE00E282A8 /* ShareSDKUI.bundle in Resources */,
@@ -3506,6 +3568,7 @@
 				EA4D01771D4D8FF100A0CCA1 /* index2.jpg in Resources */,
 				EA4D01981D4D9ABF00A0CCA1 /* HeContestantDetailVC.xib in Resources */,
 				EAC2CD6F1D4AF5D800E282A8 /* LICENSE.txt in Resources */,
+				EACC983D1D50E7F400E627B8 /* icon_setting.png in Resources */,
 				EA0E9D381D4C2979009CBF64 /* HeLoginVC.xib in Resources */,
 				EAC2CE001D4AF5D800E282A8 /* FontAwesome.ttf in Resources */,
 				EAC2CDF01D4AF5D800E282A8 /* btn_021.press@2x.png in Resources */,
@@ -3520,6 +3583,7 @@
 				EAC2CD5D1D4AF5D800E282A8 /* LICENSE in Resources */,
 				EAC2CDE61D4AF5D800E282A8 /* LICENSE.txt in Resources */,
 				EAC2CD151D4AF5D800E282A8 /* grayArrow.png in Resources */,
+				EACC98361D50E5DB00E627B8 /* icon_nearby_supporter.png in Resources */,
 				EA0E9D331D4C2968009CBF64 /* HeUserVC.xib in Resources */,
 				EAC2CDE21D4AF5D800E282A8 /* sr_refresh.png in Resources */,
 				EA4D016A1D4CF0A300A0CCA1 /* tabar_user_icon_normal@2x.png in Resources */,
@@ -3568,6 +3632,7 @@
 				EAC2CCFE1D4AF5D800E282A8 /* refresh@2x.png in Resources */,
 				EAC2CD0E1D4AF5D800E282A8 /* i2KEPCSingleComponentPickerView.xib in Resources */,
 				EAC2CEB21D4AF5EE00E282A8 /* zbar-helpicons.png in Resources */,
+				EACC98471D50F59400E627B8 /* HeDistributeContestVC.xib in Resources */,
 				EA0E9D091D4C2676009CBF64 /* tabbar_normal_background.png in Resources */,
 				EAC2CCD21D4AF5D800E282A8 /* BrowserView.xib in Resources */,
 				EAC2CD601D4AF5D800E282A8 /* arrow_down.png in Resources */,
@@ -3634,6 +3699,7 @@
 				EAC2CE3D1D4AF5E800E282A8 /* User.m in Sources */,
 				EAC2C90B1D4AF0E600E282A8 /* ViewController.m in Sources */,
 				EAC2CCF61D4AF5D800E282A8 /* DFTableViewODRefreshControl.m in Sources */,
+				EACC98461D50F59400E627B8 /* HeDistributeContestVC.m in Sources */,
 				EAC2CCD11D4AF5D800E282A8 /* BrowserView.m in Sources */,
 				EAC2CD911D4AF5D800E282A8 /* RACDelegateProxy.m in Sources */,
 				EAC2CCC91D4AF5D800E282A8 /* ASIDataCompressor.m in Sources */,

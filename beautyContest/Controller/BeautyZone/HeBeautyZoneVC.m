@@ -12,6 +12,7 @@
 #import "HeContestDetailVC.h"
 #import "HeBeautyContestTableCell.h"
 #import "DropDownListView.h"
+#import "HeDistributeContestVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -26,6 +27,7 @@
 @property(strong,nonatomic)EGORefreshTableFootView *refreshFooterView;
 @property(assign,nonatomic)NSInteger pageNo;
 @property(strong,nonatomic)NSMutableArray *chooseArray;
+@property(strong,nonatomic)UISearchBar *searchBar;
 
 @end
 
@@ -37,6 +39,7 @@
 @synthesize refreshHeaderView;
 @synthesize pageNo;
 @synthesize chooseArray;
+@synthesize searchBar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,6 +67,15 @@
     [self initView];
     //加载我的提问
     [self loadBeautyContestShow:YES];
+    
+    UIButton *distributeButton = [[UIButton alloc] init];
+    [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_add"] forState:UIControlStateNormal];
+    [distributeButton addTarget:self action:@selector(distributeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    distributeButton.frame = CGRectMake(0, 0, 25, 25);
+    UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
+    distributeItem.target = self;
+    self.navigationItem.rightBarButtonItem = distributeItem;
 }
 
 - (void)initializaiton
@@ -83,21 +95,16 @@
     //时间数据
     NSArray *timeArray = @[@"一周内",@"一个月内",@"三个月内"];
     
-    
-    chooseArray = [NSMutableArray arrayWithArray:@[
-                                                   distanceArray,
-                                                   hotArray,
-                                                   timeArray
-                                                   ]];
-    
-    
+    chooseArray = [NSMutableArray arrayWithArray:@[distanceArray,hotArray,timeArray]];
 }
 
 - (void)initView
 {
     [super initView];
     tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor whiteColor];
+    tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [Tool setExtraCellLineHidden:tableview];
     [self pullUpUpdate];
     
@@ -115,20 +122,24 @@
     
     [sectionHeaderView addSubview:timedropDownView];
     
-//    NSArray *buttonArray = @[@"未完成",@"已完成"];
-//    for (NSInteger index = 0; index < [buttonArray count]; index++) {
-//        CGFloat buttonW = SCREENWIDTH / [buttonArray count];
-//        CGFloat buttonH = sectionHeaderView.frame.size.height;
-//        CGFloat buttonX = index * buttonW;
-//        CGFloat buttonY = 0;
-//        CGRect buttonFrame = CGRectMake(buttonX , buttonY, buttonW, buttonH);
-//        UIButton *button = [self buttonWithTitle:buttonArray[index] frame:buttonFrame];
-//        button.tag = index + 100;
-//        if (index == 0) {
-//            button.selected = YES;
-//        }
-//        [sectionHeaderView addSubview:button];
-//    }
+    CGFloat searchX = 30;
+    CGFloat searchY = 5;
+    CGFloat searchW = SCREENWIDTH - 2 * searchX;
+    CGFloat searchH = SCREENHEIGH - 2 * searchY;
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(searchX, searchY, searchW, searchH)];
+    //    searchBar.tintColor = [UIColor colo]
+    searchBar.delegate = self;
+    searchBar.barStyle = UIBarStyleDefault;
+    searchBar.placeholder = @"请输入关键字";
+    self.navigationItem.titleView = searchBar;
+}
+
+- (void)distributeButtonClick:(UIButton *)button
+{
+    NSLog(@"distributeButtonClick");
+    HeDistributeContestVC *distributeContestVC = [[HeDistributeContestVC alloc] init];
+    distributeContestVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:distributeContestVC animated:YES];
 }
 
 - (UIButton *)buttonWithTitle:(NSString *)buttonTitle frame:(CGRect)buttonFrame
@@ -401,7 +412,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataSource count];
+    return 5;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -428,41 +439,11 @@
     
     HeBeautyContestTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeBeautyContestTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
+        cell = [[HeBeautyContestTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    UIFont *textFont = [UIFont systemFontOfSize:16.0];
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(5, (cellSize.height - 3) / 2.0, 3, 3)];
-    circleView.backgroundColor = [UIColor colorWithRed:164.0 / 255.0 green:57 / 255.0 blue:5.0 / 255.0 alpha:1.0];
-    circleView.layer.cornerRadius = 1.5;
-    circleView.layer.masksToBounds = YES;
-    [cell.contentView addSubview:circleView];
-    
-    CGFloat titleX = CGRectGetMaxX(circleView.frame) + 5;
-    CGFloat titleY = 10;
-    CGFloat titleW = SCREENWIDTH - titleX - 20;
-    CGFloat titleH = 0;
-    
-    NSString *title = [workTaskDict objectForKey:@"title"];
-    if ([title isMemberOfClass:[NSNull class]] || title == nil) {
-        title = @"";
-    }
-    titleH = [MLLinkLabel getViewSizeByString:title maxWidth:titleW font:textFont lineHeight:TextLineHeight lines:0].height;
-    if (titleH < 30) {
-        titleH = 30;
-    }
-    
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.text = title;
-    titleLabel.numberOfLines = 0;
-    titleLabel.textColor = [UIColor blackColor];
-    titleLabel.font = textFont;
-    titleLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
-    [cell.contentView addSubview:titleLabel];
     
     return cell;
 }
@@ -479,23 +460,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-    
-    UIFont *textFont = [UIFont systemFontOfSize:16.0];
-    NSDictionary *taskDict = [dataSource objectAtIndex:row];
-    NSString *title = [taskDict objectForKey:@"title"];
-    if ([title isMemberOfClass:[NSNull class]] || title == nil) {
-        title = @"";
-    }
-    CGFloat titleW = SCREENWIDTH - 33;
-    CGFloat titleH = [MLLinkLabel getViewSizeByString:title maxWidth:titleW font:textFont lineHeight:TextLineHeight lines:0].height;
-    if (titleH < 30) {
-        titleH = 30;
-    }
-    CGFloat margin = 10;
-    
-    return titleH + 2 * margin;
+    return 150;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -508,6 +473,30 @@
     HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
     contestDetailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:contestDetailVC animated:YES];
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchbar
+{
+    if ([searchbar isFirstResponder]) {
+        [searchbar resignFirstResponder];
+    }
+    return YES;
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchbar
+{
+    if ([searchbar isFirstResponder]) {
+        [searchbar resignFirstResponder];
+    }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchbar
+{
+    if ([searchbar isFirstResponder]) {
+        [searchbar resignFirstResponder];
+    }
+    NSString *searchKey = searchBar.text;
+    NSLog(@"searchKey = %@",searchKey);
 }
 
 - (void)didReceiveMemoryWarning {

@@ -48,6 +48,13 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self initializaiton];
+    [self initView];
+}
+
 - (void)initializaiton
 {
     [super initializaiton];

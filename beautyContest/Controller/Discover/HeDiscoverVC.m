@@ -21,6 +21,7 @@
 @property(strong,nonatomic)NSArray *dataSource;
 @property(strong,nonatomic)NSArray *iconDataSource;
 
+
 @end
 
 @implementation HeDiscoverVC
@@ -28,6 +29,7 @@
 @synthesize sectionHeaderView;
 @synthesize dataSource;
 @synthesize iconDataSource;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,9 +50,18 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self initializaiton];
+    [self initView];
+}
+
 - (void)initializaiton
 {
     [super initializaiton];
+    dataSource = @[@"附近颜值",@"我的留言",@"附近投我的"];
+    iconDataSource = @[@"icon_nearby_beauty",@"icon_nearby_message",@"icon_nearby_supporter"];
 }
 
 - (void)initView
@@ -59,11 +70,23 @@
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
+}
+
+- (UIButton *)buttonWithTitle:(NSString *)buttonTitle frame:(CGRect)buttonFrame
+{
+    UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithWhite:143.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [button setBackgroundImage:[Tool buttonImageFromColor:[UIColor whiteColor] withImageSize:button.frame.size] forState:UIControlStateSelected];
+    [button setBackgroundImage:[Tool buttonImageFromColor:sectionHeaderView.backgroundColor withImageSize:button.frame.size] forState:UIControlStateNormal];
     
-    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
-    sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
-    sectionHeaderView.userInteractionEnabled = YES;
-    
+    return button;
+}
+
+- (void)filterButtonClick:(UIButton *)button
+{
+
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -90,31 +113,40 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+    CGFloat iconH = 25;
+    CGFloat iconW = 25;
+    CGFloat iconX = 10;
+    CGFloat iconY = (cellSize.height - iconH) / 2.0;
+    NSString *image = iconDataSource[row];
+    UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
+    icon.frame = CGRectMake(iconX, iconY, iconW, iconH);
+    [cell.contentView addSubview:icon];
+
+    NSString *title = dataSource[row];
+    UIFont *textFont = [UIFont systemFontOfSize:16.0];
     
-    
-    
+    CGFloat titleX = iconX + iconW + 10;
+    CGFloat titleY = 0;
+    CGFloat titleH = cellSize.height;
+    CGFloat titleW = 200;
+    UILabel *topicLabel = [[UILabel alloc] init];
+    topicLabel.textAlignment = NSTextAlignmentLeft;
+    topicLabel.backgroundColor = [UIColor clearColor];
+    topicLabel.text = title;
+    topicLabel.numberOfLines = 0;
+    topicLabel.textColor = [UIColor blackColor];
+    topicLabel.font = textFont;
+    topicLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
+    [cell.contentView addSubview:topicLabel];
     
     
     return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView.frame.size.height;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    
-    
-    
     return 50;
 }
 
