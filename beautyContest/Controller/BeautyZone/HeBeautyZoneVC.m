@@ -65,8 +65,8 @@
     // Do any additional setup after loading the view from its nib.
     [self initializaiton];
     [self initView];
-    //加载我的提问
-    [self loadBeautyContestShow:YES];
+    //加载比赛
+//    [self loadBeautyContestShow:YES];
 }
 
 - (void)initializaiton

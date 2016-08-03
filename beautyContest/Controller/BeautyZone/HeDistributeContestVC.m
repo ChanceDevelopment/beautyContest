@@ -93,7 +93,7 @@
     titleField.layer.borderColor = [UIColor clearColor].CGColor;
     titleField.delegate = self;
     titleField.placeholder = @"请输入比赛主题";
-    titleField.font = [UIFont systemFontOfSize:15.0];
+    titleField.font = [UIFont systemFontOfSize:16.0];
     titleField.textColor = [UIColor blackColor];
 }
 
@@ -135,7 +135,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    UIFont *textFont = [UIFont  boldSystemFontOfSize:18.0];
+    UIFont *textFont = [UIFont  systemFontOfSize:16.0];
     cell.topicLabel.font = textFont;
     cell.topicLabel.textColor = APPDEFAULTORANGE;
     
@@ -290,7 +290,7 @@
             break;
     }
     
-    return 60;
+    return 50;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

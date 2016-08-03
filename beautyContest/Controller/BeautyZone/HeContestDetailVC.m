@@ -143,7 +143,7 @@
         cell = [[HeBaseIconTitleTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.topicLabel.font = [UIFont  boldSystemFontOfSize:16.0];
+    cell.topicLabel.font = [UIFont  systemFontOfSize:16.0];
     cell.topicLabel.textColor = [UIColor grayColor];
     
     NSString *iconName = iconDataSource[row];
@@ -226,7 +226,7 @@
             break;
     }
     
-    return 60;
+    return 50;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

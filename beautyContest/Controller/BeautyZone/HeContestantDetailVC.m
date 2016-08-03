@@ -73,7 +73,7 @@
 {
     [super initView];
     tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor whiteColor];
+    tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
     CGFloat headerH = 200;
@@ -127,6 +127,7 @@
     followButton.layer.masksToBounds = YES;
     followButton.layer.cornerRadius = 3.0;
     followButton.layer.borderWidth = 1.0;
+    [followButton.titleLabel setFont:textFont];
     [followButton addTarget:self action:@selector(followButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     followButton.layer.borderColor = [UIColor whiteColor].CGColor;
     [bgImage addSubview:followButton];
@@ -239,21 +240,21 @@
     HeBaseTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
         cell = [[HeBaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
     }
+    UIFont *textFont = [UIFont systemFontOfSize:16.0];
     switch (section) {
         case 0:
         {
             cell.textLabel.text = @"个人信息";
-            cell.textLabel.font = [UIFont systemFontOfSize:20.0];
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
             cell.textLabel.textColor = APPDEFAULTORANGE;
             
             UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(cellSize.width - 110, 0, 100, cellSize.height)];
             tipLabel.text = @"发布人可见";
             tipLabel.textColor = [UIColor grayColor];
             tipLabel.textAlignment = NSTextAlignmentRight;
-            tipLabel.font = [UIFont systemFontOfSize:18.0];
+            tipLabel.font = textFont;
             [cell addSubview:tipLabel];
             break;
         }
@@ -263,8 +264,27 @@
                 case 0:
                 {
                     cell.textLabel.text = @"希望大家多多给我投票";
-                    cell.textLabel.font = [UIFont systemFontOfSize:18.0];
+                    cell.textLabel.font = textFont;
                     cell.textLabel.textColor = [UIColor grayColor];
+                    break;
+                }
+                case 1:{
+                    CGFloat imageNum = 3;
+                    CGFloat imageDistance = 10;
+                    CGFloat imageX = 10;
+                    CGFloat imageY = 10;
+                    CGFloat imageH = cellSize.height - 2 * imageY;
+                    CGFloat imageW = (cellSize.width - 2 * imageX - 20 - (imageNum - 1) * imageDistance) / imageNum;
+                    for (NSInteger index = 0; index < imageNum; index++) {
+                        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index3.jpg"]];
+                        imageView.frame = CGRectMake(imageX, imageY, imageW, imageH);
+                        imageView.contentMode = UIViewContentModeScaleAspectFill;
+                        imageView.layer.masksToBounds = YES;
+                        imageX = imageX + imageW + imageDistance;
+                        [cell addSubview:imageView];
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 }
                 default:
@@ -288,7 +308,7 @@
             switch (row) {
                 case 1:
                 {
-                    return 100;
+                    return 80;
                     break;
                 }
                 default:
@@ -299,7 +319,7 @@
         default:
             break;
     }
-    return 50;
+    return 40;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

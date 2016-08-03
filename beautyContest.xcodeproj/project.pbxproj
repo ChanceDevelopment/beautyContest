@@ -4342,7 +4342,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "d71320b1-7aa5-4c10-8f22-e01fe9cbd542";
+				PROVISIONING_PROFILE = "11992fba-ad14-4f01-a89f-c15ed2da6258";
 			};
 			name = Release;
 		};
