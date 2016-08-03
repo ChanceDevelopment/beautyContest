@@ -8,6 +8,6 @@
 
 #import "HeBaseViewController.h"
 
-@interface HeRecommendVC : HeBaseViewController
+@interface HeRecommendVC : HeBaseViewController<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @end

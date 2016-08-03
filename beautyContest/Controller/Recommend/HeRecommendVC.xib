@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeRecommendVC">
             <connections>
-                <outlet property="tableview" destination="pts-Mn-17Y" id="VsT-rU-Lfu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,42 +15,47 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pts-Mn-17Y">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XEP-si-nba">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="MvA-4R-PDm">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="H3Q-xj-0hs"/>
-                        <outlet property="delegate" destination="-1" id="9Gs-E4-hg5"/>
+                        <outlet property="dataSource" destination="-1" id="GCT-GJ-rLp"/>
+                        <outlet property="delegate" destination="-1" id="Qfb-mv-HhU"/>
                     </connections>
-                </tableView>
+                </collectionView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="pts-Mn-17Y" secondAttribute="bottom" id="4u7-KF-zOW"/>
-                <constraint firstItem="pts-Mn-17Y" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jxc-OC-N2a"/>
-                <constraint firstAttribute="trailing" secondItem="pts-Mn-17Y" secondAttribute="trailing" id="oAx-pz-KO1"/>
-                <constraint firstItem="pts-Mn-17Y" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="vpq-V7-uiJ"/>
+                <constraint firstAttribute="trailing" secondItem="XEP-si-nba" secondAttribute="trailing" id="hn9-tW-Rsc"/>
+                <constraint firstItem="XEP-si-nba" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kJq-HC-Z3L"/>
+                <constraint firstItem="XEP-si-nba" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="sHR-uM-Edd"/>
+                <constraint firstAttribute="bottom" secondItem="XEP-si-nba" secondAttribute="bottom" id="sWD-pS-dYx"/>
             </constraints>
             <variation key="default">
                 <mask key="subviews">
-                    <exclude reference="pts-Mn-17Y"/>
+                    <exclude reference="XEP-si-nba"/>
                 </mask>
                 <mask key="constraints">
-                    <exclude reference="4u7-KF-zOW"/>
-                    <exclude reference="jxc-OC-N2a"/>
-                    <exclude reference="oAx-pz-KO1"/>
-                    <exclude reference="vpq-V7-uiJ"/>
+                    <exclude reference="hn9-tW-Rsc"/>
+                    <exclude reference="kJq-HC-Z3L"/>
+                    <exclude reference="sHR-uM-Edd"/>
+                    <exclude reference="sWD-pS-dYx"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
                 <mask key="subviews">
-                    <include reference="pts-Mn-17Y"/>
+                    <include reference="XEP-si-nba"/>
                 </mask>
                 <mask key="constraints">
-                    <include reference="4u7-KF-zOW"/>
-                    <include reference="jxc-OC-N2a"/>
-                    <include reference="oAx-pz-KO1"/>
-                    <include reference="vpq-V7-uiJ"/>
+                    <include reference="hn9-tW-Rsc"/>
+                    <include reference="kJq-HC-Z3L"/>
+                    <include reference="sHR-uM-Edd"/>
+                    <include reference="sWD-pS-dYx"/>
                 </mask>
             </variation>
         </view>

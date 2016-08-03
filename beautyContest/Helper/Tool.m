@@ -1070,4 +1070,31 @@
     
 }
 
++ (UIButton *) getButton:(CGRect) frame title:(NSString *) title image:(NSString *) image
+{
+    UIButton *btn = [[UIButton alloc] initWithFrame:frame];
+    //btn.backgroundColor = [UIColor redColor];
+//    [btn setTitle:title forState:UIControlStateNormal];
+    [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, 6, 0, 0)];
+//    [btn setImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
+    CGFloat iconY = 5;
+    CGFloat iconH = frame.size.height - 2 * iconY;
+    CGFloat iconW = iconH;
+    CGFloat iconX = frame.size.width / 2.0 - 10 - iconW;
+    
+    UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
+    icon.frame = CGRectMake(iconX, iconY, iconW, iconH);
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = title;
+    titleLabel.font = [UIFont systemFontOfSize:16.0];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.frame = CGRectMake(frame.size.width / 2.0 + 10, iconY, frame.size.width / 2.0 - 20, iconH);
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    [btn addSubview:titleLabel];
+    [btn addSubview:icon];
+    return btn;
+}
+
 @end

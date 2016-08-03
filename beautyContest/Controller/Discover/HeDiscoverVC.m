@@ -9,6 +9,7 @@
 #import "HeDiscoverVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
+#import "HeNearbyVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -156,6 +157,23 @@
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     
+    switch (row) {
+        case 0:
+        {
+            break;
+        }
+        case 1:{
+            break;
+        }
+        case 2:{
+            HeNearbyVC *nearByVC = [[HeNearbyVC alloc] init];
+            nearByVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:nearByVC animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
     
 }
 

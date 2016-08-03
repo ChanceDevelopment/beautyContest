@@ -1,23 +1,15 @@
 //
-//  HeContestDetailVC.m
+//  HeNearbyVC.m
 //  beautyContest
 //
-//  Created by HeDongMing on 16/7/31.
+//  Created by Tony on 16/8/3.
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeContestRankVC.h"
-#import "MLLabel+Size.h"
-#import "HeBaseTableViewCell.h"
-#import "HeContestantDetailVC.h"
-#import "HeContestantTableCell.h"
+#import "HeNearbyVC.h"
+#import "HeNearbyTableCell.h"
 
-#define TextLineHeight 1.2f
-
-@interface HeContestRankVC ()<UITableViewDelegate,UITableViewDataSource>
-{
-    BOOL requestReply; //是否已经完成
-}
+@interface HeNearbyVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSMutableArray *dataSource;
@@ -27,7 +19,7 @@
 
 @end
 
-@implementation HeContestRankVC
+@implementation HeNearbyVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
@@ -46,10 +38,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的排名";
+        label.text = @"附近选我的人";
         [label sizeToFit];
         
-        self.title = @"我的排名";
+        self.title = @"附近选我的人";
     }
     return self;
 }
@@ -64,67 +56,27 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    dataSource = [[NSMutableArray alloc] initWithCapacity:0];
+    pageNo = 1;
+    updateOption = 1;
 }
 
 - (void)initView
 {
     [super initView];
     tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor whiteColor];
+    tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [Tool setExtraCellLineHidden:tableview];
     [self pullUpUpdate];
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
-    
-    NSArray *buttonArray = @[@"我的男神",@"我的女神"];
-    for (NSInteger index = 0; index < [buttonArray count]; index++) {
-        CGFloat buttonW = SCREENWIDTH / [buttonArray count];
-        CGFloat buttonH = sectionHeaderView.frame.size.height;
-        CGFloat buttonX = index * buttonW;
-        CGFloat buttonY = 0;
-        CGRect buttonFrame = CGRectMake(buttonX , buttonY, buttonW, buttonH);
-        UIButton *button = [self buttonWithTitle:buttonArray[index] frame:buttonFrame];
-        button.tag = index + 100;
-        if (index == 0) {
-            button.selected = YES;
-        }
-        [sectionHeaderView addSubview:button];
-    }
 }
 
-- (UIButton *)buttonWithTitle:(NSString *)buttonTitle frame:(CGRect)buttonFrame
-{
-    UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
-    [button setTitle:buttonTitle forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithWhite:143.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [button setBackgroundImage:[Tool buttonImageFromColor:[UIColor whiteColor] withImageSize:button.frame.size] forState:UIControlStateSelected];
-    [button setBackgroundImage:[Tool buttonImageFromColor:sectionHeaderView.backgroundColor withImageSize:button.frame.size] forState:UIControlStateNormal];
-    
-    return button;
-}
-
-- (void)filterButtonClick:(UIButton *)button
-{
-    if ((requestReply == NO && button.tag == 100) || (requestReply == YES && button.tag == 101)) {
-        return;
-    }
-    NSArray *subViewsArray = sectionHeaderView.subviews;
-    for (UIView *subview in subViewsArray) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            ((UIButton *)subview).selected = !((UIButton *)subview).selected;
-        }
-    }
-    requestReply = YES;
-    if (button.tag == 100) {
-        requestReply = NO;
-    }
-    [self loadRankingDataShow:YES];
-}
-
-- (void)loadRankingDataShow:(BOOL)show
+- (void)loadNearbyUserShow:(BOOL)show
 {
 
 }
@@ -155,13 +107,14 @@
     
 }
 
+
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
 
 - (void)reloadTableViewDataSource{
     _reloading = YES;
     //刷新列表
-    [self loadRankingDataShow:NO];
+    [self loadNearbyUserShow:NO];
     [self updateDataSource];
 }
 
@@ -258,7 +211,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return 5;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -270,28 +223,28 @@
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeContestantTableCellIndentifier";
+    static NSString *cellIndentifier = @"HeNearbyTableCellIndentifier";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
-    
-    
-    HeContestantTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
-    if (!cell) {
-        cell = [[HeContestantTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    NSDictionary *dict = nil;
+    @try {
+        dict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
     }
     
+    HeNearbyTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    if (!cell) {
+        cell = [[HeNearbyTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    
     return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView.frame.size.height;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -304,10 +257,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    
-    HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
-    contantDetailVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:contantDetailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -316,13 +265,13 @@
 }
 
 /*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

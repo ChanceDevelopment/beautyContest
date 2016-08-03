@@ -10,6 +10,7 @@
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 #import "HeContestRankVC.h"
+#import "HeBaseIconTitleTableCell.h"
 
 #define TextLineHeight 1.2f
 
@@ -20,6 +21,8 @@
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)NSDictionary *contestDetailDict;
 @property(strong,nonatomic)UIView *sectionHeaderView;
+@property(strong,nonatomic)NSArray *iconDataSource;
+@property(strong,nonatomic)IBOutlet UIView *footerView;
 
 @end
 
@@ -28,6 +31,8 @@
 @synthesize contestDetailDict;
 @synthesize tableview;
 @synthesize sectionHeaderView;
+@synthesize iconDataSource;
+@synthesize footerView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,24 +63,65 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_sponsor",@"icon_puter",@""];
 }
 
 - (void)initView
 {
     [super initView];
     tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor whiteColor];
+    tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
-    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
+    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
+    tableview.tableHeaderView = sectionHeaderView;
     
+    UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index2.jpg"]];
+    bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
+    bgImage.userInteractionEnabled = YES;
+    [sectionHeaderView addSubview:bgImage];
+    
+    UIButton *distributeButton = [[UIButton alloc] init];
+    [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_share"] forState:UIControlStateNormal];
+    [distributeButton addTarget:self action:@selector(shareButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    distributeButton.frame = CGRectMake(0, 0, 25, 25);
+    UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
+    distributeItem.target = self;
+    self.navigationItem.rightBarButtonItem = distributeItem;
+    
+    CGFloat buttonX = 10;
+    CGFloat buttonY = 5;
+    CGFloat buttonH = 40;
+    CGFloat buttonW = SCREENWIDTH / 2.0 - 2 * buttonX;
+    UIButton *joinButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"参加" image:@"appIcon"];
+    joinButton.tag = 1;
+    [joinButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [joinButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+    [footerView addSubview:joinButton];
+    
+    UIButton *commentButton = [Tool getButton:CGRectMake(SCREENWIDTH / 2.0 + buttonX, buttonY, buttonW, buttonH) title:@"评论" image:@"icon_comment"];
+    joinButton.tag = 2;
+    [commentButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [commentButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+    [footerView addSubview:commentButton];
+}
+
+- (void)buttonClick:(UIButton *)button
+{
+
+}
+
+- (void)shareButtonClick:(UIButton *)shareButton
+{
+
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return [iconDataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -86,58 +132,101 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
     
-    static NSString *cellIndentifier = @"HeContestDetailIndentifier";
+    static NSString *cellIndentifier = @"HeBaseIconTitleTableCellIndentifier";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     
     
-    HeBaseTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeBaseIconTitleTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeBaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell = [[HeBaseIconTitleTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    cell.topicLabel.font = [UIFont  boldSystemFontOfSize:16.0];
+    cell.topicLabel.textColor = [UIColor grayColor];
     
-    UIFont *textFont = [UIFont systemFontOfSize:16.0];
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(5, (cellSize.height - 3) / 2.0, 3, 3)];
-    circleView.backgroundColor = [UIColor colorWithRed:164.0 / 255.0 green:57 / 255.0 blue:5.0 / 255.0 alpha:1.0];
-    circleView.layer.cornerRadius = 1.5;
-    circleView.layer.masksToBounds = YES;
-    [cell.contentView addSubview:circleView];
+    NSString *iconName = iconDataSource[row];
+    cell.icon.image = [UIImage imageNamed:iconName];
+    switch (row) {
+        case 0:
+        {
+            cell.topicLabel.font = [UIFont  boldSystemFontOfSize:20.0];
+            CGRect topFrame = cell.topicLabel.frame;
+            topFrame.origin.x = 10;
+            topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
+            cell.topicLabel.frame = topFrame;
+            cell.topicLabel.textColor = [UIColor blackColor];
+            cell.topicLabel.text = @"赛区主题";
+            break;
+        }
+        case 1:
+        {
+            
+            cell.topicLabel.text = @"2016/05/25 周六 13:00 ~ 17:00";
+            break;
+        }
+        case 2:
+        {
+            cell.topicLabel.numberOfLines = 2;
+            cell.topicLabel.text = @"广东省中山市西区长乐新村10栋601会议厅8楼8501";
+            break;
+        }
+        case 3:
+        {
+            cell.topicLabel.text = @"主办方: 腾讯众创空间杭州站";
+            break;
+        }
+        case 4:
+        {
+            cell.topicLabel.text = @"发布者";
+            break;
+        }
+        case 5:
+        {
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.topicLabel.text = @"我的排名";
+            CGRect topFrame = cell.topicLabel.frame;
+            topFrame.origin.x = 10;
+            topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
+            cell.topicLabel.frame = topFrame;
+            cell.topicLabel.textColor = [UIColor blackColor];
+            break;
+        }
+        default:
+            break;
+    }
     
     
     
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView.frame.size.height;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     
-    UIFont *textFont = [UIFont systemFontOfSize:16.0];
-    NSString *title = [contestDetailDict objectForKey:@"title"];
-    if ([title isMemberOfClass:[NSNull class]] || title == nil) {
-        title = @"";
+    switch (row) {
+        case 2:
+        {
+            NSString *address = @"广东省中山市西区长乐新村10栋601会议厅8楼8501";
+            CGFloat labelW = 0;
+            UIFont *font = [UIFont  boldSystemFontOfSize:16.0];
+            CGSize textSize = [MLLinkLabel getViewSizeByString:address maxWidth:labelW font:font lineHeight:TextLineHeight lines:0];
+            if (textSize.height < 50) {
+                textSize.height = 50;
+            }
+            return textSize.height + 10;
+            break;
+        }
+        default:
+            break;
     }
-    CGFloat titleW = SCREENWIDTH - 33;
-    CGFloat titleH = [MLLinkLabel getViewSizeByString:title maxWidth:titleW font:textFont lineHeight:TextLineHeight lines:0].height;
-    if (titleH < 30) {
-        titleH = 30;
-    }
-    CGFloat margin = 10;
     
-    return titleH + 2 * margin;
+    return 60;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,10 +234,18 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
+    switch (row) {
+        case 5:
+        {
+            HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
+            contestRankVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contestRankVC animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
     
-    HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
-    contestRankVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:contestRankVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

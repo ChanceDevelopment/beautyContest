@@ -5,9 +5,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeContestRankVC">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeNearbyVC">
             <connections>
-                <outlet property="tableview" destination="5Qn-eg-zL7" id="QU6-uw-Cop"/>
+                <outlet property="tableview" destination="SlL-6E-9v2" id="9qW-JN-N4X"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,42 +16,42 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5Qn-eg-zL7">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SlL-6E-9v2">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="XEX-h7-qCn"/>
-                        <outlet property="delegate" destination="-1" id="xyb-YL-0S6"/>
+                        <outlet property="dataSource" destination="-1" id="FZg-8p-sRA"/>
+                        <outlet property="delegate" destination="-1" id="W2v-gM-mP4"/>
                     </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="5Qn-eg-zL7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0w4-AH-tdI"/>
-                <constraint firstAttribute="bottom" secondItem="5Qn-eg-zL7" secondAttribute="bottom" id="TTe-Cm-mgP"/>
-                <constraint firstItem="5Qn-eg-zL7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="UZQ-M4-Efy"/>
-                <constraint firstAttribute="trailing" secondItem="5Qn-eg-zL7" secondAttribute="trailing" id="tM6-bK-XqD"/>
+                <constraint firstItem="SlL-6E-9v2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="18s-1A-Lad"/>
+                <constraint firstAttribute="bottom" secondItem="SlL-6E-9v2" secondAttribute="bottom" id="91R-DL-U3m"/>
+                <constraint firstItem="SlL-6E-9v2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="a8j-5a-S1Z"/>
+                <constraint firstAttribute="trailing" secondItem="SlL-6E-9v2" secondAttribute="trailing" id="sws-xq-e0v"/>
             </constraints>
             <variation key="default">
                 <mask key="subviews">
-                    <exclude reference="5Qn-eg-zL7"/>
+                    <exclude reference="SlL-6E-9v2"/>
                 </mask>
                 <mask key="constraints">
-                    <exclude reference="0w4-AH-tdI"/>
-                    <exclude reference="TTe-Cm-mgP"/>
-                    <exclude reference="UZQ-M4-Efy"/>
-                    <exclude reference="tM6-bK-XqD"/>
+                    <exclude reference="18s-1A-Lad"/>
+                    <exclude reference="91R-DL-U3m"/>
+                    <exclude reference="a8j-5a-S1Z"/>
+                    <exclude reference="sws-xq-e0v"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
                 <mask key="subviews">
-                    <include reference="5Qn-eg-zL7"/>
+                    <include reference="SlL-6E-9v2"/>
                 </mask>
                 <mask key="constraints">
-                    <include reference="0w4-AH-tdI"/>
-                    <include reference="TTe-Cm-mgP"/>
-                    <include reference="UZQ-M4-Efy"/>
-                    <include reference="tM6-bK-XqD"/>
+                    <include reference="18s-1A-Lad"/>
+                    <include reference="91R-DL-U3m"/>
+                    <include reference="a8j-5a-S1Z"/>
+                    <include reference="sws-xq-e0v"/>
                 </mask>
             </variation>
         </view>

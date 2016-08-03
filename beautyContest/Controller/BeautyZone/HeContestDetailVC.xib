@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,7 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeContestDetailVC">
             <connections>
-                <outlet property="tableview" destination="Scf-CW-IpW" id="bW9-Dm-3Ud"/>
+                <outlet property="footerView" destination="4fs-e7-qgr" id="KAI-j2-gp6"/>
+                <outlet property="tableview" destination="Scf-CW-IpW" id="kSX-IS-CYO"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,24 +20,57 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Scf-CW-IpW">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="800"/>
-                    </variation>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="skv-Cy-Jcs"/>
                         <outlet property="delegate" destination="-1" id="YXL-rE-AgK"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4fs-e7-qgr">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Scf-CW-IpW" secondAttribute="trailing" id="2Kp-Ud-MoO"/>
+                <constraint firstAttribute="bottom" secondItem="4fs-e7-qgr" secondAttribute="bottom" id="L7a-dq-L3M"/>
+                <constraint firstItem="4fs-e7-qgr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SWh-d2-EgE"/>
+                <constraint firstItem="4fs-e7-qgr" firstAttribute="top" secondItem="Scf-CW-IpW" secondAttribute="bottom" id="aPP-ac-l6N"/>
+                <constraint firstItem="Scf-CW-IpW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fAj-qw-xPV"/>
+                <constraint firstItem="Scf-CW-IpW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hz5-Q3-zM1"/>
+                <constraint firstAttribute="trailing" secondItem="4fs-e7-qgr" secondAttribute="trailing" id="q0F-FC-MUb"/>
+                <constraint firstAttribute="bottom" secondItem="Scf-CW-IpW" secondAttribute="bottom" constant="50" id="sZE-TF-Xch"/>
+            </constraints>
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="Scf-CW-IpW"/>
+                    <exclude reference="4fs-e7-qgr"/>
+                </mask>
+                <mask key="constraints">
+                    <exclude reference="2Kp-Ud-MoO"/>
+                    <exclude reference="fAj-qw-xPV"/>
+                    <exclude reference="hz5-Q3-zM1"/>
+                    <exclude reference="sZE-TF-Xch"/>
+                    <exclude reference="L7a-dq-L3M"/>
+                    <exclude reference="SWh-d2-EgE"/>
+                    <exclude reference="aPP-ac-l6N"/>
+                    <exclude reference="q0F-FC-MUb"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
                 <mask key="subviews">
                     <include reference="Scf-CW-IpW"/>
+                    <include reference="4fs-e7-qgr"/>
+                </mask>
+                <mask key="constraints">
+                    <include reference="2Kp-Ud-MoO"/>
+                    <include reference="fAj-qw-xPV"/>
+                    <include reference="hz5-Q3-zM1"/>
+                    <include reference="sZE-TF-Xch"/>
+                    <include reference="L7a-dq-L3M"/>
+                    <include reference="SWh-d2-EgE"/>
+                    <include reference="aPP-ac-l6N"/>
+                    <include reference="q0F-FC-MUb"/>
                 </mask>
             </variation>
         </view>

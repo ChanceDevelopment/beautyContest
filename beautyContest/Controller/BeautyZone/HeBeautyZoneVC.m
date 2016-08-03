@@ -67,15 +67,6 @@
     [self initView];
     //加载我的提问
     [self loadBeautyContestShow:YES];
-    
-    UIButton *distributeButton = [[UIButton alloc] init];
-    [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_add"] forState:UIControlStateNormal];
-    [distributeButton addTarget:self action:@selector(distributeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    distributeButton.frame = CGRectMake(0, 0, 25, 25);
-    UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
-    distributeItem.target = self;
-    self.navigationItem.rightBarButtonItem = distributeItem;
 }
 
 - (void)initializaiton
@@ -132,6 +123,15 @@
     searchBar.barStyle = UIBarStyleDefault;
     searchBar.placeholder = @"请输入关键字";
     self.navigationItem.titleView = searchBar;
+    
+    UIButton *distributeButton = [[UIButton alloc] init];
+    [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_add"] forState:UIControlStateNormal];
+    [distributeButton addTarget:self action:@selector(distributeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    distributeButton.frame = CGRectMake(0, 0, 25, 25);
+    UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
+    distributeItem.target = self;
+    self.navigationItem.rightBarButtonItem = distributeItem;
 }
 
 - (void)distributeButtonClick:(UIButton *)button
@@ -468,7 +468,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    NSDictionary *taskDict = [dataSource objectAtIndex:row];
     
     HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
     contestDetailVC.hidesBottomBarWhenPushed = YES;

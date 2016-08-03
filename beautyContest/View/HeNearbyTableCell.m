@@ -1,14 +1,14 @@
 //
-//  HeContestantTableCell.m
+//  HeNearbyTableCell.m
 //  beautyContest
 //
-//  Created by HeDongMing on 16/7/31.
+//  Created by Tony on 16/8/3.
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeContestantTableCell.h"
+#import "HeNearbyTableCell.h"
 
-@implementation HeContestantTableCell
+@implementation HeNearbyTableCell
 @synthesize userImage;
 @synthesize nameLabel;
 @synthesize distanceLabel;
@@ -21,6 +21,7 @@
     // Drawing code
 }
 */
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellSize:(CGSize)cellsize
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier cellSize:cellsize];
@@ -36,7 +37,7 @@
         
         CGFloat nameLabelX = CGRectGetMaxX(userImage.frame) + 5;
         CGFloat nameLabelY = imageY;
-        CGFloat nameLabelW = SCREENWIDTH - imageX - CGRectGetMaxX(userImage.frame);
+        CGFloat nameLabelW = SCREENWIDTH / 2.0 - 5 - CGRectGetMaxX(userImage.frame);
         CGFloat nameLabelH = imageH / 2.0;
         nameLabel = [[UILabel alloc] init];
         nameLabel.frame = CGRectMake(nameLabelX, nameLabelY, nameLabelW, nameLabelH);
@@ -51,9 +52,22 @@
         distanceLabel.backgroundColor = [UIColor clearColor];
         distanceLabel.textColor = [UIColor grayColor];
         distanceLabel.font = [UIFont systemFontOfSize:15.0];
-        distanceLabel.text = @"承势网络 CEO";
+        distanceLabel.text = @"100米以内";
         [self addSubview:distanceLabel];
         
+        CGFloat signLabelX = SCREENWIDTH / 2.0;
+        CGFloat signLabelY = imageY;
+        CGFloat signLabelH = imageH;
+        CGFloat signLabelW = SCREENWIDTH / 2.0 - 5;
+        
+        signLabel = [[UILabel alloc] init];
+        signLabel.numberOfLines = 2;
+        signLabel.frame = CGRectMake(signLabelX, signLabelY, signLabelW, signLabelH);
+        signLabel.backgroundColor = [UIColor clearColor];
+        signLabel.textColor = [UIColor grayColor];
+        signLabel.font = [UIFont systemFontOfSize:15.0];
+        signLabel.text = @"致已经逝去的青春，致已经逝去的青春，致已经逝去的青春";
+        [self addSubview:signLabel];
         
     }
     return self;
