@@ -39,6 +39,11 @@
 		EA46454B1D51D8D700CD539F /* icon_sex_boy.png in Resources */ = {isa = PBXBuildFile; fileRef = EA4645491D51D8D700CD539F /* icon_sex_boy.png */; };
 		EA46454C1D51D8D700CD539F /* icon_sex_girl.png in Resources */ = {isa = PBXBuildFile; fileRef = EA46454A1D51D8D700CD539F /* icon_sex_girl.png */; };
 		EA46454E1D51DA1C00CD539F /* icon_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = EA46454D1D51DA1C00CD539F /* icon_edit.png */; };
+		EA4645531D51ECC100CD539F /* FLCollectionSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4645511D51ECC100CD539F /* FLCollectionSeparator.m */; };
+		EA4645541D51ECC100CD539F /* FLCollectionSeparator.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA4645521D51ECC100CD539F /* FLCollectionSeparator.xib */; };
+		EA46455A1D51ECE700CD539F /* HeGBoxCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4645561D51ECE600CD539F /* HeGBoxCollectionCell.m */; };
+		EA46455B1D51ECE700CD539F /* HeGBoxCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA4645571D51ECE600CD539F /* HeGBoxCollectionCell.xib */; };
+		EA46455C1D51ECE700CD539F /* HeGBoxHeaderCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4645591D51ECE600CD539F /* HeGBoxHeaderCollectionCell.m */; };
 		EA4D013F1D4CE47400A0CCA1 /* HeRecommendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4D013D1D4CE47400A0CCA1 /* HeRecommendVC.m */; };
 		EA4D01401D4CE47400A0CCA1 /* HeRecommendVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA4D013E1D4CE47400A0CCA1 /* HeRecommendVC.xib */; };
 		EA4D01441D4CE8FF00A0CCA1 /* BBLaunchAdMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4D01431D4CE8FF00A0CCA1 /* BBLaunchAdMonitor.m */; };
@@ -586,6 +591,14 @@
 		EA4645491D51D8D700CD539F /* icon_sex_boy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sex_boy.png; sourceTree = "<group>"; };
 		EA46454A1D51D8D700CD539F /* icon_sex_girl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sex_girl.png; sourceTree = "<group>"; };
 		EA46454D1D51DA1C00CD539F /* icon_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_edit.png; sourceTree = "<group>"; };
+		EA4645501D51ECC100CD539F /* FLCollectionSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLCollectionSeparator.h; sourceTree = "<group>"; };
+		EA4645511D51ECC100CD539F /* FLCollectionSeparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLCollectionSeparator.m; sourceTree = "<group>"; };
+		EA4645521D51ECC100CD539F /* FLCollectionSeparator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FLCollectionSeparator.xib; sourceTree = "<group>"; };
+		EA4645551D51ECE600CD539F /* HeGBoxCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeGBoxCollectionCell.h; sourceTree = "<group>"; };
+		EA4645561D51ECE600CD539F /* HeGBoxCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeGBoxCollectionCell.m; sourceTree = "<group>"; };
+		EA4645571D51ECE600CD539F /* HeGBoxCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeGBoxCollectionCell.xib; sourceTree = "<group>"; };
+		EA4645581D51ECE600CD539F /* HeGBoxHeaderCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeGBoxHeaderCollectionCell.h; sourceTree = "<group>"; };
+		EA4645591D51ECE600CD539F /* HeGBoxHeaderCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeGBoxHeaderCollectionCell.m; sourceTree = "<group>"; };
 		EA4D013C1D4CE47400A0CCA1 /* HeRecommendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeRecommendVC.h; sourceTree = "<group>"; };
 		EA4D013D1D4CE47400A0CCA1 /* HeRecommendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendVC.m; sourceTree = "<group>"; };
 		EA4D013E1D4CE47400A0CCA1 /* HeRecommendVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeRecommendVC.xib; sourceTree = "<group>"; };
@@ -1670,11 +1683,19 @@
 			name = Custom;
 			sourceTree = "<group>";
 		};
-		EA46454F1D51EA4A00CD539F /* R */ = {
+		EA46454F1D51EA4A00CD539F /* Recommend */ = {
 			isa = PBXGroup;
 			children = (
+				EA4645551D51ECE600CD539F /* HeGBoxCollectionCell.h */,
+				EA4645561D51ECE600CD539F /* HeGBoxCollectionCell.m */,
+				EA4645571D51ECE600CD539F /* HeGBoxCollectionCell.xib */,
+				EA4645581D51ECE600CD539F /* HeGBoxHeaderCollectionCell.h */,
+				EA4645591D51ECE600CD539F /* HeGBoxHeaderCollectionCell.m */,
+				EA4645501D51ECC100CD539F /* FLCollectionSeparator.h */,
+				EA4645511D51ECC100CD539F /* FLCollectionSeparator.m */,
+				EA4645521D51ECC100CD539F /* FLCollectionSeparator.xib */,
 			);
-			name = R;
+			name = Recommend;
 			sourceTree = "<group>";
 		};
 		EA4D01411D4CE8FF00A0CCA1 /* LaunchAd */ = {
@@ -1716,7 +1737,7 @@
 		EA4D01831D4D93C600A0CCA1 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				EA46454F1D51EA4A00CD539F /* R */,
+				EA46454F1D51EA4A00CD539F /* Recommend */,
 				EA46452D1D51899100CD539F /* Discover */,
 				EA4D019A1D4D9BBD00A0CCA1 /* BeautyContest */,
 				EA4D01841D4D93CC00A0CCA1 /* Base */,
@@ -3633,6 +3654,7 @@
 				EA4D01661D4CF0A300A0CCA1 /* tabar_discover_icon_normal@2x.png in Resources */,
 				EACC983F1D50E82200E627B8 /* icon_album.png in Resources */,
 				EAC2CD611D4AF5D800E282A8 /* arrow_down1.png in Resources */,
+				EA46455B1D51ECE700CD539F /* HeGBoxCollectionCell.xib in Resources */,
 				EAC2CDF91D4AF5D800E282A8 /* TZImagePickerController.bundle in Resources */,
 				EACC98391D50E7E400E627B8 /* icon_put.png in Resources */,
 				EA0E9D111D4C269E009CBF64 /* NavBarIOS7_white.png in Resources */,
@@ -3647,6 +3669,7 @@
 				EAC2CD111D4AF5D800E282A8 /* blueArrow.png in Resources */,
 				EA4645481D51B9D800CD539F /* icon_love.png in Resources */,
 				EAC2CDF21D4AF5D800E282A8 /* ProvincesAndCities.plist in Resources */,
+				EA4645541D51ECC100CD539F /* FLCollectionSeparator.xib in Resources */,
 				EAC2CEA31D4AF5EE00E282A8 /* ShareSDKUI.bundle in Resources */,
 				EA4D01621D4CF0A300A0CCA1 /* navigationBar_back_icon.png in Resources */,
 				EA4645461D51A36700CD539F /* appIcon30.png in Resources */,
@@ -3972,6 +3995,7 @@
 				EAC2CD1C1D4AF5D800E282A8 /* FMDatabaseAdditions.m in Sources */,
 				EAC2CD291D4AF5D800E282A8 /* NSArray+Sort.m in Sources */,
 				EAC2CD961D4AF5D800E282A8 /* RACEmptySequence.m in Sources */,
+				EA4645531D51ECC100CD539F /* FLCollectionSeparator.m in Sources */,
 				EA46453F1D5193DE00CD539F /* HeBaseIconTitleTableCell.m in Sources */,
 				EAC2CDE11D4AF5D800E282A8 /* UIView+WebCacheOperation.m in Sources */,
 				EAC2CE9B1D4AF5EE00E282A8 /* QRCodeGenerator.m in Sources */,
@@ -4053,6 +4077,7 @@
 				EAC2CCE11D4AF5D800E282A8 /* DFSectionIndexTabelViewController.m in Sources */,
 				EAC2CDA11D4AF5D800E282A8 /* RACObjCRuntime.m in Sources */,
 				EAC2CD521D4AF5D800E282A8 /* MLExpressionManager.m in Sources */,
+				EA46455C1D51ECE700CD539F /* HeGBoxHeaderCollectionCell.m in Sources */,
 				EAC2CDCF1D4AF5D800E282A8 /* SAMTextView.m in Sources */,
 				EAC2CDA51D4AF5D800E282A8 /* RACReturnSignal.m in Sources */,
 				EAC2CDC21D4AF5D800E282A8 /* UIDatePicker+RACSignalSupport.m in Sources */,
@@ -4062,6 +4087,7 @@
 				EAC2CECE1D4AF71900E282A8 /* NSDateFormatter+Category.m in Sources */,
 				EAC2CCDC1D4AF5D800E282A8 /* UITabBar+Badge.m in Sources */,
 				EAC2CD431D4AF5D800E282A8 /* MJRefreshAutoGifFooter.m in Sources */,
+				EA46455A1D51ECE700CD539F /* HeGBoxCollectionCell.m in Sources */,
 				EAC2CDB31D4AF5D800E282A8 /* RACSubscriptionScheduler.m in Sources */,
 				EA0E9D261D4C295F009CBF64 /* HeDiscoverVC.m in Sources */,
 				EAC2CDA61D4AF5D800E282A8 /* RACScheduler.m in Sources */,

@@ -9,6 +9,9 @@
 #import "HeRecommendVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
+#import "FLCollectionSeparator.h"
+#import "HeGBoxCollectionCell.h"
+#import "HeGBoxHeaderCollectionCell.h"
 
 #define TextLineHeight 1.2f
 
@@ -16,15 +19,15 @@
 {
     BOOL requestReply; //是否已经完成
 }
-@property(strong,nonatomic)IBOutlet UITableView *tableview;
-@property(strong,nonatomic)UIView *sectionHeaderView;
+@property(strong,nonatomic)IBOutlet UICollectionView *recommendCollectionView;
 @property(strong,nonatomic)NSArray *dataSource;
+@property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSArray *iconDataSource;
 
 @end
 
 @implementation HeRecommendVC
-@synthesize tableview;
+@synthesize recommendCollectionView;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
 @synthesize iconDataSource;
@@ -63,9 +66,20 @@
 - (void)initView
 {
     [super initView];
-    tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor whiteColor];
-    [Tool setExtraCellLineHidden:tableview];
+    UICollectionViewFlowLayout *collectionFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [collectionFlowLayout registerClass:[FLCollectionSeparator class] forDecorationViewOfKind:@"Separator"];
+    [collectionFlowLayout registerClass:[HeGBoxCollectionCell class] forDecorationViewOfKind:@"Separator"];
+    [collectionFlowLayout registerClass:[HeGBoxHeaderCollectionCell class] forDecorationViewOfKind:@"Separator"];
+    collectionFlowLayout.minimumLineSpacing = 1;
+    [collectionFlowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];//设置其布局方向
+    
+    recommendCollectionView.backgroundView = nil;
+    recommendCollectionView.showsVerticalScrollIndicator = NO;
+    recommendCollectionView.showsHorizontalScrollIndicator = NO;
+    recommendCollectionView.collectionViewLayout = collectionFlowLayout;
+    recommendCollectionView.backgroundColor = [UIColor clearColor];
+    [recommendCollectionView registerClass:[HeGBoxCollectionCell class] forCellWithReuseIdentifier:@"HeGBoxCollectionCell"];
+    [recommendCollectionView registerClass:[HeGBoxHeaderCollectionCell class] forCellWithReuseIdentifier:@"HeGBoxHeaderCollectionCell"];
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
@@ -74,65 +88,101 @@
     
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//定义展示的UICollectionViewCell的个数
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [dataSource count];
+    return 2;
 }
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//定义展示的Section的个数
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 1;
+    return 6;
 }
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//每个UICollectionView展示的内容
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    
-    static NSString *cellIndentifier = @"DiscoverIndentifier";
-    CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
+    NSInteger section = indexPath.section;
     
     
-    HeBaseTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
-    if (!cell) {
-        cell = [[HeBaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
+    static NSString * CellIdentifier = @"HeGBoxCollectionCell";
     
-    
-    
+    HeGBoxCollectionCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
     
     return cell;
 }
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+#pragma mark --UICollectionViewDelegateFlowLayout
+//定义每个UICollectionView 的大小
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return sectionHeaderView;
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    CGFloat collectionItemWidth = 60;
+    CGFloat collectionItemHeight = 80;
+    collectionItemWidth = (SCREENWIDTH - 10) / 2.0;
+    
+    return CGSizeMake(collectionItemWidth, collectionItemHeight);
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//定义每个UICollectionView 的 margin
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return sectionHeaderView.frame.size.height;
+    return UIEdgeInsetsMake(5, 0, 5, 0);
 }
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark --UICollectionViewDelegate
+//UICollectionView被选中时调用的方法
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     
-    
-    
-    return 50;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    
-    
+    NSInteger row = indexPath.row;
+    if (section == 1) {
+        return YES;
+    }
+    return NO;
+}
+
+//放大缩小效果
+-(void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
+    [UIView animateWithDuration:0.2 animations:^{
+        selectedCell.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
+    }];
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
+    [UIView animateWithDuration:0.2 animations:^{
+        selectedCell.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+    }];
+}
+
+//返回这个UICollectionView是否可以被选择
+-(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+
+    return YES;
+}
+
+//cell的最小行间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 1;
+}
+
+//cell的最小列间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 0.5;
 }
 
 - (void)didReceiveMemoryWarning {
