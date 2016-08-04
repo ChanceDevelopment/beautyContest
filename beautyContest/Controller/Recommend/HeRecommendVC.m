@@ -12,17 +12,36 @@
 #import "FLCollectionSeparator.h"
 #import "HeGBoxCollectionCell.h"
 #import "HeGBoxHeaderCollectionCell.h"
+#import "AoiroSoraLayout.h"
+#import "Recommend.h"
+#import "RecommendCollectionViewCell.h"
+#import "UIImage+MultiFormat.h"
+#import "MJRefresh.h"
+#import "UIScrollView+MJRefresh.h"
+#import "BLImageSize.h"
+#import "SDRefreshFooterView.h"
+#import "SDRefreshHeaderView.h"
 
 #define TextLineHeight 1.2f
+#define imageurl @"http://i1.15yan.guokr.cn/u0bk6rs5q79lnochkx3vj1ki18zjcobh.jpg!content"
 
-@interface HeRecommendVC ()<UITableViewDelegate,UITableViewDataSource>
+
+#define HTTPURL @"http://apis.guokr.com/handpick/article.json?limit=%ld&ad=1&category=all&retrieve_type=by_since"
+
+@interface HeRecommendVC ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,AoiroSoraLayoutDelegate>
 {
     BOOL requestReply; //是否已经完成
+    SDRefreshFooterView *refreshFooter;
+    SDRefreshHeaderView *refreshHeader;
+    
 }
 @property(strong,nonatomic)IBOutlet UICollectionView *recommendCollectionView;
 @property(strong,nonatomic)NSArray *dataSource;
 @property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSArray *iconDataSource;
+@property (nonatomic,strong)NSMutableArray * heightArray;// 存储图片高度的数组
+@property (nonatomic,strong)NSMutableArray * modelArray;// 存储图片高度的数组modelArray
+@property (nonatomic,assign)NSInteger page; // 一次刷新的个数
 
 @end
 
@@ -31,6 +50,8 @@
 @synthesize sectionHeaderView;
 @synthesize dataSource;
 @synthesize iconDataSource;
+@synthesize heightArray;
+@synthesize modelArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,30 +77,34 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    [self loadRecomendDataShow:YES];  // json 解析
+    [self addHeader]; // 下拉刷新
+    [self addFooter]; // 上拉刷新
 }
 
 - (void)initializaiton
 {
     [super initializaiton];
+    _page = 30;
+    heightArray = [[NSMutableArray alloc] initWithCapacity:0];
+    modelArray = [[NSMutableArray alloc] initWithCapacity:0];
 }
 
 - (void)initView
 {
     [super initView];
-    UICollectionViewFlowLayout *collectionFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [collectionFlowLayout registerClass:[FLCollectionSeparator class] forDecorationViewOfKind:@"Separator"];
-    [collectionFlowLayout registerClass:[HeGBoxCollectionCell class] forDecorationViewOfKind:@"Separator"];
-    [collectionFlowLayout registerClass:[HeGBoxHeaderCollectionCell class] forDecorationViewOfKind:@"Separator"];
-    collectionFlowLayout.minimumLineSpacing = 1;
-    [collectionFlowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];//设置其布局方向
+    AoiroSoraLayout * layout = [[AoiroSoraLayout alloc]init];
+    layout.interSpace = 5; // 每个item 的间隔
+    layout.edgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    layout.colNum = 2; // 列数;
+    layout.delegate = self;
     
-    recommendCollectionView.backgroundView = nil;
-    recommendCollectionView.showsVerticalScrollIndicator = NO;
-    recommendCollectionView.showsHorizontalScrollIndicator = NO;
-    recommendCollectionView.collectionViewLayout = collectionFlowLayout;
-    recommendCollectionView.backgroundColor = [UIColor clearColor];
-    [recommendCollectionView registerClass:[HeGBoxCollectionCell class] forCellWithReuseIdentifier:@"HeGBoxCollectionCell"];
-    [recommendCollectionView registerClass:[HeGBoxHeaderCollectionCell class] forCellWithReuseIdentifier:@"HeGBoxHeaderCollectionCell"];
+    recommendCollectionView.collectionViewLayout = layout;
+    recommendCollectionView.delegate = self;
+    recommendCollectionView.dataSource = self;
+    recommendCollectionView.backgroundColor = [UIColor whiteColor];
+    
+    [recommendCollectionView registerClass:[RecommendCollectionViewCell class] forCellWithReuseIdentifier:@"RecommendCollectionViewCell"];
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
@@ -88,56 +113,221 @@
     
 }
 
-//定义展示的UICollectionViewCell的个数
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+#pragma mark -- 下拉刷新
+- (void)addHeader
 {
-    return 2;
+    refreshHeader = [SDRefreshHeaderView refreshView];
+    [refreshHeader addToScrollView:recommendCollectionView];
+    [refreshHeader addTarget:self refreshAction:@selector(headerRefresh)];
+//    __unsafe_unretained typeof(self) vc = self;
+//    // 添加下拉刷新头部控件
+//    [self.recommendCollectionView addHeaderWithCallback:^{
+//        // 进入刷新状态就会调这个Block
+//        
+//        
+//        // 模拟延迟加载数据,因此2秒后才调用
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            
+//            // 结束刷新
+//            [vc.recommendCollectionView headerEndRefreshing];
+//        });
+//    }];
+//#pragma mark -- 自动刷新--进入程序就下拉刷新
+//    [self.recommendCollectionView headerBeginRefreshing];
 }
-//定义展示的Section的个数
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+
+#pragma mark -- 上拉刷新
+- (void)addFooter
 {
-    return 6;
+    refreshFooter = [SDRefreshFooterView refreshView];
+    [refreshFooter addToScrollView:recommendCollectionView];
+    [refreshFooter addTarget:self refreshAction:@selector(footerRefresh)];
+    
+//    __unsafe_unretained typeof(self)vc = self;
+//    // 添加上拉刷新尾部控件
+//    [self.collectionView addFooterWithCallback:^{
+//        // 添加刷新状态就会回调这个block
+//        vc.page = vc.page + 10;
+//        NSString * str = [NSString stringWithFormat:HTTPURL,(long)vc.page];
+//        
+//        NSURL * url = [NSURL URLWithString:str];
+//        // 创建请求对象
+//        NSURLRequest * request = [NSURLRequest requestWithURL:url];
+//        // 发送请求
+//        NSURLSessionDataTask * dataTask = [[NSURLSession sharedSession]dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//            
+//            [vc.modelArray removeAllObjects];
+//            [vc.heightArray removeAllObjects];
+//            
+//            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//            
+//            for (NSDictionary * d in [dict objectForKey:@"result"]) {
+//                Recommend * m = [[Recommend alloc]init];
+//                [m setValuesForKeysWithDictionary:d];
+//                
+//                [vc.modelArray addObject:m];
+//                
+//                [vc p_putImageWithURL:m.headline_img];
+//            }
+//            
+//            // 模拟延迟加载数据,因此2秒后才调用
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                
+//                // 判断图片高度数组的个数  是否已经全部计算完成
+//                // 完成则结束刷新
+//                if (vc.heightArray.count == vc.page) {
+//                    [vc.collectionView reloadData];
+//                    
+//                    [vc.collectionView footerEndRefreshing];
+//                }
+//                
+//            });
+//            
+//        }];
+//        
+//        [dataTask resume]; // 开始请求
+//        
+//    }];
+    
+    
 }
-//每个UICollectionView展示的内容
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+
+- (void)headerRefresh
 {
-    NSInteger row = indexPath.row;
-    NSInteger section = indexPath.section;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [refreshHeader endRefreshing];
+        //        if (_totalPageCount == pageIndex) {
+        //            return;
+        //        }
+        //        isNeedCleanOrder = NO;
+        //        [self loadData];
+    });
+}
+
+- (void)footerRefresh
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [refreshFooter endRefreshing];
+//        if (_totalPageCount == pageIndex) {
+//            return;
+//        }
+//        isNeedCleanOrder = NO;
+//        [self loadData];
+    });
+}
+
+#pragma mark -- json解析  初次加载
+- (void)loadRecomendDataShow:(BOOL)show
+{
+    NSString * requestRecommendDataPath = [NSString stringWithFormat:HTTPURL,(long)_page];
+    if (show) {
+        [self showHudInView:self.recommendCollectionView hint:@"加载中..."];
+    }
+    [AFHttpTool requestWihtMethod:RequestMethodTypeGet url:requestRecommendDataPath params:nil success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        if (show) {
+            
+            [Waiting dismiss];
+        }
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        for (NSDictionary * d in [respondDict objectForKey:@"result"]) {
+            Recommend * m = [[Recommend alloc]init];
+            [m setValuesForKeysWithDictionary:d];
+            
+            [self.modelArray addObject:m];
+            
+            [self p_putImageWithURL:m.headline_img];
+            
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [recommendCollectionView reloadData];
+        });
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        if (show) {
+            [Waiting dismiss];
+        }
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
+
+#pragma mark -- 获取 图片 和 图片的比例高度
+- (void)p_putImageWithURL:(NSString *)url
+{
+    // 获取图片
+    
+    CGSize  size = [BLImageSize dowmLoadImageSizeWithURL:url];
+    
+    // 获取图片的高度并按比例压缩
+    NSInteger itemHeight = size.height * (((self.view.frame.size.width - 20) / 2 / size.width));
+    
+    NSNumber * number = [NSNumber numberWithInteger:itemHeight];
+    
+    [self.heightArray addObject:number];
+    
+}
+
+#pragma mark -- 返回每个item的高度
+- (CGFloat)itemHeightLayOut:(AoiroSoraLayout *)layOut indexPath:(NSIndexPath *)indexPath
+{
+    
+    if ([self.heightArray[indexPath.row] integerValue] < 0 || !self.heightArray[indexPath.row]) {
+        
+        return 150;
+    }
+    else
+    {
+        NSInteger intger = [self.heightArray[indexPath.row] integerValue];
+        return intger;
+    }
+    
+}
+
+#pragma mark -- collectionView 的分组个数
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+#pragma mark -- item 的个数
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.modelArray.count;
+}
+#pragma mark -- cell
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    RecommendCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RecommendCollectionViewCell" forIndexPath:indexPath];
+    
+    cell.model = self.modelArray[indexPath.row];
     
     
-    static NSString * CellIdentifier = @"HeGBoxCollectionCell";
     
-    HeGBoxCollectionCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+    // jiazai shibai chongxin jiazai
+    Recommend * model = self.modelArray[indexPath.row];
+    if ([model.headline_img isEqualToString:imageurl]) {
+        cell.MyImage.image = [UIImage sd_imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:model.headline_img]]];
+    }
     
     return cell;
 }
-#pragma mark --UICollectionViewDelegateFlowLayout
-//定义每个UICollectionView 的大小
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+
+
+
+#pragma mark -- 选中某个cell
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-    CGFloat collectionItemWidth = 60;
-    CGFloat collectionItemHeight = 80;
-    collectionItemWidth = (SCREENWIDTH - 10) / 2.0;
-    
-    return CGSizeMake(collectionItemWidth, collectionItemHeight);
+    NSLog(@"第 %ld 个cell",(long)indexPath.row);
+    Recommend * model = self.modelArray[indexPath.row];
+    NSLog(@"%@",model.headline_img);
 }
 
-//定义每个UICollectionView 的 margin
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(5, 0, 5, 0);
-}
 #pragma mark --UICollectionViewDelegate
 //UICollectionView被选中时调用的方法
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-    
-}
 
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -173,17 +363,6 @@
     return YES;
 }
 
-//cell的最小行间距
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 1;
-}
-
-//cell的最小列间距
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 0.5;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
