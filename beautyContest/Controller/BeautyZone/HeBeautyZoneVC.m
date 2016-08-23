@@ -428,7 +428,7 @@
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     NSDictionary *workTaskDict = nil;
     @try {
-        workTaskDict = [dataSource objectAtIndex:row];
+//        workTaskDict = [dataSource objectAtIndex:row];
     }
     @catch (NSException *exception) {
         
