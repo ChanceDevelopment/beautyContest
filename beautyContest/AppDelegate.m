@@ -127,12 +127,10 @@
 
 - (void)loginStateChange:(NSNotification *)notification
 {
-    NSString *userToken = [[NSUserDefaults standardUserDefaults] objectForKey:USERTOKENKEY];
-    BOOL haveLogin = (userToken == nil) ? NO : YES;
+    NSString *userAccount = [[NSUserDefaults standardUserDefaults] objectForKey:USERACCOUNTKEY];
+    BOOL haveLogin = (userAccount == nil) ? NO : YES;
     
-    if (1) {//登陆成功加载主窗口控制器
-        //        UIImage *navBackgroundImage = [UIImage imageNamed:@"NavBarIOS7_white"];
-        //        [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    if (haveLogin) {//登陆成功加载主窗口控制器
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         
         [[UINavigationBar appearance] setTitleTextAttributes:

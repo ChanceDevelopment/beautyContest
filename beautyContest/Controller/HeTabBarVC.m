@@ -50,7 +50,50 @@
 //获取用户的信息
 - (void)getUserInfo
 {
-   
+    NSString *getUserInfoUrl = [NSString stringWithFormat:@"%@/user/getUserinfo.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (userId == nil) {
+        userId = @"";
+    }
+    NSDictionary *loginParams = @{@"userId":userId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserInfoUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
+            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
+            if (userState == 0) {
+                [self showHint:@"当前用户不可用"];
+                return ;
+            }
+            NSString *userDataPath = [Tool getUserDataPath];
+            NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
+            BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
+            if (succeed) {
+                NSLog(@"用户资料写入成功");
+            }
+            
+        }
+        else{
+            NSString *userDataPath = [Tool getUserDataPath];
+            NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
+            NSDictionary *respondDict = [[NSDictionary alloc] initWithContentsOfFile:userFileName];
+            if (respondDict) {
+                NSString *myresponseString = [respondDict objectForKey:@"user"];
+                NSDictionary *respondDict = [myresponseString objectFromJSONString];
+                NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
+                User *user = [[User alloc] initUserWithDict:userDictInfo];
+                [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
+            }
+        }
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
     
 }
 

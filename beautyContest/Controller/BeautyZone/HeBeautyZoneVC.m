@@ -28,7 +28,7 @@
 @property(assign,nonatomic)NSInteger pageNo;
 @property(strong,nonatomic)NSMutableArray *chooseArray;
 @property(strong,nonatomic)UISearchBar *searchBar;
-
+@property(strong,nonatomic)NSCache *imageCache;
 @end
 
 @implementation HeBeautyZoneVC
@@ -40,6 +40,7 @@
 @synthesize pageNo;
 @synthesize chooseArray;
 @synthesize searchBar;
+@synthesize imageCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,15 +67,16 @@
     [self initializaiton];
     [self initView];
     //加载比赛
-//    [self loadBeautyContestShow:YES];
+    [self loadBeautyContestShow:YES];
 }
 
 - (void)initializaiton
 {
     [super initializaiton];
+    imageCache = [[NSCache alloc] init];
     requestReply = NO;
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
-    pageNo = 1;
+    pageNo = 0;
     updateOption = 1;
     
     chooseArray = [[NSMutableArray alloc] initWithCapacity:0];
@@ -174,22 +176,13 @@
 
 - (void)loadBeautyContestShow:(BOOL)show
 {
-    NSString *requestWorkingTaskPath = @"";
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/selectZoneByDistance.action",BASEURL];
     
-    NSString *keyword = @"";
-    NSString *userId = @"f7117f0c38274805013827cb797e00d7";
-    NSString *t_token = @"222111632317cff566e0870830870811892d845d4c0c6fd06a15804815910c4426a2";
-    NSString *t_version	= @"169";
-    NSString *timestamp	= @"7c6e8381d8cdc0fa";
-    NSNumber *isFinish = [NSNumber numberWithInt:0];
-    if (requestReply) {
-        isFinish = [NSNumber numberWithInt:0];
-    }
+    NSNumber *longitudeNum = [NSNumber numberWithFloat:0.0];
+    NSNumber *latitudeNum = [NSNumber numberWithFloat:0.0];
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
-    NSDictionary *requestMessageParams = @{@"keyword":keyword,@"userId":userId,@"t_token":t_token,@"t_version":t_version,@"timestamp":timestamp,@"pageNo":pageNum,@"isFinish":isFinish};
-    if (show) {
-        [Waiting show];
-    }
+    NSDictionary *requestMessageParams = @{@"longitude":longitudeNum,@"latitude":latitudeNum,@"number":pageNum};
+    [self showHudInView:self.view hint:@"获取赛区中..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         
@@ -198,24 +191,24 @@
         }
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
-        NSInteger totalCount = [[respondDict objectForKey:@"totalCount"] integerValue];
-        NSInteger totalPages = [[respondDict objectForKey:@"totalPages"] integerValue];
-        NSInteger statueCode = [[respondDict objectForKey:@"code"] integerValue];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         
-        if (totalCount != 0){
+        if (statueCode == REQUESTCODE_SUCCEED){
             if (updateOption == 1) {
                 [dataSource removeAllObjects];
             }
-            NSArray *resultArray = [respondDict objectForKey:@"result"];
-            for (NSDictionary *taskDict in resultArray) {
-                [dataSource addObject:taskDict];
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            for (NSDictionary *zoneDict in resultArray) {
+                [dataSource addObject:zoneDict];
             }
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
             [self.tableview reloadData];
         }
         else{
-            if (updateOption == 2) {
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if (updateOption == 2 && [resultArray count] == 0) {
                 pageNo--;
+                return;
             }
         }
     } failure:^(NSError *error){
@@ -412,7 +405,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [dataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -426,9 +419,9 @@
     
     static NSString *cellIndentifier = @"HeBeautyContestTableCellIndentifier";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
-    NSDictionary *workTaskDict = nil;
+    NSDictionary *zoneDict = nil;
     @try {
-//        workTaskDict = [dataSource objectAtIndex:row];
+        zoneDict = [dataSource objectAtIndex:row];
     }
     @catch (NSException *exception) {
         
@@ -443,7 +436,60 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    id zoneReward = [zoneDict objectForKey:@"zoneReward"];
+    if ([zoneReward isMemberOfClass:[NSNull class]]) {
+        zoneReward = @"";
+    }
+    id zoneTitle = [zoneDict objectForKey:@"zoneTitle"];
+    if ([zoneTitle isMemberOfClass:[NSNull class]]) {
+        zoneTitle = @"";
+    }
+    cell.topicLabel.text = zoneTitle;
     
+    
+    NSString *zoneCover = [zoneDict objectForKey:@"zoneCover"];
+    if ([zoneCover isMemberOfClass:[NSNull class]]) {
+        zoneCover = @"";
+    }
+    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
+    UIImageView *imageview = [imageCache objectForKey:zoneCover];
+    if (!imageview) {
+        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
+        imageview = cell.bgImage;
+    }
+    cell.bgImage = imageview;
+    [cell addSubview:cell.bgImage];
+    
+    
+    NSString *userHear = [zoneDict objectForKey:@"userHear"];
+    if ([userHear isMemberOfClass:[NSNull class]]) {
+        userHear = @"";
+    }
+    userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
+    UIImageView *userHearimageview = [imageCache objectForKey:userHear];
+    if (!userHearimageview) {
+        [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHear]];
+        userHearimageview = cell.detailImage;
+    }
+    cell.detailImage = userHearimageview;
+    [cell.bgImage addSubview:cell.detailImage];
+    
+    [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",BASEURL,userHear]]];
+    
+    id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
+    if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
+        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+        zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+    }
+    long long timestamp = [zoneCreatetimeObj longLongValue];
+    NSString *zoneCreatetime = [NSString stringWithFormat:@"%lld",timestamp];
+    if ([zoneCreatetime length] > 3) {
+        //时间戳
+        zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
+    }
+    
+    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YY-MM-dd"];
+    cell.tipLabel.text = [NSString stringWithFormat:@"$%@/%@",zoneReward,time];
     
     return cell;
 }

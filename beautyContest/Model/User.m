@@ -16,102 +16,161 @@
     self = [super init];
     if (self) {
         if (dict) {
-            NSString *username = [dict objectForKey:@"username"];
-            if ([username isMemberOfClass:[NSNull class]] || username == nil) {
-                username = @"";
+            NSString *userId = [dict objectForKey:@"userId"];
+            if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+                userId = @"";
             }
-            self.username = username;
+            self.userId = userId;
             
-            NSString *nickname = [dict objectForKey:@"nickName"];
-            if ([nickname isMemberOfClass:[NSNull class]] || nickname == nil) {
-                nickname = @"";
+            NSString *userName = [dict objectForKey:@"userName"];
+            if ([userName isMemberOfClass:[NSNull class]] || userName == nil) {
+                userName = @"";
             }
-            self.nickname = nickname;
-            
-            BOOL isnewappuser = [[dict objectForKey:@"isnewappuser"] boolValue];
-            self.isnewappuser = isnewappuser;
-            
-            BOOL hasMultiUser = [[dict objectForKey:@"hasMultiUser"] boolValue];
-            self.hasMultiUser = hasMultiUser;
-            
-            NSString *truename = [dict objectForKey:@"truename"];
-            if ([truename isMemberOfClass:[NSNull class]] || truename == nil) {
-                truename = @"";
-            }
-            self.truename = truename;
-            
-            NSString *roles = [dict objectForKey:@"roles"];
-            if ([roles isMemberOfClass:[NSNull class]] || roles == nil) {
-                roles = @"";
-            }
-            self.roles = roles;
+            self.userName = userName;
             
             
-            NSString *usertoken = [dict objectForKey:@"t_token"];
-            if ([usertoken isMemberOfClass:[NSNull class]] || usertoken == nil) {
-                usertoken = @"";
+            NSString *userNick = [dict objectForKey:@"userNick"];
+            if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+                userNick = @"";
             }
-            self.usertoken = usertoken;
+            self.userNick = userNick;
+            
+            NSString *userAddress = [dict objectForKey:@"userAddress"];
+            if ([userAddress isMemberOfClass:[NSNull class]] || userAddress == nil) {
+                userAddress = @"";
+            }
+            self.userAddress = userAddress;
+            
+            id userSexObj = [dict objectForKey:@"userSex"];
+            if ([userSexObj isMemberOfClass:[NSNull class]]) {
+                userSexObj = @"";
+            }
+            self.userSex = [userSexObj integerValue];
+            
+            NSString *userHeader = [dict objectForKey:@"userHeader"];
+            if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
+                userHeader = @"";
+            }
+            self.userHeader = userHeader;
             
             
-            NSString *headurl = [dict objectForKey:@"photo"];
-            if ([headurl isMemberOfClass:[NSNull class]] || headurl == nil) {
-                headurl = [dict objectForKey:@"userPhoto"];
-                if ([headurl isMemberOfClass:[NSNull class]] || headurl == nil) {
-                    headurl = @"";
-                    
-                }
-                
+            NSString *userPositionX = [dict objectForKey:@"userPositionX"];
+            if ([userPositionX isMemberOfClass:[NSNull class]] || userPositionX == nil) {
+                userPositionX = @"";
             }
-            if (![headurl hasPrefix:@"http"]) {
-                self.headurl = [NSString stringWithFormat:@"%@%@",HYTIMAGEURL,headurl];
-            }
-            else{
-                self.headurl = [NSString stringWithFormat:@"%@",headurl];
-            }
+            self.userPositionX = userPositionX;
             
-            NSString *userID = [dict objectForKey:@"id"];
-            if ([userID isMemberOfClass:[NSNull class]] || userID == nil) {
-                userID = @"";
-            }
-            self.userID = userID;
-            
-            
-            id birthdayObj = [dict objectForKey:@"birthday"];
-            if ([birthdayObj isMemberOfClass:[NSNull class]] || birthdayObj == nil) {
-                NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
-                birthdayObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
-            }
-            long long timestamp = [birthdayObj longLongValue];
-            NSString *birthday = [NSString stringWithFormat:@"%lld",timestamp];
-            if ([birthday length] > 3) {
-                //时间戳
-                birthday = [birthday substringToIndex:[birthday length] - 3];
-            }
-            birthday = [Tool convertTimespToString:[birthday longLongValue] dateFormate:@"YYYY-MM-dd"];
-            if ([birthday isMemberOfClass:[NSNull class]] || birthday == nil) {
-                birthday = @"";
-            }
-            self.birthday = birthday;
          
-            NSString *schoolName = [dict objectForKey:@"schoolName"];
-            if ([schoolName isMemberOfClass:[NSNull class]] || schoolName == nil) {
-                schoolName = @"";
+            NSString *userPositionY = [dict objectForKey:@"userPositionY"];
+            if ([userPositionY isMemberOfClass:[NSNull class]] || userPositionY == nil) {
+                userPositionY = @"";
             }
-            self.schoolName = schoolName;
+            self.userPositionY = userPositionY;
             
             
-            NSString *relation = [dict objectForKey:@"relation"];
-            if ([relation isMemberOfClass:[NSNull class]] || relation == nil) {
-                relation = @"";
+            NSString *userSign = [dict objectForKey:@"userSign"];
+            if ([userSign isMemberOfClass:[NSNull class]] || userSign == nil) {
+                userSign = @"";
             }
-            self.relation = relation;
+            self.userSign = userSign;
             
-            NSString *className = [dict objectForKey:@"className"];
-            if ([className isMemberOfClass:[NSNull class]] || className == nil) {
-                className = @"";
+            NSString *userEmail = [dict objectForKey:@"userEmail"];
+            if ([userEmail isMemberOfClass:[NSNull class]] || userEmail == nil) {
+                userEmail = @"";
             }
-            self.className = className;
+            self.userEmail = userEmail;
+            
+            NSString *userPhone = [dict objectForKey:@"userPhone"];
+            if ([userPhone isMemberOfClass:[NSNull class]] || userPhone == nil) {
+                userPhone = @"";
+            }
+            self.userPhone = userPhone;
+            
+            NSString *userPwd = [dict objectForKey:@"userPwd"];
+            if ([userPwd isMemberOfClass:[NSNull class]] || userPwd == nil) {
+                userPwd = @"";
+            }
+            self.userPwd = userPwd;
+            
+            NSString *userPayPwd = [dict objectForKey:@"userPayPwd"];
+            if ([userPayPwd isMemberOfClass:[NSNull class]] || userPayPwd == nil) {
+                userPayPwd = @"";
+            }
+            self.userPayPwd = userPayPwd;
+            
+            id userStateObj = [dict objectForKey:@"userState"];
+            if ([userStateObj isMemberOfClass:[NSNull class]]) {
+                userStateObj = @"";
+            }
+            self.userState = [userStateObj integerValue];
+            
+            NSString *userDisplayid = [dict objectForKey:@"userDisplayid"];
+            if ([userDisplayid isMemberOfClass:[NSNull class]] || userDisplayid == nil) {
+                userDisplayid = @"";
+            }
+            self.userDisplayid = userDisplayid;
+            
+            NSString *userCreatetime = [dict objectForKey:@"userCreatetime"];
+            if ([userCreatetime isMemberOfClass:[NSNull class]] || userCreatetime == nil) {
+                userCreatetime = @"";
+            }
+            self.userCreatetime = userCreatetime;
+            
+            NSString *infoId = [dict objectForKey:@"infoId"];
+            if ([infoId isMemberOfClass:[NSNull class]] || infoId == nil) {
+                infoId = @"";
+            }
+            self.infoId = infoId;
+            
+            id infoUser = [dict objectForKey:@"infoUser"];
+            if ([infoUser isMemberOfClass:[NSNull class]] || infoUser == nil) {
+                infoUser = @"";
+            }
+            self.infoUser = infoUser;
+            
+            NSString *infoProfession = [dict objectForKey:@"infoProfession"];
+            if ([infoProfession isMemberOfClass:[NSNull class]] || infoProfession == nil) {
+                infoProfession = @"";
+            }
+            self.infoProfession = infoProfession;
+            
+            NSString *infoTall = [dict objectForKey:@"infoTall"];
+            if ([infoTall isMemberOfClass:[NSNull class]] || infoTall == nil) {
+                infoTall = @"";
+            }
+            self.infoTall = infoTall;
+            
+            NSString *infoWeight = [dict objectForKey:@"infoWeight"];
+            if ([infoWeight isMemberOfClass:[NSNull class]] || infoWeight == nil) {
+                infoWeight = @"";
+            }
+            self.infoWeight = infoWeight;
+            
+            NSString *infoMeasurements = [dict objectForKey:@"infoMeasurements"];
+            if ([infoMeasurements isMemberOfClass:[NSNull class]] || infoMeasurements == nil) {
+                infoMeasurements = @"";
+            }
+            self.infoMeasurements = infoMeasurements;
+            
+            
+            NSString *infoZodiac = [dict objectForKey:@"infoZodiac"];
+            if ([infoZodiac isMemberOfClass:[NSNull class]] || infoZodiac == nil) {
+                infoZodiac = @"";
+            }
+            self.infoZodiac = infoZodiac;
+            
+            NSString *infoBlood = [dict objectForKey:@"infoBlood"];
+            if ([infoBlood isMemberOfClass:[NSNull class]] || infoBlood == nil) {
+                infoBlood = @"";
+            }
+            self.infoBlood = infoBlood;
+            
+            
+            NSString *infoBirth = [dict objectForKey:@"infoBirth"];
+            if ([infoBirth isMemberOfClass:[NSNull class]] || infoBirth == nil) {
+                infoBirth = @"";
+            }
+            self.infoBirth = infoBirth;
         }
         
     }
@@ -124,63 +183,97 @@
     if (self) {
         if (user) {
             
-            NSString *username = user.username;
-            if ([username isMemberOfClass:[NSNull class]] || username == nil) {
-                username = @"";
+            NSString *userId = user.userId;
+            if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+                userId = @"";
             }
-            self.username = username;
+            self.userId = userId;
             
-            NSString *nickname = user.nickname;
-            if ([nickname isMemberOfClass:[NSNull class]] || nickname == nil) {
-                nickname = @"";
+            NSString *userName = user.userName;;
+            if ([userName isMemberOfClass:[NSNull class]] || userName == nil) {
+                userName = @"";
             }
-            self.nickname = nickname;
+            self.userName = userName;
             
-            NSString *truename = user.truename;
-            if ([truename isMemberOfClass:[NSNull class]] || truename == nil) {
-                truename = @"";
+            
+            NSString *userNick = user.userNick;
+            if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+                userNick = @"";
             }
-            self.truename = truename;
+            self.userNick = userNick;
             
-            self.isnewappuser = user.isnewappuser;
-            
-            self.hasMultiUser = user.hasMultiUser;
-            
-            NSString *roles = user.roles;
-            if ([roles isMemberOfClass:[NSNull class]] || roles == nil) {
-                roles = @"";
+            NSString *userAddress = user.userAddress;;
+            if ([userAddress isMemberOfClass:[NSNull class]] || userAddress == nil) {
+                userAddress = @"";
             }
-            self.roles = roles;
+            self.userAddress = userAddress;
             
+            self.userSex = user.userSex;
             
-            NSString *usertoken = user.usertoken;
-            if ([usertoken isMemberOfClass:[NSNull class]] || usertoken == nil) {
-                usertoken = @"";
+            NSString *userHeader = user.userHeader;
+            if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
+                userHeader = @"";
             }
-            self.usertoken = usertoken;
+            self.userHeader = userHeader;
             
             
-            NSString *headurl = user.headurl;
-            if ([headurl isMemberOfClass:[NSNull class]] || headurl == nil) {
-                headurl = @"";
+            NSString *userPositionX = user.userPositionX;
+            if ([userPositionX isMemberOfClass:[NSNull class]] || userPositionX == nil) {
+                userPositionX = @"";
             }
-            self.headurl = headurl;
+            self.userPositionX = userPositionX;
             
-            NSString *userID = user.userID;
-            if ([userID isMemberOfClass:[NSNull class]] || userID == nil) {
-                userID = @"";
+            
+            NSString *userPositionY = user.userPositionY;
+            if ([userPositionY isMemberOfClass:[NSNull class]] || userPositionY == nil) {
+                userPositionY = @"";
             }
-            self.userID = userID;
+            self.userPositionY = userPositionY;
             
             
+            NSString *userSign = user.userSign;
+            if ([userSign isMemberOfClass:[NSNull class]] || userSign == nil) {
+                userSign = @"";
+            }
+            self.userSign = userSign;
             
-            self.birthday = user.birthday;
+            NSString *userEmail = user.userEmail;
+            if ([userEmail isMemberOfClass:[NSNull class]] || userEmail == nil) {
+                userEmail = @"";
+            }
+            self.userEmail = userEmail;
             
-            self.schoolName = user.schoolName;
+            NSString *userPhone = user.userPhone;
+            if ([userPhone isMemberOfClass:[NSNull class]] || userPhone == nil) {
+                userPhone = @"";
+            }
+            self.userPhone = userPhone;
             
-            self.relation = user.relation;
+            NSString *userPwd = user.userPwd;
+            if ([userPwd isMemberOfClass:[NSNull class]] || userPwd == nil) {
+                userPwd = @"";
+            }
+            self.userPwd = userPwd;
             
-            self.className = user.className;
+            NSString *userPayPwd = user.userPayPwd;
+            if ([userPayPwd isMemberOfClass:[NSNull class]] || userPayPwd == nil) {
+                userPayPwd = @"";
+            }
+            self.userPayPwd = userPayPwd;
+            
+            self.userState = user.userState;;
+            
+            NSString *userDisplayid = user.userDisplayid;
+            if ([userDisplayid isMemberOfClass:[NSNull class]] || userDisplayid == nil) {
+                userDisplayid = @"";
+            }
+            self.userDisplayid = userDisplayid;
+            
+            NSString *userCreatetime = user.userCreatetime;
+            if ([userCreatetime isMemberOfClass:[NSNull class]] || userCreatetime == nil) {
+                userCreatetime = @"";
+            }
+            self.userCreatetime = userCreatetime;
             
         }
         

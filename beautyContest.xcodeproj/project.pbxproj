@@ -529,6 +529,10 @@
 		EAC2CED11D4AF71900E282A8 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CEC81D4AF71900E282A8 /* UIResponder+Router.m */; };
 		EAC2CED21D4AF71900E282A8 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */; };
 		EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */; };
+		EAC4F9E71D6D72B700F96DDA /* HeEnrollVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */; };
+		EAC4F9E81D6D72B700F96DDA /* HeEnrollVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */; };
+		EAC4F9EC1D6D8B0000F96DDA /* HeSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F9EA1D6D8B0000F96DDA /* HeSettingVC.m */; };
+		EAC4F9ED1D6D8B0000F96DDA /* HeSettingVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC4F9EB1D6D8B0000F96DDA /* HeSettingVC.xib */; };
 		EACC98341D50E5DB00E627B8 /* icon_nearby_beauty.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98311D50E5DB00E627B8 /* icon_nearby_beauty.png */; };
 		EACC98351D50E5DB00E627B8 /* icon_nearby_message.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98321D50E5DB00E627B8 /* icon_nearby_message.png */; };
 		EACC98361D50E5DB00E627B8 /* icon_nearby_supporter.png in Resources */ = {isa = PBXBuildFile; fileRef = EACC98331D50E5DB00E627B8 /* icon_nearby_supporter.png */; };
@@ -1496,6 +1500,12 @@
 		EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		EAC2CECB1D4AF71900E282A8 /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
+		EAC4F9E41D6D72B700F96DDA /* HeEnrollVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeEnrollVC.h; sourceTree = "<group>"; };
+		EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeEnrollVC.m; sourceTree = "<group>"; };
+		EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeEnrollVC.xib; sourceTree = "<group>"; };
+		EAC4F9E91D6D8B0000F96DDA /* HeSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeSettingVC.h; sourceTree = "<group>"; };
+		EAC4F9EA1D6D8B0000F96DDA /* HeSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeSettingVC.m; sourceTree = "<group>"; };
+		EAC4F9EB1D6D8B0000F96DDA /* HeSettingVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeSettingVC.xib; sourceTree = "<group>"; };
 		EACC98311D50E5DB00E627B8 /* icon_nearby_beauty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nearby_beauty.png; sourceTree = "<group>"; };
 		EACC98321D50E5DB00E627B8 /* icon_nearby_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nearby_message.png; sourceTree = "<group>"; };
 		EACC98331D50E5DB00E627B8 /* icon_nearby_supporter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nearby_supporter.png; sourceTree = "<group>"; };
@@ -1677,12 +1687,18 @@
 		EA0E9D2C1D4C2968009CBF64 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				EAC4F9E91D6D8B0000F96DDA /* HeSettingVC.h */,
+				EAC4F9EA1D6D8B0000F96DDA /* HeSettingVC.m */,
+				EAC4F9EB1D6D8B0000F96DDA /* HeSettingVC.xib */,
 				EA0E9D2D1D4C2968009CBF64 /* HeUserVC.h */,
 				EA0E9D2E1D4C2968009CBF64 /* HeUserVC.m */,
 				EA0E9D2F1D4C2968009CBF64 /* HeUserVC.xib */,
 				EA0E9D341D4C2979009CBF64 /* HeLoginVC.h */,
 				EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */,
 				EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */,
+				EAC4F9E41D6D72B700F96DDA /* HeEnrollVC.h */,
+				EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */,
+				EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -3750,6 +3766,7 @@
 				EAC2CDEE1D4AF5D800E282A8 /* btn_020@2x.png in Resources */,
 				EA46452C1D51884000CD539F /* HeNearbyVC.xib in Resources */,
 				EA4D01931D4D9A6B00A0CCA1 /* HeContestRankVC.xib in Resources */,
+				EAC4F9E81D6D72B700F96DDA /* HeEnrollVC.xib in Resources */,
 				EAC2CD5D1D4AF5D800E282A8 /* LICENSE in Resources */,
 				EA8027FE1D52E654008BC4E6 /* sdRefeshView_arrow@2x.png in Resources */,
 				EAC2CDE61D4AF5D800E282A8 /* LICENSE.txt in Resources */,
@@ -3781,6 +3798,7 @@
 				EAC2CD621D4AF5D800E282A8 /* arrow_down1@2x.png in Resources */,
 				EAC2CDED1D4AF5D800E282A8 /* btn_020.press@2x.png in Resources */,
 				EA4D01781D4D8FF100A0CCA1 /* index3.jpg in Resources */,
+				EAC4F9ED1D6D8B0000F96DDA /* HeSettingVC.xib in Resources */,
 				EA46454E1D51DA1C00CD539F /* icon_edit.png in Resources */,
 				EAC2CD101D4AF5D800E282A8 /* blackArrow@2x.png in Resources */,
 				EA4D01691D4CF0A300A0CCA1 /* tabar_user_icon_active@2x.png in Resources */,
@@ -4021,6 +4039,7 @@
 				EAC2CD8E1D4AF5D800E282A8 /* RACCommand.m in Sources */,
 				EAC2CDA41D4AF5D800E282A8 /* RACReplaySubject.m in Sources */,
 				EAC2CD0D1D4AF5D800E282A8 /* i2KEPCSingleComponentPickerView.m in Sources */,
+				EAC4F9E71D6D72B700F96DDA /* HeEnrollVC.m in Sources */,
 				EAC2CDEA1D4AF5D800E282A8 /* SVProgressHUD.m in Sources */,
 				EAC2CCF01D4AF5D800E282A8 /* MLLinkClickLabel.m in Sources */,
 				EAC2CCC31D4AF5D800E282A8 /* UIImageView+AFNetworking.m in Sources */,
@@ -4123,6 +4142,7 @@
 				EAC2CD4B1D4AF5D800E282A8 /* MJRefreshStateHeader.m in Sources */,
 				EAC2CE021D4AF5D800E282A8 /* NSString+FontAwesome.m in Sources */,
 				EA4D01921D4D9A6B00A0CCA1 /* HeContestRankVC.m in Sources */,
+				EAC4F9EC1D6D8B0000F96DDA /* HeSettingVC.m in Sources */,
 				EAC2CCDA1D4AF5D800E282A8 /* UIButton+Corner.m in Sources */,
 				EAC2CDBC1D4AF5D800E282A8 /* UIAlertView+RACSignalSupport.m in Sources */,
 				EAC2CCC61D4AF5D800E282A8 /* UIWebView+AFNetworking.m in Sources */,

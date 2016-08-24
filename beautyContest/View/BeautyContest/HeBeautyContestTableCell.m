@@ -36,7 +36,7 @@
         CGFloat titleX = 5;
         CGFloat titleH = 30;
         CGFloat titleY = imageH - titleH - 10;
-        CGFloat titleW = (imageW - 2 *titleX) / 2.0;
+        CGFloat titleW = 100;
         
         topicLabel = [[UILabel alloc] init];
         topicLabel.textAlignment = NSTextAlignmentLeft;
@@ -60,18 +60,18 @@
         detailImage.contentMode = UIViewContentModeScaleAspectFill;
         [bgImage addSubview:detailImage];
         
-        CGFloat tiptitleX = (imageW - 2 *titleX) / 2.0;
+        CGFloat tiptitleX = titleX + titleW + 5;
         CGFloat tiptitleH = 30;
         CGFloat tiptitleY = imageH - titleH - 10;
-        CGFloat tiptitleW = (imageW - 2 *titleX) / 2.0 - detailImageW - titleX;
+        CGFloat tiptitleW = imageW - tiptitleX - detailImageW - titleX;
         
         tipLabel = [[UILabel alloc] init];
         tipLabel.textAlignment = NSTextAlignmentRight;
         tipLabel.backgroundColor = [UIColor clearColor];
         tipLabel.text = @"$2000/16.08.02";
         tipLabel.numberOfLines = 1;
-        tipLabel.textColor = [UIColor whiteColor];
-        tipLabel.font = [UIFont systemFontOfSize:13.0];
+        tipLabel.textColor = [UIColor redColor];
+        tipLabel.font = [UIFont systemFontOfSize:15.0];
         tipLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
         [bgImage addSubview:tipLabel];
         

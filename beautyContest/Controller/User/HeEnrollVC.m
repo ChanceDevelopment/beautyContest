@@ -1,29 +1,32 @@
 //
-//  HeLoginVC.m
+//  HeEnrollVC.m
 //  kunyuan
 //
-//  Created by Tony on 16/6/16.
+//  Created by HeDongMing on 16/6/16.
 //  Copyright © 2016年 HeDongMing. All rights reserved.
 //
 
-#import "HeLoginVC.h"
 #import "HeEnrollVC.h"
 #import "UIButton+Bootstrap.h"
 #import "User.h"
-#import "HeSysbsModel.h"
 
-@interface HeLoginVC ()<UITextFieldDelegate>
-@property(strong,nonatomic)IBOutlet UITextField *accountField;
+@interface HeEnrollVC ()<UITextFieldDelegate>
+@property(strong,nonatomic)IBOutlet UITextField *acountField;
 @property(strong,nonatomic)IBOutlet UITextField *passwordField;
-@property(strong,nonatomic)IBOutlet UIButton *loginButton;
-
+@property(strong,nonatomic)IBOutlet UITextField *nicknameField;
+@property(strong,nonatomic)IBOutlet UITextField *verifyField;
+@property(strong,nonatomic)IBOutlet UIButton *getCodeButton;
+@property(strong,nonatomic)IBOutlet UIButton *commitButton;
 
 @end
 
-@implementation HeLoginVC
-@synthesize accountField;
+@implementation HeEnrollVC
+@synthesize acountField;
 @synthesize passwordField;
-@synthesize loginButton;
+@synthesize nicknameField;
+@synthesize verifyField;
+@synthesize getCodeButton;
+@synthesize commitButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,9 +39,9 @@
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"登录";
+        label.text = @"注册";
         [label sizeToFit];
-        self.title = @"登录";
+        self.title = @"注册";
     }
     return self;
 }
@@ -58,40 +61,68 @@
 - (void)initView
 {
     [super initView];
-    UIBarButtonItem *enrollItem = [[UIBarButtonItem alloc] init];
-    enrollItem.title = @"注册";
-    enrollItem.tintColor = [UIColor whiteColor];
-    enrollItem.target = self;
-    enrollItem.action = @selector(enrollMethod:);
-    self.navigationItem.rightBarButtonItem = enrollItem;
     
-    [loginButton dangerStyle];
-    loginButton.layer.borderWidth = 0;
-    loginButton.layer.borderColor = [UIColor clearColor].CGColor;
-    [loginButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:loginButton.frame.size] forState:UIControlStateNormal];
+    [getCodeButton dangerStyle];
+    getCodeButton.layer.borderWidth = 0;
+    getCodeButton.layer.borderColor = [UIColor clearColor].CGColor;
+    [getCodeButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:getCodeButton.frame.size] forState:UIControlStateNormal];
+    [getCodeButton.titleLabel setFont:[UIFont systemFontOfSize:13.0]];
     
-    self.view.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    [commitButton dangerStyle];
+    commitButton.layer.borderWidth = 0;
+    commitButton.layer.borderColor = [UIColor clearColor].CGColor;
+    [commitButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:commitButton.frame.size] forState:UIControlStateNormal];
+    
+    UIView *accountView = [[UIView alloc]init];
+    accountView.frame = CGRectMake(10, 10, 20, 20);
+    [acountField setLeftView:accountView];
+    acountField.layer.borderColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0].CGColor;
+    acountField.layer.cornerRadius = 5.0;
+    acountField.layer.masksToBounds = YES;
+    acountField.layer.borderWidth = 1.0;
+    
+    UIView *nicknameView = [[UIView alloc]init];
+    nicknameView.frame = CGRectMake(10, 10, 20, 20);
+    [nicknameField setLeftView:nicknameView];
+    nicknameField.layer.borderColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0].CGColor;
+    nicknameField.layer.cornerRadius = 5.0;
+    nicknameField.layer.masksToBounds = YES;
+    nicknameField.layer.borderWidth = 1.0;
+    
+    UIView *passwordView = [[UIView alloc]init];
+    passwordView.frame = CGRectMake(10, 10, 20, 20);
+    [passwordField setLeftView:passwordView];
+    passwordField.layer.borderColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0].CGColor;
+    passwordField.layer.cornerRadius = 5.0;
+    passwordField.layer.masksToBounds = YES;
+    passwordField.layer.borderWidth = 1.0;
 }
 
-- (void)enrollMethod:(id)sender
+- (IBAction)getCodeButtonClick:(id)sender
 {
-    HeEnrollVC *enrollVC = [[HeEnrollVC alloc] init];
-    enrollVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:enrollVC animated:YES];
+    
 }
 
-- (IBAction)loginMethod:(id)sender
+- (IBAction)commitButtonClick:(id)sender
 {
-    if ([accountField isFirstResponder]) {
-        [accountField resignFirstResponder];
+    NSString *account = acountField.text;
+    NSString *password = passwordField.text;
+    NSString *userNick = nicknameField.text;
+    if ([acountField isFirstResponder]) {
+        [acountField resignFirstResponder];
     }
     if ([passwordField isFirstResponder]) {
         [passwordField resignFirstResponder];
     }
-    NSString *account = accountField.text;
-    NSString *password = passwordField.text;
+    if ([nicknameField isFirstResponder]) {
+        [nicknameField resignFirstResponder];
+    }
     if (account == nil || [account isEqualToString:@""]) {
-        [self showHint:@"请输入登录手机号"];
+        [self showHint:@"请输入注册手机号"];
+        return;
+    }
+    if (account == nil || [account isEqualToString:@""]) {
+        [self showHint:@"请输入用户昵称"];
         return;
     }
     if (password == nil || [password isEqualToString:@""]) {
@@ -103,7 +134,38 @@
         return;
     }
     
-    [self showHudInView:self.view hint:@"登录中..."];
+    [self showHudInView:self.view hint:@"注册中..."];
+    NSString *enrollUrl = [NSString stringWithFormat:@"%@/user/createNewUser.action",BASEURL];
+    NSDictionary *loginParams = @{@"userName":account,@"userPwd":password,@"userNick":userNick};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:enrollUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
+//        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            [self loginMethod];
+        }
+        else{
+            [self hideHud];
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = @"注册失败!";
+            }
+            [self showHint:data];
+        }
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
+- (void)loginMethod
+{
+    NSString *account = acountField.text;
+    NSString *password = passwordField.text;
+    
     NSString *loginUrl = [NSString stringWithFormat:@"%@/user/userLogin.action",BASEURL];
     NSDictionary *loginParams = @{@"userName":account,@"userPwd":password};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:loginUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
@@ -125,13 +187,9 @@
             if (succeed) {
                 NSLog(@"用户资料写入成功");
             }
-            NSString *userId = [HeSysbsModel getSysModel].user.userId;
-            if (userId == nil) {
-                userId = @"";
-            }
+            
             [[NSUserDefaults standardUserDefaults] setObject:account forKey:USERACCOUNTKEY];
             [[NSUserDefaults standardUserDefaults] setObject:password forKey:USERPASSWORDKEY];
-            [[NSUserDefaults standardUserDefaults] setObject:userId forKey:USERIDKEY];
             User *userInfo = [[User alloc] initUserWithDict:userDictInfo];
             [HeSysbsModel getSysModel].user = userInfo;
             
@@ -151,21 +209,6 @@
         [self hideHud];
         [self showHint:ERRORREQUESTTIP];
     }];
-}
-
-- (IBAction)findPassword:(id)sender
-{
-    
-}
-
-- (IBAction)quickLogin:(id)sender
-{
-
-}
-
-- (IBAction)thirdPartyLogin:(UIButton *)sender
-{
-
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

@@ -9,13 +9,13 @@
 #ifndef appAPIDefine_h
 #define appAPIDefine_h
 
-#define FL_URL @"http://huayoutong.com/mobile/"
-#define BASEURL @"http://huayoutong.com/mobile/"
+#define FL_URL @"http://114.55.226.224:8088/xuanmei/"
+#define BASEURL @"http://114.55.226.224:8088/xuanmei/"
 #define WEBBASEURL @"http://huayoutong.com/mobilex/"
 //华幼通图片服务器
-#define HYTIMAGEURL @"http://image.huayoutong.com/"
+#define HYTIMAGEURL @"http://114.55.226.224:8088"
 //七牛图片服务器
-#define QNIMAGEURL @"http://7xr4f5.com2.z0.glb.qiniucdn.com/"
+#define QNIMAGEURL @"http://114.55.226.224:8088"
 //分享页面的地址
 #define SHAREPAGEWEBSITE @"http://huayoutong.com/mobilex/view/share"
 

@@ -27,7 +27,9 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="wbq-P7-XuS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="O9m-fW-D7m"/>
+                <constraint firstItem="wbq-P7-XuS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="O9m-fW-D7m">
+                    <variation key="heightClass=regular-widthClass=compact" constant="-20"/>
+                </constraint>
                 <constraint firstItem="wbq-P7-XuS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XZ5-pZ-Os8"/>
                 <constraint firstAttribute="bottom" secondItem="wbq-P7-XuS" secondAttribute="bottom" id="rsL-gr-dKk"/>
                 <constraint firstAttribute="trailing" secondItem="wbq-P7-XuS" secondAttribute="trailing" id="sxm-SZ-b87"/>

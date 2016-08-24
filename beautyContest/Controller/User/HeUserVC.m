@@ -9,6 +9,7 @@
 #import "HeUserVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
+#import "HeSettingVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -264,7 +265,25 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    
+    switch (section) {
+        case 1:
+        {
+            switch (row) {
+                case 0:
+                {
+                    HeSettingVC *settingVC = [[HeSettingVC alloc] init];
+                    settingVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:settingVC animated:YES];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
     
 }
 
