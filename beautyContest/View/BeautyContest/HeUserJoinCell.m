@@ -6,13 +6,13 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeBeautyContestTableCell.h"
+#import "HeUserJoinCell.h"
 
-@implementation HeBeautyContestTableCell
+@implementation HeUserJoinCell
 @synthesize bgImage;
-@synthesize detailImage;
 @synthesize topicLabel;
-@synthesize tipLabel;
+@synthesize addressLabel;
+@synthesize timeLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellSize:(CGSize)cellsize
 {
@@ -31,12 +31,12 @@
         [self addSubview:bgImage];
         
         
-        UIFont *textFont = [UIFont systemFontOfSize:16.0];
+        UIFont *textFont = [UIFont systemFontOfSize:18.0];
         
         CGFloat titleX = 5;
         CGFloat titleH = 30;
-        CGFloat titleY = imageH - titleH - 10;
-        CGFloat titleW = 100;
+        CGFloat titleY = 10;
+        CGFloat titleW = SCREENWIDTH - 2 * titleX;
         
         topicLabel = [[UILabel alloc] init];
         topicLabel.textAlignment = NSTextAlignmentLeft;
@@ -48,39 +48,39 @@
         topicLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
         [bgImage addSubview:topicLabel];
         
-        CGFloat detailImageW = 30;
-        CGFloat detailImageH = 30;
-        CGFloat detailImageX = imageW - detailImageW - titleX;
-        CGFloat detailImageY = imageH - titleH - 10;
-
-        detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index4.jpg"]];
-        detailImage.frame = CGRectMake(detailImageX, detailImageY, detailImageW, detailImageH);
-        detailImage.layer.cornerRadius = detailImageW / 2.0;
-        detailImage.layer.masksToBounds = YES;
-        detailImage.layer.borderWidth = 1.0;
-        detailImage.layer.borderColor = [UIColor whiteColor].CGColor;
-        detailImage.contentMode = UIViewContentModeScaleAspectFill;
-        [bgImage addSubview:detailImage];
         
-        CGFloat tiptitleX = titleX + titleW + 5;
+        
+        CGFloat tiptitleX = 5;
         CGFloat tiptitleH = 30;
-        CGFloat tiptitleY = imageH - titleH - 10;
-        CGFloat tiptitleW = imageW - tiptitleX - detailImageW - titleX;
+        CGFloat tiptitleY = CGRectGetMaxY(topicLabel.frame) + 10;
+        CGFloat tiptitleW = SCREENWIDTH - 2 * titleX;
         
-        tipLabel = [[UILabel alloc] init];
-        tipLabel.textAlignment = NSTextAlignmentRight;
-        tipLabel.backgroundColor = [UIColor clearColor];
-        tipLabel.text = @"$2000/16.08.02";
-        tipLabel.numberOfLines = 1;
-        tipLabel.textColor = [UIColor whiteColor];
-        tipLabel.font = [UIFont systemFontOfSize:15.0];
-        tipLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
-        [bgImage addSubview:tipLabel];
+        timeLabel = [[UILabel alloc] init];
+        timeLabel.textAlignment = NSTextAlignmentLeft;
+        timeLabel.backgroundColor = [UIColor clearColor];
+        timeLabel.text = @"2016.08.02";
+        timeLabel.numberOfLines = 1;
+        timeLabel.textColor = [UIColor whiteColor];
+        timeLabel.font = [UIFont systemFontOfSize:13.0];
+        timeLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
+        [bgImage addSubview:timeLabel];
         
-        CGPoint tipLabelCenterPoint = tipLabel.center;
-        CGPoint detailImageCenterPoint = detailImage.center;
-        detailImageCenterPoint.y = tipLabelCenterPoint.y;
-        detailImage.center = detailImageCenterPoint;
+        CGFloat addressX = 5;
+        CGFloat addressH = 30;
+        CGFloat addressY = CGRectGetMaxY(timeLabel.frame) + 10;
+        CGFloat addressW = SCREENWIDTH - 2 * titleX;
+        
+        addressLabel = [[UILabel alloc] init];
+        addressLabel.textAlignment = NSTextAlignmentLeft;
+        addressLabel.backgroundColor = [UIColor clearColor];
+        addressLabel.text = @"广东珠海";
+        addressLabel.numberOfLines = 1;
+        addressLabel.textColor = [UIColor whiteColor];
+        addressLabel.font = [UIFont systemFontOfSize:15.0];
+        addressLabel.frame = CGRectMake(addressX, addressY, addressW, addressH);
+        [bgImage addSubview:addressLabel];
+        
+        
     }
     return self;
 }
@@ -103,11 +103,11 @@
 }
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end

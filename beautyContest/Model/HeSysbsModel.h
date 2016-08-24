@@ -13,6 +13,14 @@
 @property(strong,nonatomic)User *user;//用户
 @property(strong,nonatomic)NSArray *albumArray;//当前用户相册的可操作权限
 
+@property(assign,nonatomic)NSInteger fansNum;
+@property(assign,nonatomic)NSInteger ticketNum;
+@property(assign,nonatomic)NSInteger followNum;
+
+@property(strong,nonatomic)NSMutableArray *fansArray;
+@property(strong,nonatomic)NSMutableArray *ticketArray;
+@property(strong,nonatomic)NSMutableArray *followArray;
+
 + (HeSysbsModel *)getSysModel;
 
 @end

@@ -6,17 +6,18 @@
 //  Copyright © 2016年 HeDongMing. All rights reserved.
 //
 
-#import "HeBeautyZoneVC.h"
+#import "HeUserJoinVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 #import "HeContestDetailVC.h"
 #import "HeBeautyContestTableCell.h"
 #import "DropDownListView.h"
 #import "HeDistributeContestVC.h"
+#import "HeUserJoinCell.h"
 
 #define TextLineHeight 1.2f
 
-@interface HeBeautyZoneVC ()<UITableViewDelegate,UITableViewDataSource,DropDownChooseDataSource,DropDownChooseDelegate>
+@interface HeUserJoinVC ()<UITableViewDelegate,UITableViewDataSource,DropDownChooseDataSource,DropDownChooseDelegate>
 {
     BOOL requestReply; //是否已经完成
     NSInteger orderType; //排序类型
@@ -32,7 +33,7 @@
 @property(strong,nonatomic)NSCache *imageCache;
 @end
 
-@implementation HeBeautyZoneVC
+@implementation HeUserJoinVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
@@ -54,10 +55,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"赛区";
+        label.text = @"我的参与";
         [label sizeToFit];
         
-        self.title = @"赛区";
+        self.title = @"我的参与";
     }
     return self;
 }
@@ -70,6 +71,7 @@
     //加载比赛
     [self loadBeautyContestShow:YES];
 }
+
 
 - (void)initializaiton
 {
@@ -127,7 +129,7 @@
     searchBar.delegate = self;
     searchBar.barStyle = UIBarStyleDefault;
     searchBar.placeholder = @"请输入关键字";
-    self.navigationItem.titleView = searchBar;
+//    self.navigationItem.titleView = searchBar;
     
     UIButton *distributeButton = [[UIButton alloc] init];
     [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_add"] forState:UIControlStateNormal];
@@ -136,7 +138,7 @@
     distributeButton.frame = CGRectMake(0, 0, 25, 25);
     UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
     distributeItem.target = self;
-    self.navigationItem.rightBarButtonItem = distributeItem;
+//    self.navigationItem.rightBarButtonItem = distributeItem;
 }
 
 - (void)distributeButtonClick:(UIButton *)button
@@ -179,32 +181,15 @@
 
 - (void)loadBeautyContestShow:(BOOL)show
 {
-    NSString *requestWorkingTaskPath = @"";
-    switch (orderType) {
-        case 0:
-        {
-            requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/selectZoneByDistance.action",BASEURL];
-            break;
-        }
-        case 1:
-        {
-            requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/ZoneHotRank.action",BASEURL];
-            break;
-        }
-        case 2:
-        {
-            requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/zoneRankByZoneReward.action",BASEURL];
-            break;
-        }
-        default:
-            break;
-    }
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getHistoryPart.action",BASEURL];
     
-    NSNumber *longitudeNum = [NSNumber numberWithFloat:0.0];
-    NSNumber *latitudeNum = [NSNumber numberWithFloat:0.0];
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userid) {
+        userid = @"";
+    }
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
-    NSDictionary *requestMessageParams = @{@"longitude":longitudeNum,@"latitude":latitudeNum,@"number":pageNum};
-    [self showHudInView:self.view hint:@"获取赛区中..."];
+    NSDictionary *requestMessageParams = @{@"userId":userid,@"start":pageNum};
+    [self showHudInView:self.view hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
@@ -440,7 +425,7 @@
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeBeautyContestTableCellIndentifier";
+    static NSString *cellIndentifier = @"HeUserJoinCell";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     NSDictionary *zoneDict = nil;
     @try {
@@ -453,22 +438,24 @@
         
     }
     
-    HeBeautyContestTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeUserJoinCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeBeautyContestTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell = [[HeUserJoinCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    id zoneReward = [zoneDict objectForKey:@"zoneReward"];
-    if ([zoneReward isMemberOfClass:[NSNull class]]) {
-        zoneReward = @"";
-    }
+    
     id zoneTitle = [zoneDict objectForKey:@"zoneTitle"];
     if ([zoneTitle isMemberOfClass:[NSNull class]]) {
         zoneTitle = @"";
     }
     cell.topicLabel.text = zoneTitle;
     
+    id zoneAddress = [zoneDict objectForKey:@"zoneAddress"];
+    if ([zoneAddress isMemberOfClass:[NSNull class]]) {
+        zoneAddress = @"";
+    }
+    cell.addressLabel.text = zoneAddress;
     
     NSString *zoneCover = [zoneDict objectForKey:@"zoneCover"];
     if ([zoneCover isMemberOfClass:[NSNull class]]) {
@@ -484,19 +471,6 @@
     [cell addSubview:cell.bgImage];
     
     
-    NSString *userHear = [zoneDict objectForKey:@"userHeader"];
-    if ([userHear isMemberOfClass:[NSNull class]]) {
-        userHear = @"";
-    }
-    userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
-    UIImageView *userHearimageview = [imageCache objectForKey:userHear];
-    if (!userHearimageview) {
-        [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHear]];
-        userHearimageview = cell.detailImage;
-    }
-    cell.detailImage = userHearimageview;
-    [cell.bgImage addSubview:cell.detailImage];
-    
     id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
     if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
         NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
@@ -509,21 +483,37 @@
         zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
     }
     
-    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YY-MM-dd"];
-    cell.tipLabel.text = [NSString stringWithFormat:@"$%@/%@",zoneReward,time];
+    
+    id zoneDeathlineObj = [zoneDict objectForKey:@"zoneDeathline"];
+    if ([zoneDeathlineObj isMemberOfClass:[NSNull class]] || zoneDeathlineObj == nil) {
+        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+        zoneDeathlineObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+    }
+    long long zoneDeathlinetimestamp = [zoneDeathlineObj longLongValue];
+    NSString *zoneDeathlinezoneCreatetime = [NSString stringWithFormat:@"%lld",zoneDeathlinetimestamp];
+    if ([zoneDeathlinezoneCreatetime length] > 3) {
+        //时间戳
+        zoneDeathlinezoneCreatetime = [zoneDeathlinezoneCreatetime substringToIndex:[zoneDeathlinezoneCreatetime length] - 3];
+    }
+    
+    
+    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
+    
+    NSString *endtime = [Tool convertTimespToString:[zoneDeathlinezoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
+    cell.timeLabel.text = [NSString stringWithFormat:@"%@ - %@",time,endtime];
     
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return sectionHeaderView.frame.size.height;
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    return sectionHeaderView;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return sectionHeaderView.frame.size.height;
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -535,7 +525,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    
+    return;
     HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
     contestDetailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:contestDetailVC animated:YES];

@@ -187,11 +187,17 @@
             if (succeed) {
                 NSLog(@"用户资料写入成功");
             }
-            
-            [[NSUserDefaults standardUserDefaults] setObject:account forKey:USERACCOUNTKEY];
-            [[NSUserDefaults standardUserDefaults] setObject:password forKey:USERPASSWORDKEY];
             User *userInfo = [[User alloc] initUserWithDict:userDictInfo];
             [HeSysbsModel getSysModel].user = userInfo;
+            
+            NSString *userid = userInfo.userId;
+            if (!userid) {
+                userid = @"";
+            }
+            [[NSUserDefaults standardUserDefaults] setObject:account forKey:USERACCOUNTKEY];
+            [[NSUserDefaults standardUserDefaults] setObject:password forKey:USERPASSWORDKEY];
+            [[NSUserDefaults standardUserDefaults] setObject:userid forKey:USERIDKEY];
+            
             
             //发送自动登陆状态通知
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];

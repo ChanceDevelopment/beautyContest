@@ -275,7 +275,14 @@
             }
             self.userCreatetime = userCreatetime;
             
-        }
+//            self.fansNum = user.fansNum;
+//            self.followNum = user.followNum;
+//            self.ticketNum = user.ticketNum;
+//            
+//            self.fansArray = [[NSMutableArray alloc] initWithArray:user.fansArray];
+//            self.followArray = [[NSMutableArray alloc] initWithArray:user.followArray];
+//            self.ticketArray = [[NSMutableArray alloc] initWithArray:user.ticketArray];
+}
         
     }
     return self;

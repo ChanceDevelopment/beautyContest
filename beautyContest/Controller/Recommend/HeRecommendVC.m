@@ -21,6 +21,7 @@
 #import "BLImageSize.h"
 #import "SDRefreshFooterView.h"
 #import "SDRefreshHeaderView.h"
+#import "HeDistributeRecommendVC.h"
 
 #define TextLineHeight 1.2f
 #define imageurl @"http://i1.15yan.guokr.cn/u0bk6rs5q79lnochkx3vj1ki18zjcobh.jpg!content"
@@ -110,9 +111,24 @@
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
     
+    UIButton *distributeButton = [[UIButton alloc] init];
+    [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_add"] forState:UIControlStateNormal];
+    [distributeButton addTarget:self action:@selector(distributeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    distributeButton.frame = CGRectMake(0, 0, 25, 25);
+    UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
+    distributeItem.target = self;
+    self.navigationItem.rightBarButtonItem = distributeItem;
+    
     
 }
 
+- (void)distributeButtonClick:(id)sender
+{
+    HeDistributeRecommendVC *distributeVC = [[HeDistributeRecommendVC alloc] init];
+    distributeVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:distributeVC animated:YES];
+}
 #pragma mark -- 下拉刷新
 - (void)addHeader
 {
@@ -217,13 +233,52 @@
 }
 
 #pragma mark -- json解析  初次加载
+
+- (void)p_json
+{
+    NSString * str = [NSString stringWithFormat:HTTPURL,(long)_page];
+    
+    NSURL * url = [NSURL URLWithString:str];
+    // 创建请求对象
+    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+    // 发送请求
+    NSURLSessionDataTask * dataTask = [[NSURLSession sharedSession]dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        
+        if (!error) {
+            
+            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            for (NSDictionary * d in [dict objectForKey:@"result"]) {
+                Recommend * m = [[Recommend alloc]init];
+                [m setValuesForKeysWithDictionary:d];
+                
+                [self.modelArray addObject:m];
+                
+                [self p_putImageWithURL:m.headline_img];
+                
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [recommendCollectionView reloadData];
+        });
+        
+        
+    }];
+    
+    [dataTask resume]; // 开始请求
+}
+
 - (void)loadRecomendDataShow:(BOOL)show
 {
-    NSString * requestRecommendDataPath = [NSString stringWithFormat:HTTPURL,(long)_page];
+    NSString * requestRecommendDataPath = [NSString stringWithFormat:@"%@/recommend/showwaterfallflow.action",BASEURL];
+    NSDictionary *param = @{@"1":@"1"};
     if (show) {
         [self showHudInView:self.recommendCollectionView hint:@"加载中..."];
     }
-    [AFHttpTool requestWihtMethod:RequestMethodTypeGet url:requestRecommendDataPath params:nil success:^(AFHTTPRequestOperation* operation,id response){
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:param success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         if (show) {
             
@@ -231,19 +286,40 @@
         }
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
-        for (NSDictionary * d in [respondDict objectForKey:@"result"]) {
-            Recommend * m = [[Recommend alloc]init];
-            [m setValuesForKeysWithDictionary:d];
-            
-            [self.modelArray addObject:m];
-            
-            [self p_putImageWithURL:m.headline_img];
-            
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            NSArray *recommendArray = [respondDict objectForKey:@"json"];
+            if ([recommendArray isKindOfClass:[NSArray class]]) {
+                for (NSDictionary * d in recommendArray) {
+                    
+                    Recommend * m = [[Recommend alloc]init];
+                    NSString *recommendCover = [d objectForKey:@"recommendCover"];
+                    if ([recommendCover isMemberOfClass:[NSNull class]] || recommendCover == nil) {
+                        recommendCover = @"";
+                    }
+                    recommendCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,recommendCover];
+                    m.headline_img = recommendCover;
+//                    [m setValuesForKeysWithDictionary:d];
+                    
+                    [self.modelArray addObject:m];
+                    NSLog(@"recommendCover = %@",recommendCover);
+                    [self p_putImageWithURL:m.headline_img];
+                    
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [recommendCollectionView reloadData];
+                });
+            }
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [recommendCollectionView reloadData];
-        });
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+        
         
     } failure:^(NSError *error){
         [self hideHud];
@@ -260,10 +336,17 @@
 {
     // 获取图片
     
-    CGSize  size = [BLImageSize dowmLoadImageSizeWithURL:url];
+    CGSize  size = CGSizeZero;
+//    [BLImageSize dowmLoadImageSizeWithURL:url];
     
     // 获取图片的高度并按比例压缩
     NSInteger itemHeight = size.height * (((self.view.frame.size.width - 20) / 2 / size.width));
+    if (itemHeight == 0) {
+        itemHeight = (arc4random() % 51) + 50;
+    }
+    itemHeight = itemHeight + (arc4random() % 51);
+    itemHeight = itemHeight + (arc4random() % 51);
+    itemHeight = itemHeight + (arc4random() % 51);
     
     NSNumber * number = [NSNumber numberWithInteger:itemHeight];
     

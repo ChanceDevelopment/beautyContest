@@ -88,6 +88,11 @@
 		EA8028001D52E654008BC4E6 /* SDRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027F91D52E654008BC4E6 /* SDRefreshHeaderView.m */; };
 		EA8028011D52E654008BC4E6 /* SDRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027FB1D52E654008BC4E6 /* SDRefreshView.m */; };
 		EA8028021D52E654008BC4E6 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027FD1D52E654008BC4E6 /* UIView+SDExtension.m */; };
+		EA9D934D1D6DE50A003DFBBE /* HeDistributeRecommendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D934B1D6DE50A003DFBBE /* HeDistributeRecommendVC.m */; };
+		EA9D934E1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA9D934C1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib */; };
+		EA9D93521D6DF5CA003DFBBE /* HeUserJoinVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */; };
+		EA9D93531D6DF5CA003DFBBE /* HeUserJoinVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */; };
+		EA9D93561D6DF6F5003DFBBE /* HeUserJoinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */; };
 		EAC2C9051D4AF0E600E282A8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2C9041D4AF0E600E282A8 /* main.m */; };
 		EAC2C9081D4AF0E600E282A8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2C9071D4AF0E600E282A8 /* AppDelegate.m */; };
 		EAC2C90B1D4AF0E600E282A8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2C90A1D4AF0E600E282A8 /* ViewController.m */; };
@@ -673,6 +678,14 @@
 		EA8027FB1D52E654008BC4E6 /* SDRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDRefreshView.m; sourceTree = "<group>"; };
 		EA8027FC1D52E654008BC4E6 /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
 		EA8027FD1D52E654008BC4E6 /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		EA9D934A1D6DE50A003DFBBE /* HeDistributeRecommendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeDistributeRecommendVC.h; sourceTree = "<group>"; };
+		EA9D934B1D6DE50A003DFBBE /* HeDistributeRecommendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeDistributeRecommendVC.m; sourceTree = "<group>"; };
+		EA9D934C1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeDistributeRecommendVC.xib; sourceTree = "<group>"; };
+		EA9D934F1D6DF5CA003DFBBE /* HeUserJoinVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserJoinVC.h; sourceTree = "<group>"; };
+		EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserJoinVC.m; sourceTree = "<group>"; };
+		EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserJoinVC.xib; sourceTree = "<group>"; };
+		EA9D93541D6DF6F5003DFBBE /* HeUserJoinCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeUserJoinCell.h; path = BeautyContest/HeUserJoinCell.h; sourceTree = "<group>"; };
+		EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeUserJoinCell.m; path = BeautyContest/HeUserJoinCell.m; sourceTree = "<group>"; };
 		EAC2C9001D4AF0E600E282A8 /* 选美-颜值榜.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "选美-颜值榜.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC2C9041D4AF0E600E282A8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EAC2C9061D4AF0E600E282A8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1680,6 +1693,9 @@
 				EA4D013C1D4CE47400A0CCA1 /* HeRecommendVC.h */,
 				EA4D013D1D4CE47400A0CCA1 /* HeRecommendVC.m */,
 				EA4D013E1D4CE47400A0CCA1 /* HeRecommendVC.xib */,
+				EA9D934A1D6DE50A003DFBBE /* HeDistributeRecommendVC.h */,
+				EA9D934B1D6DE50A003DFBBE /* HeDistributeRecommendVC.m */,
+				EA9D934C1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib */,
 			);
 			path = Recommend;
 			sourceTree = "<group>";
@@ -1699,6 +1715,9 @@
 				EAC4F9E41D6D72B700F96DDA /* HeEnrollVC.h */,
 				EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */,
 				EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */,
+				EA9D934F1D6DF5CA003DFBBE /* HeUserJoinVC.h */,
+				EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */,
+				EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1786,6 +1805,7 @@
 		EA4D01831D4D93C600A0CCA1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EA9D93571D6DF6FB003DFBBE /* User */,
 				EA46454F1D51EA4A00CD539F /* Recommend */,
 				EA46452D1D51899100CD539F /* Discover */,
 				EA4D019A1D4D9BBD00A0CCA1 /* BeautyContest */,
@@ -1841,6 +1861,15 @@
 				EA8027FD1D52E654008BC4E6 /* UIView+SDExtension.m */,
 			);
 			path = Refresh;
+			sourceTree = "<group>";
+		};
+		EA9D93571D6DF6FB003DFBBE /* User */ = {
+			isa = PBXGroup;
+			children = (
+				EA9D93541D6DF6F5003DFBBE /* HeUserJoinCell.h */,
+				EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */,
+			);
+			name = User;
 			sourceTree = "<group>";
 		};
 		EAC2C8F71D4AF0E600E282A8 = {
@@ -3730,6 +3759,7 @@
 				EA4D017A1D4D8FF100A0CCA1 /* index5.jpg in Resources */,
 				EA4D01661D4CF0A300A0CCA1 /* tabar_discover_icon_normal@2x.png in Resources */,
 				EACC983F1D50E82200E627B8 /* icon_album.png in Resources */,
+				EA9D93531D6DF5CA003DFBBE /* HeUserJoinVC.xib in Resources */,
 				EAC2CD611D4AF5D800E282A8 /* arrow_down1.png in Resources */,
 				EA46455B1D51ECE700CD539F /* HeGBoxCollectionCell.xib in Resources */,
 				EAC2CDF91D4AF5D800E282A8 /* TZImagePickerController.bundle in Resources */,
@@ -3779,6 +3809,7 @@
 				EAC2CD001D4AF5D800E282A8 /* success@2x.png in Resources */,
 				EAC2CD121D4AF5D800E282A8 /* blueArrow@2x.png in Resources */,
 				EAC2C9101D4AF0E600E282A8 /* Assets.xcassets in Resources */,
+				EA9D934E1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib in Resources */,
 				EA4645421D519CA700CD539F /* appIcon.png in Resources */,
 				EAC2CE0E1D4AF5D800E282A8 /* LICENSE in Resources */,
 				EAC2C9CA1D4AF5CC00E282A8 /* HeTabBarVC.xib in Resources */,
@@ -3943,6 +3974,7 @@
 				EAC2CD0B1D4AF5D800E282A8 /* i2KEPCMultiComponentPickerView.m in Sources */,
 				EAC2CD9D1D4AF5D800E282A8 /* RACKVOChannel.m in Sources */,
 				EAC2CDF51D4AF5D800E282A8 /* TSLocation.m in Sources */,
+				EA9D93561D6DF6F5003DFBBE /* HeUserJoinCell.m in Sources */,
 				EAC2CD381D4AF5D800E282A8 /* MJPhotoLoadingView.m in Sources */,
 				EAC2C9081D4AF0E600E282A8 /* AppDelegate.m in Sources */,
 				EAC2CDAA1D4AF5D800E282A8 /* RACSignal+Operations.m in Sources */,
@@ -3992,6 +4024,7 @@
 				EAC2CCB51D4AF5D800E282A8 /* AFHTTPRequestOperationManager.m in Sources */,
 				EAC2CD811D4AF5D800E282A8 /* NSObject+RACSelectorSignal.m in Sources */,
 				EAC2CD791D4AF5D800E282A8 /* NSIndexSet+RACSequenceAdditions.m in Sources */,
+				EA9D93521D6DF5CA003DFBBE /* HeUserJoinVC.m in Sources */,
 				EAC2CE041D4AF5D800E282A8 /* UIButton+Bootstrap.m in Sources */,
 				EAC2CE1C1D4AF5E000E282A8 /* AES128Util.m in Sources */,
 				EAC2CDFC1D4AF5D800E282A8 /* TZPhotoPreviewCell.m in Sources */,
@@ -4142,6 +4175,7 @@
 				EAC2CD4B1D4AF5D800E282A8 /* MJRefreshStateHeader.m in Sources */,
 				EAC2CE021D4AF5D800E282A8 /* NSString+FontAwesome.m in Sources */,
 				EA4D01921D4D9A6B00A0CCA1 /* HeContestRankVC.m in Sources */,
+				EA9D934D1D6DE50A003DFBBE /* HeDistributeRecommendVC.m in Sources */,
 				EAC4F9EC1D6D8B0000F96DDA /* HeSettingVC.m in Sources */,
 				EAC2CCDA1D4AF5D800E282A8 /* UIButton+Corner.m in Sources */,
 				EAC2CDBC1D4AF5D800E282A8 /* UIAlertView+RACSignalSupport.m in Sources */,

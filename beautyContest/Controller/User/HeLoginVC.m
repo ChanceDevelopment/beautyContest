@@ -125,6 +125,8 @@
             if (succeed) {
                 NSLog(@"用户资料写入成功");
             }
+            User *user = [[User alloc] initUserWithDict:userDictInfo];
+            [HeSysbsModel getSysModel].user = user;
             NSString *userId = [HeSysbsModel getSysModel].user.userId;
             if (userId == nil) {
                 userId = @"";

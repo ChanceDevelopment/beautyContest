@@ -37,6 +37,8 @@
 @property(strong,nonatomic)NSString *infoBlood;
 @property(strong,nonatomic)NSString *infoBirth;
 
+
+
 /*************暂时不用****************/
 @property(strong,nonatomic)NSString *schoolName;//学校
 @property(strong,nonatomic)NSString *relation;//与小孩关系

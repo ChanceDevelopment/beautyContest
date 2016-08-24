@@ -91,6 +91,22 @@ static BLImageSize * BLM = nil;
         }
     }
     return size;
+    
+    
+    
+//    NSURLSession *session = [NSURLSession sharedSession];
+//    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:[NSURLRequest requestWithURL:URL]
+//                                                completionHandler:
+//                                      ^(NSData *data, NSURLResponse *response, NSError *error) {
+//                                          UIImage* image = [UIImage imageWithData:data];
+//                                          if(image){
+//                                              [[SDImageCache sharedImageCache] storeImage:image recalculateFromImage:YES imageData:data forKey:URL.absoluteString toDisk:YES];
+//                                              CGSize mysize = image.size;
+//                                              NSLog(@"1");
+//                                          }
+//                                      }];
+//    
+//    [dataTask resume];
 }
 +(CGSize)downloadPNGImageSizeWithRequest:(NSMutableURLRequest*)request
 {

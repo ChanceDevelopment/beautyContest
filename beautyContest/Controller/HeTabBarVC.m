@@ -27,6 +27,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self getUserInfo];
+    [self getUserFans];
+    [self getUserTicket];
+    [self getUserFollow];
     //获取用户可操作的相册，在相册中需要用到
     [self getUserAlbum];
     //获取活动的类型还有地点
@@ -36,6 +39,108 @@
     
 }
 
+- (void)getUserFans
+{
+//    User *user = [HeSysbsModel getSysModel].user;
+//    NSMutableArray *fansArray = user.fansArray;
+//    if (fansArray == nil) {
+//        fansArray = [[NSMutableArray alloc] initWithCapacity:0];
+//    }
+    NSString *getUserFansUrl = [NSString stringWithFormat:@"%@/user/getFansNum.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (userId == nil) {
+        userId = @"";
+    }
+    NSDictionary *params = @{@"userId":userId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserFansUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            id fansNumObj = [respondDict objectForKey:@"json"];
+            if ([fansNumObj isMemberOfClass:[NSNull class]]) {
+                fansNumObj = @"";
+            }
+            [HeSysbsModel getSysModel].fansNum = [fansNumObj integerValue];
+            NSLog(@"%ld",[HeSysbsModel getSysModel].fansNum);
+        }
+        
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+- (void)getUserTicket
+{
+//    User *user = [HeSysbsModel getSysModel].user;
+//    NSMutableArray *ticketArray = user.ticketArray;
+//    if (ticketArray == nil) {
+//        ticketArray = [[NSMutableArray alloc] initWithCapacity:0];
+//    }
+    NSString *getUserTicketUrl = [NSString stringWithFormat:@"%@/vote/selectVoteCount.action",BASEURL];
+    NSString *voteUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (voteUser == nil) {
+        voteUser = @"";
+    }
+    NSDictionary *params = @{@"voteUser":voteUser};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserTicketUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            id fansNumObj = [respondDict objectForKey:@"json"];
+            if ([fansNumObj isMemberOfClass:[NSNull class]]) {
+                fansNumObj = @"";
+            }
+            [HeSysbsModel getSysModel].ticketNum = [fansNumObj integerValue];
+            
+        }
+        
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+- (void)getUserFollow
+{
+//    User *user = [HeSysbsModel getSysModel].user;
+//    NSMutableArray *followArray = user.followArray;
+//    if (followArray == nil) {
+//        followArray = [[NSMutableArray alloc] initWithCapacity:0];
+//    }
+    NSString *getUserFollowUrl = [NSString stringWithFormat:@"%@/user/getFollowNum.action",BASEURL];
+    NSString *hostId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (hostId == nil) {
+        hostId = @"";
+    }
+    NSDictionary *params = @{@"hostId":hostId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserFollowUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            id fansNumObj = [respondDict objectForKey:@"json"];
+            if ([fansNumObj isMemberOfClass:[NSNull class]]) {
+                fansNumObj = @"";
+            }
+            [HeSysbsModel getSysModel].followNum = [fansNumObj integerValue];
+            
+        }
+        
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
 //后台自动登录
 - (void)autoLogin
 {
@@ -64,18 +169,19 @@
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
             NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
-            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
-            if (userState == 0) {
-                [self showHint:@"当前用户不可用"];
-                return ;
-            }
+//            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
+//            if (userState == 0) {
+//                [self showHint:@"当前用户不可用"];
+//                return ;
+//            }
             NSString *userDataPath = [Tool getUserDataPath];
             NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
             BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
             if (succeed) {
                 NSLog(@"用户资料写入成功");
             }
-            
+            User *user = [[User alloc] initUserWithDict:userDictInfo];
+            [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
         }
         else{
             NSString *userDataPath = [Tool getUserDataPath];

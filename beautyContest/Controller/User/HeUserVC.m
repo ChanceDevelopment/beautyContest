@@ -10,6 +10,9 @@
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 #import "HeSettingVC.h"
+#import "HeSysbsModel.h"
+#import "MLLinkLabel.h"
+#import "HeUserJoinVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -24,6 +27,7 @@
 @property(strong,nonatomic)UILabel *nameLabel;
 @property(strong,nonatomic)UILabel *addressLabel;
 @property(strong,nonatomic)UIImageView *userBGImage;
+@property(strong,nonatomic)User *userInfo;
 
 @end
 
@@ -35,6 +39,7 @@
 @synthesize userBGImage;
 @synthesize nameLabel;
 @synthesize addressLabel;
+@synthesize userInfo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -62,11 +67,24 @@
     [self initView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 - (void)initializaiton
 {
     [super initializaiton];
     dataSource = @[@[@"我的相册",@"我的发布",@"我的参与"],@[@"设置"]];
     iconDataSource = @[@[@"icon_album",@"icon_put",@"icon_participation"],@[@"icon_setting"]];
+    userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
 }
 
 - (void)initView
@@ -102,7 +120,7 @@
     nameLabel = [[UILabel alloc] init];
     nameLabel.textAlignment = NSTextAlignmentLeft;
     nameLabel.backgroundColor = [UIColor clearColor];
-    nameLabel.text = @"Tony";
+    nameLabel.text = userInfo.userNick;
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.font = textFont;
@@ -113,6 +131,21 @@
     nameFrame.origin.y = nameFrame.origin.y - 20;
     nameLabel.frame = nameFrame;
     
+    CGSize textSize = [MLLinkLabel getViewSizeByString:nameLabel.text maxWidth:nameLabel.frame.size.width font:nameLabel.font lineHeight:TextLineHeight lines:0];
+    UIImageView *sexIcon = [[UIImageView alloc] init];
+    if (userInfo.userSex == 1) {
+        sexIcon.image = [UIImage imageNamed:@"icon_sex_boy"];
+    }
+    else{
+        sexIcon.image = [UIImage imageNamed:@"icon_sex_girl"];
+    }
+    CGFloat imageX = SCREENWIDTH / 2.0 + textSize.width / 2.0 + 5;
+    CGFloat imageW = 20;
+    CGFloat imageH = 20;
+    CGFloat imageY = nameFrame.origin.y + (nameLabelH - imageH) / 2.0;
+    sexIcon.frame = CGRectMake(imageX, imageY, imageW, imageH);
+    [sectionHeaderView addSubview:sexIcon];
+    
     CGFloat addressLabelX = 0;
     CGFloat addressLabelY = CGRectGetMaxY(nameLabel.frame);
     CGFloat addressLabelH = 40;
@@ -120,7 +153,7 @@
     addressLabel = [[UILabel alloc] init];
     addressLabel.textAlignment = NSTextAlignmentLeft;
     addressLabel.backgroundColor = [UIColor clearColor];
-    addressLabel.text = @"广东.珠海";
+    addressLabel.text = userInfo.userAddress;
     addressLabel.textAlignment = NSTextAlignmentCenter;
     addressLabel.textColor = [UIColor whiteColor];
     addressLabel.font = textFont;
@@ -146,17 +179,21 @@
     
     [sectionHeaderView addSubview:buttonBG];
     NSArray *buttonArray = @[@"粉丝",@"票数",@"关注"];
+    NSArray *titleArray = @[[NSString stringWithFormat:@"%ld",[HeSysbsModel getSysModel].fansNum],[NSString stringWithFormat:@"%ld",[HeSysbsModel getSysModel].ticketNum],[NSString stringWithFormat:@"%ld",[HeSysbsModel getSysModel].followNum]];
     for (NSInteger index = 0; index < [buttonArray count]; index++) {
         CGFloat buttonW = SCREENWIDTH / [buttonArray count];
         CGFloat buttonH = 40;
         CGFloat buttonX = index * buttonW;
         CGFloat buttonY = 0;
         CGRect buttonFrame = CGRectMake(buttonX , buttonY, buttonW, buttonH);
+        
         UIButton *button = [self buttonWithTitle:buttonArray[index] frame:buttonFrame];
         button.tag = index + 100;
         if (index == 0) {
             button.selected = YES;
         }
+        UILabel *label = [button viewWithTag:200];
+        label.text = titleArray[index];
         [buttonBG addSubview:button];
     }
     
@@ -178,7 +215,7 @@
     [button addSubview:buttonNameLabel];
     
     UILabel *buttonNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, buttonFrame.size.height / 2.0, buttonFrame.size.width, buttonFrame.size.height / 2.0)];
-    buttonNumberLabel.text = @"125";
+    buttonNumberLabel.tag = 200;
     buttonNumberLabel.backgroundColor = [UIColor clearColor];
     buttonNumberLabel.textColor = [UIColor whiteColor];
     buttonNumberLabel.font = [UIFont systemFontOfSize:12.0];
@@ -266,6 +303,18 @@
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     switch (section) {
+        case 0:{
+            switch (row) {
+                case 2:{
+                    HeUserJoinVC *userJoinVC = [[HeUserJoinVC alloc] init];
+                    userJoinVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:userJoinVC animated:YES];
+                }
+                default:
+                    break;
+            }
+            break;
+        }
         case 1:
         {
             switch (row) {
@@ -276,6 +325,7 @@
                     [self.navigationController pushViewController:settingVC animated:YES];
                     break;
                 }
+                
                 default:
                     break;
             }
