@@ -10,15 +10,22 @@
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 #import "MLLinkLabel.h"
+#import "HeCommentView.h"
 
 #define TextLineHeight 1.2f
+#define BGTAG 100
+#define SEXTAG 200
+#define VOTETAG 300
+#define VOTETAGSUCCESS 301
+#define MESSAGETAG 400
+#define FOLLOWTAG 500
 
-@interface HeContestantDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface HeContestantDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol>
 {
     BOOL requestReply; //是否已经完成
     NSInteger contestantRank; //排名
     NSInteger voteCount; //投票人数
-    BOOL haveVoted; //用户是否对参赛者投票
+    BOOL haveNOVoted; //用户是否对参赛者投票
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
@@ -27,6 +34,7 @@
 @property(strong,nonatomic)UIButton *followButton;
 @property(strong,nonatomic)UIImageView *detailImage;
 @property(strong,nonatomic)UILabel *userNoLabel;
+@property(strong,nonatomic)UILabel *userRankLabel;
 @property(strong,nonatomic)UILabel *supportNumLabel;
 @property(strong,nonatomic)NSDictionary *contestantDetailDict;
 @property(strong,nonatomic)NSMutableArray *contestantImageArray;
@@ -42,6 +50,7 @@
 @synthesize followButton;
 @synthesize detailImage;
 @synthesize userNoLabel;
+@synthesize userRankLabel;
 @synthesize supportNumLabel;
 @synthesize contestantBaseDict;
 @synthesize contestZoneDict;
@@ -105,6 +114,10 @@
     CGFloat imageW = SCREENWIDTH - 2 * imageX;
     CGFloat imageH = headerH - 2 * imageY;
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index2.jpg"]];
+    NSString *zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[contestZoneDict objectForKey:@"zoneCover"]];
+    [bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
+    
+    bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
     bgImage.layer.masksToBounds = YES;
     bgImage.layer.cornerRadius = 5.0;
@@ -116,7 +129,7 @@
     UIFont *textFont = [UIFont systemFontOfSize:16.0];
     
     CGFloat titleX = 10;
-    CGFloat titleH = 30;
+    CGFloat titleH = 20;
     CGFloat titleY = imageH - titleH - 50;
     CGFloat titleW = (imageW - 2 *titleX) / 2.0;
     
@@ -137,25 +150,29 @@
     
     CGFloat buttonX = titleX + titleW + 10;
     CGFloat buttonY = titleY;
-    CGFloat buttonW = 60;
+    CGFloat buttonW = 50;
     CGFloat buttonH = titleH;
     followButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
     [followButton setTitle:@"关注" forState:UIControlStateNormal];
-    [followButton setTitleColor:APPDEFAULTORANGE forState:UIControlStateNormal];
+    [followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [followButton.titleLabel setFont:[UIFont systemFontOfSize:11.0]];
     followButton.layer.masksToBounds = YES;
     followButton.layer.cornerRadius = 3.0;
     followButton.layer.borderWidth = 1.0;
     [followButton.titleLabel setFont:textFont];
     [followButton addTarget:self action:@selector(followButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    followButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    [followButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:followButton.frame.size] forState:UIControlStateNormal];
+    followButton.layer.borderColor = APPDEFAULTORANGE.CGColor;
     [bgImage addSubview:followButton];
     
-    CGFloat detailImageW = 30;
-    CGFloat detailImageH = 30;
+    CGFloat detailImageW = 40;
+    CGFloat detailImageH = 40;
     CGFloat detailImageX = imageW - detailImageW - titleX;
-    CGFloat detailImageY = imageH - titleH - 10;
+    CGFloat detailImageY = CGRectGetMinY(nameLabel.frame);
     
     detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index4.jpg"]];
+    detailImage.layer.borderWidth = 1.0;
+    detailImage.layer.borderColor = [UIColor whiteColor].CGColor;
     detailImage.frame = CGRectMake(detailImageX, detailImageY, detailImageW, detailImageH);
     detailImage.layer.cornerRadius = detailImageW / 2.0;
     detailImage.layer.masksToBounds = YES;
@@ -163,11 +180,12 @@
     [bgImage addSubview:detailImage];
     
     CGFloat iconX = titleX;
-    CGFloat iconW = 30;
-    CGFloat iconH = 30;
-    CGFloat iconY = CGRectGetMaxY(detailImage.frame) - iconH;
+    CGFloat iconW = 20;
+    CGFloat iconH = 20;
+    CGFloat iconY = CGRectGetMaxY(nameLabel.frame) + 5;
     
-    UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"appIcon"]];
+    UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_sex_boy"]];
+    icon.tag = SEXTAG;
     icon.frame = CGRectMake(iconX, iconY, iconW, iconH);
     [bgImage addSubview:icon];
     
@@ -182,8 +200,8 @@
     [bgImage addSubview:userNoLabel];
     
     CGFloat tiptitleX = (imageW - 2 *titleX) / 2.0;
-    CGFloat tiptitleH = 30;
-    CGFloat tiptitleY = iconY;
+    CGFloat tiptitleH = detailImageH / 2.0;
+    CGFloat tiptitleY = detailImageY;
     CGFloat tiptitleW = (imageW - 2 *titleX) / 2.0 - detailImageW - titleX;
     
     supportNumLabel = [[UILabel alloc] init];
@@ -196,6 +214,21 @@
     supportNumLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
     [bgImage addSubview:supportNumLabel];
     
+    CGFloat userRankX = (imageW - 2 *titleX) / 2.0;
+    CGFloat userRankH = detailImageH / 2.0;
+    CGFloat userRankY = CGRectGetMaxY(supportNumLabel.frame);
+    CGFloat userRankW = (imageW - 2 *titleX) / 2.0 - detailImageW - titleX;
+    
+    userRankLabel = [[UILabel alloc] init];
+    userRankLabel.textAlignment = NSTextAlignmentRight;
+    userRankLabel.backgroundColor = [UIColor clearColor];
+    userRankLabel.text = @"排名:第一名";
+    userRankLabel.numberOfLines = 1;
+    userRankLabel.textColor = [UIColor whiteColor];
+    userRankLabel.font = [UIFont systemFontOfSize:13.0];
+    userRankLabel.frame = CGRectMake(userRankX, userRankY, userRankW, userRankH);
+    [bgImage addSubview:userRankLabel];
+    
     
     buttonX = 10;
     buttonY = 5;
@@ -203,18 +236,44 @@
     buttonW = SCREENWIDTH / 2.0 - 2 * buttonX;
     
     UIButton *joinButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"投票" image:@"icon_love"];
-    joinButton.tag = 1;
+    joinButton.tag = VOTETAG;
     [joinButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [joinButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
     [footerView addSubview:joinButton];
     
+    
+    UIButton *voteButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"谢谢您" image:nil];
+    voteButton.hidden = YES;
+    voteButton.tag = VOTETAGSUCCESS;
+    [voteButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [voteButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+    [footerView addSubview:voteButton];
+    
     UIButton *commentButton = [Tool getButton:CGRectMake(SCREENWIDTH / 2.0 + buttonX, buttonY, buttonW, buttonH) title:@"留言" image:@"icon_comment"];
     joinButton.tag = 2;
-    [commentButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [commentButton addTarget:self action:@selector(massageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [commentButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
     [footerView addSubview:commentButton];
     
     
+    joinButton.layer.cornerRadius = 3.0;
+    joinButton.layer.masksToBounds = YES;
+    
+    commentButton.layer.cornerRadius = 3.0;
+    commentButton.layer.masksToBounds = YES;
+    
+}
+
+- (void)massageButtonClick:(UIButton *)button
+{
+    HeCommentView *commentView = [[HeCommentView alloc] init];
+    commentView.commentDelegate = self;
+    [self presentViewController:commentView animated:YES completion:nil];
+}
+
+- (void)commentWithText:(NSString *)commentText user:(User *)commentUser
+{
+    NSLog(@"commentText = %@",commentText);
 }
 
 - (void)getContestantDetail
@@ -231,7 +290,7 @@
     [self showHudInView:self.view hint:@"加载中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/partInUserInfo.action",BASEURL];
-    NSDictionary *params = @{@"zoneId":zoneId};
+    NSDictionary *params = @{@"zoneId":zoneId,@"userId":userId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -241,6 +300,29 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             NSDictionary *jsonDict = [respondDict objectForKey:@"json"];
             contestantDetailDict = [[NSDictionary alloc] initWithDictionary:jsonDict];
+            NSString *userNick = [contestantDetailDict objectForKey:@"userNick"];
+            if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+                userNick = @"";
+            }
+            nameLabel.textColor = [UIColor whiteColor];
+            nameLabel.text = userNick;
+            
+            id sexObj = [contestantDetailDict objectForKey:@"userSex"];
+            NSInteger userSex = [sexObj integerValue];
+            if (userSex == 1) {
+                UIImageView *sexIcon = [[sectionHeaderView viewWithTag:BGTAG] viewWithTag:SEXTAG];
+                sexIcon.image = [UIImage imageNamed:@"icon_sex_boy"];
+            }
+            else{
+                UIImageView *sexIcon = [[sectionHeaderView viewWithTag:BGTAG] viewWithTag:SEXTAG];
+                sexIcon.image = [UIImage imageNamed:@"icon_sex_girl"];
+            }
+            NSString *userNo = [NSString stringWithFormat:@"%@",contestantDetailDict[@"userDisplayid"]];
+            userNoLabel.text = userNo;
+            
+            NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,contestantDetailDict[@"userHeader"]];
+            [detailImage sd_setImageWithURL:[NSURL URLWithString:userHeader]];
+            
             [tableview reloadData];
         }
         else{
@@ -279,6 +361,7 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             id jsonObj = [respondDict objectForKey:@"json"];
             contestantRank = [jsonObj integerValue];
+            userRankLabel.text = [NSString stringWithFormat:@"排名:第%ld名",contestantRank];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -305,7 +388,7 @@
     
     [self showHudInView:self.view hint:@"加载中..."];
     
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/getMyZoneRank.action",BASEURL];
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/selectVoteCount.action",BASEURL];
     NSDictionary *params = @{@"voteZone":voteZone,@"voteUser":voteUser};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
@@ -316,6 +399,7 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             id jsonObj = [respondDict objectForKey:@"json"];
             voteCount = [jsonObj integerValue];
+            supportNumLabel.text = [NSString stringWithFormat:@"票数:%ld票",voteCount];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -352,7 +436,19 @@
         
         if (statueCode == REQUESTCODE_SUCCEED){
             id jsonObj = [respondDict objectForKey:@"json"];
-            haveVoted = [jsonObj boolValue];
+            haveNOVoted = [jsonObj boolValue];
+            if (!haveNOVoted) {
+                UIButton *button = [footerView viewWithTag:VOTETAG];
+                button.hidden = YES;
+                button = [footerView viewWithTag:VOTETAGSUCCESS];
+                button.hidden = NO;
+            }
+            else{
+                UIButton *button = [footerView viewWithTag:VOTETAG];
+                button.hidden = NO;
+                button = [footerView viewWithTag:VOTETAGSUCCESS];
+                button.hidden = YES;
+            }
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -408,12 +504,86 @@
 
 - (void)followButtonClick:(UIButton *)button
 {
-     NSLog(@"button = %@",button);
+    if (followButton.selected) {
+        [self showHint:@"已关注"];
+        return;
+    }
+    NSString *hostId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([hostId isMemberOfClass:[NSNull class]] || hostId == nil) {
+        hostId = @"";
+    }
+    NSString *userId = contestantBaseDict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+        userId = @"";
+    }
+    
+    [self showHudInView:self.view hint:@"关注中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/follow.action",BASEURL];
+    NSDictionary *params = @{@"userId":userId,@"hostId":hostId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [followButton setTitle:@"已关注" forState:UIControlStateNormal];
+            followButton.selected = YES;
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
-
+//
 - (void)buttonClick:(UIButton *)button
 {
     NSLog(@"button = %@",button);
+    if (!haveNOVoted) {
+        return;
+    }
+    NSString *voteHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([voteHost isMemberOfClass:[NSNull class]] || voteHost == nil) {
+        voteHost = @"";
+    }
+    NSString *voteUser = contestantBaseDict[@"userId"];
+    if ([voteUser isMemberOfClass:[NSNull class]] || voteUser == nil) {
+        voteUser = @"";
+    }
+    NSString *voteZone = contestantBaseDict[@"zoneId"];
+    if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
+        voteZone = @"";
+    }
+    [self showHudInView:self.view hint:@"投票中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/follow.action",BASEURL];
+    NSDictionary *params = @{@"voteHost":voteHost,@"voteUser":voteUser,@"voteZone":voteZone};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [self showHint:@"投票成功"];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -421,6 +591,9 @@
     switch (section) {
         case 1:
         {
+            if ([contestantImageArray count] == 0) {
+                return 1;
+            }
             return 2;
             break;
         }

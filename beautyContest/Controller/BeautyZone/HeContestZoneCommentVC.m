@@ -14,10 +14,13 @@
 #import "DropDownListView.h"
 #import "HeDistributeContestVC.h"
 #import "HeUserJoinCell.h"
+#import "HeCommentView.h"
+#import "HeZoneCommentCell.h"
 
 #define TextLineHeight 1.2f
+#define DELETETAG 100
 
-@interface HeContestZoneCommentVC ()<UITableViewDelegate,UITableViewDataSource,DropDownChooseDataSource,DropDownChooseDelegate>
+@interface HeContestZoneCommentVC ()<UITableViewDelegate,UITableViewDataSource,DropDownChooseDataSource,DropDownChooseDelegate,CommentProtocol,UIAlertViewDelegate>
 {
     BOOL requestReply; //是否已经完成
     NSInteger orderType; //排序类型
@@ -31,6 +34,9 @@
 @property(strong,nonatomic)NSMutableArray *chooseArray;
 @property(strong,nonatomic)UISearchBar *searchBar;
 @property(strong,nonatomic)NSCache *imageCache;
+@property(strong,nonatomic)IBOutlet UIButton *commentButton;
+@property(strong,nonatomic)NSDictionary *prepareDeleteDict;
+
 @end
 
 @implementation HeContestZoneCommentVC
@@ -43,6 +49,8 @@
 @synthesize chooseArray;
 @synthesize searchBar;
 @synthesize imageCache;
+@synthesize commentButton;
+@synthesize contestZoneDict;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -68,7 +76,7 @@
     // Do any additional setup after loading the view from its nib.
     [self initializaiton];
     [self initView];
-    //加载比赛
+    //加载评论
     [self loadBeautyContestShow:YES];
 }
 
@@ -100,7 +108,7 @@
 {
     [super initView];
     tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+//    tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [Tool setExtraCellLineHidden:tableview];
@@ -139,8 +147,24 @@
     UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
     distributeItem.target = self;
     //    self.navigationItem.rightBarButtonItem = distributeItem;
+    
+    [commentButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:commentButton.frame.size] forState:UIControlStateNormal];
+    [commentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    commentButton.layer.cornerRadius = 5.0;
+    commentButton.layer.masksToBounds = YES;
 }
 
+- (IBAction)commentButtonClick:(id)sender
+{
+    HeCommentView *commentView = [[HeCommentView alloc] init];
+    commentView.commentDelegate = self;
+    [self presentViewController:commentView animated:YES completion:nil];
+}
+
+- (void)commentWithText:(NSString *)commentText user:(User *)commentUser
+{
+    [self creatCommentWithCommentText:commentText];
+}
 - (void)distributeButtonClick:(UIButton *)button
 {
     NSLog(@"distributeButtonClick");
@@ -179,16 +203,96 @@
     [self loadBeautyContestShow:YES];
 }
 
+- (void)deleteCommentWithDict:(NSDictionary *)commentDict
+{
+    NSString *commentUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([commentUser isMemberOfClass:[NSNull class]] || commentUser == nil) {
+        commentUser = @"";
+    }
+    NSString *commentId = commentDict[@"commentId"];
+    if ([commentId isMemberOfClass:[NSNull class]] || commentId == nil) {
+        commentId = @"";
+    }
+    [self showHudInView:self.view hint:@"删除中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/deleteMyComment.action",BASEURL];
+    NSDictionary *params = @{@"commentUser":commentUser,@"commentId":commentId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            //重新加载
+            [self loadBeautyContestShow:YES];
+            [self showHint:@"删除成功"];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+- (void)creatCommentWithCommentText:(NSString *)commentCoutent
+{
+    NSString *commentUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([commentUser isMemberOfClass:[NSNull class]] || commentUser == nil) {
+        commentUser = @"";
+    }
+    NSString *commentZone = contestZoneDict[@"zoneId"];
+    if ([commentZone isMemberOfClass:[NSNull class]] || commentZone == nil) {
+        commentZone = @"";
+    }
+    [self showHudInView:self.view hint:@"评论中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/createZoneComment.action",BASEURL];
+    NSDictionary *params = @{@"commentUser":commentUser,@"commentZone":commentZone,@"commentCoutent":commentCoutent};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            //重新加载
+            [self loadBeautyContestShow:YES];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
+{
+    if ([eventName isEqualToString:@"deleteComment"]) {
+        self.prepareDeleteDict = [[NSDictionary alloc] initWithDictionary:userInfo];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"确定删除该评论？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+        alert.tag = DELETETAG;
+        [alert show];
+        
+        return;
+    }
+    [self routerEventWithName:eventName userInfo:userInfo];
+}
 - (void)loadBeautyContestShow:(BOOL)show
 {
-    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getHistoryPart.action",BASEURL];
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/getZoneComment.action",BASEURL];
     
-    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-    if (!userid) {
-        userid = @"";
-    }
+    NSString *commentZone = contestZoneDict[@"zoneId"];
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
-    NSDictionary *requestMessageParams = @{@"userId":userid,@"start":pageNum};
+    NSDictionary *requestMessageParams = @{@"commentZone":commentZone,@"start":pageNum};
     [self showHudInView:self.view hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
@@ -438,40 +542,35 @@
         
     }
     
-    HeUserJoinCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeZoneCommentCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeUserJoinCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell = [[HeZoneCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    cell.commentDict = [[NSDictionary alloc] initWithDictionary:zoneDict];
     
-    id zoneTitle = [zoneDict objectForKey:@"zoneTitle"];
-    if ([zoneTitle isMemberOfClass:[NSNull class]]) {
-        zoneTitle = @"";
+    id userNick = [zoneDict objectForKey:@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]]) {
+        userNick = @"";
     }
-    cell.topicLabel.text = zoneTitle;
+    cell.topicLabel.text = userNick;
     
-    id zoneAddress = [zoneDict objectForKey:@"zoneAddress"];
-    if ([zoneAddress isMemberOfClass:[NSNull class]]) {
-        zoneAddress = @"";
+    NSString *userHeader = [zoneDict objectForKey:@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]]) {
+        userHeader = @"";
     }
-    cell.addressLabel.text = zoneAddress;
-    
-    NSString *zoneCover = [zoneDict objectForKey:@"zoneCover"];
-    if ([zoneCover isMemberOfClass:[NSNull class]]) {
-        zoneCover = @"";
-    }
-    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
-    UIImageView *imageview = [imageCache objectForKey:zoneCover];
+    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    UIImageView *imageview = [imageCache objectForKey:userHeader];
     if (!imageview) {
-        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
+        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:userHeader]];
         imageview = cell.bgImage;
     }
     cell.bgImage = imageview;
     [cell addSubview:cell.bgImage];
     
     
-    id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
+    id zoneCreatetimeObj = [zoneDict objectForKey:@"commentCreatetime"];
     if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
         NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
         zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
@@ -482,25 +581,39 @@
         //时间戳
         zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
     }
-    
-    
-    id zoneDeathlineObj = [zoneDict objectForKey:@"zoneDeathline"];
-    if ([zoneDeathlineObj isMemberOfClass:[NSNull class]] || zoneDeathlineObj == nil) {
-        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
-        zoneDeathlineObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
-    }
-    long long zoneDeathlinetimestamp = [zoneDeathlineObj longLongValue];
-    NSString *zoneDeathlinezoneCreatetime = [NSString stringWithFormat:@"%lld",zoneDeathlinetimestamp];
-    if ([zoneDeathlinezoneCreatetime length] > 3) {
-        //时间戳
-        zoneDeathlinezoneCreatetime = [zoneDeathlinezoneCreatetime substringToIndex:[zoneDeathlinezoneCreatetime length] - 3];
-    }
-    
-    
     NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
+    cell.timeLabel.text = [NSString stringWithFormat:@"%@",time];
     
-    NSString *endtime = [Tool convertTimespToString:[zoneDeathlinezoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
-    cell.timeLabel.text = [NSString stringWithFormat:@"%@ - %@",time,endtime];
+    
+    NSString *commentCoutent = [zoneDict objectForKey:@"commentCoutent"];
+    if ([commentCoutent isMemberOfClass:[NSNull class]] || commentCoutent == nil) {
+        commentCoutent = @"";
+    }
+    CGFloat marginX = 10;
+    CGFloat imageW = 50;
+    CGFloat image_labelDistance = 5;
+    CGFloat labelW = SCREENWIDTH - 2 * marginX - imageW - image_labelDistance;
+    UIFont *font = [UIFont  boldSystemFontOfSize:15.0];
+    CGSize textSize = [MLLinkLabel getViewSizeByString:commentCoutent maxWidth:labelW font:font lineHeight:TextLineHeight lines:0];
+    if (textSize.height < 30) {
+        textSize.height = 30;
+    }
+    CGRect contentFrame = cell.addressLabel.frame;
+    contentFrame.size.height = textSize.height;
+    cell.addressLabel.frame = contentFrame;
+    cell.addressLabel.text = commentCoutent;
+    
+    NSString *commentUser = zoneDict[@"commentUser"];
+    if ([commentUser isMemberOfClass:[NSNull class]]) {
+        commentUser = @"";
+    }
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([userId isEqualToString:commentUser]) {
+        cell.deleteButton.hidden = NO;
+    }
+    else{
+        cell.deleteButton.hidden = YES;
+    }
     
     return cell;
 }
@@ -517,7 +630,33 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    NSDictionary *zoneDict = nil;
+    @try {
+        zoneDict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    NSString *commentCoutent = [zoneDict objectForKey:@"commentCoutent"];
+    if ([commentCoutent isMemberOfClass:[NSNull class]] || commentCoutent == nil) {
+        commentCoutent = @"";
+    }
+    CGFloat marginX = 10;
+    CGFloat imageW = 50;
+    CGFloat image_labelDistance = 5;
+    CGFloat labelW = SCREENWIDTH - 2 * marginX - imageW - image_labelDistance;
+    UIFont *font = [UIFont  boldSystemFontOfSize:15.0];
+    CGSize textSize = [MLLinkLabel getViewSizeByString:commentCoutent maxWidth:labelW font:font lineHeight:TextLineHeight lines:0];
+    if (textSize.height < 30) {
+        textSize.height = 30;
+    }
+    
+    return 60 + textSize.height;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -531,6 +670,33 @@
     [self.navigationController pushViewController:contestDetailVC animated:YES];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        // Delete the row from the data source.
+        self.prepareDeleteDict = [[NSDictionary alloc] initWithDictionary:dataSource[indexPath.row]];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"确定删除该评论？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+        alert.tag = DELETETAG;
+        [alert show];
+        
+        
+    }
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == DELETETAG && buttonIndex == 1) {
+        [self deleteCommentWithDict:self.prepareDeleteDict];
+    }
+}
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchbar
 {
     if ([searchbar isFirstResponder]) {

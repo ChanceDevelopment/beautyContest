@@ -103,6 +103,10 @@
 		EA9D93521D6DF5CA003DFBBE /* HeUserJoinVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */; };
 		EA9D93531D6DF5CA003DFBBE /* HeUserJoinVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */; };
 		EA9D93561D6DF6F5003DFBBE /* HeUserJoinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */; };
+		EAB538D61D6F4C77008BCC17 /* ic_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D51D6F4C77008BCC17 /* ic_empty.png */; };
+		EAB538D81D6F4CAE008BCC17 /* icon_add_pho.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D71D6F4CAE008BCC17 /* icon_add_pho.png */; };
+		EAB538DA1D6F4EB2008BCC17 /* icon_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D91D6F4EB2008BCC17 /* icon_delete.png */; };
+		EAB538DD1D6F5509008BCC17 /* HeZoneCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */; };
 		EAC2C9051D4AF0E600E282A8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2C9041D4AF0E600E282A8 /* main.m */; };
 		EAC2C9081D4AF0E600E282A8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2C9071D4AF0E600E282A8 /* AppDelegate.m */; };
 		EAC2C90B1D4AF0E600E282A8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2C90A1D4AF0E600E282A8 /* ViewController.m */; };
@@ -711,6 +715,11 @@
 		EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserJoinVC.xib; sourceTree = "<group>"; };
 		EA9D93541D6DF6F5003DFBBE /* HeUserJoinCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeUserJoinCell.h; path = BeautyContest/HeUserJoinCell.h; sourceTree = "<group>"; };
 		EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeUserJoinCell.m; path = BeautyContest/HeUserJoinCell.m; sourceTree = "<group>"; };
+		EAB538D51D6F4C77008BCC17 /* ic_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_empty.png; sourceTree = "<group>"; };
+		EAB538D71D6F4CAE008BCC17 /* icon_add_pho.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_add_pho.png; sourceTree = "<group>"; };
+		EAB538D91D6F4EB2008BCC17 /* icon_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_delete.png; sourceTree = "<group>"; };
+		EAB538DB1D6F5509008BCC17 /* HeZoneCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeZoneCommentCell.h; sourceTree = "<group>"; };
+		EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeZoneCommentCell.m; sourceTree = "<group>"; };
 		EAC2C9001D4AF0E600E282A8 /* 选美-颜值榜.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "选美-颜值榜.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC2C9041D4AF0E600E282A8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EAC2C9061D4AF0E600E282A8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1778,6 +1787,9 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EAB538D91D6F4EB2008BCC17 /* icon_delete.png */,
+				EAB538D71D6F4CAE008BCC17 /* icon_add_pho.png */,
+				EAB538D51D6F4C77008BCC17 /* ic_empty.png */,
 				EA0509031D6EC24D003947EE /* icon_reward.png */,
 				EA46454D1D51DA1C00CD539F /* icon_edit.png */,
 				EA4645491D51D8D700CD539F /* icon_sex_boy.png */,
@@ -1878,6 +1890,8 @@
 				EA4D019C1D4D9BD200A0CCA1 /* HeBeautyContestTableCell.m */,
 				EA4D019E1D4D9D4A00A0CCA1 /* HeContestantTableCell.h */,
 				EA4D019F1D4D9D4A00A0CCA1 /* HeContestantTableCell.m */,
+				EAB538DB1D6F5509008BCC17 /* HeZoneCommentCell.h */,
+				EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */,
 			);
 			path = BeautyContest;
 			sourceTree = "<group>";
@@ -3803,6 +3817,7 @@
 				EA4D01651D4CF0A300A0CCA1 /* tabar_discover_icon_active@2x.png in Resources */,
 				EA4D01681D4CF0A300A0CCA1 /* tabar_recommend_icon_normal@2x.png in Resources */,
 				EAC2CEAC1D4AF5EE00E282A8 /* ShareSDK.bundle in Resources */,
+				EAB538D81D6F4CAE008BCC17 /* icon_add_pho.png in Resources */,
 				EACC98421D50F4D700E627B8 /* icon_add.png in Resources */,
 				EAC2C9C81D4AF5CC00E282A8 /* HeBaseViewController.xib in Resources */,
 				EA4D017A1D4D8FF100A0CCA1 /* index5.jpg in Resources */,
@@ -3858,6 +3873,7 @@
 				EA4D016A1D4CF0A300A0CCA1 /* tabar_user_icon_normal@2x.png in Resources */,
 				EAC2CD001D4AF5D800E282A8 /* success@2x.png in Resources */,
 				EAC2CD121D4AF5D800E282A8 /* blueArrow@2x.png in Resources */,
+				EAB538D61D6F4C77008BCC17 /* ic_empty.png in Resources */,
 				EAC2C9101D4AF0E600E282A8 /* Assets.xcassets in Resources */,
 				EA9D934E1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib in Resources */,
 				EA4645421D519CA700CD539F /* appIcon.png in Resources */,
@@ -3876,6 +3892,7 @@
 				EA4D01481D4CEB9600A0CCA1 /* ios_guide_step_2.png in Resources */,
 				EA0E9D271D4C295F009CBF64 /* HeDiscoverVC.xib in Resources */,
 				EA4D01751D4D8FF100A0CCA1 /* index0.jpg in Resources */,
+				EAB538DA1D6F4EB2008BCC17 /* icon_delete.png in Resources */,
 				EA4D01671D4CF0A300A0CCA1 /* tabar_recommend_icon_active@2x.png in Resources */,
 				EAC2CDD11D4AF5D800E282A8 /* sharemore_pic@3x.png in Resources */,
 				EA0508FA1D6EA000003947EE /* HeUserAlbumVC.xib in Resources */,
@@ -4201,6 +4218,7 @@
 				EAC2CDAD1D4AF5D800E282A8 /* RACSignalSequence.m in Sources */,
 				EAC2CDC51D4AF5D800E282A8 /* UIRefreshControl+RACCommandSupport.m in Sources */,
 				EAC2CEA01D4AF5EE00E282A8 /* split.c in Sources */,
+				EAB538DD1D6F5509008BCC17 /* HeZoneCommentCell.m in Sources */,
 				EAC2CD8D1D4AF5D800E282A8 /* RACChannel.m in Sources */,
 				EAC2CCF71D4AF5D800E282A8 /* DFTableViewRefreshControl.m in Sources */,
 				EA0508F41D6E9FE8003947EE /* HeUserDistributeVC.m in Sources */,

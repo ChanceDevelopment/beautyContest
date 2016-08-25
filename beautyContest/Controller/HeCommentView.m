@@ -10,12 +10,15 @@
 #import "AppDelegate.h"
 #import "HeTabBarVC.h"
 #import "CustomNavigationController.h"
+#import "CPTextViewPlaceholder.h"
 
-@interface HeCommentView ()
+@interface HeCommentView ()<UITextViewDelegate>
+@property(strong,nonatomic)IBOutlet CPTextViewPlaceholder *commentTextView;
 
 @end
 
 @implementation HeCommentView
+@synthesize commentTextView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -39,7 +42,7 @@
     
     UIImage *navBackgroundImage = [UIImage imageNamed:@"NavBarIOS7"];
     NSDictionary *attributeDict = @{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:20.0]};
-    
+    rectNav.origin.y = 0;
     UINavigationBar *narvigationBar = [[UINavigationBar alloc] initWithFrame:rectNav];
     [narvigationBar setTintColor:NAVTINTCOLOR];
     [narvigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
@@ -72,6 +75,12 @@
     
     navitem.leftBarButtonItem = cancelItem;
     navitem.rightBarButtonItem = commentItem;
+    
+    commentTextView.placeholder = @"请输入评论内容";
+    commentTextView.layer.borderColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0].CGColor;
+    commentTextView.layer.borderWidth = 1.0;
+    commentTextView.layer.cornerRadius = 5.0;
+    commentTextView.layer.masksToBounds = YES;
 }
 
 - (void)cancelComment:(UIBarButtonItem *)item
@@ -81,8 +90,25 @@
 
 - (void)comment:(UIBarButtonItem *)item
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    NSString *commentText = commentTextView.text;
+    if ([commentText isEqualToString:@""] || commentText == nil) {
+        [self showHint:@"请输入评论内容"];
+        return;
+    }
+    User *userInfo = [HeSysbsModel getSysModel].user;
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.commentDelegate commentWithText:commentText user:userInfo];
+    }];
 }
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    if ([textView isFirstResponder]) {
+        [textView resignFirstResponder];
+    }
+    return YES;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

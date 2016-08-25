@@ -1083,6 +1083,9 @@
     CGFloat iconX = frame.size.width / 2.0 - 10 - iconW;
     
     UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
+    if (image == nil) {
+        iconW = frame.size.width;
+    }
     icon.frame = CGRectMake(iconX, iconY, iconW, iconH);
     
     UILabel *titleLabel = [[UILabel alloc] init];
@@ -1094,6 +1097,11 @@
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [btn addSubview:titleLabel];
     [btn addSubview:icon];
+    if (image == nil) {
+        titleLabel.frame = CGRectMake(0, iconY, frame.size.width, iconH);
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    
     return btn;
 }
 

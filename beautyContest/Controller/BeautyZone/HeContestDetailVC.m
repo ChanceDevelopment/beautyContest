@@ -11,10 +11,12 @@
 #import "HeBaseTableViewCell.h"
 #import "HeContestRankVC.h"
 #import "HeBaseIconTitleTableCell.h"
+#import "HeCommentView.h"
+#import "HeContestZoneCommentVC.h"
 
 #define TextLineHeight 1.2f
-
-@interface HeContestDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+#define BGTAG 100
+@interface HeContestDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol>
 {
     BOOL requestReply; //是否已经完成
     NSInteger myRank;
@@ -91,6 +93,7 @@
     tableview.tableHeaderView = sectionHeaderView;
     
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index2.jpg"]];
+    bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
     bgImage.userInteractionEnabled = YES;
     [sectionHeaderView addSubview:bgImage];
@@ -113,17 +116,66 @@
     [joinButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [joinButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
     [footerView addSubview:joinButton];
+    joinButton.layer.cornerRadius = 3.0;
+    joinButton.layer.masksToBounds = YES;
     
     UIButton *commentButton = [Tool getButton:CGRectMake(SCREENWIDTH / 2.0 + buttonX, buttonY, buttonW, buttonH) title:@"评论" image:@"icon_comment"];
     joinButton.tag = 2;
-    [commentButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [commentButton addTarget:self action:@selector(massageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [commentButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
     [footerView addSubview:commentButton];
+    commentButton.layer.cornerRadius = 3.0;
+    commentButton.layer.masksToBounds = YES;
+}
+
+- (void)massageButtonClick:(UIButton *)button
+{
+    HeContestZoneCommentVC *commentZoneVC = [[HeContestZoneCommentVC alloc] init];
+    commentZoneVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
+    commentZoneVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:commentZoneVC animated:YES];
+}
+
+- (void)commentWithText:(NSString *)commentText user:(User *)commentUser
+{
+    NSLog(@"commentText = %@",commentText);
 }
 
 - (void)buttonClick:(UIButton *)button
 {
-
+    NSString *partInUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([partInUser isMemberOfClass:[NSNull class]] || partInUser == nil) {
+        partInUser = @"";
+    }
+    NSString *partInZone = contestDetailDict[@"zoneId"];
+    if ([partInZone isMemberOfClass:[NSNull class]] || partInZone == nil) {
+        partInZone = @"";
+    }
+    long long nowTime = [[NSDate date] timeIntervalSince1970];
+    NSString *timeSting = [NSString stringWithFormat:@"%lld",nowTime];
+    [self showHudInView:self.view hint:@"投票中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/partInZone.action",BASEURL];
+    NSDictionary *params = @{@"partInUser":partInUser,@"partInZone":partInZone,@"nowTime":timeSting};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [self showHint:@"成功参加"];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)shareButtonClick:(UIButton *)shareButton
@@ -150,6 +202,9 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             NSDictionary *jsonDict = [respondDict objectForKey:@"json"];
             contestDetailDict = [[NSDictionary alloc] initWithDictionary:jsonDict];
+            NSString *zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[contestDetailDict objectForKey:@"zoneCover"]];
+            UIImageView *imageview = [sectionHeaderView viewWithTag:BGTAG];
+            [imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
             [tableview reloadData];
         }
         else{

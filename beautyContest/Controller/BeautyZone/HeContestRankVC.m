@@ -451,8 +451,8 @@
     }
     
     HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
-    contantDetailVC.contestantBaseDict = [[NSDictionary alloc] initWithDictionary:contestDict];
-    contantDetailVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:dict];
+    contantDetailVC.contestantBaseDict = [[NSDictionary alloc] initWithDictionary:dict];
+    contantDetailVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:contestDict];
     contantDetailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:contantDetailVC animated:YES];
 }
