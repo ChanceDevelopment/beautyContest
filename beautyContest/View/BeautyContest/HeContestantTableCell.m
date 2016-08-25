@@ -31,6 +31,9 @@
         CGFloat imageW = imageH;
         
         userImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        userImage.layer.masksToBounds = YES;
+        userImage.layer.cornerRadius = imageW / 2.0;
+        userImage.contentMode = UIViewContentModeScaleAspectFill;
         userImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
         [self addSubview:userImage];
         

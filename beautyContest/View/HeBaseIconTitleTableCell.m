@@ -16,15 +16,15 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier cellSize:cellSize];
     if (self) {
-        CGFloat iconH = 25;
-        CGFloat iconW = 25;
+        CGFloat iconH = 20;
+        CGFloat iconW = 20;
         CGFloat iconX = 10;
         CGFloat iconY = (cellSize.height - iconH) / 2.0;
         icon = [[UIImageView alloc] init];
         icon.frame = CGRectMake(iconX, iconY, iconW, iconH);
         [self addSubview:icon];
         
-        UIFont *textFont = [UIFont systemFontOfSize:16.0];
+        UIFont *textFont = [UIFont systemFontOfSize:15.0];
         
         CGFloat titleX = iconX + iconW + 10;
         CGFloat titleY = 0;

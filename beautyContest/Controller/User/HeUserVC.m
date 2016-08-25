@@ -13,6 +13,8 @@
 #import "HeSysbsModel.h"
 #import "MLLinkLabel.h"
 #import "HeUserJoinVC.h"
+#import "HeUserDistributeVC.h"
+#import "HeUserAlbumVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -305,6 +307,18 @@
     switch (section) {
         case 0:{
             switch (row) {
+                case 0:{
+                    HeUserAlbumVC *albumVC = [[HeUserAlbumVC alloc] init];
+                    albumVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:albumVC animated:YES];
+                    break;
+                }
+                case 1:{
+                    HeUserDistributeVC *distributeContestVC = [[HeUserDistributeVC alloc] init];
+                    distributeContestVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:distributeContestVC animated:YES];
+                    break;
+                }
                 case 2:{
                     HeUserJoinVC *userJoinVC = [[HeUserJoinVC alloc] init];
                     userJoinVC.hidesBottomBarWhenPushed = YES;

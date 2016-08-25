@@ -9,5 +9,7 @@
 #import "HeBaseViewController.h"
 
 @interface HeContestantDetailVC : HeBaseViewController
+@property(strong,nonatomic)NSDictionary *contestantBaseDict;
+@property(strong,nonatomic)NSDictionary *contestZoneDict;
 
 @end

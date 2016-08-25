@@ -8,6 +8,7 @@
 
 #import "HeBaseTableViewCell.h"
 
+
 @interface HeContestantTableCell : HeBaseTableViewCell
 @property(strong,nonatomic)UIImageView *userImage;
 @property(strong,nonatomic)UILabel *nameLabel;

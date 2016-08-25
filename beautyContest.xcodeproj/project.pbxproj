@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA0508E91D6E9957003947EE /* HeContestZoneCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0508E71D6E9957003947EE /* HeContestZoneCommentVC.m */; };
+		EA0508EA1D6E9957003947EE /* HeContestZoneCommentVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0508E81D6E9957003947EE /* HeContestZoneCommentVC.xib */; };
+		EA0508EF1D6E9AD7003947EE /* HeCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0508ED1D6E9AD7003947EE /* HeCommentView.m */; };
+		EA0508F01D6E9AD7003947EE /* HeCommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0508EE1D6E9AD7003947EE /* HeCommentView.xib */; };
+		EA0508F41D6E9FE8003947EE /* HeUserDistributeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0508F21D6E9FE8003947EE /* HeUserDistributeVC.m */; };
+		EA0508F51D6E9FE8003947EE /* HeUserDistributeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0508F31D6E9FE8003947EE /* HeUserDistributeVC.xib */; };
+		EA0508F91D6EA000003947EE /* HeUserAlbumVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0508F71D6EA000003947EE /* HeUserAlbumVC.m */; };
+		EA0508FA1D6EA000003947EE /* HeUserAlbumVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0508F81D6EA000003947EE /* HeUserAlbumVC.xib */; };
+		EA0509021D6EA1AB003947EE /* HeUserDistributeContestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0509011D6EA1AB003947EE /* HeUserDistributeContestCell.m */; };
+		EA0509041D6EC24D003947EE /* icon_reward.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0509031D6EC24D003947EE /* icon_reward.png */; };
 		EA0E9D091D4C2676009CBF64 /* tabbar_normal_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9CFF1D4C2676009CBF64 /* tabbar_normal_background.png */; };
 		EA0E9D0A1D4C2676009CBF64 /* tabbar_normal_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D001D4C2676009CBF64 /* tabbar_normal_background@2x.png */; };
 		EA0E9D101D4C269E009CBF64 /* comonDefaultImage.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D0C1D4C269E009CBF64 /* comonDefaultImage.png */; };
@@ -569,6 +579,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA0508E61D6E9957003947EE /* HeContestZoneCommentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeContestZoneCommentVC.h; sourceTree = "<group>"; };
+		EA0508E71D6E9957003947EE /* HeContestZoneCommentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeContestZoneCommentVC.m; sourceTree = "<group>"; };
+		EA0508E81D6E9957003947EE /* HeContestZoneCommentVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeContestZoneCommentVC.xib; sourceTree = "<group>"; };
+		EA0508EC1D6E9AD7003947EE /* HeCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeCommentView.h; sourceTree = "<group>"; };
+		EA0508ED1D6E9AD7003947EE /* HeCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeCommentView.m; sourceTree = "<group>"; };
+		EA0508EE1D6E9AD7003947EE /* HeCommentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeCommentView.xib; sourceTree = "<group>"; };
+		EA0508F11D6E9FE8003947EE /* HeUserDistributeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserDistributeVC.h; sourceTree = "<group>"; };
+		EA0508F21D6E9FE8003947EE /* HeUserDistributeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserDistributeVC.m; sourceTree = "<group>"; };
+		EA0508F31D6E9FE8003947EE /* HeUserDistributeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserDistributeVC.xib; sourceTree = "<group>"; };
+		EA0508F61D6EA000003947EE /* HeUserAlbumVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserAlbumVC.h; sourceTree = "<group>"; };
+		EA0508F71D6EA000003947EE /* HeUserAlbumVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserAlbumVC.m; sourceTree = "<group>"; };
+		EA0508F81D6EA000003947EE /* HeUserAlbumVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserAlbumVC.xib; sourceTree = "<group>"; };
+		EA0509001D6EA1AB003947EE /* HeUserDistributeContestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserDistributeContestCell.h; sourceTree = "<group>"; };
+		EA0509011D6EA1AB003947EE /* HeUserDistributeContestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserDistributeContestCell.m; sourceTree = "<group>"; };
+		EA0509031D6EC24D003947EE /* icon_reward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_reward.png; sourceTree = "<group>"; };
 		EA0E9CFF1D4C2676009CBF64 /* tabbar_normal_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_normal_background.png; sourceTree = "<group>"; };
 		EA0E9D001D4C2676009CBF64 /* tabbar_normal_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_normal_background@2x.png"; sourceTree = "<group>"; };
 		EA0E9D0C1D4C269E009CBF64 /* comonDefaultImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comonDefaultImage.png; sourceTree = "<group>"; };
@@ -1599,6 +1624,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA0508EB1D6E9AAA003947EE /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				EA0508EC1D6E9AD7003947EE /* HeCommentView.h */,
+				EA0508ED1D6E9AD7003947EE /* HeCommentView.m */,
+				EA0508EE1D6E9AD7003947EE /* HeCommentView.xib */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
 		EA0E9CF51D4C258A009CBF64 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -1670,6 +1705,9 @@
 				EACC98431D50F59400E627B8 /* HeDistributeContestVC.h */,
 				EACC98441D50F59400E627B8 /* HeDistributeContestVC.m */,
 				EACC98451D50F59400E627B8 /* HeDistributeContestVC.xib */,
+				EA0508E61D6E9957003947EE /* HeContestZoneCommentVC.h */,
+				EA0508E71D6E9957003947EE /* HeContestZoneCommentVC.m */,
+				EA0508E81D6E9957003947EE /* HeContestZoneCommentVC.xib */,
 			);
 			path = BeautyZone;
 			sourceTree = "<group>";
@@ -1718,6 +1756,12 @@
 				EA9D934F1D6DF5CA003DFBBE /* HeUserJoinVC.h */,
 				EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */,
 				EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */,
+				EA0508F11D6E9FE8003947EE /* HeUserDistributeVC.h */,
+				EA0508F21D6E9FE8003947EE /* HeUserDistributeVC.m */,
+				EA0508F31D6E9FE8003947EE /* HeUserDistributeVC.xib */,
+				EA0508F61D6EA000003947EE /* HeUserAlbumVC.h */,
+				EA0508F71D6EA000003947EE /* HeUserAlbumVC.m */,
+				EA0508F81D6EA000003947EE /* HeUserAlbumVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1734,6 +1778,7 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EA0509031D6EC24D003947EE /* icon_reward.png */,
 				EA46454D1D51DA1C00CD539F /* icon_edit.png */,
 				EA4645491D51D8D700CD539F /* icon_sex_boy.png */,
 				EA46454A1D51D8D700CD539F /* icon_sex_girl.png */,
@@ -1868,6 +1913,8 @@
 			children = (
 				EA9D93541D6DF6F5003DFBBE /* HeUserJoinCell.h */,
 				EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */,
+				EA0509001D6EA1AB003947EE /* HeUserDistributeContestCell.h */,
+				EA0509011D6EA1AB003947EE /* HeUserDistributeContestCell.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -1989,6 +2036,7 @@
 		EAC2C9B51D4AF5CC00E282A8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				EA0508EB1D6E9AAA003947EE /* Common */,
 				EA0E9D281D4C2968009CBF64 /* Recommend */,
 				EA0E9D2C1D4C2968009CBF64 /* User */,
 				EA0E9D1C1D4C295F009CBF64 /* BeautyZone */,
@@ -3748,6 +3796,7 @@
 				EA4D01761D4D8FF100A0CCA1 /* index1.jpg in Resources */,
 				EAC2CCBD1D4AF5D800E282A8 /* LICENSE in Resources */,
 				EAC2CDE31D4AF5D800E282A8 /* sr_refresh@2X.png in Resources */,
+				EA0508F01D6E9AD7003947EE /* HeCommentView.xib in Resources */,
 				EAC2CD0F1D4AF5D800E282A8 /* blackArrow.png in Resources */,
 				EA4D01811D4D901700A0CCA1 /* home_can_change_bg_08.jpg in Resources */,
 				EA4D01801D4D901700A0CCA1 /* home_can_change_bg_07.jpg in Resources */,
@@ -3774,6 +3823,7 @@
 				EA4D01891D4D93E500A0CCA1 /* HeBaseTableViewCell.xib in Resources */,
 				EACC98351D50E5DB00E627B8 /* icon_nearby_message.png in Resources */,
 				EAC2CD111D4AF5D800E282A8 /* blueArrow.png in Resources */,
+				EA0508F51D6E9FE8003947EE /* HeUserDistributeVC.xib in Resources */,
 				EA4645481D51B9D800CD539F /* icon_love.png in Resources */,
 				EAC2CDF21D4AF5D800E282A8 /* ProvincesAndCities.plist in Resources */,
 				EA4645541D51ECC100CD539F /* FLCollectionSeparator.xib in Resources */,
@@ -3816,16 +3866,19 @@
 				EAC2CD061D4AF5D800E282A8 /* down_dark.png in Resources */,
 				EAC2CEAA1D4AF5EE00E282A8 /* README.txt in Resources */,
 				EAC2CD321D4AF5D800E282A8 /* MBProgressHUD.bundle in Resources */,
+				EA0509041D6EC24D003947EE /* icon_reward.png in Resources */,
 				EA4645361D51914900CD539F /* icon_sponsor.png in Resources */,
 				EAC2CD161D4AF5D800E282A8 /* grayArrow@2x.png in Resources */,
 				EAC2CDF11D4AF5D800E282A8 /* btn_021@2x.png in Resources */,
 				EAC2CEB11D4AF5EE00E282A8 /* zbar-help.html in Resources */,
+				EA0508EA1D6E9957003947EE /* HeContestZoneCommentVC.xib in Resources */,
 				EA46453A1D51916F00CD539F /* icon_puter.png in Resources */,
 				EA4D01481D4CEB9600A0CCA1 /* ios_guide_step_2.png in Resources */,
 				EA0E9D271D4C295F009CBF64 /* HeDiscoverVC.xib in Resources */,
 				EA4D01751D4D8FF100A0CCA1 /* index0.jpg in Resources */,
 				EA4D01671D4CF0A300A0CCA1 /* tabar_recommend_icon_active@2x.png in Resources */,
 				EAC2CDD11D4AF5D800E282A8 /* sharemore_pic@3x.png in Resources */,
+				EA0508FA1D6EA000003947EE /* HeUserAlbumVC.xib in Resources */,
 				EAC2CD621D4AF5D800E282A8 /* arrow_down1@2x.png in Resources */,
 				EAC2CDED1D4AF5D800E282A8 /* btn_020.press@2x.png in Resources */,
 				EA4D01781D4D8FF100A0CCA1 /* index3.jpg in Resources */,
@@ -3938,6 +3991,7 @@
 				EAC2CD411D4AF5D800E282A8 /* MJRefreshFooter.m in Sources */,
 				EAC2CD391D4AF5D800E282A8 /* MJPhotoProgressView.m in Sources */,
 				EAC2CCC71D4AF5D800E282A8 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
+				EA0508F91D6EA000003947EE /* HeUserAlbumVC.m in Sources */,
 				EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */,
 				EAC2CDD51D4AF5D800E282A8 /* SDWebImageCompat.m in Sources */,
 				EAC2CD4A1D4AF5D800E282A8 /* MJRefreshNormalHeader.m in Sources */,
@@ -4016,6 +4070,7 @@
 				EAC2CDA81D4AF5D800E282A8 /* RACSequence.m in Sources */,
 				EAC2CCE51D4AF5D800E282A8 /* JSBadgeView.m in Sources */,
 				EAC2CD7E1D4AF5D800E282A8 /* NSObject+RACKVOWrapper.m in Sources */,
+				EA0508EF1D6E9AD7003947EE /* HeCommentView.m in Sources */,
 				EAC2CD7A1D4AF5D800E282A8 /* NSInvocation+RACTypeParsing.m in Sources */,
 				EAC2CDB41D4AF5D800E282A8 /* RACTargetQueueScheduler.m in Sources */,
 				EAC2CED21D4AF71900E282A8 /* UIViewController+DismissKeyboard.m in Sources */,
@@ -4026,6 +4081,7 @@
 				EAC2CD791D4AF5D800E282A8 /* NSIndexSet+RACSequenceAdditions.m in Sources */,
 				EA9D93521D6DF5CA003DFBBE /* HeUserJoinVC.m in Sources */,
 				EAC2CE041D4AF5D800E282A8 /* UIButton+Bootstrap.m in Sources */,
+				EA0509021D6EA1AB003947EE /* HeUserDistributeContestCell.m in Sources */,
 				EAC2CE1C1D4AF5E000E282A8 /* AES128Util.m in Sources */,
 				EAC2CDFC1D4AF5D800E282A8 /* TZPhotoPreviewCell.m in Sources */,
 				EA8027E81D52DC20008BC4E6 /* AoiroSoraLayout.m in Sources */,
@@ -4147,6 +4203,7 @@
 				EAC2CEA01D4AF5EE00E282A8 /* split.c in Sources */,
 				EAC2CD8D1D4AF5D800E282A8 /* RACChannel.m in Sources */,
 				EAC2CCF71D4AF5D800E282A8 /* DFTableViewRefreshControl.m in Sources */,
+				EA0508F41D6E9FE8003947EE /* HeUserDistributeVC.m in Sources */,
 				EA4D01441D4CE8FF00A0CCA1 /* BBLaunchAdMonitor.m in Sources */,
 				EA8027EE1D52DC5B008BC4E6 /* RecommendCollectionViewCell.m in Sources */,
 				EAC2CDBE1D4AF5D800E282A8 /* UIButton+RACCommandSupport.m in Sources */,
@@ -4161,6 +4218,7 @@
 				EAC2CDCA1D4AF5D800E282A8 /* UITableViewCell+RACSignalSupport.m in Sources */,
 				EAC2CD641D4AF5D800E282A8 /* SICellSelection.m in Sources */,
 				EAC2CED01D4AF71900E282A8 /* NSString+Valid.m in Sources */,
+				EA0508E91D6E9957003947EE /* HeContestZoneCommentVC.m in Sources */,
 				EAC2CD141D4AF5D800E282A8 /* EGORefreshTableHeaderView.m in Sources */,
 				EAC2CD871D4AF5D800E282A8 /* NSURLConnection+RACSupport.m in Sources */,
 				EAC2CDBF1D4AF5D800E282A8 /* UICollectionReusableView+RACSignalSupport.m in Sources */,

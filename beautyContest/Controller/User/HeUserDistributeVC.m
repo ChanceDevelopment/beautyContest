@@ -6,15 +6,16 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeContestRankVC.h"
+#import "HeUserDistributeVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 #import "HeContestantDetailVC.h"
 #import "HeContestantTableCell.h"
+#import "HeUserDistributeContestCell.h"
 
 #define TextLineHeight 1.2f
 
-@interface HeContestRankVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface HeUserDistributeVC ()<UITableViewDelegate,UITableViewDataSource>
 {
     BOOL requestReply; //是否已经完成
 }
@@ -24,21 +25,16 @@
 @property(strong,nonatomic)EGORefreshTableHeaderView *refreshHeaderView;
 @property(strong,nonatomic)EGORefreshTableFootView *refreshFooterView;
 @property(assign,nonatomic)NSInteger pageNo;
-@property(strong,nonatomic)NSCache *imageCache;
 
 @end
 
-@implementation HeContestRankVC
+@implementation HeUserDistributeVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
 @synthesize refreshFooterView;
 @synthesize refreshHeaderView;
 @synthesize pageNo;
-@synthesize topManRank;
-@synthesize topWomanRank;
-@synthesize contestDict;
-@synthesize imageCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,10 +47,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的排名";
+        label.text = @"我的发布";
         [label sizeToFit];
         
-        self.title = @"我的排名";
+        self.title = @"我的发布";
     }
     return self;
 }
@@ -64,22 +60,11 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
-    if ([topManRank count] == 0) {
-        [self getManTopRank];
-    }
 }
 
 - (void)initializaiton
 {
     [super initializaiton];
-    if (!topManRank) {
-        topManRank = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    if (!topWomanRank) {
-        topWomanRank = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    imageCache = [[NSCache alloc] init];
-    dataSource = [[NSMutableArray alloc] initWithArray:topManRank];
 }
 
 - (void)initView
@@ -94,7 +79,7 @@
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
     
-    NSArray *buttonArray = @[@"我的男神",@"我的女神"];
+    NSArray *buttonArray = @[@"推荐",@"赛区"];
     for (NSInteger index = 0; index < [buttonArray count]; index++) {
         CGFloat buttonW = SCREENWIDTH / [buttonArray count];
         CGFloat buttonH = sectionHeaderView.frame.size.height;
@@ -108,83 +93,6 @@
         }
         [sectionHeaderView addSubview:button];
     }
-}
-
-
-- (void)getManTopRank
-{
-    [self showHudInView:self.view hint:@"加载中..."];
-    NSString *voteZone = contestDict[@"zoneId"];
-    if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
-        voteZone = @"";
-    }
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/getZoneManTop6.action",BASEURL];
-    NSDictionary *params = @{@"voteZone":voteZone};
-    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
-        [self hideHud];
-        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
-        NSDictionary *respondDict = [respondString objectFromJSONString];
-        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
-        
-        if (statueCode == REQUESTCODE_SUCCEED){
-            id jsonObj = [respondDict objectForKey:@"json"];
-            if ([jsonObj isKindOfClass:[NSArray class]]) {
-                [topManRank removeAllObjects];
-                for (NSDictionary *dict in jsonObj) {
-                    [topManRank addObject:dict];
-                }
-            }
-            dataSource = [[NSMutableArray alloc] initWithArray:topManRank];
-            [tableview reloadData];
-        }
-        else{
-            NSString *data = [respondDict objectForKey:@"data"];
-            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
-                data = ERRORREQUESTTIP;
-            }
-            [self showHint:data];
-        }
-    } failure:^(NSError *error){
-        [self showHint:ERRORREQUESTTIP];
-    }];
-}
-
-- (void)getWomanRank
-{
-    [self showHudInView:self.view hint:@"加载中..."];
-    NSString *voteZone = contestDict[@"zoneId"];
-    if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
-        voteZone = @"";
-    }
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/getZoneWomanTop6.action",BASEURL];
-    NSDictionary *params = @{@"voteZone":voteZone};
-    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
-        [self hideHud];
-        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
-        NSDictionary *respondDict = [respondString objectFromJSONString];
-        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
-        
-        if (statueCode == REQUESTCODE_SUCCEED){
-            id jsonObj = [respondDict objectForKey:@"json"];
-            if ([jsonObj isKindOfClass:[NSArray class]]) {
-                [topWomanRank removeAllObjects];
-                for (NSDictionary *dict in jsonObj) {
-                    [topWomanRank addObject:dict];
-                }
-            }
-            dataSource = [[NSMutableArray alloc] initWithArray:topWomanRank];
-            [tableview reloadData];
-        }
-        else{
-            NSString *data = [respondDict objectForKey:@"data"];
-            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
-                data = ERRORREQUESTTIP;
-            }
-            [self showHint:data];
-        }
-    } failure:^(NSError *error){
-        [self showHint:ERRORREQUESTTIP];
-    }];
 }
 
 - (UIButton *)buttonWithTitle:(NSString *)buttonTitle frame:(CGRect)buttonFrame
@@ -214,25 +122,12 @@
     if (button.tag == 100) {
         requestReply = NO;
     }
-    if (button.tag == 100 && [topManRank count] == 0) {
-        [self getManTopRank];
-    }
-    else if (button.tag == 101 && [topWomanRank count] == 0){
-        [self getWomanRank];
-    }
-    else if (button.tag == 100){
-        dataSource = [[NSMutableArray alloc] initWithArray:topManRank];
-        [tableview reloadData];
-    }
-    else if (button.tag == 101){
-        dataSource = [[NSMutableArray alloc] initWithArray:topWomanRank];
-        [tableview reloadData];
-    }
+    [self loadRankingDataShow:YES];
 }
 
 - (void)loadRankingDataShow:(BOOL)show
 {
-
+    
 }
 
 - (void)addFooterView
@@ -364,7 +259,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataSource count];
+    return 10;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -376,48 +271,17 @@
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeContestantTableCellIndentifier";
+    static NSString *cellIndentifier = @"HeUserDistributeContestCell";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     
     
-    HeContestantTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeUserDistributeContestCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeContestantTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell = [[HeUserDistributeContestCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    NSDictionary *dict = nil;
-    @try {
-        dict = dataSource[row];
-    } @catch (NSException *exception) {
-        
-    } @finally {
-        
-    }
-    NSString *userHeader = dict[@"userHeader"];
-    if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
-        userHeader = @"";
-    }
-    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
-    UIImageView *imageview = [imageCache objectForKey:userHeader];
-    if (!imageview) {
-        [cell.userImage sd_setImageWithURL:[NSURL URLWithString:userHeader]];
-        imageview = cell.userImage;
-    }
-    cell.userImage = imageview;
-    [cell addSubview:cell.userImage];
     
-    NSString *userNick = dict[@"userNick"];
-    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
-        userNick = @"";
-    }
-    cell.nameLabel.text = userNick;
-    
-    NSString *infoProfession = dict[@"infoProfession"];
-    if ([infoProfession isMemberOfClass:[NSNull class]] || infoProfession == nil) {
-        infoProfession = @"";
-    }
-    cell.distanceLabel.text = infoProfession;
     return cell;
 }
 
@@ -441,18 +305,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    NSDictionary *dict = nil;
-    @try {
-        dict = dataSource[row];
-    } @catch (NSException *exception) {
-        
-    } @finally {
-        
-    }
     
     HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
-    contantDetailVC.contestantBaseDict = [[NSDictionary alloc] initWithDictionary:contestDict];
-    contantDetailVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:dict];
     contantDetailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:contantDetailVC animated:YES];
 }

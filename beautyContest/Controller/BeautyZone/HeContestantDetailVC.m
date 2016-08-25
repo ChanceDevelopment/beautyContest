@@ -16,6 +16,9 @@
 @interface HeContestantDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 {
     BOOL requestReply; //是否已经完成
+    NSInteger contestantRank; //排名
+    NSInteger voteCount; //投票人数
+    BOOL haveVoted; //用户是否对参赛者投票
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
@@ -25,6 +28,9 @@
 @property(strong,nonatomic)UIImageView *detailImage;
 @property(strong,nonatomic)UILabel *userNoLabel;
 @property(strong,nonatomic)UILabel *supportNumLabel;
+@property(strong,nonatomic)NSDictionary *contestantDetailDict;
+@property(strong,nonatomic)NSMutableArray *contestantImageArray;
+@property(strong,nonatomic)NSMutableDictionary *contestantImageDict;
 
 @end
 
@@ -37,6 +43,11 @@
 @synthesize detailImage;
 @synthesize userNoLabel;
 @synthesize supportNumLabel;
+@synthesize contestantBaseDict;
+@synthesize contestZoneDict;
+@synthesize contestantDetailDict;
+@synthesize contestantImageArray;
+@synthesize contestantImageDict;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -62,11 +73,18 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    [self getContestantDetail];
+    [self getContestantRank];
+    [self getContestantVote];
+    [self getContestantHaveVote];
+    [self getPaperWall];
 }
 
 - (void)initializaiton
 {
     [super initializaiton];
+    contestantImageArray = [[NSMutableArray alloc] initWithCapacity:0];
+    contestantImageDict = [[NSMutableDictionary alloc] initWithCapacity:0];
 }
 
 - (void)initView
@@ -197,6 +215,195 @@
     [footerView addSubview:commentButton];
     
     
+}
+
+- (void)getContestantDetail
+{
+    NSString *zoneId = contestZoneDict[@"zoneId"];
+    if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
+        zoneId = @"";
+    }
+    NSString *userId = contestantBaseDict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+        userId = @"";
+    }
+    
+    [self showHudInView:self.view hint:@"加载中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/partInUserInfo.action",BASEURL];
+    NSDictionary *params = @{@"zoneId":zoneId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            NSDictionary *jsonDict = [respondDict objectForKey:@"json"];
+            contestantDetailDict = [[NSDictionary alloc] initWithDictionary:jsonDict];
+            [tableview reloadData];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+//排名
+- (void)getContestantRank
+{
+    NSString *voteZone = contestZoneDict[@"zoneId"];
+    if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
+        voteZone = @"";
+    }
+    NSString *voteUser = contestantBaseDict[@"userId"];
+    if ([voteUser isMemberOfClass:[NSNull class]] || voteUser == nil) {
+        voteUser = @"";
+    }
+    
+    [self showHudInView:self.view hint:@"加载中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/getMyZoneRank.action",BASEURL];
+    NSDictionary *params = @{@"voteZone":voteZone,@"voteUser":voteUser};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            id jsonObj = [respondDict objectForKey:@"json"];
+            contestantRank = [jsonObj integerValue];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+//            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+//        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+//投票人
+- (void)getContestantVote
+{
+    NSString *voteZone = contestZoneDict[@"zoneId"];
+    if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
+        voteZone = @"";
+    }
+    NSString *voteUser = contestantBaseDict[@"userId"];
+    if ([voteUser isMemberOfClass:[NSNull class]] || voteUser == nil) {
+        voteUser = @"";
+    }
+    
+    [self showHudInView:self.view hint:@"加载中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/getMyZoneRank.action",BASEURL];
+    NSDictionary *params = @{@"voteZone":voteZone,@"voteUser":voteUser};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            id jsonObj = [respondDict objectForKey:@"json"];
+            voteCount = [jsonObj integerValue];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+//            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+//        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+//是否参选
+- (void)getContestantHaveVote
+{
+    NSString *voteHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([voteHost isMemberOfClass:[NSNull class]] || voteHost == nil) {
+        voteHost = @"";
+    }
+    NSString *voteUser = contestantBaseDict[@"userId"];
+    if ([voteUser isMemberOfClass:[NSNull class]] || voteUser == nil) {
+        voteUser = @"";
+    }
+    
+    [self showHudInView:self.view hint:@"加载中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/havedVote.action",BASEURL];
+    NSDictionary *params = @{@"voteHost":voteHost,@"voteUser":voteUser};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            id jsonObj = [respondDict objectForKey:@"json"];
+            haveVoted = [jsonObj boolValue];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            //            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        //        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+//获取照片墙
+- (void)getPaperWall
+{
+    NSString *userId = contestantBaseDict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+        userId = @"";
+    }
+    
+    [self showHudInView:self.view hint:@"加载中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/paperWall/selectPaperWall.action",BASEURL];
+    NSDictionary *params = @{@"userId":userId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            id jsonObj = [respondDict objectForKey:@"json"];
+            contestantImageDict = [[NSMutableDictionary alloc] initWithDictionary:jsonObj];
+            NSString *wallUrl = [contestantImageDict objectForKey:@"wallUrl"];
+            NSArray *wallArray = [wallUrl componentsSeparatedByString:@","];
+            for (NSString *url in wallArray) {
+                NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
+                [contestantImageArray addObject:imageurl];
+            }
+            
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        //        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)followButtonClick:(UIButton *)button
