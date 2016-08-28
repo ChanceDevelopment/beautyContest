@@ -32,10 +32,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    
-    
     [self initialization];
     [self initShareSDK];
+
     [self umengTrack];
     [self initAPServiceWithOptions:launchOptions];
     BOOL showGuide = [self isShowIntroduce];
