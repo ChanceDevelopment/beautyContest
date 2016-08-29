@@ -1,18 +1,18 @@
 //
-//  HeUserAlbumVC.m
+//  HeUserMessageVC.m
 //  beautyContest
 //
-//  Created by Tony on 16/8/25.
+//  Created by Tony on 16/8/29.
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeUserAlbumVC.h"
+#import "HeUserMessageVC.h"
 
-@interface HeUserAlbumVC ()
+@interface HeUserMessageVC ()
 
 @end
 
-@implementation HeUserAlbumVC
+@implementation HeUserMessageVC
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -21,13 +21,14 @@
         // Custom initialization
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize:20.0];
-        label.textColor = [UIColor whiteColor];
+        label.font = APPDEFAULTTITLETEXTFONT;
+        label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"照片墙";
+        label.text = @"我的留言";
         [label sizeToFit];
-        self.title = @"照片墙";
+        
+        self.title = @"我的留言";
     }
     return self;
 }
@@ -42,21 +43,12 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    
 }
 
 - (void)initView
 {
     [super initView];
-    UIBarButtonItem *editItem = [[UIBarButtonItem alloc] init];
-    editItem.title = @"编辑";
-    editItem.target = self;
-    editItem.action = @selector(editAlbum:);
-    self.navigationItem.rightBarButtonItem = editItem;
-}
-
-- (void)editAlbum:(UIBarButtonItem *)item
-{
-    NSLog(@"item = %@",item);
 }
 
 - (void)didReceiveMemoryWarning {

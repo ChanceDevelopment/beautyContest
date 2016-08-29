@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA02293C1D7416CC00F57965 /* HeMyFansVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA02293A1D7416CC00F57965 /* HeMyFansVC.m */; };
+		EA02293D1D7416CC00F57965 /* HeMyFansVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA02293B1D7416CC00F57965 /* HeMyFansVC.xib */; };
+		EA0229401D74178200F57965 /* HeFansTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA02293F1D74178200F57965 /* HeFansTableCell.m */; };
+		EA0229441D7417D300F57965 /* HeUserFollowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0229421D7417D300F57965 /* HeUserFollowVC.m */; };
+		EA0229451D7417D300F57965 /* HeUserFollowVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0229431D7417D300F57965 /* HeUserFollowVC.xib */; };
+		EA0229481D74180800F57965 /* HeUserFollowTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0229471D74180800F57965 /* HeUserFollowTableCell.m */; };
+		EA02294C1D74195B00F57965 /* HeUserNearByVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA02294A1D74195B00F57965 /* HeUserNearByVC.m */; };
+		EA02294D1D74195B00F57965 /* HeUserNearByVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA02294B1D74195B00F57965 /* HeUserNearByVC.xib */; };
+		EA0229511D74197800F57965 /* HeUserMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA02294F1D74197800F57965 /* HeUserMessageVC.m */; };
+		EA0229521D74197800F57965 /* HeUserMessageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0229501D74197800F57965 /* HeUserMessageVC.xib */; };
 		EA0508E91D6E9957003947EE /* HeContestZoneCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0508E71D6E9957003947EE /* HeContestZoneCommentVC.m */; };
 		EA0508EA1D6E9957003947EE /* HeContestZoneCommentVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0508E81D6E9957003947EE /* HeContestZoneCommentVC.xib */; };
 		EA0508EF1D6E9AD7003947EE /* HeCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0508ED1D6E9AD7003947EE /* HeCommentView.m */; };
@@ -583,6 +593,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA0229391D7416CC00F57965 /* HeMyFansVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeMyFansVC.h; sourceTree = "<group>"; };
+		EA02293A1D7416CC00F57965 /* HeMyFansVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeMyFansVC.m; sourceTree = "<group>"; };
+		EA02293B1D7416CC00F57965 /* HeMyFansVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeMyFansVC.xib; sourceTree = "<group>"; };
+		EA02293E1D74178200F57965 /* HeFansTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeFansTableCell.h; sourceTree = "<group>"; };
+		EA02293F1D74178200F57965 /* HeFansTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeFansTableCell.m; sourceTree = "<group>"; };
+		EA0229411D7417D300F57965 /* HeUserFollowVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserFollowVC.h; sourceTree = "<group>"; };
+		EA0229421D7417D300F57965 /* HeUserFollowVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserFollowVC.m; sourceTree = "<group>"; };
+		EA0229431D7417D300F57965 /* HeUserFollowVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserFollowVC.xib; sourceTree = "<group>"; };
+		EA0229461D74180800F57965 /* HeUserFollowTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserFollowTableCell.h; sourceTree = "<group>"; };
+		EA0229471D74180800F57965 /* HeUserFollowTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserFollowTableCell.m; sourceTree = "<group>"; };
+		EA0229491D74195B00F57965 /* HeUserNearByVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserNearByVC.h; sourceTree = "<group>"; };
+		EA02294A1D74195B00F57965 /* HeUserNearByVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserNearByVC.m; sourceTree = "<group>"; };
+		EA02294B1D74195B00F57965 /* HeUserNearByVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserNearByVC.xib; sourceTree = "<group>"; };
+		EA02294E1D74197800F57965 /* HeUserMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserMessageVC.h; sourceTree = "<group>"; };
+		EA02294F1D74197800F57965 /* HeUserMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserMessageVC.m; sourceTree = "<group>"; };
+		EA0229501D74197800F57965 /* HeUserMessageVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserMessageVC.xib; sourceTree = "<group>"; };
 		EA0508E61D6E9957003947EE /* HeContestZoneCommentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeContestZoneCommentVC.h; sourceTree = "<group>"; };
 		EA0508E71D6E9957003947EE /* HeContestZoneCommentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeContestZoneCommentVC.m; sourceTree = "<group>"; };
 		EA0508E81D6E9957003947EE /* HeContestZoneCommentVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeContestZoneCommentVC.xib; sourceTree = "<group>"; };
@@ -1730,6 +1756,12 @@
 				EA4645281D51884000CD539F /* HeNearbyVC.h */,
 				EA4645291D51884000CD539F /* HeNearbyVC.m */,
 				EA46452A1D51884000CD539F /* HeNearbyVC.xib */,
+				EA0229491D74195B00F57965 /* HeUserNearByVC.h */,
+				EA02294A1D74195B00F57965 /* HeUserNearByVC.m */,
+				EA02294B1D74195B00F57965 /* HeUserNearByVC.xib */,
+				EA02294E1D74197800F57965 /* HeUserMessageVC.h */,
+				EA02294F1D74197800F57965 /* HeUserMessageVC.m */,
+				EA0229501D74197800F57965 /* HeUserMessageVC.xib */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -1771,6 +1803,12 @@
 				EA0508F61D6EA000003947EE /* HeUserAlbumVC.h */,
 				EA0508F71D6EA000003947EE /* HeUserAlbumVC.m */,
 				EA0508F81D6EA000003947EE /* HeUserAlbumVC.xib */,
+				EA0229391D7416CC00F57965 /* HeMyFansVC.h */,
+				EA02293A1D7416CC00F57965 /* HeMyFansVC.m */,
+				EA02293B1D7416CC00F57965 /* HeMyFansVC.xib */,
+				EA0229411D7417D300F57965 /* HeUserFollowVC.h */,
+				EA0229421D7417D300F57965 /* HeUserFollowVC.m */,
+				EA0229431D7417D300F57965 /* HeUserFollowVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1929,6 +1967,10 @@
 				EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */,
 				EA0509001D6EA1AB003947EE /* HeUserDistributeContestCell.h */,
 				EA0509011D6EA1AB003947EE /* HeUserDistributeContestCell.m */,
+				EA02293E1D74178200F57965 /* HeFansTableCell.h */,
+				EA02293F1D74178200F57965 /* HeFansTableCell.m */,
+				EA0229461D74180800F57965 /* HeUserFollowTableCell.h */,
+				EA0229471D74180800F57965 /* HeUserFollowTableCell.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -3889,15 +3931,19 @@
 				EAC2CEB11D4AF5EE00E282A8 /* zbar-help.html in Resources */,
 				EA0508EA1D6E9957003947EE /* HeContestZoneCommentVC.xib in Resources */,
 				EA46453A1D51916F00CD539F /* icon_puter.png in Resources */,
+				EA0229521D74197800F57965 /* HeUserMessageVC.xib in Resources */,
 				EA4D01481D4CEB9600A0CCA1 /* ios_guide_step_2.png in Resources */,
 				EA0E9D271D4C295F009CBF64 /* HeDiscoverVC.xib in Resources */,
 				EA4D01751D4D8FF100A0CCA1 /* index0.jpg in Resources */,
 				EAB538DA1D6F4EB2008BCC17 /* icon_delete.png in Resources */,
 				EA4D01671D4CF0A300A0CCA1 /* tabar_recommend_icon_active@2x.png in Resources */,
+				EA02294D1D74195B00F57965 /* HeUserNearByVC.xib in Resources */,
+				EA0229451D7417D300F57965 /* HeUserFollowVC.xib in Resources */,
 				EAC2CDD11D4AF5D800E282A8 /* sharemore_pic@3x.png in Resources */,
 				EA0508FA1D6EA000003947EE /* HeUserAlbumVC.xib in Resources */,
 				EAC2CD621D4AF5D800E282A8 /* arrow_down1@2x.png in Resources */,
 				EAC2CDED1D4AF5D800E282A8 /* btn_020.press@2x.png in Resources */,
+				EA02293D1D7416CC00F57965 /* HeMyFansVC.xib in Resources */,
 				EA4D01781D4D8FF100A0CCA1 /* index3.jpg in Resources */,
 				EAC4F9ED1D6D8B0000F96DDA /* HeSettingVC.xib in Resources */,
 				EA46454E1D51DA1C00CD539F /* icon_edit.png in Resources */,
@@ -4000,6 +4046,7 @@
 				EAC2C90B1D4AF0E600E282A8 /* ViewController.m in Sources */,
 				EAC2CCF61D4AF5D800E282A8 /* DFTableViewODRefreshControl.m in Sources */,
 				EACC98461D50F59400E627B8 /* HeDistributeContestVC.m in Sources */,
+				EA0229511D74197800F57965 /* HeUserMessageVC.m in Sources */,
 				EAC2CCD11D4AF5D800E282A8 /* BrowserView.m in Sources */,
 				EAC2CD911D4AF5D800E282A8 /* RACDelegateProxy.m in Sources */,
 				EAC2CCC91D4AF5D800E282A8 /* ASIDataCompressor.m in Sources */,
@@ -4132,6 +4179,7 @@
 				EAC2CCEE1D4AF5D800E282A8 /* DFSandboxHelper.m in Sources */,
 				EAC2CDDE1D4AF5D800E282A8 /* UIImage+WebP.m in Sources */,
 				EAC2CDFA1D4AF5D800E282A8 /* TZImagePickerController.m in Sources */,
+				EA02294C1D74195B00F57965 /* HeUserNearByVC.m in Sources */,
 				EA0E9D241D4C295F009CBF64 /* HeBeautyZoneVC.m in Sources */,
 				EAC2CD981D4AF5D800E282A8 /* RACErrorSignal.m in Sources */,
 				EAC2CDB81D4AF5D800E282A8 /* RACUnarySequence.m in Sources */,
@@ -4144,6 +4192,7 @@
 				EAC2CD251D4AF5D800E282A8 /* IQSegmentedNextPrevious.m in Sources */,
 				EAC2CD8E1D4AF5D800E282A8 /* RACCommand.m in Sources */,
 				EAC2CDA41D4AF5D800E282A8 /* RACReplaySubject.m in Sources */,
+				EA0229481D74180800F57965 /* HeUserFollowTableCell.m in Sources */,
 				EAC2CD0D1D4AF5D800E282A8 /* i2KEPCSingleComponentPickerView.m in Sources */,
 				EAC4F9E71D6D72B700F96DDA /* HeEnrollVC.m in Sources */,
 				EAC2CDEA1D4AF5D800E282A8 /* SVProgressHUD.m in Sources */,
@@ -4170,6 +4219,7 @@
 				EAC2CD831D4AF5D800E282A8 /* NSSet+RACSequenceAdditions.m in Sources */,
 				EAC2CDBA1D4AF5D800E282A8 /* RACValueTransformer.m in Sources */,
 				EAC2CD861D4AF5D800E282A8 /* NSString+RACSupport.m in Sources */,
+				EA0229441D7417D300F57965 /* HeUserFollowVC.m in Sources */,
 				EAC2CCC51D4AF5D800E282A8 /* UIRefreshControl+AFNetworking.m in Sources */,
 				EAC2CD3F1D4AF5D800E282A8 /* MJRefreshBackFooter.m in Sources */,
 				EA4D018D1D4D94AB00A0CCA1 /* HeContestDetailVC.m in Sources */,
@@ -4204,6 +4254,7 @@
 				EAC2CDC11D4AF5D800E282A8 /* UIControl+RACSignalSupportPrivate.m in Sources */,
 				EAC2CCED1D4AF5D800E282A8 /* DFImageHelper.m in Sources */,
 				EAC2CCC01D4AF5D800E282A8 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				EA02293C1D7416CC00F57965 /* HeMyFansVC.m in Sources */,
 				EAC2CD891D4AF5D800E282A8 /* RACArraySequence.m in Sources */,
 				EAC2CCD01D4AF5D800E282A8 /* AsynImageView.m in Sources */,
 				EAC2CD921D4AF5D800E282A8 /* RACDisposable.m in Sources */,
@@ -4318,6 +4369,7 @@
 				EAC2CCE01D4AF5D800E282A8 /* DFBaseViewController.m in Sources */,
 				EAC2CDCD1D4AF5D800E282A8 /* UITextView+RACSignalSupport.m in Sources */,
 				EAC2CD8F1D4AF5D800E282A8 /* RACCompoundDisposable.m in Sources */,
+				EA0229401D74178200F57965 /* HeFansTableCell.m in Sources */,
 				EAC2CD311D4AF5D800E282A8 /* MBProgressHUD+Add.m in Sources */,
 				EAC2CD681D4AF5D800E282A8 /* SIMenuTable.m in Sources */,
 				EAC2CDC91D4AF5D800E282A8 /* UISwitch+RACSignalSupport.m in Sources */,

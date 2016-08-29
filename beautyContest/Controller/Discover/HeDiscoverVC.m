@@ -10,6 +10,8 @@
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 #import "HeNearbyVC.h"
+#import "HeUserNearByVC.h"
+#import "HeUserMessageVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -160,9 +162,17 @@
     switch (row) {
         case 0:
         {
+            //附近颜值
+            HeUserNearByVC *nearByUserVC = [[HeUserNearByVC alloc] init];
+            nearByUserVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:nearByUserVC animated:YES];
             break;
         }
         case 1:{
+            //我的留言
+            HeUserMessageVC *messageVC = [[HeUserMessageVC alloc] init];
+            messageVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:messageVC animated:YES];
             break;
         }
         case 2:{

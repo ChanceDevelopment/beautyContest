@@ -477,7 +477,7 @@
     zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
     UIImageView *imageview = [imageCache objectForKey:zoneCover];
     if (!imageview) {
-        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
+        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         imageview = cell.bgImage;
     }
     cell.bgImage = imageview;
@@ -491,7 +491,7 @@
     userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
     UIImageView *userHearimageview = [imageCache objectForKey:userHear];
     if (!userHearimageview) {
-        [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHear]];
+        [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHear] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
         userHearimageview = cell.detailImage;
     }
     cell.detailImage = userHearimageview;
