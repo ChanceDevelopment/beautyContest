@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeUserFollowVC">
+            <connections>
+                <outlet property="tableview" destination="3RO-v5-265" id="ybu-o9-eR2"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3RO-v5-265">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="5Oe-xu-kIn"/>
+                        <outlet property="delegate" destination="-1" id="UGz-Ef-xHG"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="3RO-v5-265" secondAttribute="bottom" id="9zI-3e-dhc"/>
+                <constraint firstItem="3RO-v5-265" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="GTZ-9f-3bA"/>
+                <constraint firstItem="3RO-v5-265" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="IVN-7G-0PE"/>
+                <constraint firstAttribute="trailing" secondItem="3RO-v5-265" secondAttribute="trailing" id="MO5-ip-HqG"/>
+            </constraints>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="3RO-v5-265"/>
+                </mask>
+                <mask key="constraints">
+                    <exclude reference="9zI-3e-dhc"/>
+                    <exclude reference="GTZ-9f-3bA"/>
+                    <exclude reference="IVN-7G-0PE"/>
+                    <exclude reference="MO5-ip-HqG"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="subviews">
+                    <include reference="3RO-v5-265"/>
+                </mask>
+                <mask key="constraints">
+                    <include reference="9zI-3e-dhc"/>
+                    <include reference="GTZ-9f-3bA"/>
+                    <include reference="IVN-7G-0PE"/>
+                    <include reference="MO5-ip-HqG"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>

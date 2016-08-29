@@ -13,7 +13,7 @@
 
 - (void)setModel:(Recommend *)model
 {
-    [self.MyImage sd_setImageWithURL:[NSURL URLWithString:model.headline_img] placeholderImage:[UIImage imageNamed:@"index1.jpg"]];
+    [self.MyImage sd_setImageWithURL:[NSURL URLWithString:model.headline_img] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
    
     
         

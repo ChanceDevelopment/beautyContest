@@ -155,13 +155,13 @@
     followButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
     [followButton setTitle:@"关注" forState:UIControlStateNormal];
     [followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [followButton.titleLabel setFont:[UIFont systemFontOfSize:11.0]];
     followButton.layer.masksToBounds = YES;
     followButton.layer.cornerRadius = 3.0;
     followButton.layer.borderWidth = 1.0;
     [followButton.titleLabel setFont:textFont];
     [followButton addTarget:self action:@selector(followButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [followButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:followButton.frame.size] forState:UIControlStateNormal];
+    [followButton.titleLabel setFont:[UIFont systemFontOfSize:11.0]];
     followButton.layer.borderColor = APPDEFAULTORANGE.CGColor;
     [bgImage addSubview:followButton];
     

@@ -15,6 +15,8 @@
 #import "HeUserJoinVC.h"
 #import "HeUserDistributeVC.h"
 #import "HeUserAlbumVC.h"
+#import "HeMyFansVC.h"
+#import "HeUserFollowVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -230,6 +232,26 @@
 - (void)filterButtonClick:(UIButton *)button
 {
     NSLog(@"button = %@",button);
+    NSInteger tag = button.tag;
+    NSInteger index = tag - 100;
+    switch (index) {
+        case 0:
+        {
+            HeMyFansVC *userFansVC = [[HeMyFansVC alloc] init];
+            userFansVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:userFansVC animated:YES];
+            break;
+        }
+        case 2:
+        {
+            HeUserFollowVC *userFollowVC = [[HeUserFollowVC alloc] init];
+            userFollowVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:userFollowVC animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
