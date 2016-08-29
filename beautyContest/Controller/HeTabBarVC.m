@@ -82,6 +82,7 @@
 //    }
     NSString *getUserTicketUrl = [NSString stringWithFormat:@"%@/vote/selectVoteCount.action",BASEURL];
     NSString *voteUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    
     if (voteUser == nil) {
         voteUser = @"";
     }
