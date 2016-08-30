@@ -9,5 +9,11 @@
 #import "HeBaseTableViewCell.h"
 
 @interface HeUserFollowTableCell : HeBaseTableViewCell
+@property(strong,nonatomic)UIImageView *userHeadImage;
+@property(strong,nonatomic)UILabel *nameLabel;
+@property(strong,nonatomic)UILabel *signLabel;
+@property(strong,nonatomic)UIButton *followButton;
+
+@property(strong,nonatomic)NSDictionary *userInfo;
 
 @end

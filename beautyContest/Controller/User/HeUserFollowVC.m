@@ -16,6 +16,7 @@
 @property(strong,nonatomic)EGORefreshTableHeaderView *refreshHeaderView;
 @property(strong,nonatomic)EGORefreshTableFootView *refreshFooterView;
 @property(assign,nonatomic)NSInteger pageNo;
+@property(strong,nonatomic)NSCache *imageCache;
 
 @end
 
@@ -26,6 +27,7 @@
 @synthesize refreshFooterView;
 @synthesize refreshHeaderView;
 @synthesize pageNo;
+@synthesize imageCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,14 +53,16 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    [self loadNearbyUserShow:YES];
 }
 
 - (void)initializaiton
 {
     [super initializaiton];
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
-    pageNo = 1;
+    pageNo = 0;
     updateOption = 1;
+    imageCache = [[NSCache alloc] init];
 }
 
 - (void)initView
@@ -78,7 +82,96 @@
 
 - (void)loadNearbyUserShow:(BOOL)show
 {
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getmyfollow.action",BASEURL];
     
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userid) {
+        userid = @"";
+    }
+    NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
+    NSDictionary *requestMessageParams = @{@"hostId":userid,@"start":pageNum};
+    [self showHudInView:self.tableview hint:@"正在获取..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        if (show) {
+            [Waiting dismiss];
+        }
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            if (updateOption == 1) {
+                [dataSource removeAllObjects];
+            }
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if ([resultArray isKindOfClass:[NSArray class]]) {
+                for (NSDictionary *zoneDict in resultArray) {
+                    [dataSource addObject:zoneDict];
+                }
+            }
+            [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
+            [self.tableview reloadData];
+        }
+        else{
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if (updateOption == 2 && [resultArray count] == 0) {
+                pageNo--;
+                return;
+            }
+        }
+    } failure:^(NSError *error){
+        if (show) {
+            [Waiting dismiss];
+        }
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
+- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
+{
+    if ([eventName isEqualToString:@"cancelFollow"]) {
+        NSString *hostId = userInfo[@"userId"];
+        [self cancelFollowWithHostId:hostId];
+        return;
+    }
+    [super routerEventWithName:eventName userInfo:userInfo];
+}
+
+- (void)cancelFollowWithHostId:(NSString *)hostId
+{
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/cancelfollow.action",BASEURL];
+    
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userid) {
+        userid = @"";
+    }
+    NSDictionary *requestMessageParams = @{@"userId":userid,@"hostId":hostId};
+    [self showHudInView:self.tableview hint:@"正在取消..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [self showHint:@"取消成功"];
+            pageNo = 0;
+            updateOption = 1;
+            [self loadNearbyUserShow:YES];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil || [data isEqualToString:@""]) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)addFooterView
@@ -211,7 +304,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [dataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -242,14 +335,37 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    cell.userInfo = dict;
     
+    NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[dict objectForKey:@"userHeader"]];
+    NSString *imageKey = [NSString stringWithFormat:@"%@_%ld",userHeader,row];
+    UIImageView *imageview = [imageCache objectForKey:imageKey];
+    if (!imageview) {
+        [cell.userHeadImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        imageview = cell.userHeadImage;
+        [imageCache setObject:imageview forKey:userHeader];
+    }
+    cell.userHeadImage = imageview;
+    [cell addSubview:cell.userHeadImage];
+    
+    NSString *userNick = dict[@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+        userNick = @"";
+    }
+    cell.nameLabel.text = userNick;
+    
+    NSString *userSign = dict[@"userSign"];
+    if ([userSign isMemberOfClass:[NSNull class]] || userSign == nil) {
+        userSign = @"";
+    }
+    cell.signLabel.text = userSign;
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 60;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
