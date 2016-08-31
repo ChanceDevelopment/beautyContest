@@ -22,6 +22,7 @@
 #import "SDRefreshFooterView.h"
 #import "SDRefreshHeaderView.h"
 #import "HeDistributeRecommendVC.h"
+#import "HeRecommendDetailVC.h"
 
 #define TextLineHeight 1.2f
 #define imageurl @"http://i1.15yan.guokr.cn/u0bk6rs5q79lnochkx3vj1ki18zjcobh.jpg!content"
@@ -407,6 +408,9 @@
     NSLog(@"第 %ld 个cell",(long)indexPath.row);
     Recommend * model = self.modelArray[indexPath.row];
     NSLog(@"%@",model.headline_img);
+    HeRecommendDetailVC *recommendVC = [[HeRecommendDetailVC alloc] init];
+    recommendVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:recommendVC animated:YES];
 }
 
 #pragma mark --UICollectionViewDelegate
@@ -419,7 +423,7 @@
     if (section == 1) {
         return YES;
     }
-    return NO;
+    return YES;
 }
 
 //放大缩小效果

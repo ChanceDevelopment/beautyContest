@@ -17,6 +17,7 @@
 #import "HeUserAlbumVC.h"
 #import "HeMyFansVC.h"
 #import "HeUserFollowVC.h"
+#import "HeUserFinanceVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -86,8 +87,8 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    dataSource = @[@[@"我的相册",@"我的发布",@"我的参与"],@[@"设置"]];
-    iconDataSource = @[@[@"icon_album",@"icon_put",@"icon_participation"],@[@"icon_setting"]];
+    dataSource = @[@[@"我的相册",@"我的发布",@"我的参与",@"我的资金"],@[@"设置"]];
+    iconDataSource = @[@[@"icon_album",@"icon_put",@"icon_participation",@"icon_reward"],@[@"icon_setting"]];
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
 }
 
@@ -345,6 +346,13 @@
                     HeUserJoinVC *userJoinVC = [[HeUserJoinVC alloc] init];
                     userJoinVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:userJoinVC animated:YES];
+                    break;
+                }
+                case 3:{
+                    HeUserFinanceVC *financeVC = [[HeUserFinanceVC alloc] init];
+                    financeVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:financeVC animated:YES];
+                    break;
                 }
                 default:
                     break;

@@ -20,7 +20,7 @@
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
 #define TextLineHeight 1.2f
 
-@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate>
+@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView>
 {
     BMKLocationService *_locService;
     BMKGeoCodeSearch *_geoSearch;
@@ -84,7 +84,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    iconDataSource = @[@[@""],@[@""],@[@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"",@""]];
+    iconDataSource = @[@[@""],@[@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"",@""]];
     titleDataSource = @[@[@""],@[@"截止时间",@"定位",@"男生参加",@"女生参加",@"",@""]];
     switchDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     [switchDict setObject:@YES forKey:@"2"];
@@ -104,6 +104,9 @@
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
+    UIView *headerview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 1)];
+    tableview.tableHeaderView = headerview;
+    
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
@@ -112,6 +115,8 @@
     coverImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index2.jpg"]];
     coverImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
     coverImage.userInteractionEnabled = YES;
+    coverImage.layer.masksToBounds = YES;
+    coverImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:coverImage];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editImageTap:)];
@@ -151,7 +156,7 @@
     //启动LocationService
     _locService.desiredAccuracy = kCLLocationAccuracyBest;
     _locService.distanceFilter  = 1.5f;
-    
+    [_locService startUserLocationService];
     _geoSearch = [[BMKGeoCodeSearch alloc] init];
     _geoSearch.delegate = self;
     
@@ -324,6 +329,10 @@
     
 }
 
+- (void)myactionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self.bgview removeFromSuperview];
+}
 -(void)actionSheetPickerView:(IQActionSheetPickerView *)pickerView didSelectTitles:(NSArray *)titles
 {
     NSString *datestring = [titles componentsJoinedByString:@"-"];
@@ -422,17 +431,18 @@
                     CGFloat iconY = (cellSize.height - iconH) / 2.0;
                     UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"appIcon"]];
                     icon.frame = CGRectMake(iconX , iconY, iconW, iconH);
-                    [cell addSubview:icon];
+//                    [cell addSubview:icon];
                     
-                    if (self.tmpDateString == nil) {
-                        self.tmpDateString = @"请选择日期";
-                    }
-                    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, SCREENWIDTH - iconW - 15 - 100, cellSize.height)];
+                    
+                    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, SCREENWIDTH - 10 - 100, cellSize.height)];
                     tipLabel.textAlignment = NSTextAlignmentRight;
                     tipLabel.backgroundColor = [UIColor clearColor];
                     tipLabel.textColor = APPDEFAULTORANGE;
                     tipLabel.font = textFont;
                     tipLabel.text = self.tmpDateString;
+                    if (self.tmpDateString == nil) {
+                        tipLabel.text = @"请选择日期";
+                    }
                     [cell addSubview:tipLabel];
                     
                     break;
@@ -447,10 +457,11 @@
 //                    icon.frame = CGRectMake(iconX , iconY, iconW, iconH);
 //                    [cell addSubview:icon];
                     
-                    CGFloat textW = 250;
+                    CGFloat textW = 220;
                     CGFloat textH = cellSize.height;
                     CGFloat textY = 0;
                     CGFloat textX = SCREENWIDTH - 10 - textW;
+                    addressField.textAlignment = NSTextAlignmentRight;
                     addressField.frame = CGRectMake(textX, textY, textW, textH);
                     [cell addSubview:addressField];
 //                    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, SCREENWIDTH - iconW - 15 - 100, cellSize.height)];
@@ -490,10 +501,11 @@
                 }
                 case 4:
                 {
-                    CGFloat textW = 250;
+                    CGFloat textW = 220;
                     CGFloat textH = cellSize.height;
                     CGFloat textY = 0;
                     CGFloat textX = SCREENWIDTH - 10 - textW;
+                    rewardField.textAlignment = NSTextAlignmentRight;
                     rewardField.frame = CGRectMake(textX, textY, textW, textH);
                     [cell addSubview:rewardField];
                     
@@ -555,7 +567,26 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 10.0;
+    if (section == 0) {
+        return 0.1;
+    }
+    return 10;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.1;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return nil;
+    }
+    
+    UIView *headerview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 10)];
+    headerview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    return headerview;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -564,7 +595,7 @@
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     switch (section) {
-        case 2:
+        case 1:
         {
             switch (row) {
                 case 0:
@@ -578,12 +609,15 @@
                         NSUInteger day = [cps day];
                         NSUInteger month = [cps month];
                         NSUInteger year = [cps year];
-                        self.tmpDateString = [NSString stringWithFormat:@"%d-%d-%d",(int)year,(int)month,(int)day];
+                        NSUInteger hour = [cps hour];
+                        NSUInteger minute = [cps minute];
+                        self.tmpDateString = [NSString stringWithFormat:@"%d-%d-%d %d:%d",(int)year,(int)month,(int)day,(int)hour,(int)minute];
                     }
                     
                     [self dateButtonClick:nil withString:self.tmpDateString];
                     break;
                 }
+                    
                 default:
                     break;
             }

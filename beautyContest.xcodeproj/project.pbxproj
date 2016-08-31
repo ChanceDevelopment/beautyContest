@@ -581,6 +581,21 @@
 		EADE32E21D76A57D0025492B /* BaiduMapAPI_Search.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EADE32D91D76A57C0025492B /* BaiduMapAPI_Search.framework */; };
 		EADE32E31D76A57D0025492B /* BaiduMapAPI_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EADE32DA1D76A57C0025492B /* BaiduMapAPI_Utils.framework */; };
 		EADE32E41D76A57D0025492B /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EADE32DC1D76A57C0025492B /* mapapi.bundle */; };
+		EADE32E81D76AF6A0025492B /* HeRecommendDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE32E61D76AF690025492B /* HeRecommendDetailVC.m */; };
+		EADE32E91D76AF6A0025492B /* HeRecommendDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE32E71D76AF690025492B /* HeRecommendDetailVC.xib */; };
+		EADE32EC1D76B2710025492B /* HeAlbumImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE32EB1D76B2710025492B /* HeAlbumImage.m */; };
+		EADE32EE1D76B37D0025492B /* album_checkBox.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE32ED1D76B37D0025492B /* album_checkBox.png */; };
+		EADE32F01D76B3860025492B /* album_uncheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE32EF1D76B3860025492B /* album_uncheckBox.png */; };
+		EADE32F41D76B4B30025492B /* HeDistributePhotoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE32F21D76B4B30025492B /* HeDistributePhotoVC.m */; };
+		EADE32F51D76B4B30025492B /* HeDistributePhotoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE32F31D76B4B30025492B /* HeDistributePhotoVC.xib */; };
+		EADE32FA1D76B4DD0025492B /* HeBaseDistributeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE32F81D76B4DD0025492B /* HeBaseDistributeVC.m */; };
+		EADE32FB1D76B4DD0025492B /* HeBaseDistributeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE32F91D76B4DD0025492B /* HeBaseDistributeVC.xib */; };
+		EADE32FF1D76B5310025492B /* ScanPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE32FE1D76B5310025492B /* ScanPictureView.m */; };
+		EADE33021D76B7A70025492B /* UIView+Genie.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE33011D76B7A70025492B /* UIView+Genie.m */; };
+		EADE33051D76BE220025492B /* distribute_addImageIcon_hightlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33031D76BE220025492B /* distribute_addImageIcon_hightlighted.png */; };
+		EADE33061D76BE220025492B /* distribute_addImageIcon_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33041D76BE220025492B /* distribute_addImageIcon_normal.png */; };
+		EADE330A1D76D2550025492B /* HeUserFinanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE33081D76D2550025492B /* HeUserFinanceVC.m */; };
+		EADE330B1D76D2550025492B /* HeUserFinanceVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE33091D76D2550025492B /* HeUserFinanceVC.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1607,6 +1622,29 @@
 		EADE32D91D76A57C0025492B /* BaiduMapAPI_Search.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Search.framework; sourceTree = "<group>"; };
 		EADE32DA1D76A57C0025492B /* BaiduMapAPI_Utils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Utils.framework; sourceTree = "<group>"; };
 		EADE32DC1D76A57C0025492B /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = mapapi.bundle; sourceTree = "<group>"; };
+		EADE32E51D76AF690025492B /* HeRecommendDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeRecommendDetailVC.h; sourceTree = "<group>"; };
+		EADE32E61D76AF690025492B /* HeRecommendDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendDetailVC.m; sourceTree = "<group>"; };
+		EADE32E71D76AF690025492B /* HeRecommendDetailVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeRecommendDetailVC.xib; sourceTree = "<group>"; };
+		EADE32EA1D76B2710025492B /* HeAlbumImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeAlbumImage.h; sourceTree = "<group>"; };
+		EADE32EB1D76B2710025492B /* HeAlbumImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeAlbumImage.m; sourceTree = "<group>"; };
+		EADE32ED1D76B37D0025492B /* album_checkBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = album_checkBox.png; sourceTree = "<group>"; };
+		EADE32EF1D76B3860025492B /* album_uncheckBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = album_uncheckBox.png; sourceTree = "<group>"; };
+		EADE32F11D76B4B30025492B /* HeDistributePhotoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeDistributePhotoVC.h; path = User/HeDistributePhotoVC.h; sourceTree = "<group>"; };
+		EADE32F21D76B4B30025492B /* HeDistributePhotoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeDistributePhotoVC.m; path = User/HeDistributePhotoVC.m; sourceTree = "<group>"; };
+		EADE32F31D76B4B30025492B /* HeDistributePhotoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HeDistributePhotoVC.xib; path = User/HeDistributePhotoVC.xib; sourceTree = "<group>"; };
+		EADE32F71D76B4DD0025492B /* HeBaseDistributeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBaseDistributeVC.h; sourceTree = "<group>"; };
+		EADE32F81D76B4DD0025492B /* HeBaseDistributeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBaseDistributeVC.m; sourceTree = "<group>"; };
+		EADE32F91D76B4DD0025492B /* HeBaseDistributeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBaseDistributeVC.xib; sourceTree = "<group>"; };
+		EADE32FC1D76B4F00025492B /* DeleteImageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteImageProtocol.h; sourceTree = "<group>"; };
+		EADE32FD1D76B5310025492B /* ScanPictureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanPictureView.h; sourceTree = "<group>"; };
+		EADE32FE1D76B5310025492B /* ScanPictureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanPictureView.m; sourceTree = "<group>"; };
+		EADE33001D76B7A70025492B /* UIView+Genie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Genie.h"; sourceTree = "<group>"; };
+		EADE33011D76B7A70025492B /* UIView+Genie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Genie.m"; sourceTree = "<group>"; };
+		EADE33031D76BE220025492B /* distribute_addImageIcon_hightlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = distribute_addImageIcon_hightlighted.png; sourceTree = "<group>"; };
+		EADE33041D76BE220025492B /* distribute_addImageIcon_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = distribute_addImageIcon_normal.png; sourceTree = "<group>"; };
+		EADE33071D76D2550025492B /* HeUserFinanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserFinanceVC.h; sourceTree = "<group>"; };
+		EADE33081D76D2550025492B /* HeUserFinanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserFinanceVC.m; sourceTree = "<group>"; };
+		EADE33091D76D2550025492B /* HeUserFinanceVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserFinanceVC.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1798,6 +1836,9 @@
 				EA9D934A1D6DE50A003DFBBE /* HeDistributeRecommendVC.h */,
 				EA9D934B1D6DE50A003DFBBE /* HeDistributeRecommendVC.m */,
 				EA9D934C1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib */,
+				EADE32E51D76AF690025492B /* HeRecommendDetailVC.h */,
+				EADE32E61D76AF690025492B /* HeRecommendDetailVC.m */,
+				EADE32E71D76AF690025492B /* HeRecommendDetailVC.xib */,
 			);
 			path = Recommend;
 			sourceTree = "<group>";
@@ -1832,6 +1873,9 @@
 				EA0229411D7417D300F57965 /* HeUserFollowVC.h */,
 				EA0229421D7417D300F57965 /* HeUserFollowVC.m */,
 				EA0229431D7417D300F57965 /* HeUserFollowVC.xib */,
+				EADE33071D76D2550025492B /* HeUserFinanceVC.h */,
+				EADE33081D76D2550025492B /* HeUserFinanceVC.m */,
+				EADE33091D76D2550025492B /* HeUserFinanceVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1848,6 +1892,10 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EADE33031D76BE220025492B /* distribute_addImageIcon_hightlighted.png */,
+				EADE33041D76BE220025492B /* distribute_addImageIcon_normal.png */,
+				EADE32EF1D76B3860025492B /* album_uncheckBox.png */,
+				EADE32ED1D76B37D0025492B /* album_checkBox.png */,
 				EAB538D91D6F4EB2008BCC17 /* icon_delete.png */,
 				EAB538D71D6F4CAE008BCC17 /* icon_add_pho.png */,
 				EAB538D51D6F4C77008BCC17 /* ic_empty.png */,
@@ -1923,6 +1971,8 @@
 		EA4D01831D4D93C600A0CCA1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EADE32EA1D76B2710025492B /* HeAlbumImage.h */,
+				EADE32EB1D76B2710025492B /* HeAlbumImage.m */,
 				EA9D93571D6DF6FB003DFBBE /* User */,
 				EA46454F1D51EA4A00CD539F /* Recommend */,
 				EA46452D1D51899100CD539F /* Discover */,
@@ -2115,6 +2165,7 @@
 		EAC2C9B51D4AF5CC00E282A8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				EADE32F61D76B4BC0025492B /* Distribute */,
 				EA0508EB1D6E9AAA003947EE /* Common */,
 				EA0E9D281D4C2968009CBF64 /* Recommend */,
 				EA0E9D2C1D4C2968009CBF64 /* User */,
@@ -3783,6 +3834,24 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		EADE32F61D76B4BC0025492B /* Distribute */ = {
+			isa = PBXGroup;
+			children = (
+				EADE33001D76B7A70025492B /* UIView+Genie.h */,
+				EADE33011D76B7A70025492B /* UIView+Genie.m */,
+				EADE32FD1D76B5310025492B /* ScanPictureView.h */,
+				EADE32FE1D76B5310025492B /* ScanPictureView.m */,
+				EADE32FC1D76B4F00025492B /* DeleteImageProtocol.h */,
+				EADE32F71D76B4DD0025492B /* HeBaseDistributeVC.h */,
+				EADE32F81D76B4DD0025492B /* HeBaseDistributeVC.m */,
+				EADE32F91D76B4DD0025492B /* HeBaseDistributeVC.xib */,
+				EADE32F11D76B4B30025492B /* HeDistributePhotoVC.h */,
+				EADE32F21D76B4B30025492B /* HeDistributePhotoVC.m */,
+				EADE32F31D76B4B30025492B /* HeDistributePhotoVC.xib */,
+			);
+			name = Distribute;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3894,6 +3963,7 @@
 			files = (
 				EACC983B1D50E7ED00E627B8 /* icon_participation.png in Resources */,
 				EA0E9D0A1D4C2676009CBF64 /* tabbar_normal_background@2x.png in Resources */,
+				EADE33051D76BE220025492B /* distribute_addImageIcon_hightlighted.png in Resources */,
 				EA46454B1D51D8D700CD539F /* icon_sex_boy.png in Resources */,
 				EAC2CDE91D4AF5D800E282A8 /* SVProgressHUD.bundle in Resources */,
 				EA4D01761D4D8FF100A0CCA1 /* index1.jpg in Resources */,
@@ -3907,6 +3977,7 @@
 				EA4D01681D4CF0A300A0CCA1 /* tabar_recommend_icon_normal@2x.png in Resources */,
 				EAC2CEAC1D4AF5EE00E282A8 /* ShareSDK.bundle in Resources */,
 				EAB538D81D6F4CAE008BCC17 /* icon_add_pho.png in Resources */,
+				EADE32F51D76B4B30025492B /* HeDistributePhotoVC.xib in Resources */,
 				EACC98421D50F4D700E627B8 /* icon_add.png in Resources */,
 				EAC2C9C81D4AF5CC00E282A8 /* HeBaseViewController.xib in Resources */,
 				EA4D017A1D4D8FF100A0CCA1 /* index5.jpg in Resources */,
@@ -3924,6 +3995,7 @@
 				EA4D01471D4CEB9600A0CCA1 /* ios_guide_step_1.png in Resources */,
 				EAC2CD221D4AF5D800E282A8 /* IQActionSheetPickerView.xib in Resources */,
 				EA46453C1D51927200CD539F /* icon_share.png in Resources */,
+				EADE32FB1D76B4DD0025492B /* HeBaseDistributeVC.xib in Resources */,
 				EA4D01891D4D93E500A0CCA1 /* HeBaseTableViewCell.xib in Resources */,
 				EACC98351D50E5DB00E627B8 /* icon_nearby_message.png in Resources */,
 				EAC2CD111D4AF5D800E282A8 /* blueArrow.png in Resources */,
@@ -3939,11 +4011,13 @@
 				EAC2CD6F1D4AF5D800E282A8 /* LICENSE.txt in Resources */,
 				EACC983D1D50E7F400E627B8 /* icon_setting.png in Resources */,
 				EA0E9D381D4C2979009CBF64 /* HeLoginVC.xib in Resources */,
+				EADE32E91D76AF6A0025492B /* HeRecommendDetailVC.xib in Resources */,
 				EAC2CE001D4AF5D800E282A8 /* FontAwesome.ttf in Resources */,
 				EAC2CDF01D4AF5D800E282A8 /* btn_021.press@2x.png in Resources */,
 				EA0E9D121D4C269E009CBF64 /* NavBarIOS7.png in Resources */,
 				EAC2C9131D4AF0E600E282A8 /* LaunchScreen.storyboard in Resources */,
 				EAC2CEB31D4AF5EE00E282A8 /* zbar-samples.png in Resources */,
+				EADE330B1D76D2550025492B /* HeUserFinanceVC.xib in Resources */,
 				EAC2CEA81D4AF5EE00E282A8 /* WeiboSDK.bundle in Resources */,
 				EAC2CD231D4AF5D800E282A8 /* IQKeyboardManager.bundle in Resources */,
 				EAC2CCFD1D4AF5D800E282A8 /* fail@3x.png in Resources */,
@@ -3976,6 +4050,7 @@
 				EAC2CD161D4AF5D800E282A8 /* grayArrow@2x.png in Resources */,
 				EAC2CDF11D4AF5D800E282A8 /* btn_021@2x.png in Resources */,
 				EAC2CEB11D4AF5EE00E282A8 /* zbar-help.html in Resources */,
+				EADE32F01D76B3860025492B /* album_uncheckBox.png in Resources */,
 				EA0508EA1D6E9957003947EE /* HeContestZoneCommentVC.xib in Resources */,
 				EA46453A1D51916F00CD539F /* icon_puter.png in Resources */,
 				EA0229521D74197800F57965 /* HeUserMessageVC.xib in Resources */,
@@ -3999,6 +4074,7 @@
 				EA4D01691D4CF0A300A0CCA1 /* tabar_user_icon_active@2x.png in Resources */,
 				EAC2CDF41D4AF5D800E282A8 /* TSLocateView.xib in Resources */,
 				EA4D01791D4D8FF100A0CCA1 /* index4.jpg in Resources */,
+				EADE33061D76BE220025492B /* distribute_addImageIcon_normal.png in Resources */,
 				EA4D01821D4D901700A0CCA1 /* home_can_change_bg_09.jpg in Resources */,
 				EAC2CD0C1D4AF5D800E282A8 /* i2KEPCMultiComponentPickerView.xib in Resources */,
 				EAC2CD361D4AF5D800E282A8 /* MJPhotoBrowser.bundle in Resources */,
@@ -4033,6 +4109,7 @@
 				EAC2CCF91D4AF5D800E282A8 /* back-arrow@3x.png in Resources */,
 				EAC2CDEB1D4AF5D800E282A8 /* bg_023@2x.png in Resources */,
 				EAC2CEBB1D4AF5FC00E282A8 /* loading_anim1.png in Resources */,
+				EADE32EE1D76B37D0025492B /* album_checkBox.png in Resources */,
 				EA0E9D251D4C295F009CBF64 /* HeBeautyZoneVC.xib in Resources */,
 				EAC2CD011D4AF5D800E282A8 /* success@3x.png in Resources */,
 				EAC2CD631D4AF5D800E282A8 /* arrow_down@2x.png in Resources */,
@@ -4102,6 +4179,7 @@
 				EAC2CE0D1D4AF5D800E282A8 /* VRGCalendarView.m in Sources */,
 				EAC2CD411D4AF5D800E282A8 /* MJRefreshFooter.m in Sources */,
 				EAC2CD391D4AF5D800E282A8 /* MJPhotoProgressView.m in Sources */,
+				EADE32EC1D76B2710025492B /* HeAlbumImage.m in Sources */,
 				EAC2CCC71D4AF5D800E282A8 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
 				EA0508F91D6EA000003947EE /* HeUserAlbumVC.m in Sources */,
 				EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */,
@@ -4217,6 +4295,7 @@
 				EAC2CD8C1D4AF5D800E282A8 /* RACBlockTrampoline.m in Sources */,
 				EAC2CD211D4AF5D800E282A8 /* IQActionSheetPickerView.m in Sources */,
 				EAC2CD571D4AF5D800E282A8 /* MLTextAttachment.m in Sources */,
+				EADE330A1D76D2550025492B /* HeUserFinanceVC.m in Sources */,
 				EAC2CD5A1D4AF5D800E282A8 /* NSMutableAttributedString+MLLabel.m in Sources */,
 				EAC2CE061D4AF5D800E282A8 /* UUDatePicker.m in Sources */,
 				EA0E9D371D4C2979009CBF64 /* HeLoginVC.m in Sources */,
@@ -4236,6 +4315,7 @@
 				EAC2C9CC1D4AF5CC00E282A8 /* RDVTabBarController.m in Sources */,
 				EAC2CD051D4AF5D800E282A8 /* README.md in Sources */,
 				EAC2CCE71D4AF5D800E282A8 /* MP3Converter.m in Sources */,
+				EADE32E81D76AF6A0025492B /* HeRecommendDetailVC.m in Sources */,
 				EAC2CE101D4AF5D800E282A8 /* YLGIFImage.m in Sources */,
 				EAC2CD251D4AF5D800E282A8 /* IQSegmentedNextPrevious.m in Sources */,
 				EAC2CD8E1D4AF5D800E282A8 /* RACCommand.m in Sources */,
@@ -4363,6 +4443,7 @@
 				EAC2CCD81D4AF5D800E282A8 /* NSMutableDictionary+JSON.m in Sources */,
 				EAC2CDE01D4AF5D800E282A8 /* UIImageView+WebCache.m in Sources */,
 				EAC2CDC31D4AF5D800E282A8 /* UIGestureRecognizer+RACSignalSupport.m in Sources */,
+				EADE32FF1D76B5310025492B /* ScanPictureView.m in Sources */,
 				EAC2CE9C1D4AF5EE00E282A8 /* qrencode.c in Sources */,
 				EAC2CDF31D4AF5D800E282A8 /* TSLocateView.m in Sources */,
 				EAC2CCE41D4AF5D800E282A8 /* DFBaseUploadDataService.m in Sources */,
@@ -4380,6 +4461,7 @@
 				EAC2CDA51D4AF5D800E282A8 /* RACReturnSignal.m in Sources */,
 				EAC2CDC21D4AF5D800E282A8 /* UIDatePicker+RACSignalSupport.m in Sources */,
 				EAC2CDE71D4AF5D800E282A8 /* README.md in Sources */,
+				EADE33021D76B7A70025492B /* UIView+Genie.m in Sources */,
 				EAC2CD261D4AF5D800E282A8 /* IQTextView.m in Sources */,
 				EA8027F21D52E299008BC4E6 /* BLImageSize.m in Sources */,
 				EAC2CCB41D4AF5D800E282A8 /* AFHTTPRequestOperation.m in Sources */,
@@ -4392,6 +4474,7 @@
 				EAC2CDA61D4AF5D800E282A8 /* RACScheduler.m in Sources */,
 				EAC2CD701D4AF5D800E282A8 /* ODRefreshControl.m in Sources */,
 				EAC2CD2A1D4AF5D800E282A8 /* UIView+Hierarchy.m in Sources */,
+				EADE32FA1D76B4DD0025492B /* HeBaseDistributeVC.m in Sources */,
 				EAC2CE1F1D4AF5E000E282A8 /* UIImageUploader.m in Sources */,
 				EAC2CD491D4AF5D800E282A8 /* MJRefreshGifHeader.m in Sources */,
 				EAC2CD771D4AF5D800E282A8 /* NSEnumerator+RACSequenceAdditions.m in Sources */,
@@ -4408,6 +4491,7 @@
 				EAC2CDD31D4AF5D800E282A8 /* NSData+ImageContentType.m in Sources */,
 				EAC2CCCE1D4AF5D800E282A8 /* ASIInputStream.m in Sources */,
 				EAC2CCCD1D4AF5D800E282A8 /* ASIHTTPRequest.m in Sources */,
+				EADE32F41D76B4B30025492B /* HeDistributePhotoVC.m in Sources */,
 				EAC2CCEC1D4AF5D800E282A8 /* Reachability.m in Sources */,
 				EAC2CCB61D4AF5D800E282A8 /* AFHTTPSessionManager.m in Sources */,
 				EAC2CDC71D4AF5D800E282A8 /* UISlider+RACSignalSupport.m in Sources */,

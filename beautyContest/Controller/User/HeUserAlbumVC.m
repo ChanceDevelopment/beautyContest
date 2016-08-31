@@ -11,14 +11,20 @@
 #import "UIImageView+WebCache.h"
 #import "MJPhotoBrowser.h"
 #import "MJPhoto.h"
+#import "HeAlbumImage.h"
+#import "HeDistributePhotoVC.h"
 
 #define MAx_row 100000
 #define MAx_column 3
 
 @interface HeUserAlbumVC ()
+{
+    BOOL isEditing;
+}
 @property(strong,nonatomic)UIScrollView *myScrollView;
 @property(strong,nonatomic)NSMutableArray *photoArray;
 @property(strong,nonatomic)IBOutlet UIButton *addButton;
+@property(strong,nonatomic)IBOutlet UIButton *deleteButton;
 
 @end
 
@@ -26,6 +32,7 @@
 @synthesize myScrollView;
 @synthesize photoArray;
 @synthesize addButton;
+@synthesize deleteButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,6 +64,8 @@
 {
     [super initializaiton];
     photoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    isEditing = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserAlbum:) name:@"updateUserAlbum" object:nil];
 }
 
 - (void)initView
@@ -69,8 +78,8 @@
     self.navigationItem.rightBarButtonItem = editItem;
     
     self.view.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
-    CGFloat viewX = 10;
-    CGFloat viewY = 10;
+    CGFloat viewX = 5;
+    CGFloat viewY = 5;
     CGFloat viewW = SCREENWIDTH - 2 * viewX;
     CGFloat viewH = SCREENHEIGH - 2 * viewY - 50;
     myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(viewX, viewY, viewW, viewH)];
@@ -82,6 +91,13 @@
     addButton.layer.masksToBounds = YES;
     [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     addButton.layer.cornerRadius = 3.0;
+    
+    [deleteButton dangerStyle];
+    deleteButton.layer.borderColor = [UIColor clearColor].CGColor;
+    [deleteButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:addButton.frame.size] forState:UIControlStateNormal];
+    deleteButton.layer.masksToBounds = YES;
+    [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    deleteButton.layer.cornerRadius = 3.0;
     
 }
 
@@ -117,14 +133,114 @@
     }];
 }
 
+- (void)updateUserAlbum:(NSNotification *)notification
+{
+    [self loadPhoto];
+}
+
 - (IBAction)addButtonClick:(id)sender
 {
+    HeDistributePhotoVC *distributeAlbumVC = [[HeDistributePhotoVC alloc] init];
+    distributeAlbumVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:distributeAlbumVC animated:YES];
+}
 
+- (IBAction)deleteButtonClick:(id)sender
+{
+    NSMutableArray *deleteArray = [[NSMutableArray alloc] initWithCapacity:0];
+    NSArray *subviewArray = myScrollView.subviews;
+    for (UIView *myview in subviewArray) {
+        if ([myview isMemberOfClass:[HeAlbumImage class]]) {
+            HeAlbumImage *albumImage = (HeAlbumImage *)myview;
+            if (albumImage.selected) {
+                [deleteArray addObject:photoArray[albumImage.tag - 200]];
+            }
+        }
+    }
+    if ([deleteArray count] == 0) {
+        [self showHint:@"请选择删除的图片"];
+        return;
+    }
+    isEditing = NO;
+    addButton.hidden = NO;
+    deleteButton.hidden = YES;
+    self.navigationItem.rightBarButtonItem.title = @"编辑";
+    
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/paperWall/deletePaperWall.action",BASEURL];
+    
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userid) {
+        userid = @"";
+    }
+    NSMutableString *paper = [[NSMutableString alloc] initWithCapacity:0];
+    for (NSInteger index = 0; index < [deleteArray count]; index++) {
+        NSString *string = deleteArray[index];
+        if (index == 0) {
+            [paper appendString:string];
+        }
+        else{
+            [paper appendFormat:@",%@",string];
+        }
+    }
+    NSDictionary *requestMessageParams = @{@"userId":userid,@"paper":paper};
+    [self showHudInView:self.view hint:@"删除中..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [self showHint:@"删除成功"];
+            for (UIView *subview in subviewArray) {
+                if ([subview isMemberOfClass:[HeAlbumImage class]]) {
+                    [subview removeFromSuperview];
+                }
+            }
+            [self loadPhoto];
+        }
+        else{
+            [self showHint:ERRORREQUESTTIP];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)editAlbum:(UIBarButtonItem *)item
 {
     NSLog(@"item = %@",item);
+    isEditing = !isEditing;
+    if (isEditing) {
+        item.title = @"取消";
+        deleteButton.hidden = NO;
+        addButton.hidden = YES;
+        NSArray *subviewArray = myScrollView.subviews;
+        for (UIView *myview in subviewArray) {
+            if ([myview isMemberOfClass:[HeAlbumImage class]]) {
+                HeAlbumImage *albumImage = (HeAlbumImage *)myview;
+                albumImage.selected = NO;
+                albumImage.selectBox.selected = NO;
+                albumImage.selectBox.hidden = NO;
+            }
+        }
+    }
+    else{
+        NSArray *subviewArray = myScrollView.subviews;
+        for (UIView *myview in subviewArray) {
+            if ([myview isMemberOfClass:[HeAlbumImage class]]) {
+                HeAlbumImage *albumImage = (HeAlbumImage *)myview;
+                albumImage.selected = NO;
+                albumImage.selectBox.selected = NO;
+                albumImage.selectBox.hidden = YES;
+            }
+        }
+        
+        item.title = @"编辑";
+        deleteButton.hidden = YES;
+        addButton.hidden = NO;
+    }
 }
 
 - (void)addPhotoView
@@ -134,11 +250,11 @@
     int row = [Tool getRowNumWithTotalNum:number withMaxRow:MAx_row MaxColumn:MAx_column];
     int column = [Tool getColumnNumWithTotalNum:number withMaxColumn:MAx_column];
     
-    CGFloat buttonX = 10;
+    CGFloat buttonX = 5;
     CGFloat buttonW = 90;
     CGFloat buttonH = 90;
     CGFloat buttonY = 10;
-    CGFloat buttonDistanceX = (SCREENWIDTH - MAx_column * buttonW - 2 * buttonX) / ((CGFloat)(MAx_column - 1));
+    CGFloat buttonDistanceX = (SCREENWIDTH - MAx_column * buttonW - 2 * buttonX - 2 * myScrollView.frame.origin.x) / ((CGFloat)(MAx_column - 1));
     CGFloat buttonDistanceY = 10;
     CGFloat hight = buttonY;
     for (int i = 0; i < row; i++) {
@@ -158,24 +274,34 @@
             NSInteger index = i * 3 + j;
             NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[photoArray objectAtIndex:index]];
             
-            UIImageView *imageview = [[UIImageView alloc] init];
-            imageview.contentMode = UIViewContentModeScaleAspectFill;
-            [imageview sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
-            imageview.tag = index + 100;
-            imageview.frame = buttonFrame;
-            imageview.layer.cornerRadius = 5.0;
-            imageview.layer.masksToBounds = YES;
-            imageview.layer.borderColor = [UIColor clearColor].CGColor;
-            imageview.layer.borderWidth = 1.0;
-            [myScrollView addSubview:imageview];
+            HeAlbumImage *albumImage = [myScrollView viewWithTag:index + 200];
+            if (albumImage == nil) {
+                albumImage = [[HeAlbumImage alloc] initWithFrame:buttonFrame];
+                albumImage.selected = NO;
+                albumImage.selectBox.selected = NO;
+                albumImage.selectBox.hidden = YES;
+                albumImage.imageView.contentMode = UIViewContentModeScaleAspectFill;
+                [albumImage.imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+                albumImage.imageView.tag = index + 100;
+                albumImage.tag = index + 200;
+                
+                albumImage.imageView.layer.cornerRadius = 5.0;
+                albumImage.imageView.layer.masksToBounds = YES;
+                albumImage.imageView.userInteractionEnabled = YES;
+                albumImage.imageView.layer.borderColor = [UIColor clearColor].CGColor;
+                albumImage.imageView.layer.borderWidth = 1.0;
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClickImage:)];
+                tap.numberOfTapsRequired = 1;
+                tap.numberOfTouchesRequired = 1;
+                [albumImage addGestureRecognizer:tap];
+            }
             
-            imageview.userInteractionEnabled = YES;
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClickImage:)];
-            tap.numberOfTapsRequired = 1;
-            tap.numberOfTouchesRequired = 1;
-            [imageview addGestureRecognizer:tap];
+            [myScrollView addSubview:albumImage];
             
-            hight = imageview.frame.origin.y + imageview.frame.size.height + buttonDistanceY;
+            albumImage.imageView.userInteractionEnabled = YES;
+            albumImage.userInteractionEnabled = YES;
+            
+            hight = albumImage.imageView.frame.origin.y + albumImage.imageView.frame.size.height + buttonDistanceY;
         }
     }
     if (hight > myScrollView.frame.size.height) {
@@ -185,21 +311,28 @@
 
 -(void)onClickImage:(UITapGestureRecognizer *) tap
 {
-    UIView *myview = tap.view;
+    HeAlbumImage *myview = (HeAlbumImage *)tap.view;
+    if (isEditing) {
+        myview.selectBox.hidden = NO;
+        myview.selected = !myview.selected;
+        myview.selectBox.selected = !myview.selectBox.selected;
+        return;
+    }
+    
     NSMutableArray *photos = [NSMutableArray array];
     MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
     for (NSInteger index = 0; index < photoArray.count; index++) {
         
         NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[photoArray objectAtIndex:index]];
-        UIImageView *srcImageView = [myScrollView viewWithTag:index + 100];
+        HeAlbumImage *srcImageView = [myScrollView viewWithTag:index + 200];
         
         MJPhoto *photo = [[MJPhoto alloc] init];
         photo.url = [NSURL URLWithString:imageUrl];
-        photo.srcImageView = srcImageView;
+        photo.srcImageView = srcImageView.imageView;
         [photos addObject:photo];
     }
     browser.photos = photos;
-    browser.currentPhotoIndex = myview.tag - 100;
+    browser.currentPhotoIndex = myview.tag - 200;
     [browser show];
 }
 
@@ -208,6 +341,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserAlbum" object:nil];
+}
 /*
 #pragma mark - Navigation
 
