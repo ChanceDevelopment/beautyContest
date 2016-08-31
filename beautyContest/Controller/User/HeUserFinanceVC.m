@@ -60,10 +60,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的";
+        label.text = @"我的资金宝";
         [label sizeToFit];
         
-        self.title = @"我的";
+        self.title = @"我的资金宝";
     }
     return self;
 }
@@ -75,17 +75,6 @@
     [self initView];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:YES];
-    self.navigationController.navigationBarHidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:YES];
-    self.navigationController.navigationBarHidden = NO;
-}
 
 - (void)initializaiton
 {
@@ -98,12 +87,12 @@
 - (void)initView
 {
     [super initView];
-    self.navigationController.navigationBarHidden = YES;
+//    self.navigationController.navigationBarHidden = YES;
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
-    CGFloat headerH = 250;
+    CGFloat headerH = 270;
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, headerH)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
@@ -112,7 +101,7 @@
     tableview.tableHeaderView = sectionHeaderView;
     
     userBGImage = [[UIImageView alloc] init];
-    userBGImage.backgroundColor = APPDEFAULTORANGE;
+    userBGImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavBarIOS7"]];
     userBGImage.layer.masksToBounds = YES;
     userBGImage.contentMode = UIViewContentModeScaleAspectFill;
     userBGImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
@@ -120,8 +109,8 @@
     
     UIFont *textFont = [UIFont systemFontOfSize:20.0];
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, SCREENWIDTH - 10, 30)];
-    titleLabel.font = [UIFont systemFontOfSize:15.0];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, SCREENWIDTH - 10, 30)];
+    titleLabel.font = [UIFont systemFontOfSize:18.0];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.text = @"余额账户（元）";
@@ -129,22 +118,32 @@
     [sectionHeaderView addSubview:titleLabel];
     
     balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLabel.frame), SCREENWIDTH - 10, 40)];
-    balanceLabel.font = [UIFont systemFontOfSize:18.0];
+    balanceLabel.font = textFont;
     balanceLabel.backgroundColor = [UIColor clearColor];
     balanceLabel.textColor = [UIColor whiteColor];
     balanceLabel.text = @"0.00";
     balanceLabel.textColor = [UIColor whiteColor];
     [sectionHeaderView addSubview:balanceLabel];
     
-    NSString *tipString = @"根据"
-    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, SCREENWIDTH - 10, 30)];
-    tipLabel.font = [UIFont systemFontOfSize:15.0];
+    NSString *tipString = @"根据监管部门要求，账户身份信息的完整程度不同，享有不同的余额支付额度。银行卡等付款方式不收该额度限制。了解更多";
+    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, SCREENWIDTH - 10, 70)];
+    tipLabel.numberOfLines = 3;
+    tipLabel.font = [UIFont systemFontOfSize:13.0];
     tipLabel.backgroundColor = [UIColor clearColor];
-    tipLabel.textColor = [UIColor whiteColor];
-    tipLabel.text = @"余额账户（元）";
-    tipLabel.textColor = [UIColor whiteColor];
+    tipLabel.text = tipString;
+    tipLabel.textColor = [UIColor grayColor];
     [sectionHeaderView addSubview:tipLabel];
     
+    UIView *footerview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 50)];
+    
+    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, SCREENWIDTH - 20, 30)];
+    footerLabel.font = [UIFont systemFontOfSize:15.0];
+    footerLabel.backgroundColor = [UIColor clearColor];
+    footerLabel.textColor = [UIColor grayColor];
+    footerLabel.text = @"提现1 - 2个工作日内到账";
+    footerLabel.textColor = [UIColor grayColor];
+    [footerview addSubview:footerLabel];
+    tableview.tableFooterView = footerview;
     return;
     CGFloat nameLabelX = 0;
     CGFloat nameLabelY = 0;
@@ -340,15 +339,18 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 10.0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 50;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    if (sec) {
+//        <#statements#>
+//    }
+//    return 10.0;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return 50;
+//}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
