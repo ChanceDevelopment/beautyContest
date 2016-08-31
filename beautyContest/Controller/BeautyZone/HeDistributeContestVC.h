@@ -7,7 +7,9 @@
 //
 
 #import "HeBaseViewController.h"
+#import <BaiduMapAPI_Map/BMKMapView.h>
+#import <BaiduMapAPI_Location/BMKLocationComponent.h>
 
-@interface HeDistributeContestVC : HeBaseViewController
+@interface HeDistributeContestVC : HeBaseViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @end

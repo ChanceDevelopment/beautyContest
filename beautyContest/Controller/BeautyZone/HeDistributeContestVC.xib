@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -24,34 +24,60 @@
                         <outlet property="delegate" destination="-1" id="btK-k1-VeE"/>
                     </connections>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h39-zG-so5">
+                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                    <color key="backgroundColor" red="0.32549019607843138" green="0.792156862745098" blue="0.76862745098039209" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="发    布">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="distributeButtonClick:" destination="-1" eventType="touchUpInside" id="PT1-rC-ad3"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="h39-zG-so5" secondAttribute="trailing" id="0Ll-L5-uTf"/>
+                <constraint firstAttribute="bottom" secondItem="h39-zG-so5" secondAttribute="bottom" id="6QZ-Sq-G6x"/>
                 <constraint firstItem="uwN-4V-sX8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ekc-y6-Vqw"/>
-                <constraint firstAttribute="bottom" secondItem="uwN-4V-sX8" secondAttribute="bottom" id="L66-16-3OZ"/>
+                <constraint firstAttribute="bottom" secondItem="uwN-4V-sX8" secondAttribute="bottom" id="L66-16-3OZ">
+                    <variation key="heightClass=regular-widthClass=compact" constant="40"/>
+                </constraint>
+                <constraint firstItem="h39-zG-so5" firstAttribute="top" secondItem="uwN-4V-sX8" secondAttribute="bottom" id="MbU-vW-36k"/>
                 <constraint firstItem="uwN-4V-sX8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="TxO-Ej-gd2"/>
+                <constraint firstItem="h39-zG-so5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pBh-3p-THb"/>
                 <constraint firstAttribute="trailing" secondItem="uwN-4V-sX8" secondAttribute="trailing" id="rc9-P8-yk0"/>
             </constraints>
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="uwN-4V-sX8"/>
+                    <exclude reference="h39-zG-so5"/>
                 </mask>
                 <mask key="constraints">
                     <exclude reference="Ekc-y6-Vqw"/>
                     <exclude reference="L66-16-3OZ"/>
                     <exclude reference="TxO-Ej-gd2"/>
                     <exclude reference="rc9-P8-yk0"/>
+                    <exclude reference="0Ll-L5-uTf"/>
+                    <exclude reference="6QZ-Sq-G6x"/>
+                    <exclude reference="MbU-vW-36k"/>
+                    <exclude reference="pBh-3p-THb"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
                 <mask key="subviews">
                     <include reference="uwN-4V-sX8"/>
+                    <include reference="h39-zG-so5"/>
                 </mask>
                 <mask key="constraints">
                     <include reference="Ekc-y6-Vqw"/>
                     <include reference="L66-16-3OZ"/>
                     <include reference="TxO-Ej-gd2"/>
                     <include reference="rc9-P8-yk0"/>
+                    <include reference="0Ll-L5-uTf"/>
+                    <include reference="6QZ-Sq-G6x"/>
+                    <include reference="MbU-vW-36k"/>
+                    <include reference="pBh-3p-THb"/>
                 </mask>
             </variation>
         </view>

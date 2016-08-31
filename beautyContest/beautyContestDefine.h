@@ -20,7 +20,8 @@
 #define IOS7OFFSET        64
 
 
-
+//百度地图的appKey
+#define BAIDUMAPKEY @"6R0tNr84gr1qwQxrZByKSjzGpkNco4kv"
 //自己服务器的通信模块
 #define EASEMOBKEY @"godchance#aishangfuyang"
 //parse

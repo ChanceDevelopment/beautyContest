@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeDistributeRecommendVC">
             <connections>
+                <outlet property="distributeButton" destination="tH9-wE-0t9" id="EQj-TM-94b"/>
+                <outlet property="tableview" destination="tG1-OP-XQp" id="gth-bY-FFY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -13,7 +16,78 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tH9-wE-0t9">
+                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="3wO-dZ-Gdc"/>
+                    </constraints>
+                    <state key="normal" title="发    布">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="3wO-dZ-Gdc"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="3wO-dZ-Gdc"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="distributeButtonClick:" destination="-1" eventType="touchUpInside" id="KK0-hE-il2"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tG1-OP-XQp">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="HeG-Cd-HLW"/>
+                        <outlet property="delegate" destination="-1" id="tl8-dZ-N6v"/>
+                    </connections>
+                </tableView>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="tG1-OP-XQp" secondAttribute="trailing" id="DsG-OB-dR3"/>
+                <constraint firstItem="tH9-wE-0t9" firstAttribute="top" secondItem="tG1-OP-XQp" secondAttribute="bottom" id="Eds-5L-yC5"/>
+                <constraint firstItem="tG1-OP-XQp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ovn-lF-Zhz"/>
+                <constraint firstAttribute="trailing" secondItem="tH9-wE-0t9" secondAttribute="trailing" id="pTv-br-GkL"/>
+                <constraint firstAttribute="bottom" secondItem="tH9-wE-0t9" secondAttribute="bottom" id="t4g-1F-Rlj"/>
+                <constraint firstItem="tH9-wE-0t9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xER-YK-OM6"/>
+                <constraint firstItem="tG1-OP-XQp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="zdj-1P-JRv"/>
+            </constraints>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="tH9-wE-0t9"/>
+                    <exclude reference="tG1-OP-XQp"/>
+                </mask>
+                <mask key="constraints">
+                    <exclude reference="DsG-OB-dR3"/>
+                    <exclude reference="ovn-lF-Zhz"/>
+                    <exclude reference="zdj-1P-JRv"/>
+                    <exclude reference="Eds-5L-yC5"/>
+                    <exclude reference="pTv-br-GkL"/>
+                    <exclude reference="t4g-1F-Rlj"/>
+                    <exclude reference="xER-YK-OM6"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="subviews">
+                    <include reference="tH9-wE-0t9"/>
+                    <include reference="tG1-OP-XQp"/>
+                </mask>
+                <mask key="constraints">
+                    <include reference="DsG-OB-dR3"/>
+                    <include reference="ovn-lF-Zhz"/>
+                    <include reference="zdj-1P-JRv"/>
+                    <include reference="Eds-5L-yC5"/>
+                    <include reference="pTv-br-GkL"/>
+                    <include reference="t4g-1F-Rlj"/>
+                    <include reference="xER-YK-OM6"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>
