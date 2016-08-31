@@ -100,8 +100,6 @@
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
-    dataSource = @[@[@"我的相册",@"我的发布",@"我的参与"],@[@"设置"]];
-    
     CGFloat headerH = 200;
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, headerH)];

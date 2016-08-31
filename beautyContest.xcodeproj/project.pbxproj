@@ -596,6 +596,11 @@
 		EADE33061D76BE220025492B /* distribute_addImageIcon_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33041D76BE220025492B /* distribute_addImageIcon_normal.png */; };
 		EADE330A1D76D2550025492B /* HeUserFinanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE33081D76D2550025492B /* HeUserFinanceVC.m */; };
 		EADE330B1D76D2550025492B /* HeUserFinanceVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE33091D76D2550025492B /* HeUserFinanceVC.xib */; };
+		EADE330D1D76D45F0025492B /* icon_recharge.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE330C1D76D45F0025492B /* icon_recharge.png */; };
+		EADE330F1D76D4720025492B /* icon_withdrawals_detail.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE330E1D76D4720025492B /* icon_withdrawals_detail.png */; };
+		EADE33111D76D4790025492B /* icon_withdrawals.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33101D76D4790025492B /* icon_withdrawals.png */; };
+		EADE33131D76D48A0025492B /* icon_alipay.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33121D76D48A0025492B /* icon_alipay.png */; };
+		EADE33151D76D49F0025492B /* icon_pay_password.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33141D76D49F0025492B /* icon_pay_password.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1645,6 +1650,11 @@
 		EADE33071D76D2550025492B /* HeUserFinanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserFinanceVC.h; sourceTree = "<group>"; };
 		EADE33081D76D2550025492B /* HeUserFinanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserFinanceVC.m; sourceTree = "<group>"; };
 		EADE33091D76D2550025492B /* HeUserFinanceVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserFinanceVC.xib; sourceTree = "<group>"; };
+		EADE330C1D76D45F0025492B /* icon_recharge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_recharge.png; sourceTree = "<group>"; };
+		EADE330E1D76D4720025492B /* icon_withdrawals_detail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_withdrawals_detail.png; sourceTree = "<group>"; };
+		EADE33101D76D4790025492B /* icon_withdrawals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_withdrawals.png; sourceTree = "<group>"; };
+		EADE33121D76D48A0025492B /* icon_alipay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_alipay.png; sourceTree = "<group>"; };
+		EADE33141D76D49F0025492B /* icon_pay_password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_pay_password.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1892,6 +1902,11 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EADE33141D76D49F0025492B /* icon_pay_password.png */,
+				EADE33121D76D48A0025492B /* icon_alipay.png */,
+				EADE33101D76D4790025492B /* icon_withdrawals.png */,
+				EADE330E1D76D4720025492B /* icon_withdrawals_detail.png */,
+				EADE330C1D76D45F0025492B /* icon_recharge.png */,
 				EADE33031D76BE220025492B /* distribute_addImageIcon_hightlighted.png */,
 				EADE33041D76BE220025492B /* distribute_addImageIcon_normal.png */,
 				EADE32EF1D76B3860025492B /* album_uncheckBox.png */,
@@ -3967,6 +3982,7 @@
 				EA46454B1D51D8D700CD539F /* icon_sex_boy.png in Resources */,
 				EAC2CDE91D4AF5D800E282A8 /* SVProgressHUD.bundle in Resources */,
 				EA4D01761D4D8FF100A0CCA1 /* index1.jpg in Resources */,
+				EADE33151D76D49F0025492B /* icon_pay_password.png in Resources */,
 				EAC2CCBD1D4AF5D800E282A8 /* LICENSE in Resources */,
 				EAC2CDE31D4AF5D800E282A8 /* sr_refresh@2X.png in Resources */,
 				EA0508F01D6E9AD7003947EE /* HeCommentView.xib in Resources */,
@@ -4033,6 +4049,7 @@
 				EA0E9D331D4C2968009CBF64 /* HeUserVC.xib in Resources */,
 				EA4645321D518AE300CD539F /* userDefalut_icon.png in Resources */,
 				EAC2CDE21D4AF5D800E282A8 /* sr_refresh.png in Resources */,
+				EADE33131D76D48A0025492B /* icon_alipay.png in Resources */,
 				EA4D016A1D4CF0A300A0CCA1 /* tabar_user_icon_normal@2x.png in Resources */,
 				EAC2CD001D4AF5D800E282A8 /* success@2x.png in Resources */,
 				EAC2CD121D4AF5D800E282A8 /* blueArrow@2x.png in Resources */,
@@ -4062,6 +4079,7 @@
 				EA02294D1D74195B00F57965 /* HeUserNearByVC.xib in Resources */,
 				EA0229451D7417D300F57965 /* HeUserFollowVC.xib in Resources */,
 				EAC2CDD11D4AF5D800E282A8 /* sharemore_pic@3x.png in Resources */,
+				EADE330D1D76D45F0025492B /* icon_recharge.png in Resources */,
 				EA0508FA1D6EA000003947EE /* HeUserAlbumVC.xib in Resources */,
 				EAC2CD621D4AF5D800E282A8 /* arrow_down1@2x.png in Resources */,
 				EAC2CDED1D4AF5D800E282A8 /* btn_020.press@2x.png in Resources */,
@@ -4081,6 +4099,7 @@
 				EAC2CD181D4AF5D800E282A8 /* whiteArrow@2x.png in Resources */,
 				EAC2CDEF1D4AF5D800E282A8 /* btn_021.disable@2x.png in Resources */,
 				EAC2CDEC1D4AF5D800E282A8 /* btn_020.disable@2x.png in Resources */,
+				EADE33111D76D4790025492B /* icon_withdrawals.png in Resources */,
 				EAC2CCFB1D4AF5D800E282A8 /* Expression.plist in Resources */,
 				EAC2CD711D4AF5D800E282A8 /* README.textile in Resources */,
 				EA4645341D51913F00CD539F /* icon_time.png in Resources */,
@@ -4119,6 +4138,7 @@
 				EA4D018E1D4D94AB00A0CCA1 /* HeContestDetailVC.xib in Resources */,
 				EAC2CDD01D4AF5D800E282A8 /* sharemore_pic@2x.png in Resources */,
 				EAC2CCF81D4AF5D800E282A8 /* back-arrow@2x.png in Resources */,
+				EADE330F1D76D4720025492B /* icon_withdrawals_detail.png in Resources */,
 				EA46454C1D51D8D700CD539F /* icon_sex_girl.png in Resources */,
 				EA4645441D519EB300CD539F /* icon_comment.png in Resources */,
 				EA4D01641D4CF0A300A0CCA1 /* tabar_beautyZone_icon_normal@2x.png in Resources */,
