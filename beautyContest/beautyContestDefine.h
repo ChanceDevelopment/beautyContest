@@ -81,6 +81,9 @@
 #define USERHAVELOGINKEY @"userHaveLogin"
 #define FRIENDLISTDOWNLOADSUCCEED @"friendDownloadSucceed"
 
+#define USERLATITUDEKEY @"latitude"
+#define USERLONGITUDEKEY @"longitude"
+
 #define ERRORREQUESTTIP @"网络出错，请稍后再试!"
 #define MODIFYPASSWORDKEY @"modifyPasswordKey"
 
@@ -119,6 +122,8 @@
 #define LOGINKEY   @"login"       //登录
 #define UPDATEUSER @"updateUser"
 
+//黄金比例
+#define BESTSCALE (0.618)
 //系统的设置
 #define NEWSNOTIFY        @"newsNotify"         //消息通知
 #define PLAYSOUND         @"playSound"          //声音

@@ -16,9 +16,9 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="uwN-4V-sX8">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uwN-4V-sX8">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="oxK-CW-FhI"/>
                         <outlet property="delegate" destination="-1" id="btK-k1-VeE"/>
@@ -54,14 +54,14 @@
                     <exclude reference="h39-zG-so5"/>
                 </mask>
                 <mask key="constraints">
-                    <exclude reference="Ekc-y6-Vqw"/>
-                    <exclude reference="L66-16-3OZ"/>
-                    <exclude reference="TxO-Ej-gd2"/>
-                    <exclude reference="rc9-P8-yk0"/>
                     <exclude reference="0Ll-L5-uTf"/>
                     <exclude reference="6QZ-Sq-G6x"/>
                     <exclude reference="MbU-vW-36k"/>
                     <exclude reference="pBh-3p-THb"/>
+                    <exclude reference="Ekc-y6-Vqw"/>
+                    <exclude reference="L66-16-3OZ"/>
+                    <exclude reference="TxO-Ej-gd2"/>
+                    <exclude reference="rc9-P8-yk0"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
@@ -70,14 +70,14 @@
                     <include reference="h39-zG-so5"/>
                 </mask>
                 <mask key="constraints">
-                    <include reference="Ekc-y6-Vqw"/>
-                    <include reference="L66-16-3OZ"/>
-                    <include reference="TxO-Ej-gd2"/>
-                    <include reference="rc9-P8-yk0"/>
                     <include reference="0Ll-L5-uTf"/>
                     <include reference="6QZ-Sq-G6x"/>
                     <include reference="MbU-vW-36k"/>
                     <include reference="pBh-3p-THb"/>
+                    <include reference="Ekc-y6-Vqw"/>
+                    <include reference="L66-16-3OZ"/>
+                    <include reference="TxO-Ej-gd2"/>
+                    <include reference="rc9-P8-yk0"/>
                 </mask>
             </variation>
         </view>

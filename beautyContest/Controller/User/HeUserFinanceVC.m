@@ -126,13 +126,39 @@
     [sectionHeaderView addSubview:balanceLabel];
     
     NSString *tipString = @"根据监管部门要求，账户身份信息的完整程度不同，享有不同的余额支付额度。银行卡等付款方式不收该额度限制。了解更多";
-    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, SCREENWIDTH - 10, 70)];
+    NSString *subString = @"根据监管部门要求，账户身份信息的完整程度不同，享有不同的余额支付额度。";
+    NSMutableAttributedString *hintString = [[NSMutableAttributedString alloc]initWithString:tipString];
+    //获取要调整颜色的文字位置,调整颜色
+    NSRange range1 = [[hintString string]rangeOfString:subString];
+    [hintString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:range1];
+    
+    subString = @"银行卡等付款方式不收该额度限制。";
+    //获取要调整颜色的文字位置,调整颜色
+    range1 = [[hintString string]rangeOfString:subString];
+    [hintString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range1];
+    
+    subString = @"了解更多";
+    //获取要调整颜色的文字位置,调整颜色
+    range1 = [[hintString string]rangeOfString:subString];
+    [hintString addAttribute:NSForegroundColorAttributeName value:APPDEFAULTORANGE range:range1];
+    
+    MLLinkLabel *tipLabel = [[MLLinkLabel alloc] initWithFrame:CGRectMake(10, 200, SCREENWIDTH - 10, 70)];
     tipLabel.numberOfLines = 3;
     tipLabel.font = [UIFont systemFontOfSize:13.0];
     tipLabel.backgroundColor = [UIColor clearColor];
-    tipLabel.text = tipString;
+    tipLabel.attributedText = hintString;
     tipLabel.textColor = [UIColor grayColor];
     [sectionHeaderView addSubview:tipLabel];
+    
+    MLLink *labelLink = [MLLink linkWithType:MLLinkTypeURL value:@"http://www.baidu.com" range:range1];
+    [tipLabel addLink:labelLink];
+    __weak HeUserFinanceVC *weakSelf = self;
+    [labelLink setDidClickLinkBlock:^(MLLink *link, NSString *linkText, MLLinkLabel *label) {
+        NSString *tips = [NSString stringWithFormat:@"Click\nlinkType:%ld\nlinkText:%@\nlinkValue:%@",(unsigned long)link.linkType,linkText,link.linkValue];
+        NSLog(@"%@", tips);
+        NSNumber *linkTye = [NSNumber numberWithInteger:link.linkType];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LinkNOTIFICATION object:weakSelf userInfo:@{LINKVALUEKey:link.linkValue,LINKTypeKey:linkTye}];
+    }];
     
     UIView *footerview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 50)];
     

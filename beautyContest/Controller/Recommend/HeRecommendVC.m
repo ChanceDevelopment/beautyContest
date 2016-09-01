@@ -90,6 +90,7 @@
     _page = 30;
     heightArray = [[NSMutableArray alloc] initWithCapacity:0];
     modelArray = [[NSMutableArray alloc] initWithCapacity:0];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRecommend:) name:@"updateRecommend" object:nil];
 }
 
 - (void)initView
@@ -122,6 +123,11 @@
     self.navigationItem.rightBarButtonItem = distributeItem;
     
     
+}
+
+- (void)updateRecommend:(NSNotification *)notification
+{
+    [self loadRecomendDataShow:YES];
 }
 
 - (void)distributeButtonClick:(id)sender
@@ -456,6 +462,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateRecommend" object:nil];
+}
 /*
  #pragma mark - Navigation
  

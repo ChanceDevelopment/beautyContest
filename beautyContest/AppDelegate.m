@@ -21,6 +21,7 @@
 #import "WeiboSDK.h"
 #import "BrowserView.h"
 #import "BBLaunchAdMonitor.h"
+#import "TOWebViewController.h"
 
 @interface AppDelegate ()
 
@@ -125,6 +126,8 @@ BMKMapManager* _mapManager;
 
 - (void)initialization
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLink:) name:LinkNOTIFICATION object:nil];
+    
     [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:USERHAVELOGINKEY];
     //注册登录状态监听
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -156,6 +159,39 @@ BMKMapManager* _mapManager;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)handleLink:(NSNotification *)notification
+{
+    //    MLLinkType
+    //    MLLinkTypeURL           = 1,          // 链接
+    //    MLLinkTypePhoneNumber   = 2,          // 电话
+    //    MLLinkTypeEmail         = 3,          // 邮箱
+    
+    NSDictionary *userInfo = notification.userInfo;
+    NSInteger linkType = [[userInfo objectForKey:LINKTypeKey] integerValue];
+    NSString *linkValue = [userInfo objectForKey:LINKVALUEKey];
+    switch (linkType) {
+        case MLLinkTypeURL:
+        {
+            if ([linkValue rangeOfString:@"http"].length == 0) {
+                linkValue = [NSString stringWithFormat:@"http://%@",linkValue];
+            }
+//            TOWebViewController *webview = [[TOWebViewController alloc] initWithURLString:linkValue];
+//            [self.viewController presentViewController:webview animated:YES completion:nil];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",linkValue]]];
+            break;
+        }
+        case MLLinkTypePhoneNumber:{
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",linkValue]]];
+            break;
+        }
+        default:
+            break;
+    }
+    if (linkType == MLLinkTypePhoneNumber) {
+        
+    }
 }
 
 #pragma mark - login changed

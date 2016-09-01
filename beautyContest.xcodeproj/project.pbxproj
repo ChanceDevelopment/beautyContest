@@ -99,6 +99,11 @@
 		EA4D01981D4D9ABF00A0CCA1 /* HeContestantDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA4D01961D4D9ABF00A0CCA1 /* HeContestantDetailVC.xib */; };
 		EA4D019D1D4D9BD200A0CCA1 /* HeBeautyContestTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4D019C1D4D9BD200A0CCA1 /* HeBeautyContestTableCell.m */; };
 		EA4D01A01D4D9D4A00A0CCA1 /* HeContestantTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4D019F1D4D9D4A00A0CCA1 /* HeContestantTableCell.m */; };
+		EA5EC6201D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA5EC60F1D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings */; };
+		EA5EC6211D77C0FF004D5FEC /* TOActivityChrome.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC6171D77C0FF004D5FEC /* TOActivityChrome.m */; };
+		EA5EC6221D77C0FF004D5FEC /* TOActivitySafari.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC6191D77C0FF004D5FEC /* TOActivitySafari.m */; };
+		EA5EC6231D77C0FF004D5FEC /* TOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61B1D77C0FF004D5FEC /* TOWebViewController.m */; };
+		EA5EC6241D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */; };
 		EA8027E81D52DC20008BC4E6 /* AoiroSoraLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027E71D52DC20008BC4E6 /* AoiroSoraLayout.m */; };
 		EA8027ED1D52DC5B008BC4E6 /* Recommend.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027EA1D52DC5B008BC4E6 /* Recommend.m */; };
 		EA8027EE1D52DC5B008BC4E6 /* RecommendCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027EC1D52DC5B008BC4E6 /* RecommendCollectionViewCell.m */; };
@@ -743,6 +748,22 @@
 		EA4D019C1D4D9BD200A0CCA1 /* HeBeautyContestTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBeautyContestTableCell.m; sourceTree = "<group>"; };
 		EA4D019E1D4D9D4A00A0CCA1 /* HeContestantTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeContestantTableCell.h; sourceTree = "<group>"; };
 		EA4D019F1D4D9D4A00A0CCA1 /* HeContestantTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeContestantTableCell.m; sourceTree = "<group>"; };
+		EA5EC6101D77C0FF004D5FEC /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		EA5EC6111D77C0FF004D5FEC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		EA5EC6121D77C0FF004D5FEC /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		EA5EC6131D77C0FF004D5FEC /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		EA5EC6141D77C0FF004D5FEC /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		EA5EC6151D77C0FF004D5FEC /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		EA5EC6161D77C0FF004D5FEC /* TOActivityChrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOActivityChrome.h; sourceTree = "<group>"; };
+		EA5EC6171D77C0FF004D5FEC /* TOActivityChrome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOActivityChrome.m; sourceTree = "<group>"; };
+		EA5EC6181D77C0FF004D5FEC /* TOActivitySafari.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOActivitySafari.h; sourceTree = "<group>"; };
+		EA5EC6191D77C0FF004D5FEC /* TOActivitySafari.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOActivitySafari.m; sourceTree = "<group>"; };
+		EA5EC61A1D77C0FF004D5FEC /* TOWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOWebViewController.h; sourceTree = "<group>"; };
+		EA5EC61B1D77C0FF004D5FEC /* TOWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOWebViewController.m; sourceTree = "<group>"; };
+		EA5EC61C1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+TOWebViewControllerIcons.h"; sourceTree = "<group>"; };
+		EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TOWebViewControllerIcons.m"; sourceTree = "<group>"; };
+		EA5EC61E1D77C0FF004D5FEC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/TOWebViewControllerLocalizable.strings"; sourceTree = "<group>"; };
+		EA5EC61F1D77C0FF004D5FEC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/TOWebViewControllerLocalizable.strings"; sourceTree = "<group>"; };
 		EA8027E61D52DC20008BC4E6 /* AoiroSoraLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AoiroSoraLayout.h; sourceTree = "<group>"; };
 		EA8027E71D52DC20008BC4E6 /* AoiroSoraLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AoiroSoraLayout.m; sourceTree = "<group>"; };
 		EA8027E91D52DC5B008BC4E6 /* Recommend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Recommend.h; sourceTree = "<group>"; };
@@ -2022,6 +2043,22 @@
 			path = BeautyContest;
 			sourceTree = "<group>";
 		};
+		EA5EC60E1D77C0FF004D5FEC /* TOWebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA5EC60F1D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings */,
+				EA5EC6161D77C0FF004D5FEC /* TOActivityChrome.h */,
+				EA5EC6171D77C0FF004D5FEC /* TOActivityChrome.m */,
+				EA5EC6181D77C0FF004D5FEC /* TOActivitySafari.h */,
+				EA5EC6191D77C0FF004D5FEC /* TOActivitySafari.m */,
+				EA5EC61A1D77C0FF004D5FEC /* TOWebViewController.h */,
+				EA5EC61B1D77C0FF004D5FEC /* TOWebViewController.m */,
+				EA5EC61C1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.h */,
+				EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */,
+			);
+			path = TOWebViewController;
+			sourceTree = "<group>";
+		};
 		EA8027EF1D52E284008BC4E6 /* BLImageSize */ = {
 			isa = PBXGroup;
 			children = (
@@ -2223,6 +2260,7 @@
 		EAC2C9CE1D4AF5D700E282A8 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EA5EC60E1D77C0FF004D5FEC /* TOWebViewController */,
 				EA8027F31D52E654008BC4E6 /* Refresh */,
 				EA8027EF1D52E284008BC4E6 /* BLImageSize */,
 				EA4D01411D4CE8FF00A0CCA1 /* LaunchAd */,
@@ -3958,6 +3996,13 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				es,
+				ja,
+				ko,
+				pl,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = EAC2C8F71D4AF0E600E282A8;
 			productRefGroup = EAC2C9011D4AF0E600E282A8 /* Products */;
@@ -4125,6 +4170,7 @@
 				EAC2CCFC1D4AF5D800E282A8 /* fail@2x.png in Resources */,
 				EAC2CD0A1D4AF5D800E282A8 /* i2KEPCDatePickerView.xib in Resources */,
 				EAC2CCFA1D4AF5D800E282A8 /* ClippedExpression.bundle in Resources */,
+				EA5EC6201D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings in Resources */,
 				EAC2CCF91D4AF5D800E282A8 /* back-arrow@3x.png in Resources */,
 				EAC2CDEB1D4AF5D800E282A8 /* bg_023@2x.png in Resources */,
 				EAC2CEBB1D4AF5FC00E282A8 /* loading_anim1.png in Resources */,
@@ -4217,6 +4263,7 @@
 				EAC2CD551D4AF5D800E282A8 /* MLLabelTextStorage.m in Sources */,
 				EAC2CCD51D4AF5D800E282A8 /* DCWebImageManager.m in Sources */,
 				EAC2CE1D1D4AF5E000E282A8 /* NSData+ASE128.m in Sources */,
+				EA5EC6241D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m in Sources */,
 				EA0E9D171D4C27DF009CBF64 /* HeInstructionView.m in Sources */,
 				EAC2CD661D4AF5D800E282A8 /* SIMenuCell.m in Sources */,
 				EAC2CCF21D4AF5D800E282A8 /* RRDevice.m in Sources */,
@@ -4329,6 +4376,7 @@
 				EA02294C1D74195B00F57965 /* HeUserNearByVC.m in Sources */,
 				EA0E9D241D4C295F009CBF64 /* HeBeautyZoneVC.m in Sources */,
 				EAC2CD981D4AF5D800E282A8 /* RACErrorSignal.m in Sources */,
+				EA5EC6221D77C0FF004D5FEC /* TOActivitySafari.m in Sources */,
 				EAC2CDB81D4AF5D800E282A8 /* RACUnarySequence.m in Sources */,
 				EAC2CD461D4AF5D800E282A8 /* MJRefreshBackGifFooter.m in Sources */,
 				EAC2CD1B1D4AF5D800E282A8 /* FMDatabase.m in Sources */,
@@ -4452,6 +4500,7 @@
 				EA4D01921D4D9A6B00A0CCA1 /* HeContestRankVC.m in Sources */,
 				EA9D934D1D6DE50A003DFBBE /* HeDistributeRecommendVC.m in Sources */,
 				EAC4F9EC1D6D8B0000F96DDA /* HeSettingVC.m in Sources */,
+				EA5EC6211D77C0FF004D5FEC /* TOActivityChrome.m in Sources */,
 				EAC2CCDA1D4AF5D800E282A8 /* UIButton+Corner.m in Sources */,
 				EAC2CDBC1D4AF5D800E282A8 /* UIAlertView+RACSignalSupport.m in Sources */,
 				EAC2CCC61D4AF5D800E282A8 /* UIWebView+AFNetworking.m in Sources */,
@@ -4506,6 +4555,7 @@
 				EAC2CD441D4AF5D800E282A8 /* MJRefreshAutoNormalFooter.m in Sources */,
 				EAC2CCE81D4AF5D800E282A8 /* LXActionSheet.m in Sources */,
 				EAC2CDB11D4AF5D800E282A8 /* RACSubscriber.m in Sources */,
+				EA5EC6231D77C0FF004D5FEC /* TOWebViewController.m in Sources */,
 				EAC2CDCE1D4AF5D800E282A8 /* README.md in Sources */,
 				EAC2CD091D4AF5D800E282A8 /* i2KEPCDatePickerView.m in Sources */,
 				EAC2CDD31D4AF5D800E282A8 /* NSData+ImageContentType.m in Sources */,
@@ -4579,6 +4629,21 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		EA5EC60F1D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EA5EC6101D77C0FF004D5FEC /* de */,
+				EA5EC6111D77C0FF004D5FEC /* en */,
+				EA5EC6121D77C0FF004D5FEC /* es */,
+				EA5EC6131D77C0FF004D5FEC /* ja */,
+				EA5EC6141D77C0FF004D5FEC /* ko */,
+				EA5EC6151D77C0FF004D5FEC /* pl */,
+				EA5EC61E1D77C0FF004D5FEC /* zh-Hans */,
+				EA5EC61F1D77C0FF004D5FEC /* zh-Hant */,
+			);
+			name = TOWebViewControllerLocalizable.strings;
+			sourceTree = "<group>";
+		};
 		EAC2C90C1D4AF0E600E282A8 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

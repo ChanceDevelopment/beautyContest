@@ -7,7 +7,14 @@
 //
 
 #import "HeBaseViewController.h"
+#import "DeleteImageProtocol.h"
 
-@interface HeDistributeRecommendVC : HeBaseViewController
+@protocol DistributeProtocol <NSObject>
+
+- (void)distributeSucceed;
+
+@end
+
+@interface HeDistributeRecommendVC : HeBaseViewController<DeleteImageProtocol,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
 
 @end

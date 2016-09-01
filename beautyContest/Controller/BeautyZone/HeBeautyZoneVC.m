@@ -15,11 +15,13 @@
 #import "HeDistributeContestVC.h"
 
 #define TextLineHeight 1.2f
+#define MinLocationSucceedNum 1   //要求最少成功定位的次数
 
-@interface HeBeautyZoneVC ()<UITableViewDelegate,UITableViewDataSource,DropDownChooseDataSource,DropDownChooseDelegate>
+@interface HeBeautyZoneVC ()<UITableViewDelegate,UITableViewDataSource,DropDownChooseDataSource,DropDownChooseDelegate,BMKLocationServiceDelegate>
 {
     BOOL requestReply; //是否已经完成
     NSInteger orderType; //排序类型
+    BMKLocationService *_locService;
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
@@ -30,6 +32,9 @@
 @property(strong,nonatomic)NSMutableArray *chooseArray;
 @property(strong,nonatomic)UISearchBar *searchBar;
 @property(strong,nonatomic)NSCache *imageCache;
+
+@property(assign,nonatomic)NSInteger locationSucceedNum;
+
 @end
 
 @implementation HeBeautyZoneVC
@@ -42,6 +47,7 @@
 @synthesize chooseArray;
 @synthesize searchBar;
 @synthesize imageCache;
+@synthesize locationSucceedNum;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -71,6 +77,18 @@
     [self loadBeautyContestShow:YES];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    _locService.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    _locService.delegate = nil;
+}
+
 - (void)initializaiton
 {
     [super initializaiton];
@@ -92,6 +110,18 @@
     NSArray *timeArray = @[@"所有"];
     
     chooseArray = [NSMutableArray arrayWithArray:@[distanceArray,hotArray,timeArray]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateContestZone:) name:@"updateContestZone" object:nil];
+    
+    //初始化BMKLocationService
+    _locService = [[BMKLocationService alloc] init];
+    _locService.delegate = self;
+    //启动LocationService
+    _locService.desiredAccuracy = kCLLocationAccuracyBest;
+    _locService.distanceFilter  = 1.5f;
+    [_locService startUserLocationService];
+    
+    
+    locationSucceedNum = 0;
 }
 
 - (void)initView
@@ -147,6 +177,12 @@
     [self.navigationController pushViewController:distributeContestVC animated:YES];
 }
 
+- (void)updateContestZone:(NSNotification *)notification
+{
+    updateOption = 1;
+    pageNo = 0;
+    [self loadBeautyContestShow:YES];
+}
 - (UIButton *)buttonWithTitle:(NSString *)buttonTitle frame:(CGRect)buttonFrame
 {
     UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
@@ -199,9 +235,11 @@
         default:
             break;
     }
+    NSString *longitudeStr = [[NSUserDefaults standardUserDefaults] objectForKey:USERLONGITUDEKEY];
+    NSString *latitudeStr = [[NSUserDefaults standardUserDefaults] objectForKey:USERLATITUDEKEY];
     
-    NSNumber *longitudeNum = [NSNumber numberWithFloat:0.0];
-    NSNumber *latitudeNum = [NSNumber numberWithFloat:0.0];
+    NSNumber *longitudeNum = [NSNumber numberWithFloat:[longitudeStr floatValue]];
+    NSNumber *latitudeNum = [NSNumber numberWithFloat:[latitudeStr floatValue]];
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
     NSDictionary *requestMessageParams = @{@"longitude":longitudeNum,@"latitude":latitudeNum,@"number":pageNum};
     [self showHudInView:self.view hint:@"获取赛区中..."];
@@ -405,7 +443,7 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {
     updateOption = 1;//刷新加载标志
-    pageNo = 1;
+    pageNo = 0;
     @try {
     }
     @catch (NSException *exception) {
@@ -581,6 +619,85 @@
     // Dispose of any resources that can be recreated.
 }
 
+//实现相关delegate 处理位置信息更新
+//处理方向变更信息
+- (void)didUpdateUserHeading:(BMKUserLocation *)userLocation
+{
+    CLLocation *newLocation = userLocation.location;
+    CLLocationCoordinate2D coordinate = newLocation.coordinate;
+    
+    NSString *latitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.latitude];
+    NSString *longitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.longitude];
+    
+    
+    if (newLocation) {
+        locationSucceedNum = locationSucceedNum + 1;
+        if (locationSucceedNum >= MinLocationSucceedNum) {
+            [self hideHud];
+            locationSucceedNum = 0;
+            [[NSUserDefaults standardUserDefaults] setObject:latitudeStr forKey:USERLATITUDEKEY];
+            [[NSUserDefaults standardUserDefaults] setObject:longitudeStr forKey:USERLONGITUDEKEY];
+            
+        }
+    }
+    //NSLog(@"heading is %@",userLocation.heading);
+}
+
+
+//处理位置坐标更新
+- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+{
+    //NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+}
+
+#pragma mark CLLocationManagerDelegate
+//iOS6.0以后定位更新使用的代理方法
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation *newLocation = [locations objectAtIndex:0];
+    CLLocationCoordinate2D coordinate1 = newLocation.coordinate;
+    
+    CLLocationCoordinate2D coordinate = [self returnBDPoi:coordinate1];
+    NSString *latitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.latitude];
+    NSString *longitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.longitude];
+    
+    
+    if (newLocation) {
+        locationSucceedNum = locationSucceedNum + 1;
+        if (locationSucceedNum >= MinLocationSucceedNum) {
+            [self hideHud];
+            locationSucceedNum = 0;
+            [[NSUserDefaults standardUserDefaults] setObject:latitudeStr forKey:USERLATITUDEKEY];
+            [[NSUserDefaults standardUserDefaults] setObject:longitudeStr forKey:USERLONGITUDEKEY];
+            
+        }
+    }
+    
+}
+
+#pragma 火星坐标系 (GCJ-02) 转 mark-(BD-09) 百度坐标系 的转换算法
+-(CLLocationCoordinate2D)returnBDPoi:(CLLocationCoordinate2D)PoiLocation
+{
+    const double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+    float x = PoiLocation.longitude + 0.0065, y = PoiLocation.latitude + 0.006;
+    float z = sqrt(x * x + y * y) + 0.00002 * sin(y * x_pi);
+    float theta = atan2(y, x) + 0.000003 * cos(x * x_pi);
+    CLLocationCoordinate2D GCJpoi=
+    CLLocationCoordinate2DMake( z * sin(theta),z * cos(theta));
+    return GCJpoi;
+}
+
+//定位失误时触发
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"error:%@",error);
+    //    [self.view makeToast:@"定位失败,请重新定位" duration:2.0 position:@"center"];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateContestZone" object:nil];
+}
 /*
  #pragma mark - Navigation
  

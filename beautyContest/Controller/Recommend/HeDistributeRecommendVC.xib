@@ -39,9 +39,9 @@
                         <action selector="distributeButtonClick:" destination="-1" eventType="touchUpInside" id="KK0-hE-il2"/>
                     </connections>
                 </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tG1-OP-XQp">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tG1-OP-XQp">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="HeG-Cd-HLW"/>
                         <outlet property="delegate" destination="-1" id="tl8-dZ-N6v"/>
@@ -64,13 +64,13 @@
                     <exclude reference="tG1-OP-XQp"/>
                 </mask>
                 <mask key="constraints">
-                    <exclude reference="DsG-OB-dR3"/>
-                    <exclude reference="ovn-lF-Zhz"/>
-                    <exclude reference="zdj-1P-JRv"/>
                     <exclude reference="Eds-5L-yC5"/>
                     <exclude reference="pTv-br-GkL"/>
                     <exclude reference="t4g-1F-Rlj"/>
                     <exclude reference="xER-YK-OM6"/>
+                    <exclude reference="DsG-OB-dR3"/>
+                    <exclude reference="ovn-lF-Zhz"/>
+                    <exclude reference="zdj-1P-JRv"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
@@ -79,13 +79,13 @@
                     <include reference="tG1-OP-XQp"/>
                 </mask>
                 <mask key="constraints">
-                    <include reference="DsG-OB-dR3"/>
-                    <include reference="ovn-lF-Zhz"/>
-                    <include reference="zdj-1P-JRv"/>
                     <include reference="Eds-5L-yC5"/>
                     <include reference="pTv-br-GkL"/>
                     <include reference="t4g-1F-Rlj"/>
                     <include reference="xER-YK-OM6"/>
+                    <include reference="DsG-OB-dR3"/>
+                    <include reference="ovn-lF-Zhz"/>
+                    <include reference="zdj-1P-JRv"/>
                 </mask>
             </variation>
         </view>
