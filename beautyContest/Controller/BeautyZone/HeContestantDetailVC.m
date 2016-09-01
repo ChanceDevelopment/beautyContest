@@ -26,6 +26,7 @@
     NSInteger contestantRank; //排名
     NSInteger voteCount; //投票人数
     BOOL haveNOVoted; //用户是否对参赛者投票
+    CGFloat imageScrollViewHeigh;
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
@@ -39,6 +40,7 @@
 @property(strong,nonatomic)NSDictionary *contestantDetailDict;
 @property(strong,nonatomic)NSMutableArray *contestantImageArray;
 @property(strong,nonatomic)NSMutableDictionary *contestantImageDict;
+@property(strong,nonatomic)UIScrollView *myScrollView;
 
 @end
 
@@ -57,6 +59,7 @@
 @synthesize contestantDetailDict;
 @synthesize contestantImageArray;
 @synthesize contestantImageDict;
+@synthesize myScrollView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -94,6 +97,7 @@
     [super initializaiton];
     contestantImageArray = [[NSMutableArray alloc] initWithCapacity:0];
     contestantImageDict = [[NSMutableDictionary alloc] initWithCapacity:0];
+    imageScrollViewHeigh = 80;
 }
 
 - (void)initView
@@ -170,7 +174,7 @@
     CGFloat detailImageX = imageW - detailImageW - titleX;
     CGFloat detailImageY = CGRectGetMinY(nameLabel.frame);
     
-    detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index4.jpg"]];
+    detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userDefalut_icon"]];
     detailImage.layer.borderWidth = 1.0;
     detailImage.layer.borderColor = [UIColor whiteColor].CGColor;
     detailImage.frame = CGRectMake(detailImageX, detailImageY, detailImageW, detailImageH);
@@ -262,6 +266,12 @@
     commentButton.layer.cornerRadius = 3.0;
     commentButton.layer.masksToBounds = YES;
     
+    CGFloat scrollX = 10;
+    CGFloat scrollY = 5;
+    CGFloat scrollW = SCREENWIDTH - 2 * scrollX;
+    CGFloat scrollH = imageScrollViewHeigh;
+    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollX, scrollY, scrollW, scrollH)];
+    
 }
 
 - (void)massageButtonClick:(UIButton *)button
@@ -273,7 +283,39 @@
 
 - (void)commentWithText:(NSString *)commentText user:(User *)commentUser
 {
-    NSLog(@"commentText = %@",commentText);
+    NSString *blogHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *blogUser = contestantBaseDict[@"userId"];
+    NSString *blogContent = commentText;
+    if (blogContent == nil) {
+        blogContent = @"";
+    }
+    [self showHudInView:self.view hint:@"留言中..."];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/message.action",BASEURL];
+    NSDictionary *params = @{@"blogHost":blogHost,@"blogUser":blogUser,@"blogContent":blogContent};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = @"留言成功";
+            }
+            [self showHint:data];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)getContestantDetail
@@ -321,7 +363,7 @@
             userNoLabel.text = userNo;
             
             NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,contestantDetailDict[@"userHeader"]];
-            [detailImage sd_setImageWithURL:[NSURL URLWithString:userHeader]];
+            [detailImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
             
             [tableview reloadData];
         }
@@ -484,11 +526,33 @@
             contestantImageDict = [[NSMutableDictionary alloc] initWithDictionary:jsonObj];
             NSString *wallUrl = [contestantImageDict objectForKey:@"wallUrl"];
             NSArray *wallArray = [wallUrl componentsSeparatedByString:@","];
+            
+            NSArray *subviewArray = myScrollView.subviews;
+            for (UIView *subview in subviewArray) {
+                [subview removeFromSuperview];
+            }
+            [contestantImageArray removeAllObjects];
+            CGFloat imageX = 0;
+            CGFloat imageY = 0;
+            CGFloat imageH = myScrollView.frame.size.height;
+            CGFloat imageW = imageH;
+            CGFloat imageDistance = 5;
             for (NSString *url in wallArray) {
                 NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
                 [contestantImageArray addObject:imageurl];
+                
+                UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
+                imageview.layer.masksToBounds = YES;
+                imageview.layer.cornerRadius = 5.0;
+                imageview.contentMode = UIViewContentModeScaleAspectFill;
+                [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+                [myScrollView addSubview:imageview];
+                imageX = imageX + imageW + imageDistance;
             }
-            
+            if (imageX > myScrollView.frame.size.width) {
+                myScrollView.contentSize = CGSizeMake(imageX, 0);
+            }
+            [tableview reloadData];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -643,28 +707,33 @@
             switch (row) {
                 case 0:
                 {
-                    cell.textLabel.text = @"希望大家多多给我投票";
+                    NSString *userSign = contestantDetailDict[@"userSign"];
+                    if ([userSign isMemberOfClass:[NSNull class]] || userSign == nil) {
+                        userSign = @"暂无签名";
+                    }
+                    cell.textLabel.text = userSign;
                     cell.textLabel.font = textFont;
                     cell.textLabel.textColor = [UIColor grayColor];
                     break;
                 }
                 case 1:{
-                    CGFloat imageNum = 3;
-                    CGFloat imageDistance = 10;
-                    CGFloat imageX = 10;
-                    CGFloat imageY = 10;
-                    CGFloat imageH = cellSize.height - 2 * imageY;
-                    CGFloat imageW = (cellSize.width - 2 * imageX - 20 - (imageNum - 1) * imageDistance) / imageNum;
-                    for (NSInteger index = 0; index < imageNum; index++) {
-                        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index3.jpg"]];
-                        imageView.frame = CGRectMake(imageX, imageY, imageW, imageH);
-                        imageView.contentMode = UIViewContentModeScaleAspectFill;
-                        imageView.layer.masksToBounds = YES;
-                        imageX = imageX + imageW + imageDistance;
-                        [cell addSubview:imageView];
-                    }
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    [cell addSubview:myScrollView];
+//                    CGFloat imageNum = 3;
+//                    CGFloat imageDistance = 10;
+//                    CGFloat imageX = 10;
+//                    CGFloat imageY = 10;
+//                    CGFloat imageH = cellSize.height - 2 * imageY;
+//                    CGFloat imageW = (cellSize.width - 2 * imageX - 20 - (imageNum - 1) * imageDistance) / imageNum;
+//                    for (NSInteger index = 0; index < imageNum; index++) {
+//                        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index3.jpg"]];
+//                        imageView.frame = CGRectMake(imageX, imageY, imageW, imageH);
+//                        imageView.contentMode = UIViewContentModeScaleAspectFill;
+//                        imageView.layer.masksToBounds = YES;
+//                        imageX = imageX + imageW + imageDistance;
+//                        [cell addSubview:imageView];
+//                    }
+//                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 }
                 default:
@@ -688,7 +757,7 @@
             switch (row) {
                 case 1:
                 {
-                    return 80;
+                    return imageScrollViewHeigh + 2 * myScrollView.frame.origin.y;
                     break;
                 }
                 default:

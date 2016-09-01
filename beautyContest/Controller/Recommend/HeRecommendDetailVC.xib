@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeRecommendDetailVC">
             <connections>
+                <outlet property="footerview" destination="GHs-WF-jKq" id="PDb-wW-OmV"/>
+                <outlet property="tableview" destination="oBu-Wj-ebW" id="P2O-GI-ofY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -13,7 +16,65 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="oBu-Wj-ebW">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="P1p-eL-hIL"/>
+                        <outlet property="delegate" destination="-1" id="2aS-9K-F9A"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GHs-WF-jKq">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="oBu-Wj-ebW" secondAttribute="bottom" id="9ed-ep-rqc">
+                    <variation key="heightClass=regular-widthClass=compact" constant="50"/>
+                </constraint>
+                <constraint firstItem="oBu-Wj-ebW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JW8-DH-sa9"/>
+                <constraint firstItem="GHs-WF-jKq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TiV-eW-2Rg"/>
+                <constraint firstAttribute="bottom" secondItem="GHs-WF-jKq" secondAttribute="bottom" id="X8U-0B-ILz"/>
+                <constraint firstAttribute="trailing" secondItem="GHs-WF-jKq" secondAttribute="trailing" id="XfR-lA-gkU"/>
+                <constraint firstItem="GHs-WF-jKq" firstAttribute="top" secondItem="oBu-Wj-ebW" secondAttribute="bottom" id="Ykh-G7-cpq"/>
+                <constraint firstAttribute="trailing" secondItem="oBu-Wj-ebW" secondAttribute="trailing" id="iN2-wO-sqg"/>
+                <constraint firstItem="oBu-Wj-ebW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="shg-1h-pdE"/>
+            </constraints>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="oBu-Wj-ebW"/>
+                    <exclude reference="GHs-WF-jKq"/>
+                </mask>
+                <mask key="constraints">
+                    <exclude reference="9ed-ep-rqc"/>
+                    <exclude reference="JW8-DH-sa9"/>
+                    <exclude reference="iN2-wO-sqg"/>
+                    <exclude reference="shg-1h-pdE"/>
+                    <exclude reference="TiV-eW-2Rg"/>
+                    <exclude reference="X8U-0B-ILz"/>
+                    <exclude reference="XfR-lA-gkU"/>
+                    <exclude reference="Ykh-G7-cpq"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="subviews">
+                    <include reference="oBu-Wj-ebW"/>
+                    <include reference="GHs-WF-jKq"/>
+                </mask>
+                <mask key="constraints">
+                    <include reference="9ed-ep-rqc"/>
+                    <include reference="JW8-DH-sa9"/>
+                    <include reference="iN2-wO-sqg"/>
+                    <include reference="shg-1h-pdE"/>
+                    <include reference="TiV-eW-2Rg"/>
+                    <include reference="X8U-0B-ILz"/>
+                    <include reference="XfR-lA-gkU"/>
+                    <include reference="Ykh-G7-cpq"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>

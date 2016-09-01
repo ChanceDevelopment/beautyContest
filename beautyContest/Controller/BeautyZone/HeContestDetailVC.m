@@ -16,6 +16,7 @@
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
+
 @interface HeContestDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol>
 {
     BOOL requestReply; //是否已经完成
@@ -92,7 +93,9 @@
     sectionHeaderView.userInteractionEnabled = YES;
     tableview.tableHeaderView = sectionHeaderView;
     
-    UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index2.jpg"]];
+    UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
+    bgImage.layer.masksToBounds = YES;
+    bgImage.contentMode = UIViewContentModeScaleAspectFill;
     bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
     bgImage.userInteractionEnabled = YES;

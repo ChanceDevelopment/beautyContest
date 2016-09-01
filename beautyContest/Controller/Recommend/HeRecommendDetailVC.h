@@ -9,5 +9,6 @@
 #import "HeBaseViewController.h"
 
 @interface HeRecommendDetailVC : HeBaseViewController
+@property(strong,nonatomic)NSDictionary *recommendDict;
 
 @end

@@ -38,11 +38,12 @@
     
 }
 @property(strong,nonatomic)IBOutlet UICollectionView *recommendCollectionView;
-@property(strong,nonatomic)NSArray *dataSource;
+@property(strong,nonatomic)NSMutableArray *dataSource;
 @property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSArray *iconDataSource;
 @property (nonatomic,strong)NSMutableArray * heightArray;// 存储图片高度的数组
 @property (nonatomic,strong)NSMutableArray * modelArray;// 存储图片高度的数组modelArray
+
 @property (nonatomic,assign)NSInteger page; // 一次刷新的个数
 
 @end
@@ -88,6 +89,7 @@
 {
     [super initializaiton];
     _page = 30;
+    dataSource = [[NSMutableArray alloc] initWithCapacity:0];
     heightArray = [[NSMutableArray alloc] initWithCapacity:0];
     modelArray = [[NSMutableArray alloc] initWithCapacity:0];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRecommend:) name:@"updateRecommend" object:nil];
@@ -297,21 +299,20 @@
         if (errorCode == REQUESTCODE_SUCCEED) {
             NSArray *recommendArray = [respondDict objectForKey:@"json"];
             if ([recommendArray isKindOfClass:[NSArray class]]) {
-                for (NSDictionary * d in recommendArray) {
-                    
-                    Recommend * m = [[Recommend alloc]init];
-                    NSString *recommendCover = [d objectForKey:@"recommendCover"];
+                for (NSDictionary *dict in recommendArray) {
+                    NSString *recommendCover = [dict objectForKey:@"recommendCover"];
                     if ([recommendCover isMemberOfClass:[NSNull class]] || recommendCover == nil) {
                         recommendCover = @"";
                     }
-                    recommendCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,recommendCover];
-                    m.headline_img = recommendCover;
-//                    [m setValuesForKeysWithDictionary:d];
-                    
-                    [self.modelArray addObject:m];
-                    NSLog(@"recommendCover = %@",recommendCover);
-                    [self p_putImageWithURL:m.headline_img];
-                    
+                    //分割
+                    NSArray *subRecommendCoverArray = [recommendCover componentsSeparatedByString:@","];
+                    NSString *subRecommendCover = [subRecommendCoverArray firstObject];
+                    Recommend *recommendObj = [[Recommend alloc] init];
+                    recommendCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,subRecommendCover];
+                    recommendObj.headline_img = recommendCover;
+                    [self.modelArray addObject:recommendObj];
+                    [self p_putImageWithURL:recommendObj.headline_img];
+                    [dataSource addObject:dict];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
@@ -413,8 +414,10 @@
 {
     NSLog(@"第 %ld 个cell",(long)indexPath.row);
     Recommend * model = self.modelArray[indexPath.row];
+    NSDictionary *recommendDict = dataSource[indexPath.row];
     NSLog(@"%@",model.headline_img);
     HeRecommendDetailVC *recommendVC = [[HeRecommendDetailVC alloc] init];
+    recommendVC.recommendDict = [[NSDictionary alloc] initWithDictionary:recommendDict];
     recommendVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:recommendVC animated:YES];
 }

@@ -57,6 +57,9 @@
     label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
     label.text = @"评论";
+    if (self.title) {
+        label.text = self.title;
+    }
     [label sizeToFit];
     navitem.titleView = label;
     [narvigationBar pushNavigationItem:navitem animated:YES];
