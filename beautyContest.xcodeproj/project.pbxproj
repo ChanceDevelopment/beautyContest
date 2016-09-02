@@ -42,6 +42,8 @@
 		EA0E9D331D4C2968009CBF64 /* HeUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D2F1D4C2968009CBF64 /* HeUserVC.xib */; };
 		EA0E9D371D4C2979009CBF64 /* HeLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */; };
 		EA0E9D381D4C2979009CBF64 /* HeLoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */; };
+		EA356A7A1D79651C00EE64A2 /* HeUserRecommendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */; };
+		EA356A7D1D79655100EE64A2 /* HeUserContestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */; };
 		EA46452B1D51884000CD539F /* HeNearbyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4645291D51884000CD539F /* HeNearbyVC.m */; };
 		EA46452C1D51884000CD539F /* HeNearbyVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA46452A1D51884000CD539F /* HeNearbyVC.xib */; };
 		EA4645301D5189C300CD539F /* HeNearbyTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA46452F1D5189C300CD539F /* HeNearbyTableCell.m */; };
@@ -677,6 +679,10 @@
 		EA0E9D341D4C2979009CBF64 /* HeLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeLoginVC.h; sourceTree = "<group>"; };
 		EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeLoginVC.m; sourceTree = "<group>"; };
 		EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeLoginVC.xib; sourceTree = "<group>"; };
+		EA356A781D79651C00EE64A2 /* HeUserRecommendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserRecommendCell.h; sourceTree = "<group>"; };
+		EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserRecommendCell.m; sourceTree = "<group>"; };
+		EA356A7B1D79655100EE64A2 /* HeUserContestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserContestCell.h; sourceTree = "<group>"; };
+		EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserContestCell.m; sourceTree = "<group>"; };
 		EA4645281D51884000CD539F /* HeNearbyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeNearbyVC.h; sourceTree = "<group>"; };
 		EA4645291D51884000CD539F /* HeNearbyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeNearbyVC.m; sourceTree = "<group>"; };
 		EA46452A1D51884000CD539F /* HeNearbyVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeNearbyVC.xib; sourceTree = "<group>"; };
@@ -1911,6 +1917,17 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		EA356A771D7964C000EE64A2 /* Distribute */ = {
+			isa = PBXGroup;
+			children = (
+				EA356A781D79651C00EE64A2 /* HeUserRecommendCell.h */,
+				EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */,
+				EA356A7B1D79655100EE64A2 /* HeUserContestCell.h */,
+				EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */,
+			);
+			name = Distribute;
+			sourceTree = "<group>";
+		};
 		EA46452D1D51899100CD539F /* Discover */ = {
 			isa = PBXGroup;
 			children = (
@@ -2007,6 +2024,7 @@
 		EA4D01831D4D93C600A0CCA1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EA356A771D7964C000EE64A2 /* Distribute */,
 				EADE32EA1D76B2710025492B /* HeAlbumImage.h */,
 				EADE32EB1D76B2710025492B /* HeAlbumImage.m */,
 				EA9D93571D6DF6FB003DFBBE /* User */,
@@ -4430,6 +4448,7 @@
 				EAC2CD501D4AF5D800E282A8 /* UIView+MJExtension.m in Sources */,
 				EAC2CD5B1D4AF5D800E282A8 /* NSString+MLExpression.m in Sources */,
 				EAC2CD1C1D4AF5D800E282A8 /* FMDatabaseAdditions.m in Sources */,
+				EA356A7D1D79655100EE64A2 /* HeUserContestCell.m in Sources */,
 				EAC2CD291D4AF5D800E282A8 /* NSArray+Sort.m in Sources */,
 				EAC2CD961D4AF5D800E282A8 /* RACEmptySequence.m in Sources */,
 				EA4645531D51ECC100CD539F /* FLCollectionSeparator.m in Sources */,
@@ -4531,6 +4550,7 @@
 				EAC2CDC21D4AF5D800E282A8 /* UIDatePicker+RACSignalSupport.m in Sources */,
 				EAC2CDE71D4AF5D800E282A8 /* README.md in Sources */,
 				EADE33021D76B7A70025492B /* UIView+Genie.m in Sources */,
+				EA356A7A1D79651C00EE64A2 /* HeUserRecommendCell.m in Sources */,
 				EAC2CD261D4AF5D800E282A8 /* IQTextView.m in Sources */,
 				EA8027F21D52E299008BC4E6 /* BLImageSize.m in Sources */,
 				EAC2CCB41D4AF5D800E282A8 /* AFHTTPRequestOperation.m in Sources */,

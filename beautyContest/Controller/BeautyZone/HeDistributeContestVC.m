@@ -16,6 +16,8 @@
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 #import <BaiduMapAPI_Location/BMKLocationService.h>
 #import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
+#import "HeUserRecommendCell.h"
+#import "HeUserContestCell.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
