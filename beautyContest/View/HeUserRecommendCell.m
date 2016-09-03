@@ -18,9 +18,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier cellSize:cellsize];
     if (self) {
         CGFloat imageX = 10;
-        CGFloat imageY = 10;
+        CGFloat imageY = 5;
         CGFloat imageW = SCREENWIDTH - 2 * imageX;
-        CGFloat imageH = imageW * BESTSCALE;
+        CGFloat imageH = 150;
         imageview = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
         imageview.image = [UIImage imageNamed:@"comonDefaultImage"];
         imageview.layer.masksToBounds = YES;
@@ -34,8 +34,8 @@
         CGFloat contentH = 30;
         contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
         contentLabel.backgroundColor = [UIColor clearColor];
-        contentLabel.font = [UIFont systemFontOfSize:15.0];
-        contentLabel.text = @"";
+        contentLabel.font = [UIFont systemFontOfSize:16.0];
+        contentLabel.text = @"内容推荐";
         contentLabel.textColor = [UIColor blackColor];
         [self addSubview:contentLabel];
         
@@ -44,9 +44,10 @@
         CGFloat timeW = SCREENWIDTH - 2 * timeX;
         CGFloat timeH = 30;
         timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeX, timeY, timeW, timeH)];
+        timeLabel.textAlignment = NSTextAlignmentRight;
         timeLabel.backgroundColor = [UIColor clearColor];
-        timeLabel.font = [UIFont systemFontOfSize:12.0];
-        timeLabel.text = @"";
+        timeLabel.font = [UIFont systemFontOfSize:13.0];
+        timeLabel.text = @"2016/09/08";
         timeLabel.textColor = [UIColor grayColor];
         [self addSubview:timeLabel];
         

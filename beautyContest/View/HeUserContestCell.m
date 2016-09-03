@@ -30,36 +30,37 @@
         [self addSubview:imageview];
         
         CGFloat contentX = 5;
-        CGFloat contentY = CGRectGetMaxY(imageview.frame);
+        CGFloat contentY = 10;
         CGFloat contentW = imageW - 2 * contentX;
         CGFloat contentH = 40;
         contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
         contentLabel.backgroundColor = [UIColor clearColor];
-        contentLabel.font = [UIFont systemFontOfSize:15.0];
+        contentLabel.font = [UIFont systemFontOfSize:20.0];
         contentLabel.text = @"";
-        contentLabel.textColor = [UIColor blackColor];
+        contentLabel.textColor = [UIColor whiteColor];
         [imageview addSubview:contentLabel];
         
         CGFloat timeX = 5;
         CGFloat timeY = CGRectGetMaxY(contentLabel.frame);
         CGFloat timeW = imageW - 2 * timeX;
-        CGFloat timeH = 30;
+        CGFloat timeH = 40;
         timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeX, timeY, timeW, timeH)];
+        timeLabel.numberOfLines = 2;
         timeLabel.backgroundColor = [UIColor clearColor];
-        timeLabel.font = [UIFont systemFontOfSize:12.0];
+        timeLabel.font = [UIFont systemFontOfSize:15.0];
         timeLabel.text = @"";
-        timeLabel.textColor = [UIColor grayColor];
+        timeLabel.textColor = [UIColor whiteColor];
         [imageview addSubview:timeLabel];
         
         CGFloat addressX = 5;
-        CGFloat addressY = CGRectGetMaxY(contentLabel.frame);
+        CGFloat addressY = CGRectGetMaxY(timeLabel.frame);
         CGFloat addressW = imageW - 2 * timeX;
         CGFloat addressH = 30;
         addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(addressX, addressY, addressW, addressH)];
         addressLabel.backgroundColor = [UIColor clearColor];
-        addressLabel.font = [UIFont systemFontOfSize:12.0];
+        addressLabel.font = [UIFont systemFontOfSize:15.0];
         addressLabel.text = @"";
-        addressLabel.textColor = [UIColor grayColor];
+        addressLabel.textColor = [UIColor whiteColor];
         [imageview addSubview:addressLabel];
     }
     return self;

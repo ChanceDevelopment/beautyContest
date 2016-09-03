@@ -41,10 +41,13 @@ typedef enum IQActionSheetPickerStyle
 @property(nonatomic, strong) NSArray *titlesForComponenets;
 @property(nonatomic, strong) NSArray *widthsForComponents;
 @property(nonatomic, strong) IBOutlet UIPickerView    *_pickerView;
+@property(nonatomic,strong) NSString *dateFormat;
 
 /*for IQActionSheetPickerStyleDatePicker*/
 @property(nonatomic, assign) NSDateFormatterStyle dateStyle;    //returning date string style.
 
 -(id)initWithTitle:(NSString *)title date:(NSString*)dateString delegate:(id<UIActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...;
+-(id)initWithTitle:(NSString *)title date:(NSString*)dateString delegate:(id<UIActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle format:(NSString *)format otherButtonTitles:(NSString *)otherButtonTitles, ...;
+
 
 @end

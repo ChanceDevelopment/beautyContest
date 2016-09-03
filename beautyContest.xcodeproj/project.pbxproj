@@ -44,6 +44,10 @@
 		EA0E9D381D4C2979009CBF64 /* HeLoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */; };
 		EA356A7A1D79651C00EE64A2 /* HeUserRecommendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */; };
 		EA356A7D1D79655100EE64A2 /* HeUserContestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */; };
+		EA428E3B1D79C0390053DC69 /* HeUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA428E391D79C0390053DC69 /* HeUserInfoVC.m */; };
+		EA428E3C1D79C0390053DC69 /* HeUserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA428E3A1D79C0390053DC69 /* HeUserInfoVC.xib */; };
+		EA428E411D79D17A0053DC69 /* HeEditUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA428E3F1D79D17A0053DC69 /* HeEditUserInfoVC.m */; };
+		EA428E421D79D17A0053DC69 /* HeEditUserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA428E401D79D17A0053DC69 /* HeEditUserInfoVC.xib */; };
 		EA46452B1D51884000CD539F /* HeNearbyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4645291D51884000CD539F /* HeNearbyVC.m */; };
 		EA46452C1D51884000CD539F /* HeNearbyVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA46452A1D51884000CD539F /* HeNearbyVC.xib */; };
 		EA4645301D5189C300CD539F /* HeNearbyTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA46452F1D5189C300CD539F /* HeNearbyTableCell.m */; };
@@ -676,13 +680,19 @@
 		EA0E9D2D1D4C2968009CBF64 /* HeUserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserVC.h; sourceTree = "<group>"; };
 		EA0E9D2E1D4C2968009CBF64 /* HeUserVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserVC.m; sourceTree = "<group>"; };
 		EA0E9D2F1D4C2968009CBF64 /* HeUserVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserVC.xib; sourceTree = "<group>"; };
-		EA0E9D341D4C2979009CBF64 /* HeLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeLoginVC.h; sourceTree = "<group>"; };
-		EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeLoginVC.m; sourceTree = "<group>"; };
-		EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeLoginVC.xib; sourceTree = "<group>"; };
+		EA0E9D341D4C2979009CBF64 /* HeLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeLoginVC.h; path = User/HeLoginVC.h; sourceTree = "<group>"; };
+		EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeLoginVC.m; path = User/HeLoginVC.m; sourceTree = "<group>"; };
+		EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HeLoginVC.xib; path = User/HeLoginVC.xib; sourceTree = "<group>"; };
 		EA356A781D79651C00EE64A2 /* HeUserRecommendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserRecommendCell.h; sourceTree = "<group>"; };
 		EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserRecommendCell.m; sourceTree = "<group>"; };
 		EA356A7B1D79655100EE64A2 /* HeUserContestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserContestCell.h; sourceTree = "<group>"; };
 		EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserContestCell.m; sourceTree = "<group>"; };
+		EA428E381D79C0390053DC69 /* HeUserInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserInfoVC.h; sourceTree = "<group>"; };
+		EA428E391D79C0390053DC69 /* HeUserInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserInfoVC.m; sourceTree = "<group>"; };
+		EA428E3A1D79C0390053DC69 /* HeUserInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserInfoVC.xib; sourceTree = "<group>"; };
+		EA428E3E1D79D17A0053DC69 /* HeEditUserInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeEditUserInfoVC.h; sourceTree = "<group>"; };
+		EA428E3F1D79D17A0053DC69 /* HeEditUserInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeEditUserInfoVC.m; sourceTree = "<group>"; };
+		EA428E401D79D17A0053DC69 /* HeEditUserInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeEditUserInfoVC.xib; sourceTree = "<group>"; };
 		EA4645281D51884000CD539F /* HeNearbyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeNearbyVC.h; sourceTree = "<group>"; };
 		EA4645291D51884000CD539F /* HeNearbyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeNearbyVC.m; sourceTree = "<group>"; };
 		EA46452A1D51884000CD539F /* HeNearbyVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeNearbyVC.xib; sourceTree = "<group>"; };
@@ -1628,9 +1638,9 @@
 		EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		EAC2CECB1D4AF71900E282A8 /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
-		EAC4F9E41D6D72B700F96DDA /* HeEnrollVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeEnrollVC.h; sourceTree = "<group>"; };
-		EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeEnrollVC.m; sourceTree = "<group>"; };
-		EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeEnrollVC.xib; sourceTree = "<group>"; };
+		EAC4F9E41D6D72B700F96DDA /* HeEnrollVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeEnrollVC.h; path = User/HeEnrollVC.h; sourceTree = "<group>"; };
+		EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeEnrollVC.m; path = User/HeEnrollVC.m; sourceTree = "<group>"; };
+		EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HeEnrollVC.xib; path = User/HeEnrollVC.xib; sourceTree = "<group>"; };
 		EAC4F9E91D6D8B0000F96DDA /* HeSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeSettingVC.h; sourceTree = "<group>"; };
 		EAC4F9EA1D6D8B0000F96DDA /* HeSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeSettingVC.m; sourceTree = "<group>"; };
 		EAC4F9EB1D6D8B0000F96DDA /* HeSettingVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeSettingVC.xib; sourceTree = "<group>"; };
@@ -1889,12 +1899,6 @@
 				EA0E9D2D1D4C2968009CBF64 /* HeUserVC.h */,
 				EA0E9D2E1D4C2968009CBF64 /* HeUserVC.m */,
 				EA0E9D2F1D4C2968009CBF64 /* HeUserVC.xib */,
-				EA0E9D341D4C2979009CBF64 /* HeLoginVC.h */,
-				EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */,
-				EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */,
-				EAC4F9E41D6D72B700F96DDA /* HeEnrollVC.h */,
-				EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */,
-				EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */,
 				EA9D934F1D6DF5CA003DFBBE /* HeUserJoinVC.h */,
 				EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */,
 				EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */,
@@ -1913,6 +1917,12 @@
 				EADE33071D76D2550025492B /* HeUserFinanceVC.h */,
 				EADE33081D76D2550025492B /* HeUserFinanceVC.m */,
 				EADE33091D76D2550025492B /* HeUserFinanceVC.xib */,
+				EA428E381D79C0390053DC69 /* HeUserInfoVC.h */,
+				EA428E391D79C0390053DC69 /* HeUserInfoVC.m */,
+				EA428E3A1D79C0390053DC69 /* HeUserInfoVC.xib */,
+				EA428E3E1D79D17A0053DC69 /* HeEditUserInfoVC.h */,
+				EA428E3F1D79D17A0053DC69 /* HeEditUserInfoVC.m */,
+				EA428E401D79D17A0053DC69 /* HeEditUserInfoVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1926,6 +1936,19 @@
 				EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */,
 			);
 			name = Distribute;
+			sourceTree = "<group>";
+		};
+		EA428E3D1D79C0400053DC69 /* LoginEnroll */ = {
+			isa = PBXGroup;
+			children = (
+				EA0E9D341D4C2979009CBF64 /* HeLoginVC.h */,
+				EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */,
+				EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */,
+				EAC4F9E41D6D72B700F96DDA /* HeEnrollVC.h */,
+				EAC4F9E51D6D72B700F96DDA /* HeEnrollVC.m */,
+				EAC4F9E61D6D72B700F96DDA /* HeEnrollVC.xib */,
+			);
+			name = LoginEnroll;
 			sourceTree = "<group>";
 		};
 		EA46452D1D51899100CD539F /* Discover */ = {
@@ -2235,6 +2258,7 @@
 		EAC2C9B51D4AF5CC00E282A8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				EA428E3D1D79C0400053DC69 /* LoginEnroll */,
 				EADE32F61D76B4BC0025492B /* Distribute */,
 				EA0508EB1D6E9AAA003947EE /* Common */,
 				EA0E9D281D4C2968009CBF64 /* Recommend */,
@@ -4145,6 +4169,7 @@
 				EADE330D1D76D45F0025492B /* icon_recharge.png in Resources */,
 				EA0508FA1D6EA000003947EE /* HeUserAlbumVC.xib in Resources */,
 				EAC2CD621D4AF5D800E282A8 /* arrow_down1@2x.png in Resources */,
+				EA428E421D79D17A0053DC69 /* HeEditUserInfoVC.xib in Resources */,
 				EAC2CDED1D4AF5D800E282A8 /* btn_020.press@2x.png in Resources */,
 				EA02293D1D7416CC00F57965 /* HeMyFansVC.xib in Resources */,
 				EA4D01781D4D8FF100A0CCA1 /* index3.jpg in Resources */,
@@ -4201,6 +4226,7 @@
 				EA0E9D101D4C269E009CBF64 /* comonDefaultImage.png in Resources */,
 				EA4D018E1D4D94AB00A0CCA1 /* HeContestDetailVC.xib in Resources */,
 				EAC2CDD01D4AF5D800E282A8 /* sharemore_pic@2x.png in Resources */,
+				EA428E3C1D79C0390053DC69 /* HeUserInfoVC.xib in Resources */,
 				EAC2CCF81D4AF5D800E282A8 /* back-arrow@2x.png in Resources */,
 				EADE330F1D76D4720025492B /* icon_withdrawals_detail.png in Resources */,
 				EA46454C1D51D8D700CD539F /* icon_sex_girl.png in Resources */,
@@ -4358,6 +4384,7 @@
 				EAC2CE041D4AF5D800E282A8 /* UIButton+Bootstrap.m in Sources */,
 				EA0509021D6EA1AB003947EE /* HeUserDistributeContestCell.m in Sources */,
 				EAC2CE1C1D4AF5E000E282A8 /* AES128Util.m in Sources */,
+				EA428E3B1D79C0390053DC69 /* HeUserInfoVC.m in Sources */,
 				EAC2CDFC1D4AF5D800E282A8 /* TZPhotoPreviewCell.m in Sources */,
 				EA8027E81D52DC20008BC4E6 /* AoiroSoraLayout.m in Sources */,
 				EAC2CDD81D4AF5D800E282A8 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -4473,6 +4500,7 @@
 				EAC2CD891D4AF5D800E282A8 /* RACArraySequence.m in Sources */,
 				EAC2CCD01D4AF5D800E282A8 /* AsynImageView.m in Sources */,
 				EAC2CD921D4AF5D800E282A8 /* RACDisposable.m in Sources */,
+				EA428E411D79D17A0053DC69 /* HeEditUserInfoVC.m in Sources */,
 				EA0E9D321D4C2968009CBF64 /* HeUserVC.m in Sources */,
 				EAC2CDCB1D4AF5D800E282A8 /* UITableViewHeaderFooterView+RACSignalSupport.m in Sources */,
 				EAC2CD941D4AF5D800E282A8 /* RACDynamicSignal.m in Sources */,

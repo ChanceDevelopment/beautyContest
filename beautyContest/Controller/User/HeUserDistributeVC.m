@@ -12,6 +12,8 @@
 #import "HeContestantDetailVC.h"
 #import "HeContestantTableCell.h"
 #import "HeUserDistributeContestCell.h"
+#import "HeUserRecommendCell.h"
+#import "HeUserContestCell.h"
 
 #define TextLineHeight 1.2f
 
@@ -21,20 +23,25 @@
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
-@property(strong,nonatomic)NSMutableArray *dataSource;
+@property(strong,nonatomic)NSMutableArray *dataSource; //推荐
+@property(strong,nonatomic)NSMutableArray *zoneDataSource; //赛区
+
 @property(strong,nonatomic)EGORefreshTableHeaderView *refreshHeaderView;
 @property(strong,nonatomic)EGORefreshTableFootView *refreshFooterView;
 @property(assign,nonatomic)NSInteger pageNo;
 
+@property(strong,nonatomic)NSCache *imageCache;
 @end
 
 @implementation HeUserDistributeVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
+@synthesize zoneDataSource;
 @synthesize refreshFooterView;
 @synthesize refreshHeaderView;
 @synthesize pageNo;
+@synthesize imageCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,11 +67,15 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    [self loadRankingDataShow:YES];
 }
 
 - (void)initializaiton
 {
     [super initializaiton];
+    dataSource = [[NSMutableArray alloc] initWithCapacity:0];
+    zoneDataSource = [[NSMutableArray alloc] initWithCapacity:0];
+    imageCache = [[NSCache alloc] init];
 }
 
 - (void)initView
@@ -127,7 +138,66 @@
 
 - (void)loadRankingDataShow:(BOOL)show
 {
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userid) {
+        userid = @"";
+    }
+    NSNumber *pageNum = [NSNumber numberWithInteger:[zoneDataSource count]];
+    NSDictionary *requestMessageParams = @{@"userId":userid};
     
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/recommend/getrecommend.action",BASEURL];
+    if (requestReply) {
+        requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/getHistoryZone.action",BASEURL];
+        requestMessageParams = @{@"zoneUser":userid,@"start":pageNum};
+    }
+    
+    
+    [self showHudInView:self.view hint:@"正在获取..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        if (show) {
+            [Waiting dismiss];
+        }
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            if (!requestReply) {
+                [dataSource removeAllObjects];
+            }
+            if (updateOption == 1) {
+                if (requestReply) {
+                    [zoneDataSource removeAllObjects];
+                }
+            }
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            for (NSDictionary *zoneDict in resultArray) {
+                if (!requestReply) {
+                    [dataSource addObject:zoneDict];
+                }
+                else{
+                    [zoneDataSource addObject:zoneDict];
+                }
+                
+            }
+            [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
+            [self.tableview reloadData];
+        }
+        else{
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if (updateOption == 2 && [resultArray count] == 0) {
+                pageNo--;
+                return;
+            }
+        }
+    } failure:^(NSError *error){
+        if (show) {
+            [Waiting dismiss];
+        }
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)addFooterView
@@ -259,7 +329,10 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    if (!requestReply) {
+        return [dataSource count];
+    }
+    return [zoneDataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -274,13 +347,135 @@
     static NSString *cellIndentifier = @"HeUserDistributeContestCell";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     
-    
-    HeUserDistributeContestCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
-    if (!cell) {
-        cell = [[HeUserDistributeContestCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    NSDictionary *dict = nil;
+    @try {
+        if (!requestReply) {
+            dict = dataSource[row];
+        }
+        else{
+            dict = zoneDataSource[row];
+        }
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
     }
+    
+    
+    if (!requestReply) {
+        HeUserRecommendCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+        if (!cell) {
+            cell = [[HeUserRecommendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        }
+        NSString *recommendContent = dict[@"recommendContent"];
+        if ([recommendContent isMemberOfClass:[NSNull class]] || recommendContent == nil) {
+            recommendContent = @"";
+        }
+        CGFloat labelW = cell.contentLabel.frame.size.width;
+        UIFont *font = [UIFont  systemFontOfSize:16.0];
+        CGSize textSize = [MLLinkLabel getViewSizeByString:recommendContent maxWidth:labelW font:font lineHeight:TextLineHeight lines:0];
+        if (textSize.height < 30) {
+            textSize.height = 30;
+        }
+        CGRect contentFrame = cell.contentLabel.frame;
+        contentFrame.size.height = textSize.height;
+        cell.contentLabel.text = recommendContent;
+        
+        id recommendCreateTimeObj = [dict objectForKey:@"recommendCreateTime"];
+        if ([recommendCreateTimeObj isMemberOfClass:[NSNull class]] || recommendCreateTimeObj == nil) {
+            NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+            recommendCreateTimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+        }
+        long long timestamp = [recommendCreateTimeObj longLongValue];
+        NSString *recommendCreateTime = [NSString stringWithFormat:@"%lld",timestamp];
+        if ([recommendCreateTime length] > 3) {
+            //时间戳
+            recommendCreateTime = [recommendCreateTime substringToIndex:[recommendCreateTime length] - 3];
+        }
+        
+        NSString *time = [Tool convertTimespToString:[recommendCreateTime longLongValue] dateFormate:@"yyyy-MM-dd"];
+        cell.timeLabel.text = [NSString stringWithFormat:@"%@",time];
+        
+        NSString *recommendCover = dict[@"recommendCover"];
+        if ([recommendCover isMemberOfClass:[NSNull class]] || recommendCover == nil) {
+            recommendCover = @"";
+        }
+        NSArray *recommendCoverArray = [recommendCover componentsSeparatedByString:@","];
+        NSString *imageUrl = recommendCoverArray[0];
+        NSString *imageKey = [NSString stringWithFormat:@"%ld_%@",row,imageUrl];
+        UIImageView *imageview = [imageCache objectForKey:imageKey];
+        if (!imageview) {
+            imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,imageUrl];
+            [cell.imageview sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+            imageview = cell.imageview;
+        }
+        cell.imageview = imageview;
+        [cell addSubview:cell.imageview];
+        
+        return cell;
+    }
+    
+    HeUserContestCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    if (!cell) {
+        cell = [[HeUserContestCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+    }
+    
+    NSString *zoneCover = dict[@"zoneCover"];
+    NSString *imageKey = [NSString stringWithFormat:@"contest_%ld_%@",row,zoneCover];
+    UIImageView *imageview = [imageCache objectForKey:imageKey];
+    if (!imageview) {
+        zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
+        [cell.imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+        imageview = cell.imageview;
+    }
+    cell.imageview = imageview;
+    [cell addSubview:cell.imageview];
+    
+    NSString *zoneTitle = dict[@"zoneTitle"];
+    if ([zoneTitle isMemberOfClass:[NSNull class]] || zoneTitle == nil) {
+        zoneTitle = @"";
+    }
+    cell.contentLabel.text = zoneTitle;
+    [cell.imageview addSubview:cell.contentLabel];
+    
+    id zoneCreatetimeObj = [dict objectForKey:@"zoneCreatetime"];
+    if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
+        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+        zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+    }
+    long long timestamp = [zoneCreatetimeObj longLongValue];
+    NSString *zoneCreatetime = [NSString stringWithFormat:@"%lld",timestamp];
+    if ([zoneCreatetime length] > 3) {
+        //时间戳
+        zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
+    }
+    
+    NSString *creattime = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"yyyy-MM-dd HH:mm"];
+    
+    id zoneDeathlineObj = [dict objectForKey:@"zoneDeathline"];
+    if ([zoneDeathlineObj isMemberOfClass:[NSNull class]] || zoneDeathlineObj == nil) {
+        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+        zoneDeathlineObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+    }
+    timestamp = [zoneDeathlineObj longLongValue];
+    NSString *zoneDeathlinetime = [NSString stringWithFormat:@"%lld",timestamp];
+    if ([zoneDeathlinetime length] > 3) {
+        //时间戳
+        zoneDeathlinetime = [zoneDeathlinetime substringToIndex:[zoneDeathlinetime length] - 3];
+    }
+    
+    NSString *deathlinetime = [Tool convertTimespToString:[zoneDeathlinetime longLongValue] dateFormate:@"yyyy-MM-dd HH:mm"];
+    
+    cell.timeLabel.text = [NSString stringWithFormat:@"%@ - %@",creattime,deathlinetime];
+    [cell.imageview addSubview:cell.timeLabel];
+    
+    NSString *zoneAddress = dict[@"zoneAddress"];
+    if ([zoneAddress isMemberOfClass:[NSNull class]] || zoneAddress == nil) {
+        zoneAddress = @"";
+    }
+    cell.addressLabel.text = zoneAddress;
+    [cell.imageview addSubview:cell.addressLabel];
+    
     
     return cell;
 }
@@ -297,7 +492,36 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    NSInteger row = indexPath.row;
+    NSDictionary *dict = nil;
+    @try {
+        if (!requestReply) {
+            dict = dataSource[row];
+        }
+        else{
+            dict = zoneDataSource[row];
+        }
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    if (!requestReply) {
+        NSString *recommendContent = dict[@"recommendContent"];
+        if ([recommendContent isMemberOfClass:[NSNull class]] || recommendContent == nil) {
+            recommendContent = @"";
+        }
+        CGFloat labelX = 10;
+        CGFloat labelW = SCREENWIDTH - 2 * labelX;
+        UIFont *font = [UIFont  systemFontOfSize:15.0];
+        CGSize textSize = [MLLinkLabel getViewSizeByString:recommendContent maxWidth:labelW font:font lineHeight:TextLineHeight lines:0];
+        if (textSize.height < 30) {
+            textSize.height = 30;
+        }
+        return 220 + textSize.height - 30;
+    }
+    return 150;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -306,9 +530,9 @@
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     
-    HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
-    contantDetailVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:contantDetailVC animated:YES];
+//    HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
+//    contantDetailVC.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:contantDetailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -54,18 +54,18 @@
             self.userHeader = userHeader;
             
             
-            NSString *userPositionX = [dict objectForKey:@"userPositionX"];
+            id userPositionX = [dict objectForKey:@"userPositionX"];
             if ([userPositionX isMemberOfClass:[NSNull class]] || userPositionX == nil) {
                 userPositionX = @"";
             }
-            self.userPositionX = userPositionX;
+            self.userPositionX = [NSString stringWithFormat:@"%@",userPositionX];
             
          
-            NSString *userPositionY = [dict objectForKey:@"userPositionY"];
+            id userPositionY = [dict objectForKey:@"userPositionY"];
             if ([userPositionY isMemberOfClass:[NSNull class]] || userPositionY == nil) {
                 userPositionY = @"";
             }
-            self.userPositionY = userPositionY;
+            self.userPositionY = [NSString stringWithFormat:@"%@",userPositionY];
             
             
             NSString *userSign = [dict objectForKey:@"userSign"];
@@ -134,17 +134,17 @@
             }
             self.infoProfession = infoProfession;
             
-            NSString *infoTall = [dict objectForKey:@"infoTall"];
+            id infoTall = [dict objectForKey:@"infoTall"];
             if ([infoTall isMemberOfClass:[NSNull class]] || infoTall == nil) {
                 infoTall = @"";
             }
-            self.infoTall = infoTall;
+            self.infoTall = [NSString stringWithFormat:@"%@",infoTall];
             
-            NSString *infoWeight = [dict objectForKey:@"infoWeight"];
+            id infoWeight = [dict objectForKey:@"infoWeight"];
             if ([infoWeight isMemberOfClass:[NSNull class]] || infoWeight == nil) {
                 infoWeight = @"";
             }
-            self.infoWeight = infoWeight;
+            self.infoWeight = [NSString stringWithFormat:@"%@",infoWeight];
             
             NSString *infoMeasurements = [dict objectForKey:@"infoMeasurements"];
             if ([infoMeasurements isMemberOfClass:[NSNull class]] || infoMeasurements == nil) {
@@ -163,13 +163,39 @@
             if ([infoBlood isMemberOfClass:[NSNull class]] || infoBlood == nil) {
                 infoBlood = @"";
             }
-            self.infoBlood = infoBlood;
-            
-            
-            NSString *infoBirth = [dict objectForKey:@"infoBirth"];
-            if ([infoBirth isMemberOfClass:[NSNull class]] || infoBirth == nil) {
-                infoBirth = @"";
+            if ([infoBlood integerValue] == 0) {
+                self.infoBlood = @"A";
             }
+            else if ([infoBlood integerValue] == 1) {
+                self.infoBlood = @"B";
+            }
+            else if ([infoBlood integerValue] == 2) {
+                self.infoBlood = @"AB";
+            }
+            else if ([infoBlood integerValue] == 3) {
+                self.infoBlood = @"O";
+            }
+            
+            
+//            NSString *infoBirth = [dict objectForKey:@"infoBirth"];
+//            if ([infoBirth isMemberOfClass:[NSNull class]] || infoBirth == nil) {
+//                infoBirth = @"";
+//            }
+            
+            id zoneCreatetimeObj = [dict objectForKey:@"infoBirth"];
+            if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
+                NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+                zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+            }
+            long long timestamp = [zoneCreatetimeObj longLongValue];
+            NSString *zoneCreatetime = [NSString stringWithFormat:@"%lld",timestamp];
+            if ([zoneCreatetime length] > 3) {
+                //时间戳
+                zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
+            }
+            
+            NSString *infoBirth = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"yyyy-MM-dd"];
+            
             self.infoBirth = infoBirth;
         }
         
@@ -274,6 +300,35 @@
                 userCreatetime = @"";
             }
             self.userCreatetime = userCreatetime;
+            
+            
+            NSString *infoId = user.infoId;
+            self.infoId = infoId;
+            
+            id infoUser = user.infoUser;
+            
+            NSString *infoProfession = user.infoProfession;
+            self.infoProfession = infoProfession;
+            
+            NSString *infoTall = user.infoTall;
+            self.infoTall = infoTall;
+            
+            NSString *infoWeight = user.infoWeight;
+            self.infoWeight = infoWeight;
+            
+            NSString *infoMeasurements = user.infoMeasurements;
+            self.infoMeasurements = infoMeasurements;
+            
+            
+            NSString *infoZodiac = user.infoZodiac;
+            self.infoZodiac = infoZodiac;
+            
+            NSString *infoBlood = user.infoBlood;
+            self.infoBlood = infoBlood;
+            
+            
+            NSString *infoBirth = user.infoBirth;
+            self.infoBirth = infoBirth;
             
 //            self.fansNum = user.fansNum;
 //            self.followNum = user.followNum;

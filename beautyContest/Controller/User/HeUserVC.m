@@ -18,8 +18,10 @@
 #import "HeMyFansVC.h"
 #import "HeUserFollowVC.h"
 #import "HeUserFinanceVC.h"
+#import "HeUserInfoVC.h"
 
 #define TextLineHeight 1.2f
+#define SEXTAG 1000
 
 @interface HeUserVC ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -90,6 +92,7 @@
     dataSource = @[@[@"我的相册",@"我的发布",@"我的参与",@"我的资金"],@[@"设置"]];
     iconDataSource = @[@[@"icon_album",@"icon_put",@"icon_participation",@"icon_reward"],@[@"icon_setting"]];
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserInfo:) name:@"updateUserInfo" object:nil];
 }
 
 - (void)initView
@@ -134,6 +137,14 @@
     nameFrame.origin.y = nameFrame.origin.y - 20;
     nameLabel.frame = nameFrame;
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanUserInfo:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    nameLabel.userInteractionEnabled = YES;
+    sectionHeaderView.userInteractionEnabled = YES;
+    userBGImage.userInteractionEnabled = YES;
+    [nameLabel addGestureRecognizer:tap];
+    
     CGSize textSize = [MLLinkLabel getViewSizeByString:nameLabel.text maxWidth:nameLabel.frame.size.width font:nameLabel.font lineHeight:TextLineHeight lines:0];
     UIImageView *sexIcon = [[UIImageView alloc] init];
     if (userInfo.userSex == 1) {
@@ -147,6 +158,7 @@
     CGFloat imageH = 20;
     CGFloat imageY = nameFrame.origin.y + (nameLabelH - imageH) / 2.0;
     sexIcon.frame = CGRectMake(imageX, imageY, imageW, imageH);
+    sexIcon.tag = SEXTAG;
     [sectionHeaderView addSubview:sexIcon];
     
     CGFloat addressLabelX = 0;
@@ -202,6 +214,124 @@
     
 }
 
+- (void)updateUserInfo:(NSNotification *)notificaiton
+{
+    [self getUserInfo];
+}
+
+- (void)updateUser
+{
+    UIFont *textFont = [UIFont systemFontOfSize:20.0];
+    
+    CGFloat nameLabelX = 0;
+    CGFloat nameLabelY = 0;
+    CGFloat nameLabelH = 40;
+    CGFloat nameLabelW = SCREENWIDTH;
+//    nameLabel = [[UILabel alloc] init];
+    nameLabel.textAlignment = NSTextAlignmentLeft;
+    nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.text = userInfo.userNick;
+    nameLabel.textAlignment = NSTextAlignmentCenter;
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.font = textFont;
+    nameLabel.frame = CGRectMake(nameLabelX, nameLabelY, nameLabelW, nameLabelH);
+    [sectionHeaderView addSubview:nameLabel];
+    nameLabel.center = userBGImage.center;
+    CGRect nameFrame = nameLabel.frame;
+    nameFrame.origin.y = nameFrame.origin.y - 20;
+    nameLabel.frame = nameFrame;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanUserInfo:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    nameLabel.userInteractionEnabled = YES;
+    sectionHeaderView.userInteractionEnabled = YES;
+    userBGImage.userInteractionEnabled = YES;
+    [nameLabel addGestureRecognizer:tap];
+    
+    CGSize textSize = [MLLinkLabel getViewSizeByString:nameLabel.text maxWidth:nameLabel.frame.size.width font:nameLabel.font lineHeight:TextLineHeight lines:0];
+    UIImageView *sexIcon = [sectionHeaderView viewWithTag:SEXTAG];
+    if (userInfo.userSex == 1) {
+        sexIcon.image = [UIImage imageNamed:@"icon_sex_boy"];
+    }
+    else{
+        sexIcon.image = [UIImage imageNamed:@"icon_sex_girl"];
+    }
+    CGFloat imageX = SCREENWIDTH / 2.0 + textSize.width / 2.0 + 5;
+    CGFloat imageW = 20;
+    CGFloat imageH = 20;
+    CGFloat imageY = nameFrame.origin.y + (nameLabelH - imageH) / 2.0;
+    sexIcon.frame = CGRectMake(imageX, imageY, imageW, imageH);
+    [sectionHeaderView addSubview:sexIcon];
+    
+    CGFloat addressLabelX = 0;
+    CGFloat addressLabelY = CGRectGetMaxY(nameLabel.frame);
+    CGFloat addressLabelH = 40;
+    CGFloat addressLabelW = SCREENWIDTH;
+//    addressLabel = [[UILabel alloc] init];
+    addressLabel.textAlignment = NSTextAlignmentLeft;
+    addressLabel.backgroundColor = [UIColor clearColor];
+    addressLabel.text = userInfo.userAddress;
+    addressLabel.textAlignment = NSTextAlignmentCenter;
+    addressLabel.textColor = [UIColor whiteColor];
+    addressLabel.font = textFont;
+    addressLabel.frame = CGRectMake(addressLabelX, addressLabelY, addressLabelW, addressLabelH);
+    [sectionHeaderView addSubview:addressLabel];
+}
+//获取用户的信息
+- (void)getUserInfo
+{
+    NSString *getUserInfoUrl = [NSString stringWithFormat:@"%@/user/getUserinfo.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (userId == nil) {
+        userId = @"";
+    }
+    NSDictionary *loginParams = @{@"userId":userId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserInfoUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
+            //            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
+            //            if (userState == 0) {
+            //                [self showHint:@"当前用户不可用"];
+            //                return ;
+            //            }
+            NSString *userDataPath = [Tool getUserDataPath];
+            NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
+            BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
+            if (succeed) {
+                NSLog(@"用户资料写入成功");
+            }
+            User *user = [[User alloc] initUserWithDict:userDictInfo];
+            [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
+            userInfo = user;
+            [self updateUser];
+            [tableview reloadData];
+        }
+        else{
+            NSString *userDataPath = [Tool getUserDataPath];
+            NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
+            NSDictionary *respondDict = [[NSDictionary alloc] initWithContentsOfFile:userFileName];
+            if (respondDict) {
+                NSString *myresponseString = [respondDict objectForKey:@"user"];
+                NSDictionary *respondDict = [myresponseString objectFromJSONString];
+                NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
+                User *user = [[User alloc] initUserWithDict:userDictInfo];
+                [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
+            }
+        }
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+    
+}
+
 - (UIButton *)buttonWithTitle:(NSString *)buttonTitle frame:(CGRect)buttonFrame
 {
     UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
@@ -226,6 +356,13 @@
     [button addSubview:buttonNumberLabel];
     
     return button;
+}
+
+- (void)scanUserInfo:(UITapGestureRecognizer *)tap
+{
+    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 - (void)filterButtonClick:(UIButton *)button
@@ -384,6 +521,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 /*
  #pragma mark - Navigation
  

@@ -16,6 +16,10 @@
     self = [[[NSBundle mainBundle] loadNibNamed:@"IQActionSheetPickerView" owner:self options:nil] objectAtIndex:0];
     
     if (self) {
+        NSArray *subArray = [dateString componentsSeparatedByString:@"-"];
+        if ([subArray count] == 3) {
+            _dateFormat = @"yyyy-MM-dd";
+        }
         _actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
         _actionToolbar.barStyle = UIBarStyleBlackTranslucent;
         [_actionToolbar sizeToFit];
@@ -44,7 +48,13 @@
         _datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_actionToolbar.frame), SCREENWIDTH, 0)];
         _datePicker.date = [self dateFromString:dateString];
         [_datePicker sizeToFit];
-        [_datePicker setDatePickerMode:UIDatePickerModeDateAndTime];
+        if (_dateFormat) {
+            [_datePicker setDatePickerMode:UIDatePickerModeDate];
+        }
+        else{
+            [_datePicker setDatePickerMode:UIDatePickerModeDateAndTime];
+        }
+        
         [self addSubview:_datePicker];
         [self setDateStyle:NSDateFormatterMediumStyle];
         
@@ -53,10 +63,25 @@
     return self;
 }
 
+-(id)initWithTitle:(NSString *)title date:(NSString*)dateString delegate:(id<UIActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle format:(NSString *)format otherButtonTitles:(NSString *)otherButtonTitles, ...
+{
+    _dateFormat = [[NSString alloc] initWithString:format];
+    self = [self initWithTitle:title delegate:delegate cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:destructiveButtonTitle otherButtonTitles:otherButtonTitles, nil];
+    if (self) {
+        _dateFormat = [[NSString alloc] initWithString:format];
+    }
+    return self;
+}
+
 - (NSDate *)dateFromString:(NSString *)dateString{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
+    if (_dateFormat) {
+        [dateFormatter setDateFormat: _dateFormat];
+    }
+    else{
+        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
+    }
     NSDate *destDate= [dateFormatter dateFromString:dateString];
     return destDate;
 }
@@ -64,7 +89,12 @@
 - (NSString *)stringFromDate:(NSDate *)date{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //zzz表示时区，zzz可以删除，这样返回的日期字符将不包含时区信息。
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    if (_dateFormat) {
+        [dateFormatter setDateFormat: _dateFormat];
+    }
+    else{
+        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
+    }
     NSString *destDateString = [dateFormatter stringFromDate:date];
 
     return destDateString;
