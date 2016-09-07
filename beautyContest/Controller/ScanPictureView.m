@@ -46,19 +46,14 @@
     return self;
 }
 
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:YES];
-    [UIApplication sharedApplication].statusBarHidden = NO;
-    self.navigationController.navigationBarHidden = YES;
-    self.navigationController.navigationBarHidden = NO;
-}
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
     viewCancel = YES;
     pictureScrollView.delegate = nil;
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
