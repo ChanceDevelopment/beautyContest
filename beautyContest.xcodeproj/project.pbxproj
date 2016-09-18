@@ -2166,7 +2166,6 @@
 		EAC2C9021D4AF0E600E282A8 /* beautyContest */ = {
 			isa = PBXGroup;
 			children = (
-				EADA67C21D8E67AC00ECE722 /* 选美-颜值榜.entitlements */,
 				EA4D01831D4D93C600A0CCA1 /* View */,
 				EA0E9CF51D4C258A009CBF64 /* Resource */,
 				EAC2CEBE1D4AF71900E282A8 /* Category */,
@@ -2194,6 +2193,7 @@
 		EAC2C9031D4AF0E600E282A8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EADA67C21D8E67AC00ECE722 /* 选美-颜值榜.entitlements */,
 				EAC2C9041D4AF0E600E282A8 /* main.m */,
 				EAC2C9B21D4AF40F00E282A8 /* appAPIDefine.h */,
 				EAC2C9B11D4AF3FE00E282A8 /* beautyContest-Prefix.pch */,
