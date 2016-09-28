@@ -435,12 +435,6 @@ BMKMapManager* _mapManager;
             NSLog(@"registrationID获取失败，code：%d",resCode);
         }
     }];
-    //    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-    //                                                   UIRemoteNotificationTypeSound |
-    //                                                   UIRemoteNotificationTypeAlert)
-    //                                       categories:nil];
-    //    [APService setupWithOption:launchOptions];
-    //    [APService setLogOFF];
 }
 
 //初始化友盟的SDK
