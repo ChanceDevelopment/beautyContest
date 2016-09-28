@@ -612,6 +612,7 @@
 		EADE33111D76D4790025492B /* icon_withdrawals.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33101D76D4790025492B /* icon_withdrawals.png */; };
 		EADE33131D76D48A0025492B /* icon_alipay.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33121D76D48A0025492B /* icon_alipay.png */; };
 		EADE33151D76D49F0025492B /* icon_pay_password.png in Resources */ = {isa = PBXBuildFile; fileRef = EADE33141D76D49F0025492B /* icon_pay_password.png */; };
+		EAFC13651D9B6C39005D00AB /* jpush-ios-2.1.9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAFC13631D9B6C39005D00AB /* jpush-ios-2.1.9.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1693,6 +1694,8 @@
 		EADE33101D76D4790025492B /* icon_withdrawals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_withdrawals.png; sourceTree = "<group>"; };
 		EADE33121D76D48A0025492B /* icon_alipay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_alipay.png; sourceTree = "<group>"; };
 		EADE33141D76D49F0025492B /* icon_pay_password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_pay_password.png; sourceTree = "<group>"; };
+		EAFC13631D9B6C39005D00AB /* jpush-ios-2.1.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.9.a"; sourceTree = "<group>"; };
+		EAFC13641D9B6C39005D00AB /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1740,6 +1743,7 @@
 				EAC2C98A1D4AF28100E282A8 /* libz.tbd in Frameworks */,
 				EAC2C9881D4AF27600E282A8 /* libiconv.tbd in Frameworks */,
 				EAC2C9841D4AF26300E282A8 /* AssetsLibrary.framework in Frameworks */,
+				EAFC13651D9B6C39005D00AB /* jpush-ios-2.1.9.a in Frameworks */,
 				EAC2C9821D4AF25A00E282A8 /* libsqlite3.tbd in Frameworks */,
 				EAC2C9801D4AF25100E282A8 /* libc++.tbd in Frameworks */,
 				EAC2CEA71D4AF5EE00E282A8 /* libWeiboSDK.a in Frameworks */,
@@ -3614,6 +3618,7 @@
 		EAC2CE3F1D4AF5EE00E282A8 /* ThirdPartySDK */ = {
 			isa = PBXGroup;
 			children = (
+				EAFC13621D9B6C39005D00AB /* JPushSDK */,
 				EADE32D31D76A57C0025492B /* BaiduMap_SDK_v3.0 */,
 				EAC2CE401D4AF5EE00E282A8 /* JPush-iOS-SDK-2.1.7 */,
 				EAC2CE441D4AF5EE00E282A8 /* libqrencode */,
@@ -3947,6 +3952,15 @@
 				EADE32F31D76B4B30025492B /* HeDistributePhotoVC.xib */,
 			);
 			name = Distribute;
+			sourceTree = "<group>";
+		};
+		EAFC13621D9B6C39005D00AB /* JPushSDK */ = {
+			isa = PBXGroup;
+			children = (
+				EAFC13631D9B6C39005D00AB /* jpush-ios-2.1.9.a */,
+				EAFC13641D9B6C39005D00AB /* JPUSHService.h */,
+			);
+			path = JPushSDK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4825,6 +4839,7 @@
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ShareSDK3.3.0/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ShareSDK3.3.0/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ZBarSDK",
+					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/JPushSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
@@ -4863,6 +4878,7 @@
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ShareSDK3.3.0/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ShareSDK3.3.0/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ZBarSDK",
+					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/JPushSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
@@ -4985,6 +5001,7 @@
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ShareSDK3.3.0/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ShareSDK3.3.0/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/ZBarSDK",
+					"$(PROJECT_DIR)/beautyContest/ThirdPartySDK/JPushSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
