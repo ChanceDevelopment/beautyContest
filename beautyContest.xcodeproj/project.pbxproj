@@ -531,7 +531,6 @@
 		EAC2CE1F1D4AF5E000E282A8 /* UIImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CE1B1D4AF5E000E282A8 /* UIImageUploader.m */; };
 		EAC2CE3B1D4AF5E800E282A8 /* HeSysbsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CE2E1D4AF5E800E282A8 /* HeSysbsModel.m */; };
 		EAC2CE3D1D4AF5E800E282A8 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CE321D4AF5E800E282A8 /* User.m */; };
-		EAC2CE981D4AF5EE00E282A8 /* jpush-ios-2.1.7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAC2CE421D4AF5EE00E282A8 /* jpush-ios-2.1.7.a */; };
 		EAC2CE991D4AF5EE00E282A8 /* bitstream.c in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CE451D4AF5EE00E282A8 /* bitstream.c */; };
 		EAC2CE9A1D4AF5EE00E282A8 /* mask.c in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CE471D4AF5EE00E282A8 /* mask.c */; };
 		EAC2CE9B1D4AF5EE00E282A8 /* QRCodeGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC2CE4A1D4AF5EE00E282A8 /* QRCodeGenerator.m */; };
@@ -1550,8 +1549,6 @@
 		EAC2CE2E1D4AF5E800E282A8 /* HeSysbsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeSysbsModel.m; sourceTree = "<group>"; };
 		EAC2CE311D4AF5E800E282A8 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		EAC2CE321D4AF5E800E282A8 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		EAC2CE421D4AF5EE00E282A8 /* jpush-ios-2.1.7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.7.a"; sourceTree = "<group>"; };
-		EAC2CE431D4AF5EE00E282A8 /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		EAC2CE451D4AF5EE00E282A8 /* bitstream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream.c; sourceTree = "<group>"; };
 		EAC2CE461D4AF5EE00E282A8 /* bitstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream.h; sourceTree = "<group>"; };
 		EAC2CE471D4AF5EE00E282A8 /* mask.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mask.c; sourceTree = "<group>"; };
@@ -1729,7 +1726,6 @@
 				EAC2C9941D4AF2CA00E282A8 /* QuartzCore.framework in Frameworks */,
 				EADE32E11D76A57D0025492B /* BaiduMapAPI_Radar.framework in Frameworks */,
 				EADE32E01D76A57D0025492B /* BaiduMapAPI_Map.framework in Frameworks */,
-				EAC2CE981D4AF5EE00E282A8 /* jpush-ios-2.1.7.a in Frameworks */,
 				EAC2CEAE1D4AF5EE00E282A8 /* UMMobClick.framework in Frameworks */,
 				EAC2C9921D4AF2BF00E282A8 /* CoreVideo.framework in Frameworks */,
 				EAC2C9861D4AF26B00E282A8 /* CoreMedia.framework in Frameworks */,
@@ -3620,30 +3616,12 @@
 			children = (
 				EAFC13621D9B6C39005D00AB /* JPushSDK */,
 				EADE32D31D76A57C0025492B /* BaiduMap_SDK_v3.0 */,
-				EAC2CE401D4AF5EE00E282A8 /* JPush-iOS-SDK-2.1.7 */,
 				EAC2CE441D4AF5EE00E282A8 /* libqrencode */,
 				EAC2CE551D4AF5EE00E282A8 /* ShareSDK3.3.0 */,
 				EAC2CE781D4AF5EE00E282A8 /* umsdk_IOS_analyics_no-idfa_v4.0.5 */,
 				EAC2CE7A1D4AF5EE00E282A8 /* ZBarSDK */,
 			);
 			path = ThirdPartySDK;
-			sourceTree = "<group>";
-		};
-		EAC2CE401D4AF5EE00E282A8 /* JPush-iOS-SDK-2.1.7 */ = {
-			isa = PBXGroup;
-			children = (
-				EAC2CE411D4AF5EE00E282A8 /* lib */,
-			);
-			path = "JPush-iOS-SDK-2.1.7";
-			sourceTree = "<group>";
-		};
-		EAC2CE411D4AF5EE00E282A8 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				EAC2CE421D4AF5EE00E282A8 /* jpush-ios-2.1.7.a */,
-				EAC2CE431D4AF5EE00E282A8 /* JPUSHService.h */,
-			);
-			path = lib;
 			sourceTree = "<group>";
 		};
 		EAC2CE441D4AF5EE00E282A8 /* libqrencode */ = {

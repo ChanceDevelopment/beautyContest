@@ -611,15 +611,9 @@ BMKMapManager* _mapManager;
     
 }
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
     NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
-    //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"注册推送失败"
-    //                                                    message:error.description
-    //                                                   delegate:nil
-    //                                          cancelButtonTitle:@"确定"
-    //                                          otherButtonTitles:nil];
-    //    [alert show];
 }
 
 // log NSSet with UTF8
