@@ -138,7 +138,7 @@
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
     
-    NSArray *defaultArray = @[@"距离",@"热度",@"赏金"];
+    NSArray *defaultArray = @[@"赏金",@"热度",@"距离"];
     DropDownListView *timedropDownView = [[DropDownListView alloc] initWithFrame:CGRectMake(0,0, SCREENWIDTH, sectionHeaderView.frame.size.height) dataSource:self delegate:self defaultTitleArray:defaultArray];
     if (!ISIOS7) {
         timedropDownView.frame = CGRectMake(0,0, SCREENWIDTH, sectionHeaderView.frame.size.height);
@@ -219,7 +219,7 @@
     switch (orderType) {
         case 0:
         {
-            requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/selectZoneByDistance.action",BASEURL];
+            requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/zoneRankByZoneReward.action",BASEURL];
             break;
         }
         case 1:
@@ -229,7 +229,8 @@
         }
         case 2:
         {
-            requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/zoneRankByZoneReward.action",BASEURL];
+            requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/selectZoneByDistance.action",BASEURL];
+            
             break;
         }
         default:

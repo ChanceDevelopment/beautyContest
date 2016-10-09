@@ -42,6 +42,8 @@
 		EA0E9D331D4C2968009CBF64 /* HeUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D2F1D4C2968009CBF64 /* HeUserVC.xib */; };
 		EA0E9D371D4C2979009CBF64 /* HeLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */; };
 		EA0E9D381D4C2979009CBF64 /* HeLoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */; };
+		EA1627981DA8BCA100B64B18 /* HeBalanceEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */; };
+		EA1627991DA8BCA100B64B18 /* HeBalanceEditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */; };
 		EA356A7A1D79651C00EE64A2 /* HeUserRecommendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */; };
 		EA356A7D1D79655100EE64A2 /* HeUserContestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */; };
 		EA428E3B1D79C0390053DC69 /* HeUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA428E391D79C0390053DC69 /* HeUserInfoVC.m */; };
@@ -683,6 +685,9 @@
 		EA0E9D341D4C2979009CBF64 /* HeLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeLoginVC.h; path = User/HeLoginVC.h; sourceTree = "<group>"; };
 		EA0E9D351D4C2979009CBF64 /* HeLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeLoginVC.m; path = User/HeLoginVC.m; sourceTree = "<group>"; };
 		EA0E9D361D4C2979009CBF64 /* HeLoginVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HeLoginVC.xib; path = User/HeLoginVC.xib; sourceTree = "<group>"; };
+		EA1627951DA8BCA100B64B18 /* HeBalanceEditVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBalanceEditVC.h; sourceTree = "<group>"; };
+		EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBalanceEditVC.m; sourceTree = "<group>"; };
+		EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBalanceEditVC.xib; sourceTree = "<group>"; };
 		EA356A781D79651C00EE64A2 /* HeUserRecommendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserRecommendCell.h; sourceTree = "<group>"; };
 		EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserRecommendCell.m; sourceTree = "<group>"; };
 		EA356A7B1D79655100EE64A2 /* HeUserContestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserContestCell.h; sourceTree = "<group>"; };
@@ -1924,6 +1929,9 @@
 				EA428E3E1D79D17A0053DC69 /* HeEditUserInfoVC.h */,
 				EA428E3F1D79D17A0053DC69 /* HeEditUserInfoVC.m */,
 				EA428E401D79D17A0053DC69 /* HeEditUserInfoVC.xib */,
+				EA1627951DA8BCA100B64B18 /* HeBalanceEditVC.h */,
+				EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */,
+				EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -4167,6 +4175,7 @@
 				EAC2CDED1D4AF5D800E282A8 /* btn_020.press@2x.png in Resources */,
 				EA02293D1D7416CC00F57965 /* HeMyFansVC.xib in Resources */,
 				EA4D01781D4D8FF100A0CCA1 /* index3.jpg in Resources */,
+				EA1627991DA8BCA100B64B18 /* HeBalanceEditVC.xib in Resources */,
 				EAC4F9ED1D6D8B0000F96DDA /* HeSettingVC.xib in Resources */,
 				EA46454E1D51DA1C00CD539F /* icon_edit.png in Resources */,
 				EADE32E41D76A57D0025492B /* mapapi.bundle in Resources */,
@@ -4520,6 +4529,7 @@
 				EAC2CD9B1D4AF5D800E282A8 /* RACImmediateScheduler.m in Sources */,
 				EAC2CE091D4AF5D800E282A8 /* NSDate+convenience.m in Sources */,
 				EAC2CDF61D4AF5D800E282A8 /* TZAssetCell.m in Sources */,
+				EA1627981DA8BCA100B64B18 /* HeBalanceEditVC.m in Sources */,
 				EAC2CD021D4AF5D800E282A8 /* DFBaseStorageService.m in Sources */,
 				EAC2CDCA1D4AF5D800E282A8 /* UITableViewCell+RACSignalSupport.m in Sources */,
 				EAC2CD641D4AF5D800E282A8 /* SICellSelection.m in Sources */,

@@ -368,7 +368,6 @@ BMKMapManager* _mapManager;
         [fm createDirectoryAtPath:documentString withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-    
     NSString *filename = [documentString stringByAppendingPathComponent:@"launch.plist"];
     
     NSDictionary *launchDic = [[NSDictionary alloc] initWithContentsOfFile:filename];
