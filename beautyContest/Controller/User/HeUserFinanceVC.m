@@ -18,6 +18,9 @@
 #import "HeMyFansVC.h"
 #import "HeUserFollowVC.h"
 #import "HeUserFinanceVC.h"
+#import "HeBalanceEditVC.h"
+#import "HeModifyPasswordVC.h"
+#import "HeBalanceDetailVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -383,6 +386,62 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
+    switch (section) {
+        case 0:
+        {
+            switch (row) {
+                case 0:
+                {
+                    //充值
+                    HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
+                    recharegeVC.banlanceType = Balance_Edit_Recharge;
+                    recharegeVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:recharegeVC animated:YES];
+                    break;
+                }
+                case 1:
+                {
+                    //提现
+                    HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
+                    recharegeVC.banlanceType = Balance_Edit_Withdraw;
+                    recharegeVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:recharegeVC animated:YES];
+                    break;
+                }
+                case 2:
+                {
+                    //明细
+                    HeBalanceDetailVC *balanceDetailVC = [[HeBalanceDetailVC alloc] init];
+                    balanceDetailVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:balanceDetailVC animated:YES];
+                    break;
+                }
+                case 3:
+                {
+                    //账号绑定
+                    HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
+                    recharegeVC.banlanceType = Balance_Edit_BindAccount;
+                    recharegeVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:recharegeVC animated:YES];
+                    break;
+                }
+                case 4:
+                {
+                    //支付密码
+                    HeModifyPasswordVC *modifyPasswordVC = [[HeModifyPasswordVC alloc] init];
+                    modifyPasswordVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:modifyPasswordVC animated:YES];
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
    
     
 }

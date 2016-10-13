@@ -7,7 +7,14 @@
 //
 
 #import "HeBaseViewController.h"
+#import "EGORefreshTableFootView.h"
+#import "EGORefreshTableHeaderView.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface HeUserNearByVC : HeBaseViewController
+@interface HeUserNearByVC : HeBaseViewController<EGORefreshTableFootDelegate,EGORefreshTableHeaderDelegate,CLLocationManagerDelegate>
+{
+    int updateOption;  //1:上拉刷新   2:下拉加载
+    BOOL _reloading;
+}
 
 @end

@@ -16,6 +16,7 @@
 @property(strong,nonatomic)EGORefreshTableHeaderView *refreshHeaderView;
 @property(strong,nonatomic)EGORefreshTableFootView *refreshFooterView;
 @property(assign,nonatomic)NSInteger pageNo;
+@property(strong,nonatomic)NSCache *imageCache;
 
 @end
 
@@ -26,6 +27,7 @@
 @synthesize refreshFooterView;
 @synthesize refreshHeaderView;
 @synthesize pageNo;
+@synthesize imageCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,6 +61,7 @@
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
     pageNo = 1;
     updateOption = 1;
+    imageCache = [[NSCache alloc] init];
 }
 
 - (void)initView
@@ -242,6 +245,32 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    cell.distanceLabel.text = [NSString stringWithFormat:@"%.1f",[[dict objectForKey:@"distance"] floatValue]];
+    
+    NSString *userHeader = dict[@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
+        userHeader = @"";
+    }
+    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    UIImageView *imageview = [imageCache objectForKey:userHeader];
+    if (!imageview) {
+        [cell.userImage sd_setImageWithURL:[NSURL URLWithString:userHeader]];
+        imageview = cell.userImage;
+    }
+    cell.userImage = imageview;
+    [cell addSubview:cell.userImage];
+    
+    NSString *userSign = dict[@"userSign"];
+    if ([userSign isMemberOfClass:[NSNull class]] || userSign == nil) {
+        userSign = @"";
+    }
+    cell.signLabel.text = userSign;
+    
+    NSString *userNick = dict[@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+        userNick = @"";
+    }
+    cell.nameLabel.text = userNick;
     
     
     return cell;
