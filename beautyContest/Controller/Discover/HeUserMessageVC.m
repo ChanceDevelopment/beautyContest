@@ -86,6 +86,19 @@
     sectionHeaderView.userInteractionEnabled = YES;
 }
 
+- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
+{
+    if ([eventName isEqualToString:@"showReplyMessage"]) {
+        
+    }
+    else if ([eventName isEqualToString:@"replyMessage"]){
+    
+    }
+    else{
+        [super routerEventWithName:eventName userInfo:userInfo];
+    }
+}
+
 - (void)loadUserMessageShow:(BOOL)show
 {
     NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getMyMessagesList.action",BASEURL];
@@ -365,7 +378,10 @@
         //时间戳
         blogTime = [blogTime substringToIndex:[blogTime length] - 3];
     }
-    cell.timeLabel.text = blogTime;
+    
+    NSString *blogtimeStr = [Tool convertTimespToString:[blogTime longLongValue] dateFormate:@"yyyy-MM-dd HH:mm"];
+    
+    cell.timeLabel.text = blogtimeStr;
     
     return cell;
 }
@@ -374,7 +390,6 @@
 {
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     NSDictionary *dict = nil;
     @try {
         dict = [dataSource objectAtIndex:section];

@@ -27,12 +27,14 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier cellSize:cellsize];
     if (self) {
         CGFloat imageX = 10;
-        CGFloat imageY = 10;
+        CGFloat imageY = 15;
         CGFloat imageH = cellsize.height - 2 * imageY;
         CGFloat imageW = imageH;
         
         userImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userDefalut_icon"]];
         userImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
+        userImage.layer.cornerRadius = imageW / 2.0;
+        userImage.layer.masksToBounds = YES;
         [self addSubview:userImage];
         
         CGFloat nameLabelX = CGRectGetMaxX(userImage.frame) + 5;
@@ -66,6 +68,7 @@
         signLabel.backgroundColor = [UIColor clearColor];
         signLabel.textColor = [UIColor grayColor];
         signLabel.font = [UIFont systemFontOfSize:15.0];
+        signLabel.textAlignment = NSTextAlignmentRight;
         signLabel.text = @"致已经逝去的青春，致已经逝去的青春，致已经逝去的青春";
         [self addSubview:signLabel];
         

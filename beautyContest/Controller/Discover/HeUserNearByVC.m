@@ -67,11 +67,13 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    //获取用户的地理位置
+    [self getLocation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillAppear:YES];
+    [super viewWillDisappear:YES];
     [_locService stopUserLocationService];
 }
 
@@ -79,7 +81,7 @@
 {
     [super initializaiton];
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
-    pageNo = 1;
+    pageNo = 0;
     updateOption = 1;
     imageCache = [[NSCache alloc] init];
 }
@@ -134,7 +136,7 @@
     NSString *longitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.longitude];
     
     
-    if (newLocation) {
+    if (newLocation && ![userLocationDict objectForKey:@"latitude"]) {
         locationSucceedNum = locationSucceedNum + 1;
         if (locationSucceedNum >= MinLocationSucceedNum) {
             [self hideHud];
@@ -153,7 +155,7 @@
             if (longitudeStr == nil) {
                 longitudeStr = @"";
             }
-            
+            [self loadNearbyUserShow:YES];
             
         }
     }
@@ -201,9 +203,6 @@
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
-        if (show) {
-            [Waiting dismiss];
-        }
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
@@ -364,7 +363,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [dataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -395,16 +394,17 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    cell.distanceLabel.text = [NSString stringWithFormat:@"%.1f",[[dict objectForKey:@"distance"] floatValue]];
+    cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[[dict objectForKey:@"distance"] floatValue]];
     
     NSString *userHeader = dict[@"userHeader"];
     if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
         userHeader = @"";
     }
+    NSString *imageKey = [NSString stringWithFormat:@"%@/%@_%ld",HYTIMAGEURL,userHeader,row];
     userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
-    UIImageView *imageview = [imageCache objectForKey:userHeader];
+    UIImageView *imageview = [imageCache objectForKey:imageKey];
     if (!imageview) {
-        [cell.userImage sd_setImageWithURL:[NSURL URLWithString:userHeader]];
+        [cell.userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
         imageview = cell.userImage;
     }
     cell.userImage = imageview;

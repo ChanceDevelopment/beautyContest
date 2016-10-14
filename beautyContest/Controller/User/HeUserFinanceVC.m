@@ -36,7 +36,7 @@
 @property(strong,nonatomic)UILabel *addressLabel;
 @property(strong,nonatomic)UIImageView *userBGImage;
 @property(strong,nonatomic)User *userInfo;
-
+@property(strong,nonatomic)NSDictionary *userBalance;
 @property(strong,nonatomic)UILabel *balanceLabel;
 
 @end
@@ -51,6 +51,7 @@
 @synthesize addressLabel;
 @synthesize userInfo;
 @synthesize balanceLabel;
+@synthesize userBalance;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -76,6 +77,7 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    [self getBalance];
 }
 
 
@@ -260,6 +262,39 @@
     
 }
 
+- (void)getBalance
+{
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/getBalance.action",BASEURL];
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSDictionary *requestMessageParams = @{@"userId":userId};
+    [self showHudInView:self.view hint:@"正在获取..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            self.userBalance = respondDict[@"json"];
+            balanceLabel.text = [NSString stringWithFormat:@"%.2f",[[userBalance objectForKey:@"userBalance"] floatValue]];
+        }
+        else{
+            NSString *data = respondDict[@"data"];
+            if (!data) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
 - (UIButton *)buttonWithTitle:(NSString *)buttonTitle frame:(CGRect)buttonFrame
 {
     UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
@@ -402,8 +437,10 @@
                 case 1:
                 {
                     //提现
+                    CGFloat maxWithDrawMoney = [[userBalance objectForKey:@"userBalance"] floatValue];
                     HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
                     recharegeVC.banlanceType = Balance_Edit_Withdraw;
+                    recharegeVC.maxWithDrawMoney = maxWithDrawMoney;
                     recharegeVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:recharegeVC animated:YES];
                     break;

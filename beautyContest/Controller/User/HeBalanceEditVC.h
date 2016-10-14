@@ -18,5 +18,6 @@ typedef enum {
 @interface HeBalanceEditVC : HeBaseViewController
 
 @property(assign,nonatomic)Balance_Edit_Type banlanceType;
+@property(assign,nonatomic)CGFloat maxWithDrawMoney;
 
 @end

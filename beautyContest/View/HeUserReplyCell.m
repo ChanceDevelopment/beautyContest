@@ -1,15 +1,15 @@
 //
-//  HeUserMessageCell.m
+//  HeUserReplyCell.m
 //  beautyContest
 //
-//  Created by Tony on 16/10/13.
+//  Created by Tony on 16/10/14.
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeUserMessageCell.h"
+#import "HeUserReplyCell.h"
 
-@implementation HeUserMessageCell
-@synthesize messageDict;
+@implementation HeUserReplyCell
+@synthesize replyDict;
 @synthesize userNameLabel;
 @synthesize contentLabel;
 @synthesize timeLabel;
@@ -104,6 +104,7 @@
         replyTap.numberOfTapsRequired = 1;
         replyTap.numberOfTouchesRequired = 1;
         [replyLabel addGestureRecognizer:replyTap];
+        
     }
     
     return self;
@@ -111,7 +112,7 @@
 
 - (void)replyMessage:(UITapGestureRecognizer *)tap
 {
-    [super routerEventWithName:@"showReplyMessage" userInfo:messageDict];
+    [super routerEventWithName:@"replyMessage" userInfo:replyDict];
 }
 
 @end

@@ -7,16 +7,19 @@
 //
 
 #import "HeBalanceEditVC.h"
+#import "UIButton+Bootstrap.h"
 
 @interface HeBalanceEditVC ()<UITextFieldDelegate>
 @property(strong,nonatomic)IBOutlet UITextField *editField;
+@property(strong,nonatomic)IBOutlet UIButton *commitButton;
 
 @end
 
 @implementation HeBalanceEditVC
 @synthesize banlanceType;
 @synthesize editField;
-
+@synthesize commitButton;
+@synthesize maxWithDrawMoney;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,8 +45,14 @@
     self.navigationItem.titleView = label;
     
     editField.layer.borderColor = [UIColor grayColor].CGColor;
+    editField.layer.borderWidth = 1.0;
     editField.layer.masksToBounds = YES;
-    editField.layer.cornerRadius = 3.0;
+    editField.layer.cornerRadius = 5.0;
+    
+    [commitButton dangerStyle];
+    commitButton.layer.borderWidth = 0;
+    commitButton.layer.borderColor = [UIColor clearColor].CGColor;
+    [commitButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:commitButton.frame.size] forState:UIControlStateNormal];
     
     switch (banlanceType) {
         case Balance_Edit_Recharge:
@@ -51,7 +60,7 @@
             label.text = @"充值";
             [label sizeToFit];
             self.title = @"充值";
-            editField.placeholder = @"充值";
+            editField.placeholder = @"建议转入100元以上";
             editField.keyboardType = UIKeyboardTypeNumberPad;
             break;
         }
@@ -60,7 +69,7 @@
             label.text = @"提现";
             [label sizeToFit];
             self.title = @"提现";
-            editField.placeholder = @"提现";
+            editField.placeholder = [NSString stringWithFormat:@"本次最多可提现%.2f元",maxWithDrawMoney];
             editField.keyboardType = UIKeyboardTypeNumberPad;
             break;
         }
@@ -79,6 +88,10 @@
     
 }
 
+- (IBAction)commitButtonClick:(id)sender
+{
+    NSLog(@"commitButtonClick");
+}
 
 
 - (void)didReceiveMemoryWarning {

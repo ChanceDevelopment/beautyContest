@@ -46,11 +46,19 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self initializaiton];
+    [self initView];
+    [self loadDetailShow:NO];
+}
+
 - (void)initializaiton
 {
     [super initializaiton];
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
-    pageNo = 1;
+    pageNo = 0;
     updateOption = 1;
 }
 
@@ -69,9 +77,47 @@
     sectionHeaderView.userInteractionEnabled = YES;
 }
 
-- (void)loadNearbyUserShow:(BOOL)show
+- (void)loadDetailShow:(BOOL)show
 {
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/BillDetails.action",BASEURL];
     
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSDictionary *requestMessageParams = @{@"userId":userId};
+    [self showHudInView:self.view hint:@"正在获取..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            if (updateOption == 1) {
+                [dataSource removeAllObjects];
+            }
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            for (NSDictionary *zoneDict in resultArray) {
+                [dataSource addObject:zoneDict];
+            }
+            [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
+            [self.tableview reloadData];
+        }
+        else{
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if (updateOption == 2 && [resultArray count] == 0) {
+                pageNo--;
+                return;
+            }
+        }
+    } failure:^(NSError *error){
+        if (show) {
+            [Waiting dismiss];
+        }
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)addFooterView
@@ -107,7 +153,7 @@
 - (void)reloadTableViewDataSource{
     _reloading = YES;
     //刷新列表
-    [self loadNearbyUserShow:NO];
+    [self loadDetailShow:NO];
     [self updateDataSource];
 }
 
@@ -204,7 +250,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [dataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -235,8 +281,27 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    id receiveTimeObj = [dict objectForKey:@"receiveTime"];
+    if ([receiveTimeObj isMemberOfClass:[NSNull class]] || receiveTimeObj == nil) {
+        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+        receiveTimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+    }
+    long long timestamp = [receiveTimeObj longLongValue];
+    NSString *receiveTime = [NSString stringWithFormat:@"%lld",timestamp];
+    if ([receiveTime length] > 3) {
+        //时间戳
+        receiveTime = [receiveTime substringToIndex:[receiveTime length] - 3];
+    }
     
+    NSString *receiveTimeStr = [Tool convertTimespToString:[receiveTime longLongValue] dateFormate:@"yyyy-MM-dd HH:mm"];
+    cell.timeLabel.text = receiveTimeStr;
     
+    cell.contentLabel.text = [NSString stringWithFormat:@"%@",dict[@"moneyType"]];
+    id receiveMoney = dict[@"receiveMoney"];
+    if ([receiveMoney isMemberOfClass:[NSNull class]]) {
+        receiveMoney = @"";
+    }
+    cell.moneyLabel.text = [NSString stringWithFormat:@"%.2f", [receiveMoney floatValue]];
     return cell;
 }
 

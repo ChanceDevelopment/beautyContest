@@ -107,6 +107,8 @@
 		EA4D01981D4D9ABF00A0CCA1 /* HeContestantDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA4D01961D4D9ABF00A0CCA1 /* HeContestantDetailVC.xib */; };
 		EA4D019D1D4D9BD200A0CCA1 /* HeBeautyContestTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4D019C1D4D9BD200A0CCA1 /* HeBeautyContestTableCell.m */; };
 		EA4D01A01D4D9D4A00A0CCA1 /* HeContestantTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4D019F1D4D9D4A00A0CCA1 /* HeContestantTableCell.m */; };
+		EA5090471DB07337007E721A /* HeUserReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5090461DB07337007E721A /* HeUserReplyCell.m */; };
+		EA5090491DB07471007E721A /* icon_message_black.png in Resources */ = {isa = PBXBuildFile; fileRef = EA5090481DB07471007E721A /* icon_message_black.png */; };
 		EA5EC6201D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA5EC60F1D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings */; };
 		EA5EC6211D77C0FF004D5FEC /* TOActivityChrome.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC6171D77C0FF004D5FEC /* TOActivityChrome.m */; };
 		EA5EC6221D77C0FF004D5FEC /* TOActivitySafari.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC6191D77C0FF004D5FEC /* TOActivitySafari.m */; };
@@ -791,6 +793,9 @@
 		EA4D019C1D4D9BD200A0CCA1 /* HeBeautyContestTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBeautyContestTableCell.m; sourceTree = "<group>"; };
 		EA4D019E1D4D9D4A00A0CCA1 /* HeContestantTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeContestantTableCell.h; sourceTree = "<group>"; };
 		EA4D019F1D4D9D4A00A0CCA1 /* HeContestantTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeContestantTableCell.m; sourceTree = "<group>"; };
+		EA5090451DB07337007E721A /* HeUserReplyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserReplyCell.h; sourceTree = "<group>"; };
+		EA5090461DB07337007E721A /* HeUserReplyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserReplyCell.m; sourceTree = "<group>"; };
+		EA5090481DB07471007E721A /* icon_message_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_message_black.png; sourceTree = "<group>"; };
 		EA5EC6101D77C0FF004D5FEC /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
 		EA5EC6111D77C0FF004D5FEC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
 		EA5EC6121D77C0FF004D5FEC /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/TOWebViewControllerLocalizable.strings; sourceTree = "<group>"; };
@@ -2296,6 +2301,8 @@
 				EAE88B5C1DAF587B00AD946F /* HeBalanceDetailCell.m */,
 				EAE88BD21DAF713600AD946F /* HeUserMessageCell.h */,
 				EAE88BD31DAF713600AD946F /* HeUserMessageCell.m */,
+				EA5090451DB07337007E721A /* HeUserReplyCell.h */,
+				EA5090461DB07337007E721A /* HeUserReplyCell.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -4028,6 +4035,7 @@
 		EACC98371D50E7B700E627B8 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				EA5090481DB07471007E721A /* icon_message_black.png */,
 				EA4645311D518AE300CD539F /* userDefalut_icon.png */,
 				EACC983E1D50E82200E627B8 /* icon_album.png */,
 				EACC983C1D50E7F400E627B8 /* icon_setting.png */,
@@ -4404,6 +4412,7 @@
 				EA46452C1D51884000CD539F /* HeNearbyVC.xib in Resources */,
 				EA4D01931D4D9A6B00A0CCA1 /* HeContestRankVC.xib in Resources */,
 				EAC4F9E81D6D72B700F96DDA /* HeEnrollVC.xib in Resources */,
+				EA5090491DB07471007E721A /* icon_message_black.png in Resources */,
 				EAC2CD5D1D4AF5D800E282A8 /* LICENSE in Resources */,
 				EA8027FE1D52E654008BC4E6 /* sdRefeshView_arrow@2x.png in Resources */,
 				EAC2CDE61D4AF5D800E282A8 /* LICENSE.txt in Resources */,
@@ -4671,6 +4680,7 @@
 				EA428E3B1D79C0390053DC69 /* HeUserInfoVC.m in Sources */,
 				EAC2CDFC1D4AF5D800E282A8 /* TZPhotoPreviewCell.m in Sources */,
 				EA8027E81D52DC20008BC4E6 /* AoiroSoraLayout.m in Sources */,
+				EA5090471DB07337007E721A /* HeUserReplyCell.m in Sources */,
 				EAE88BCA1DAF5BC900AD946F /* base64.m in Sources */,
 				EAC2CDD81D4AF5D800E282A8 /* SDWebImageDownloaderOperation.m in Sources */,
 				EAC2CDC01D4AF5D800E282A8 /* UIControl+RACSignalSupport.m in Sources */,
