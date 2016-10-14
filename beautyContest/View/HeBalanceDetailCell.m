@@ -29,7 +29,7 @@
         CGFloat contentX = 10;
         CGFloat contentY = 10;
         CGFloat contentW = (SCREENWIDTH - 2 * contentX) / 2.0;
-        CGFloat contentH = 60;
+        CGFloat contentH = 30;
         contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
         contentLabel.numberOfLines = 0;
         contentLabel.backgroundColor = [UIColor clearColor];
