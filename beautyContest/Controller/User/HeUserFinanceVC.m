@@ -87,6 +87,12 @@
     dataSource = @[@[@"充值",@"提现",@"明细",@"绑定账号",@"支付密码"]];
     iconDataSource = @[@[@"icon_recharge",@"icon_withdrawals",@"icon_withdrawals_detail",@"icon_alipay",@"icon_pay_password"]];
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modifyAlipayAccountSucceed:) name:@"modifyAlipayAccountSucceed" object:nil];
+}
+
+- (void)modifyAlipayAccountSucceed:(NSNotification *)notification
+{
+    [self getBalance];
 }
 
 - (void)initView
@@ -271,7 +277,7 @@
         userId = @"";
     }
     NSDictionary *requestMessageParams = @{@"userId":userId};
-    [self showHudInView:self.view hint:@"正在获取..."];
+//    [self showHudInView:self.view hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
@@ -457,6 +463,7 @@
                 {
                     //账号绑定
                     HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
+                    recharegeVC.balanceDict = [[NSDictionary alloc] initWithDictionary:userBalance];
                     recharegeVC.banlanceType = Balance_Edit_BindAccount;
                     recharegeVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:recharegeVC animated:YES];

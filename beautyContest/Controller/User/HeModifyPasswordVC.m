@@ -24,6 +24,7 @@
 @synthesize cpswTF;
 @synthesize commitpswTF;
 @synthesize loadSucceedFlag;
+@synthesize balanceDict;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,6 +56,7 @@
 
 -(void)initializaiton
 {
+    [super initializaiton];
     [loginButton infoStyleWhite];
     [loginButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     loginButton.layer.borderColor = [[UIColor colorWithRed:214.0/255.0 green:155.0/255.0 blue:157.0/255.0 alpha:1.0] CGColor];
@@ -65,6 +67,7 @@
 
 -(void)initView
 {
+    [super initView];
     self.view.backgroundColor = [UIColor colorWithWhite:230.0f/255.0f alpha:1.0];
     UIView *spaceView = [[UIView alloc]init];
     spaceView.frame = CGRectMake(10, 0, 80, 40);
@@ -98,6 +101,11 @@
     [cpswTF setLeftView:spaceView1];
     [cpswTF setLeftViewMode:UITextFieldViewModeAlways];
     
+    NSString *userPayPwd = balanceDict[@"userPayPwd"];
+    if ([userPayPwd isMemberOfClass:[NSNull class]]) {
+        userPayPwd = nil;
+    }
+    cpswTF.text = userPayPwd;
     
     UIView *spaceView2 = [[UIView alloc]init];
     spaceView2.frame = CGRectMake(10, 0, 80, 40);
@@ -192,8 +200,63 @@
     NSString *newPassword = pswTF.text;
     NSString *commitPassword = commitpswTF.text;
     
-
+    if (![self isOldPasswordVaild:oldPassword]) {
+        return;
+    }
+    if (![self isNewPasswordVaild:newPassword]) {
+        return;
+    }
+    if (![self isNewPasswordVaild:commitPassword]) {
+        return;
+    }
+    NSString *correctPassword = [[NSUserDefaults standardUserDefaults] objectForKey:USERPASSWORDKEY];
+    if (![oldPassword isEqualToString:correctPassword]) {
+        [self showHint:@"旧密码有误"];
+        return;
+    }
+    if ([oldPassword isEqualToString:newPassword]) {
+        [self showHint:@"旧密码与新密码不能相同"];
+        return;
+    }
+    if (![commitPassword isEqualToString:newPassword]) {
+        [self showHint:@"两次密码输入不一致"];
+        return;
+    }
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/setPassword.actionn",BASEURL];
     
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSString *oldPayPswd = oldPassword;
+    NSString *newPayPswd = newPassword;
+    NSDictionary *requestMessageParams = @{@"userId":userId,@"oldPayPswd":oldPayPswd,@"newPayPswd":newPayPswd};
+    [self showHudInView:self.view hint:@"正在修改..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        NSString *data = [respondDict objectForKey:@"data"];
+        if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+            data = ERRORREQUESTTIP;
+        }
+        [self showHint:data];
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyAlipayAccountSucceed" object:nil];
+            [self performSelector:@selector(backToLastView) withObject:nil afterDelay:0.2];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
+- (void)backToLastView
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)modifyUserWithParam:(NSDictionary *)param

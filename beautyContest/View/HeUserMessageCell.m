@@ -84,7 +84,7 @@
         UIImageView *messageIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_message_black"]];
         messageIcon.frame = CGRectMake(messageIconX, messageIconY, messageIconW, messageIconH);
         
-        CGFloat replyY = messageIconY;
+        CGFloat replyY = CGRectGetMaxY(tipLabel.frame);
         CGFloat replyW = 45;
         CGFloat replyX = SCREENWIDTH - replyW - 10;
         CGFloat replyH = messageIconH;

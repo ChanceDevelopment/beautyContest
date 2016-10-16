@@ -17,6 +17,7 @@
 @property(strong,nonatomic)IBOutlet UITextField *cpswTF;
 @property(strong,nonatomic)IBOutlet UITextField *commitpswTF;
 @property(assign,nonatomic)int loadSucceedFlag;
+@property(strong,nonatomic)NSDictionary *balanceDict;
 
 -(IBAction)loginButtonClick:(id)sender;
 

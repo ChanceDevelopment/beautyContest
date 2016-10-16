@@ -19,5 +19,6 @@ typedef enum {
 
 @property(assign,nonatomic)Balance_Edit_Type banlanceType;
 @property(assign,nonatomic)CGFloat maxWithDrawMoney;
+@property(strong,nonatomic)NSDictionary *balanceDict;
 
 @end
