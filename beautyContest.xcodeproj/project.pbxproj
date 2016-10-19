@@ -5107,6 +5107,7 @@
 				CODE_SIGN_ENTITLEMENTS = "beautyContest/选美-颜值榜.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: jun zhou (ZM3AW8VQ6N)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: jun zhou (ZM3AW8VQ6N)";
+				DEVELOPMENT_TEAM = E6CUH72B23;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5137,7 +5138,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "45f75a10-8df2-4eb7-846b-094624f1bc59";
+				PROVISIONING_PROFILE = "07dce9f8-752a-4389-aad2-9115211df554";
+				PROVISIONING_PROFILE_SPECIFIER = 20161019_beautyContest_Development;
 			};
 			name = Debug;
 		};
