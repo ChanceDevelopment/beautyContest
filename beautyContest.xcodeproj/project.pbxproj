@@ -5138,8 +5138,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "11992fba-ad14-4f01-a89f-c15ed2da6258";
-				PROVISIONING_PROFILE_SPECIFIER = 20160803_beautyContest_Release;
+				PROVISIONING_PROFILE = "45f75a10-8df2-4eb7-846b-094624f1bc59";
+				PROVISIONING_PROFILE_SPECIFIER = 20160729_beautyContest_Development;
 			};
 			name = Debug;
 		};
