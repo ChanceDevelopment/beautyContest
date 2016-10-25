@@ -62,6 +62,11 @@
             
             [self addSubview: sectionBtnIv];
             
+            if (i == 0) {
+                [sectionBtn setTitleColor:APPDEFAULTORANGE forState:UIControlStateNormal];
+                [sectionBtnIv setImage:[UIImage imageNamed:@"down_dark_green.png"]];
+            }
+            
             if (i<sectionNum && i != 0) {
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(sectionWidth*i, frame.size.height/4, 1, frame.size.height/2)];
                 lineView.backgroundColor = [UIColor lightGrayColor];
@@ -105,6 +110,7 @@
             }
             [sectionBtn  setTitle:sectionBtnTitle forState:UIControlStateNormal];
             [sectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            
             sectionBtn.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
             [self addSubview:sectionBtn];
             
@@ -114,6 +120,11 @@
             sectionBtnIv.tag = SECTION_IV_TAG_BEGIN + i;
             
             [self addSubview: sectionBtnIv];
+            
+            if (i == 0) {
+                [sectionBtn setTitleColor:APPDEFAULTORANGE forState:UIControlStateNormal];
+                [sectionBtnIv setImage:[UIImage imageNamed:@"down_dark_green.png"]];
+            }
             
             if (i<sectionNum && i != 0) {
                 UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(sectionWidth*i, frame.size.height/4, 1, frame.size.height/2)];
@@ -129,7 +140,25 @@
 
 -(void)sectionBtnTouch:(UIButton *)btn
 {
+    
     NSInteger section = btn.tag - SECTION_BTN_TAG_BEGIN;
+    
+    if ([self.dropDownDelegate respondsToSelector:@selector(selectInSection:)]) {
+        NSInteger sectionNum = [self.dropDownDataSource numberOfSections];
+        for (NSInteger index = 0; index < sectionNum; index++) {
+            UIButton *button = [self viewWithTag:SECTION_BTN_TAG_BEGIN + index];
+            [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            UIImageView *sectionBtnIv = [self viewWithTag:SECTION_IV_TAG_BEGIN + section];
+            [sectionBtnIv setImage:[UIImage imageNamed:@"down_dark.png"]];
+        }
+        
+        [btn setTitleColor:APPDEFAULTORANGE forState:UIControlStateNormal];
+        UIImageView *sectionBtnIv = [self viewWithTag:SECTION_IV_TAG_BEGIN + section];
+        [sectionBtnIv setImage:[UIImage imageNamed:@"down_dark_green.png"]];
+        [self.dropDownDelegate selectInSection:section];
+        return;
+    }
+    
     
     UIImageView *currentIV= (UIImageView *)[self viewWithTag:(SECTION_IV_TAG_BEGIN +currentExtendSection)];
     

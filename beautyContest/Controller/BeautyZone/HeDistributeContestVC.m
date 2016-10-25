@@ -142,6 +142,21 @@
     coverImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:coverImage];
     
+    CGFloat tipX = 10;
+    CGFloat tipW = SCREENWIDTH - 2 * tipX;
+    CGFloat tipH = 40;
+    CGFloat tipY = 0;
+    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(tipX, tipY, tipW, tipH)];
+    tipLabel.backgroundColor = [UIColor clearColor];
+    tipLabel.font = [UIFont systemFontOfSize:12.0];
+    tipLabel.numberOfLines = 2;
+    tipLabel.text = @"请上传像素为512 * 297 的图片，发布后主题内容不能修改";
+    tipLabel.textColor = [UIColor grayColor];
+    tipLabel.textAlignment = NSTextAlignmentCenter;
+    tipLabel.tag = 8888;
+    tipLabel.center = coverImage.center;
+    [coverImage addSubview:tipLabel];
+    
     UIImageView *editIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_edit"]];
     CGFloat imageW = 20;
     CGFloat imageH = imageW;
@@ -502,6 +517,30 @@
 
 - (void)editImageTap:(UITapGestureRecognizer *)tap
 {
+    if (ISIOS8) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"修改头像" preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            //取消
+        }];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"打开照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self pickerCamer];
+        }];
+        
+        UIAlertAction *libAction = [UIAlertAction actionWithTitle:@"从手机相册获取" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self pickerPhotoLibrary];
+        }];
+        
+        // Add the actions.
+        [alertController addAction:cameraAction];
+        [alertController addAction:libAction];
+        [alertController addAction:cancelAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"修改头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
     [sheet showInView:self.coverImage];
 }
@@ -609,6 +648,7 @@
     
     [picker dismissViewControllerAnimated:YES completion:^{
         coverImageHaveTake = YES;
+        [coverImage viewWithTag:8888].hidden = YES;
     }];
 }
 

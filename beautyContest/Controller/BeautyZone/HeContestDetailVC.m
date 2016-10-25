@@ -207,7 +207,7 @@
             contestDetailDict = [[NSDictionary alloc] initWithDictionary:jsonDict];
             NSString *zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[contestDetailDict objectForKey:@"zoneCover"]];
             UIImageView *imageview = [sectionHeaderView viewWithTag:BGTAG];
-            [imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
+            [imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
             [tableview reloadData];
         }
         else{

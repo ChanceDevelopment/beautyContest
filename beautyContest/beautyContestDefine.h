@@ -15,6 +15,9 @@
 #define NAVTINTCOLOR [UIColor whiteColor]
 #define SCREENWIDTH ([UIScreen mainScreen].bounds.size.width)
 #define SCREENHEIGH ([UIScreen mainScreen].bounds.size.height)
+#define ISIOS10 ([[[UIDevice currentDevice] systemVersion] floatValue] > 9.9)
+#define ISIOS9 ([[[UIDevice currentDevice] systemVersion] floatValue] > 8.9)
+#define ISIOS8 ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.9)
 #define ISIOS7 ([[[UIDevice currentDevice] systemVersion] floatValue] > 6.9)
 #define ISIOS6 ([[[UIDevice currentDevice] systemVersion] floatValue] < 6.9)
 #define IOS7OFFSET        64
@@ -102,7 +105,7 @@
 //活动的图标空位符号
 #define EMPTYSTRING @"     : "
 //默认橙色的RGB
-#define APPDEFAULTORANGE ([UIColor colorWithRed:83.0 / 255.0 green:202.0 / 255.0 blue:196.0 / 255.0 alpha:1.0])
+#define APPDEFAULTORANGE ([UIColor colorWithRed:21.0 / 255.0 green:151.0 / 255.0 blue:186.0 / 255.0 alpha:1.0])
 //默认标题颜色
 #define APPDEFAULTTITLECOLOR ([UIColor whiteColor])
 //默认标题的字体

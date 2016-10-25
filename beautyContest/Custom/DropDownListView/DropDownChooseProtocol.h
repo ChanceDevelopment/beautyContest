@@ -13,6 +13,8 @@
 @optional
 
 -(void) chooseAtSection:(NSInteger)section index:(NSInteger)index;
+- (void)selectInSection:(NSInteger)section;
+
 @end
 
 @protocol DropDownChooseDataSource <NSObject>
@@ -20,6 +22,7 @@
 -(NSInteger)numberOfRowsInSection:(NSInteger)section;
 -(NSString *)titleInSection:(NSInteger)section index:(NSInteger) index;
 -(NSInteger)defaultShowSection:(NSInteger)section;
+
 
 @end
 

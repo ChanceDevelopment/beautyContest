@@ -13,6 +13,10 @@
 #import "HeBeautyContestTableCell.h"
 #import "DropDownListView.h"
 #import "HeDistributeContestVC.h"
+#import "FTPopOverMenu.h"
+#import "HeFaceToFaceZoneVC.h"
+#import "HeZoneConfirmVC.h"
+
 
 #define TextLineHeight 1.2f
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -172,9 +176,50 @@
 - (void)distributeButtonClick:(UIButton *)button
 {
     NSLog(@"distributeButtonClick");
-    HeDistributeContestVC *distributeContestVC = [[HeDistributeContestVC alloc] init];
-    distributeContestVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:distributeContestVC animated:YES];
+    NSArray *menuArray = @[@"发布赛区",@"面对面创建赛区",@"加入赛区验证"];
+    [FTPopOverMenu setTintColor:APPDEFAULTORANGE];
+    [FTPopOverMenu showForSender:button
+                        withMenu:menuArray
+                  imageNameArray:nil
+                       doneBlock:^(NSInteger selectedIndex) {
+                           switch (selectedIndex) {
+                               case 0:
+                               {
+                                   //发布赛区
+                                   HeDistributeContestVC *distributeContestVC = [[HeDistributeContestVC alloc] init];
+                                   distributeContestVC.hidesBottomBarWhenPushed = YES;
+                                   [self.navigationController pushViewController:distributeContestVC animated:YES];
+                                   break;
+                               }
+                               case 1:
+                               {
+                                   //面对面创建赛区
+                                   HeFaceToFaceZoneVC *faceZoneVC = [[HeFaceToFaceZoneVC alloc] init];
+                                   faceZoneVC.hidesBottomBarWhenPushed = YES;
+                                   [self.navigationController pushViewController:faceZoneVC animated:YES];
+                                   break;
+                               }
+                               case 2:
+                               {
+                                   //加入赛区验证
+                                   HeZoneConfirmVC *zoneConfirmVC = [[HeZoneConfirmVC alloc] init];
+                                   zoneConfirmVC.hidesBottomBarWhenPushed = YES;
+                                   [self.navigationController pushViewController:zoneConfirmVC animated:YES];
+                                   break;
+                               }
+                               default:
+                                   break;
+                           }
+                           
+                           
+                           
+                       } dismissBlock:^{
+                           
+                           NSLog(@"user canceled. do nothing.");
+                           
+                       }];
+    
+    
 }
 
 - (void)updateContestZone:(NSNotification *)notification
@@ -307,6 +352,30 @@
 }
 
 #pragma mark -- dropDownListDelegate
+- (void)selectInSection:(NSInteger)section
+{
+    updateOption = 1;
+    switch (section) {
+        case 0:
+        {
+            orderType = 0;
+            break;
+        }
+        case 1:{
+            orderType = 1;
+            break;
+        }
+        case 2:{
+            orderType = 2;
+            break;
+        }
+        default:
+            break;
+    };
+    pageNo = 0;//选择以后相当于刷新
+    [self loadBeautyContestShow:YES];
+}
+
 -(void) chooseAtSection:(NSInteger)section index:(NSInteger)index
 {
     NSString *chooseStirng = [[chooseArray objectAtIndex:section] objectAtIndex:index];
@@ -566,7 +635,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    return 200;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

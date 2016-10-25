@@ -30,6 +30,21 @@
         bgImage.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:bgImage];
         
+        UIView *buttonBG = [[UIView alloc] initWithFrame:CGRectMake(0, cellsize.height - imageH / 2.0, imageW, imageH / 2.0)];
+        buttonBG.userInteractionEnabled = YES;
+        
+        CGFloat rX = 0;
+        CGFloat rY = 0;
+        CGFloat rW = imageW;
+        CGFloat rH = imageH / 2.0;
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = CGRectMake(rX, rY, rW, rH);
+        gradient.colors = [NSArray arrayWithObjects:
+                           (id)[UIColor clearColor].CGColor,
+                           (id)[UIColor blackColor].CGColor,
+                           nil];
+        [buttonBG.layer insertSublayer:gradient atIndex:0];
+        [bgImage addSubview:buttonBG];
         
         UIFont *textFont = [UIFont systemFontOfSize:16.0];
         
