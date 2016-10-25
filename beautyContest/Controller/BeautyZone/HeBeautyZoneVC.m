@@ -39,6 +39,8 @@
 
 @property(assign,nonatomic)NSInteger locationSucceedNum;
 
+@property(strong,nonatomic)NSDictionary *userLocationDict;
+
 @end
 
 @implementation HeBeautyZoneVC
@@ -52,6 +54,7 @@
 @synthesize searchBar;
 @synthesize imageCache;
 @synthesize locationSucceedNum;
+@synthesize userLocationDict;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -261,15 +264,26 @@
 - (void)loadBeautyContestShow:(BOOL)show
 {
     NSString *requestWorkingTaskPath = @"";
+    
+    NSString *longitudeStr = [userLocationDict objectForKey:USERLONGITUDEKEY];
+    NSString *latitudeStr = [userLocationDict objectForKey:USERLATITUDEKEY];
+    
+    NSNumber *longitudeNum = [NSNumber numberWithFloat:[longitudeStr floatValue]];
+    NSNumber *latitudeNum = [NSNumber numberWithFloat:[latitudeStr floatValue]];
+    NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
+    NSDictionary *requestMessageParams = @{@"longitude":longitudeNum,@"latitude":latitudeNum,@"number":pageNum};
     switch (orderType) {
         case 0:
         {
+            //赏金
             requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/zoneRankByZoneReward.action",BASEURL];
+            requestMessageParams = @{@"start":pageNum};
             break;
         }
         case 1:
         {
             requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/ZoneHotRank.action",BASEURL];
+            requestMessageParams = @{@"start":pageNum};
             break;
         }
         case 2:
@@ -281,13 +295,7 @@
         default:
             break;
     }
-    NSString *longitudeStr = [[NSUserDefaults standardUserDefaults] objectForKey:USERLONGITUDEKEY];
-    NSString *latitudeStr = [[NSUserDefaults standardUserDefaults] objectForKey:USERLATITUDEKEY];
     
-    NSNumber *longitudeNum = [NSNumber numberWithFloat:[longitudeStr floatValue]];
-    NSNumber *latitudeNum = [NSNumber numberWithFloat:[latitudeStr floatValue]];
-    NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
-    NSDictionary *requestMessageParams = @{@"longitude":longitudeNum,@"latitude":latitudeNum,@"number":pageNum};
     [self showHudInView:self.view hint:@"获取赛区中..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
@@ -582,14 +590,15 @@
     if ([zoneCover isMemberOfClass:[NSNull class]]) {
         zoneCover = @"";
     }
-    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
+    NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[zoneCoverArray firstObject]];
     UIImageView *imageview = [imageCache objectForKey:zoneCover];
     if (!imageview) {
         [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         imageview = cell.bgImage;
     }
     cell.bgImage = imageview;
-    [cell addSubview:cell.bgImage];
+    [cell.bgView addSubview:cell.bgImage];
     
     
     NSString *userHear = [zoneDict objectForKey:@"userHeader"];
@@ -603,7 +612,7 @@
         userHearimageview = cell.detailImage;
     }
     cell.detailImage = userHearimageview;
-    [cell.bgImage addSubview:cell.detailImage];
+    [cell.bgView addSubview:cell.detailImage];
     
     id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
     if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
@@ -617,8 +626,9 @@
         zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
     }
     
-    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YY-MM-dd"];
-    cell.tipLabel.text = [NSString stringWithFormat:@"$%@/%@",zoneReward,time];
+    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY-MM-dd"];
+    cell.tipLabel.text = [NSString stringWithFormat:@"$%.2f",[zoneReward floatValue]];
+    cell.timeLabel.text = time;
     
     return cell;
 }
@@ -635,7 +645,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 200;
+    return 250;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -708,6 +718,8 @@
             [[NSUserDefaults standardUserDefaults] setObject:latitudeStr forKey:USERLATITUDEKEY];
             [[NSUserDefaults standardUserDefaults] setObject:longitudeStr forKey:USERLONGITUDEKEY];
             
+            userLocationDict = @{USERLATITUDEKEY:latitudeStr,USERLONGITUDEKEY:longitudeStr};
+            [HeSysbsModel getSysModel].userLocationDict = [[NSDictionary alloc] initWithDictionary:userLocationDict];
         }
     }
     //NSLog(@"heading is %@",userLocation.heading);

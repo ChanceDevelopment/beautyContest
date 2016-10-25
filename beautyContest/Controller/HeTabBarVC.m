@@ -10,7 +10,6 @@
 #import "RDVTabBarItem.h"
 #import "RDVTabBar.h"
 #import "RDVTabBarController.h"
-
 #import "HeSysbsModel.h"
 
 @interface HeTabBarVC ()
@@ -36,7 +35,6 @@
     [self getActivityTypeAddress];
     [self autoLogin];
     [self setupSubviews];
-    
 }
 
 - (void)getUserFans

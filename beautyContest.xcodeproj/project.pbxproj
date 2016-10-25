@@ -129,6 +129,7 @@
 		EA8028001D52E654008BC4E6 /* SDRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027F91D52E654008BC4E6 /* SDRefreshHeaderView.m */; };
 		EA8028011D52E654008BC4E6 /* SDRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027FB1D52E654008BC4E6 /* SDRefreshView.m */; };
 		EA8028021D52E654008BC4E6 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027FD1D52E654008BC4E6 /* UIView+SDExtension.m */; };
+		EA91ED4C1DBFB695006460F4 /* HeBeautyConfirmCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA91ED4B1DBFB695006460F4 /* HeBeautyConfirmCell.m */; };
 		EA9D934D1D6DE50A003DFBBE /* HeDistributeRecommendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D934B1D6DE50A003DFBBE /* HeDistributeRecommendVC.m */; };
 		EA9D934E1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA9D934C1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib */; };
 		EA9D93521D6DF5CA003DFBBE /* HeUserJoinVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */; };
@@ -845,6 +846,8 @@
 		EA8027FB1D52E654008BC4E6 /* SDRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDRefreshView.m; sourceTree = "<group>"; };
 		EA8027FC1D52E654008BC4E6 /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
 		EA8027FD1D52E654008BC4E6 /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		EA91ED4A1DBFB695006460F4 /* HeBeautyConfirmCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBeautyConfirmCell.h; sourceTree = "<group>"; };
+		EA91ED4B1DBFB695006460F4 /* HeBeautyConfirmCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBeautyConfirmCell.m; sourceTree = "<group>"; };
 		EA9D934A1D6DE50A003DFBBE /* HeDistributeRecommendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeDistributeRecommendVC.h; sourceTree = "<group>"; };
 		EA9D934B1D6DE50A003DFBBE /* HeDistributeRecommendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeDistributeRecommendVC.m; sourceTree = "<group>"; };
 		EA9D934C1D6DE50A003DFBBE /* HeDistributeRecommendVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeDistributeRecommendVC.xib; sourceTree = "<group>"; };
@@ -2271,6 +2274,8 @@
 				EA4D019F1D4D9D4A00A0CCA1 /* HeContestantTableCell.m */,
 				EAB538DB1D6F5509008BCC17 /* HeZoneCommentCell.h */,
 				EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */,
+				EA91ED4A1DBFB695006460F4 /* HeBeautyConfirmCell.h */,
+				EA91ED4B1DBFB695006460F4 /* HeBeautyConfirmCell.m */,
 			);
 			path = BeautyContest;
 			sourceTree = "<group>";
@@ -4958,6 +4963,7 @@
 				EAC2CD581D4AF5D800E282A8 /* NSAttributedString+MLExpression.m in Sources */,
 				EAC2CD1F1D4AF5D800E282A8 /* FMResultSet.m in Sources */,
 				EAC2CDC61D4AF5D800E282A8 /* UISegmentedControl+RACSignalSupport.m in Sources */,
+				EA91ED4C1DBFB695006460F4 /* HeBeautyConfirmCell.m in Sources */,
 				EAC2CCE01D4AF5D800E282A8 /* DFBaseViewController.m in Sources */,
 				EAC2CDCD1D4AF5D800E282A8 /* UITextView+RACSignalSupport.m in Sources */,
 				EAC2CD8F1D4AF5D800E282A8 /* RACCompoundDisposable.m in Sources */,

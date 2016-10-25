@@ -9,9 +9,12 @@
 #import "HeBaseTableViewCell.h"
 
 @interface HeBeautyContestTableCell : HeBaseTableViewCell
+@property(strong,nonatomic)UIView *bgView;
+@property(strong,nonatomic)UIView *infoView;
 @property(strong,nonatomic)UIImageView *bgImage;
 @property(strong,nonatomic)UIImageView *detailImage;
 @property(strong,nonatomic)UILabel *topicLabel;
 @property(strong,nonatomic)UILabel *tipLabel;
+@property(strong,nonatomic)UILabel *timeLabel;
 
 @end

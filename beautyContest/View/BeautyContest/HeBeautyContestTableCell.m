@@ -13,61 +13,62 @@
 @synthesize detailImage;
 @synthesize topicLabel;
 @synthesize tipLabel;
+@synthesize bgView;
+@synthesize infoView;
+@synthesize timeLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellSize:(CGSize)cellsize
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier cellSize:cellsize];
     if (self) {
         self.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
-        CGFloat imageX = 10;
-        CGFloat imageY = 10;
-        CGFloat imageW = SCREENWIDTH - 2 * imageX;
-        CGFloat imageH = cellsize.height - 2 * imageY;
+        
+        
+        CGFloat viewX = 10;
+        CGFloat viewY = 10;
+        CGFloat viewW = SCREENWIDTH - 2 * viewX;
+        CGFloat viewH = cellsize.height - 2 * viewY;
+        
+        bgView = [[UIView alloc] initWithFrame:CGRectMake(viewX, viewY, viewW, viewH)];
+        bgView.backgroundColor = [UIColor whiteColor];
+        bgView.layer.cornerRadius = 5.0;
+        bgView.layer.masksToBounds = YES;
+        [self addSubview:bgView];
+        
+        CGFloat imageX = 0;
+        CGFloat imageY = 50;
+        CGFloat imageW = viewW;
+        CGFloat imageH = viewH - imageY;
+        
         bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index5.jpg"]];
         bgImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
         bgImage.layer.cornerRadius = 5.0;
         bgImage.layer.masksToBounds = YES;
         bgImage.contentMode = UIViewContentModeScaleAspectFill;
-        [self addSubview:bgImage];
+        [bgView addSubview:bgImage];
         
-        UIView *buttonBG = [[UIView alloc] initWithFrame:CGRectMake(0, cellsize.height - imageH / 2.0, imageW, imageH / 2.0)];
-        buttonBG.userInteractionEnabled = YES;
+//        infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewW, 50)];
+//        infoView.backgroundColor = [UIColor whiteColor];
+//        infoView.userInteractionEnabled = YES;
         
-        CGFloat rX = 0;
-        CGFloat rY = 0;
-        CGFloat rW = imageW;
-        CGFloat rH = imageH / 2.0;
-        CAGradientLayer *gradient = [CAGradientLayer layer];
-        gradient.frame = CGRectMake(rX, rY, rW, rH);
-        gradient.colors = [NSArray arrayWithObjects:
-                           (id)[UIColor clearColor].CGColor,
-                           (id)[UIColor blackColor].CGColor,
-                           nil];
-        [buttonBG.layer insertSublayer:gradient atIndex:0];
-        [bgImage addSubview:buttonBG];
+//        CGFloat rX = 0;
+//        CGFloat rY = 0;
+//        CGFloat rW = imageW;
+//        CGFloat rH = imageH / 2.0;
+//        CAGradientLayer *gradient = [CAGradientLayer layer];
+//        gradient.frame = CGRectMake(rX, rY, rW, rH);
+//        gradient.colors = [NSArray arrayWithObjects:
+//                           (id)[UIColor clearColor].CGColor,
+//                           (id)[UIColor blackColor].CGColor,
+//                           nil];
+//        [buttonBG.layer insertSublayer:gradient atIndex:0];
+//        [bgImage addSubview:buttonBG];
         
-        UIFont *textFont = [UIFont systemFontOfSize:16.0];
+        CGFloat detailImageW = 40;
+        CGFloat detailImageH = 40;
+        CGFloat detailImageX = 5;
+        CGFloat detailImageY = 5;
         
-        CGFloat titleX = 5;
-        CGFloat titleH = 30;
-        CGFloat titleY = imageH - titleH - 10;
-        CGFloat titleW = 100;
-        
-        topicLabel = [[UILabel alloc] init];
-        topicLabel.textAlignment = NSTextAlignmentLeft;
-        topicLabel.backgroundColor = [UIColor clearColor];
-        topicLabel.text = @"主题";
-        topicLabel.numberOfLines = 0;
-        topicLabel.textColor = [UIColor whiteColor];
-        topicLabel.font = textFont;
-        topicLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
-        [bgImage addSubview:topicLabel];
-        
-        CGFloat detailImageW = 30;
-        CGFloat detailImageH = 30;
-        CGFloat detailImageX = imageW - detailImageW - titleX;
-        CGFloat detailImageY = imageH - titleH - 10;
-
         detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index4.jpg"]];
         detailImage.frame = CGRectMake(detailImageX, detailImageY, detailImageW, detailImageH);
         detailImage.layer.cornerRadius = detailImageW / 2.0;
@@ -75,27 +76,62 @@
         detailImage.layer.borderWidth = 1.0;
         detailImage.layer.borderColor = [UIColor whiteColor].CGColor;
         detailImage.contentMode = UIViewContentModeScaleAspectFill;
-        [bgImage addSubview:detailImage];
+        [bgView addSubview:detailImage];
         
-        CGFloat tiptitleX = titleX + titleW + 5;
-        CGFloat tiptitleH = 30;
-        CGFloat tiptitleY = imageH - titleH - 10;
-        CGFloat tiptitleW = imageW - tiptitleX - detailImageW - titleX;
+        UIFont *textFont = [UIFont systemFontOfSize:16.0];
+        CGFloat infoHeight = 50;
+        
+        CGFloat titleX = CGRectGetMaxX(detailImage.frame) + 5;
+        CGFloat titleY = 5;
+        CGFloat titleH = infoHeight - 2 * titleY;
+        CGFloat titleW = viewW / 2.0 - titleX + 20;
+        
+        topicLabel = [[UILabel alloc] init];
+        topicLabel.textAlignment = NSTextAlignmentLeft;
+        topicLabel.backgroundColor = [UIColor clearColor];
+        topicLabel.text = @"主题";
+        topicLabel.numberOfLines = 2;
+        topicLabel.textColor = [UIColor blackColor];
+        topicLabel.font = [UIFont systemFontOfSize:13.5];
+        topicLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
+        [bgView addSubview:topicLabel];
+        
+        
+        
+        CGFloat tiptitleX = CGRectGetMaxX(topicLabel.frame);
+        CGFloat tiptitleY = 5;
+        CGFloat tiptitleH = (infoHeight - 2 * tiptitleY) / 2.0;
+        CGFloat tiptitleW = viewW - CGRectGetMaxX(topicLabel.frame) - 5;
         
         tipLabel = [[UILabel alloc] init];
         tipLabel.textAlignment = NSTextAlignmentRight;
         tipLabel.backgroundColor = [UIColor clearColor];
-        tipLabel.text = @"$2000/16.08.02";
+        tipLabel.text = @"$2000";
         tipLabel.numberOfLines = 1;
-        tipLabel.textColor = [UIColor whiteColor];
-        tipLabel.font = [UIFont systemFontOfSize:15.0];
+        tipLabel.textColor = [UIColor orangeColor];
+        tipLabel.font = [UIFont systemFontOfSize:13.5];
         tipLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
-        [bgImage addSubview:tipLabel];
+        [bgView addSubview:tipLabel];
         
-        CGPoint tipLabelCenterPoint = tipLabel.center;
-        CGPoint detailImageCenterPoint = detailImage.center;
-        detailImageCenterPoint.y = tipLabelCenterPoint.y;
-        detailImage.center = detailImageCenterPoint;
+        CGFloat timeX = CGRectGetMaxX(topicLabel.frame);
+        CGFloat timeY = CGRectGetMaxY(tipLabel.frame);
+        CGFloat timeH = (infoHeight - 2 * tiptitleY) / 2.0;
+        CGFloat timeW = viewW - CGRectGetMaxX(topicLabel.frame) - 5;
+        
+        timeLabel = [[UILabel alloc] init];
+        timeLabel.textAlignment = NSTextAlignmentRight;
+        timeLabel.backgroundColor = [UIColor clearColor];
+        timeLabel.text = @"2016-10-28";
+        timeLabel.numberOfLines = 1;
+        timeLabel.textColor = [UIColor grayColor];
+        timeLabel.font = [UIFont systemFontOfSize:13.5];
+        timeLabel.frame = CGRectMake(timeX, timeY, timeW, timeH);
+        [bgView addSubview:timeLabel];
+        
+//        CGPoint tipLabelCenterPoint = tipLabel.center;
+//        CGPoint detailImageCenterPoint = detailImage.center;
+//        detailImageCenterPoint.y = tipLabelCenterPoint.y;
+//        detailImage.center = detailImageCenterPoint;
     }
     return self;
 }

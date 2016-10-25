@@ -20,6 +20,7 @@
 @property(strong,nonatomic)NSMutableArray *fansArray;
 @property(strong,nonatomic)NSMutableArray *ticketArray;
 @property(strong,nonatomic)NSMutableArray *followArray;
+@property(strong,nonatomic)NSDictionary *userLocationDict;
 
 + (HeSysbsModel *)getSysModel;
 
