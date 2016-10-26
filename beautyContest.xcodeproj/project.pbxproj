@@ -13,6 +13,9 @@
 		07D2A4C61DBF381A0031DDE0 /* HeFaceToFaceZoneVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07D2A4C41DBF381A0031DDE0 /* HeFaceToFaceZoneVC.xib */; };
 		07D2A4CA1DBF38EA0031DDE0 /* HeZoneConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2A4C81DBF38EA0031DDE0 /* HeZoneConfirmVC.m */; };
 		07D2A4CB1DBF38EA0031DDE0 /* HeZoneConfirmVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07D2A4C91DBF38EA0031DDE0 /* HeZoneConfirmVC.xib */; };
+		07D2A4CD1DC0456D0031DDE0 /* icon_point.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D2A4CC1DC0456D0031DDE0 /* icon_point.png */; };
+		07D2A4D11DC05EE80031DDE0 /* HeFaceCreatZoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2A4CF1DC05EE80031DDE0 /* HeFaceCreatZoneVC.m */; };
+		07D2A4D21DC05EE80031DDE0 /* HeFaceCreatZoneVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07D2A4D01DC05EE80031DDE0 /* HeFaceCreatZoneVC.xib */; };
 		EA02293C1D7416CC00F57965 /* HeMyFansVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA02293A1D7416CC00F57965 /* HeMyFansVC.m */; };
 		EA02293D1D7416CC00F57965 /* HeMyFansVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA02293B1D7416CC00F57965 /* HeMyFansVC.xib */; };
 		EA0229401D74178200F57965 /* HeFansTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA02293F1D74178200F57965 /* HeFansTableCell.m */; };
@@ -674,6 +677,10 @@
 		07D2A4C71DBF38EA0031DDE0 /* HeZoneConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeZoneConfirmVC.h; sourceTree = "<group>"; };
 		07D2A4C81DBF38EA0031DDE0 /* HeZoneConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeZoneConfirmVC.m; sourceTree = "<group>"; };
 		07D2A4C91DBF38EA0031DDE0 /* HeZoneConfirmVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeZoneConfirmVC.xib; sourceTree = "<group>"; };
+		07D2A4CC1DC0456D0031DDE0 /* icon_point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_point.png; sourceTree = "<group>"; };
+		07D2A4CE1DC05EE80031DDE0 /* HeFaceCreatZoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeFaceCreatZoneVC.h; sourceTree = "<group>"; };
+		07D2A4CF1DC05EE80031DDE0 /* HeFaceCreatZoneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeFaceCreatZoneVC.m; sourceTree = "<group>"; };
+		07D2A4D01DC05EE80031DDE0 /* HeFaceCreatZoneVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeFaceCreatZoneVC.xib; sourceTree = "<group>"; };
 		EA0229391D7416CC00F57965 /* HeMyFansVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeMyFansVC.h; sourceTree = "<group>"; };
 		EA02293A1D7416CC00F57965 /* HeMyFansVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeMyFansVC.m; sourceTree = "<group>"; };
 		EA02293B1D7416CC00F57965 /* HeMyFansVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeMyFansVC.xib; sourceTree = "<group>"; };
@@ -2032,6 +2039,9 @@
 				07D2A4C71DBF38EA0031DDE0 /* HeZoneConfirmVC.h */,
 				07D2A4C81DBF38EA0031DDE0 /* HeZoneConfirmVC.m */,
 				07D2A4C91DBF38EA0031DDE0 /* HeZoneConfirmVC.xib */,
+				07D2A4CE1DC05EE80031DDE0 /* HeFaceCreatZoneVC.h */,
+				07D2A4CF1DC05EE80031DDE0 /* HeFaceCreatZoneVC.m */,
+				07D2A4D01DC05EE80031DDE0 /* HeFaceCreatZoneVC.xib */,
 			);
 			path = BeautyZone;
 			sourceTree = "<group>";
@@ -2156,6 +2166,7 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				07D2A4CC1DC0456D0031DDE0 /* icon_point.png */,
 				07D2A4BC1DBF0A4F0031DDE0 /* down_dark_green.png */,
 				EADE33141D76D49F0025492B /* icon_pay_password.png */,
 				EADE33121D76D48A0025492B /* icon_alipay.png */,
@@ -4402,6 +4413,7 @@
 				07D2A4C61DBF381A0031DDE0 /* HeFaceToFaceZoneVC.xib in Resources */,
 				EAC2CEAC1D4AF5EE00E282A8 /* ShareSDK.bundle in Resources */,
 				EAB538D81D6F4CAE008BCC17 /* icon_add_pho.png in Resources */,
+				07D2A4CD1DC0456D0031DDE0 /* icon_point.png in Resources */,
 				EADE32F51D76B4B30025492B /* HeDistributePhotoVC.xib in Resources */,
 				EACC98421D50F4D700E627B8 /* icon_add.png in Resources */,
 				EAC2C9C81D4AF5CC00E282A8 /* HeBaseViewController.xib in Resources */,
@@ -4508,6 +4520,7 @@
 				EA4D01691D4CF0A300A0CCA1 /* tabar_user_icon_active@2x.png in Resources */,
 				EAC2CDF41D4AF5D800E282A8 /* TSLocateView.xib in Resources */,
 				EA4D01791D4D8FF100A0CCA1 /* index4.jpg in Resources */,
+				07D2A4D21DC05EE80031DDE0 /* HeFaceCreatZoneVC.xib in Resources */,
 				EADE33061D76BE220025492B /* distribute_addImageIcon_normal.png in Resources */,
 				EA4D01821D4D901700A0CCA1 /* home_can_change_bg_09.jpg in Resources */,
 				EAC2CD0C1D4AF5D800E282A8 /* i2KEPCMultiComponentPickerView.xib in Resources */,
@@ -4664,6 +4677,7 @@
 				EAC2CD381D4AF5D800E282A8 /* MJPhotoLoadingView.m in Sources */,
 				EAC2C9081D4AF0E600E282A8 /* AppDelegate.m in Sources */,
 				EAC2CDAA1D4AF5D800E282A8 /* RACSignal+Operations.m in Sources */,
+				07D2A4D11DC05EE80031DDE0 /* HeFaceCreatZoneVC.m in Sources */,
 				EAC2CD6B1D4AF5D800E282A8 /* AHReach.m in Sources */,
 				EAC2CE0B1D4AF5D800E282A8 /* UIColor+expanded.m in Sources */,
 				EAC2CDD61D4AF5D800E282A8 /* SDWebImageDecoder.m in Sources */,

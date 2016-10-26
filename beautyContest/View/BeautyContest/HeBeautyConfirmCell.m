@@ -12,6 +12,7 @@
 @synthesize userImage;
 @synthesize nameLabel;
 @synthesize contentLabel;
+@synthesize confirmDict;
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -84,21 +85,24 @@
 
 - (void)buttonClick:(UIButton *)button
 {
-    NSDictionary *dict = nil;
+    NSMutableDictionary *mutableDict = [[NSMutableDictionary alloc] initWithDictionary:confirmDict];
+    
+    
     switch (button.tag) {
         case 1:
         {
-            dict = @{@"isAgree":@YES};
+            [mutableDict setObject:@YES forKey:@"isAgree"];
             break;
         }
         case 2:
         {
-            dict = @{@"isAgree":@NO};
+            [mutableDict setObject:@NO forKey:@"isAgree"];
             break;
         }
         default:
             break;
     }
+    NSDictionary *dict = [[NSDictionary alloc] initWithDictionary:mutableDict];
     [self routerEventWithName:@"agreeButtonClick" userInfo:dict];
 }
 

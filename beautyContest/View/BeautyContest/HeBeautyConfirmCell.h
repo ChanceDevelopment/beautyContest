@@ -13,4 +13,6 @@
 @property(strong,nonatomic)UILabel *nameLabel;
 @property(strong,nonatomic)UILabel *contentLabel;
 
+@property(strong,nonatomic)NSDictionary *confirmDict;
+
 @end

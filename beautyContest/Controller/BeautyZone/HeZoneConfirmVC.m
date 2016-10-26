@@ -16,6 +16,7 @@
 @property(strong,nonatomic)EGORefreshTableHeaderView *refreshHeaderView;
 @property(strong,nonatomic)EGORefreshTableFootView *refreshFooterView;
 @property(assign,nonatomic)NSInteger pageNo;
+@property(strong,nonatomic)NSCache *imageCache;
 
 @end
 
@@ -26,6 +27,7 @@
 @synthesize refreshHeaderView;
 @synthesize refreshFooterView;
 @synthesize pageNo;
+@synthesize imageCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +53,7 @@
     // Do any additional setup after loading the view from its nib.
     [self initializaiton];
     [self initView];
+    [self loadConfirmData];
 }
 
 - (void)initializaiton
@@ -59,6 +62,7 @@
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
     pageNo = 0;
     updateOption = 1;
+    imageCache = [[NSCache alloc] init];
 }
 
 - (void)initView
@@ -76,9 +80,45 @@
     sectionHeaderView.userInteractionEnabled = YES;
 }
 
-- (void)loadBeautyContestShow:(BOOL)show
+- (void)loadConfirmData
 {
-
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/TestZoneQueInfo.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSDictionary *requestParamDict = @{@"userId":userId};
+    [self showHudInView:self.view hint:@"获取中..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestParamDict success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            if (updateOption == 1) {
+                [dataSource removeAllObjects];
+            }
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            for (NSDictionary *zoneDict in resultArray) {
+                [dataSource addObject:zoneDict];
+            }
+            [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.3];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableview reloadData];
+            });
+        }
+        else{
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if (updateOption == 2 && [resultArray count] == 0) {
+                pageNo--;
+                return;
+            }
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
@@ -127,7 +167,7 @@
 - (void)reloadTableViewDataSource{
     _reloading = YES;
     //刷新列表
-    [self loadBeautyContestShow:NO];
+    [self loadConfirmData];
     [self updateDataSource];
 }
 
@@ -224,7 +264,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [dataSource count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -255,7 +295,33 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    cell.confirmDict = [[NSDictionary alloc] initWithDictionary:zoneDict];
     
+    NSString *userHeader = zoneDict[@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]]) {
+        userHeader = @"";
+    }
+    NSString *imageKey = [NSString stringWithFormat:@"%ld_%@",row,userHeader];
+    UIImageView *imageview = [imageCache objectForKey:imageKey];
+    if (!imageview) {
+        NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+        [cell.userImage sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        imageview = cell.userImage;
+    }
+    cell.userImage = imageview;
+    [cell addSubview:cell.userImage];
+    
+    NSString *userNick = zoneDict[@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+        userNick = @"";
+    }
+    cell.nameLabel.text = userNick;
+    
+    NSString *zoneTitle = zoneDict[@"zoneTitle"];
+    if ([zoneTitle isMemberOfClass:[NSNull class]] || zoneTitle == nil) {
+        zoneTitle = @"";
+    }
+    cell.contentLabel.text = zoneTitle;
     
     return cell;
 }
