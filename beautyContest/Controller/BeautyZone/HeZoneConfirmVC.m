@@ -101,6 +101,9 @@
                 [dataSource removeAllObjects];
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if ([resultArray isMemberOfClass:[NSNull class]]) {
+                return;
+            }
             for (NSDictionary *zoneDict in resultArray) {
                 [dataSource addObject:zoneDict];
             }

@@ -9,11 +9,13 @@
 #import "HeFaceCreatZoneVC.h"
 
 @interface HeFaceCreatZoneVC ()
+@property(strong,nonatomic)NSMutableArray *dataSource;
 
 @end
 
 @implementation HeFaceCreatZoneVC
 @synthesize zonePassword;
+@synthesize dataSource;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +46,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    dataSource = [[NSMutableArray alloc] initWithCapacity:0];
 }
 
 - (void)initView
@@ -58,7 +61,28 @@
 
 - (void)loadJoinZoneUser
 {
-
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/TestZoneQueInfo.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSDictionary *requestParamDict = @{@"userId":userId};
+    [self showHudInView:self.view hint:@"获取中..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestParamDict success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [dataSource removeAllObjects];
+            
+        }
+        
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
