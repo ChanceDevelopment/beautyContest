@@ -130,12 +130,48 @@
         BOOL agree = [userInfo[@"isAgree"] boolValue];
         if (agree) {
             NSLog(@"agree");
+            NSString *zoneId = userInfo[@"zoneId"];
+            NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            if (!userId) {
+                userId = @"";
+            }
+            NSString *state = @"1";
+            NSDictionary *params = @{@"zoneId":zoneId,@"userId":userId,@"state":state};
+            [self confirmZoneWithParam:params];
+//            TestZonepassed
         }
         else{
             NSLog(@"reject");
+            NSString *zoneId = @"";
+            NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            if (!userId) {
+                userId = @"";
+            }
+            NSString *state = @"0";
+            NSDictionary *params = @{@"zoneId":zoneId,@"userId":userId,@"state":state};
+            [self confirmZoneWithParam:params];
         }
         return;
     }
+}
+
+- (void)confirmZoneWithParam:(NSDictionary *)params
+{
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/TestZonepassed.action",BASEURL];
+    
+//    NSDictionary *requestParamDict = @{@"userId":userId};
+//    [self showHudInView:self.view hint:@"获取中..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        [dataSource removeAllObjects];
+        [self loadConfirmData];
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)addFooterView
@@ -324,7 +360,22 @@
     if ([zoneTitle isMemberOfClass:[NSNull class]] || zoneTitle == nil) {
         zoneTitle = @"";
     }
-    cell.contentLabel.text = zoneTitle;
+    cell.contentLabel.text = [NSString stringWithFormat:@"申请加入赛区: %@",zoneTitle];
+    
+    id testState = zoneDict[@"testState"];
+    if ([testState isMemberOfClass:[NSNull class]]) {
+        testState = @"1";
+    }
+    if ([testState boolValue]) {
+        cell.stateLabel.hidden = NO;
+        cell.rejectButton.hidden = YES;
+        cell.agreeButton.hidden = YES;
+    }
+    else{
+        cell.stateLabel.hidden = YES;
+        cell.rejectButton.hidden = NO;
+        cell.agreeButton.hidden = NO;
+    }
     
     return cell;
 }

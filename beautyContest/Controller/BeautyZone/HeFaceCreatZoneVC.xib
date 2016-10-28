@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeFaceCreatZoneVC">
             <connections>
+                <outlet property="creatButton" destination="ojd-0t-npL" id="W33-XZ-mxZ"/>
+                <outlet property="passwordLabel" destination="l04-Sr-CGL" id="7me-xM-R0A"/>
+                <outlet property="scrollView" destination="Hmg-NJ-lkQ" id="dHr-dY-9YB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -14,7 +18,52 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojd-0t-npL">
+                    <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="bDU-Nc-vgP"/>
+                    </constraints>
+                    <state key="normal" title="创建赛区">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="creatBeautyZoneWithPassword:" destination="-1" eventType="touchUpInside" id="hZh-NN-EYh"/>
+                    </connections>
+                </button>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hmg-NJ-lkQ"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1234" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l04-Sr-CGL">
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <color key="textColor" red="0.13333333333333333" green="0.61568627450980395" blue="0.73333333333333328" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这些好友也将进入该赛区" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fa-LS-1rU">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="I5B-sH-nzO"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="2Fa-LS-1rU" firstAttribute="top" secondItem="l04-Sr-CGL" secondAttribute="bottom" constant="8" id="0Uy-XM-Ao0"/>
+                <constraint firstItem="Hmg-NJ-lkQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="6h2-vv-f1w"/>
+                <constraint firstItem="l04-Sr-CGL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7MW-rJ-Wci"/>
+                <constraint firstItem="ojd-0t-npL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="Bdm-ck-LDD"/>
+                <constraint firstItem="2Fa-LS-1rU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Eee-P7-ksY"/>
+                <constraint firstAttribute="bottom" secondItem="ojd-0t-npL" secondAttribute="bottom" constant="30" id="IS9-Hj-IbF"/>
+                <constraint firstAttribute="trailing" secondItem="ojd-0t-npL" secondAttribute="trailing" constant="20" id="J0W-L1-ApM"/>
+                <constraint firstItem="l04-Sr-CGL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NC9-qF-dYV"/>
+                <constraint firstItem="Hmg-NJ-lkQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="110" id="YB5-Ds-QRA"/>
+                <constraint firstAttribute="trailing" secondItem="2Fa-LS-1rU" secondAttribute="trailing" id="cVj-3s-w23"/>
+                <constraint firstItem="Hmg-NJ-lkQ" firstAttribute="top" secondItem="2Fa-LS-1rU" secondAttribute="bottom" id="iDY-M9-pyn"/>
+                <constraint firstItem="ojd-0t-npL" firstAttribute="top" secondItem="Hmg-NJ-lkQ" secondAttribute="bottom" constant="30" id="n5Y-fQ-I4l"/>
+                <constraint firstAttribute="trailing" secondItem="l04-Sr-CGL" secondAttribute="trailing" id="rvk-Ao-2iP"/>
+                <constraint firstAttribute="trailing" secondItem="Hmg-NJ-lkQ" secondAttribute="trailing" id="xY2-nV-1LS"/>
+            </constraints>
+            <point key="canvasLocation" x="32.5" y="92.5"/>
         </view>
     </objects>
 </document>

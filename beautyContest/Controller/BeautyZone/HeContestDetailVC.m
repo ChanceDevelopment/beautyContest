@@ -205,7 +205,12 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             NSDictionary *jsonDict = [respondDict objectForKey:@"json"];
             contestDetailDict = [[NSDictionary alloc] initWithDictionary:jsonDict];
-            NSString *zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[contestDetailDict objectForKey:@"zoneCover"]];
+            NSString *zoneCover = [NSString stringWithFormat:@"%@",[contestDetailDict objectForKey:@"zoneCover"]];
+            NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+            if (zoneCoverArray) {
+                zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCoverArray[0]];
+            }
+            
             UIImageView *imageview = [sectionHeaderView viewWithTag:BGTAG];
             [imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
             [tableview reloadData];

@@ -563,7 +563,7 @@
     userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
     UIImageView *imageview = [imageCache objectForKey:userHeader];
     if (!imageview) {
-        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:userHeader]];
+        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
         imageview = cell.bgImage;
     }
     cell.bgImage = imageview;

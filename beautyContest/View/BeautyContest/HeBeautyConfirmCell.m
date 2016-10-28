@@ -13,6 +13,9 @@
 @synthesize nameLabel;
 @synthesize contentLabel;
 @synthesize confirmDict;
+@synthesize stateLabel;
+@synthesize agreeButton;
+@synthesize rejectButton;
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -61,7 +64,7 @@
         CGFloat agreeH = imageH / 2.0;
         CGFloat agreeW = 60;
         CGFloat agreeX = SCREENWIDTH - 10 - agreeW;
-        UIButton *agreeButton = [[UIButton alloc] initWithFrame:CGRectMake(agreeX, agreeY, agreeW, agreeH)];
+        agreeButton = [[UIButton alloc] initWithFrame:CGRectMake(agreeX, agreeY, agreeW, agreeH)];
         [agreeButton setTitle:@"同意" forState:UIControlStateNormal];
         [agreeButton setTitleColor:APPDEFAULTORANGE forState:UIControlStateNormal];
         [agreeButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -71,7 +74,7 @@
         [agreeButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         
         agreeY = CGRectGetMaxY(agreeButton.frame);
-        UIButton *rejectButton = [[UIButton alloc] initWithFrame:CGRectMake(agreeX, agreeY, agreeW, agreeH)];
+        rejectButton = [[UIButton alloc] initWithFrame:CGRectMake(agreeX, agreeY, agreeW, agreeH)];
         [rejectButton setTitle:@"拒绝" forState:UIControlStateNormal];
         [rejectButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [rejectButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -79,6 +82,20 @@
         rejectButton.tag = 2;
         [self addSubview:rejectButton];
         [rejectButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        CGFloat stateW = 60;
+        CGFloat stateH = 30;
+        CGFloat stateX = SCREENWIDTH - 10 - stateW;
+        CGFloat stateY = (cellsize.height - stateH) / 2.0;
+        
+        stateLabel = [[UILabel alloc] initWithFrame:CGRectMake(stateX, stateY, stateW, stateH)];
+        stateLabel.backgroundColor = [UIColor clearColor];
+        stateLabel.font = [UIFont systemFontOfSize:13.0];
+        stateLabel.textColor = [UIColor grayColor];
+        stateLabel.text = @"已同意";
+        [self addSubview:stateLabel];
+        stateLabel.hidden = YES;
+        stateLabel.textAlignment = NSTextAlignmentRight;
     }
     return self;
 }

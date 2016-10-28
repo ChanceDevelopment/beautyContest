@@ -18,10 +18,17 @@
 #import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
 #import "HeUserRecommendCell.h"
 #import "HeUserContestCell.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
 #define TextLineHeight 1.2f
+
+#define MAXUPLOADIMAGE 9
+#define MAX_column  4
+#define MAX_row 3
+#define IMAGEWIDTH 70
 
 @interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView>
 {
@@ -29,6 +36,8 @@
     BMKGeoCodeSearch *_geoSearch;
     BOOL coverImageHaveTake; //封面图片是否已经获取
     NSMutableDictionary *userLocationDict;
+    
+    BOOL currentSelectBanner;
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)NSDictionary *contestDetailDict;
@@ -44,6 +53,9 @@
 @property(strong,nonatomic)UIImageView *coverImage;
 @property (nonatomic,assign)NSInteger locationSucceedNum; //定位成功的次数
 @property(strong,nonatomic)UIView *dismissView;
+
+@property(strong,nonatomic)NSMutableArray *bannerImageDataSource;
+@property(strong,nonatomic)UIView *bannerImageBG;
 
 @end
 
@@ -61,6 +73,9 @@
 @synthesize coverImage;
 @synthesize locationSucceedNum;
 @synthesize dismissView;
+@synthesize bannerImageDataSource;
+@synthesize bannerImageBG;
+@synthesize zonePassword;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -103,14 +118,16 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    iconDataSource = @[@[@"",@""],@[@"",@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"",@""]];
-    titleDataSource = @[@[@"",@""],@[@"",@"截止时间",@"定位",@"男生参加",@"女生参加",@"",@""]];
+    iconDataSource = @[@[@"",@""],@[@"",@"",@""],@[@"",@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"icon_pay_password",@"",@""]];
+    titleDataSource = @[@[@"",@""],@[@"",@"宣传图片",@""],@[@"",@"截止时间",@"定位",@"男生参加",@"女生参加",@"我要验证",@"",@""]];
     switchDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     [switchDict setObject:@YES forKey:@"2"];
     [switchDict setObject:@YES forKey:@"3"];
+    [switchDict setObject:@NO forKey:@"4"];
     userLocationDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     
     coverImageHaveTake = NO;
+    currentSelectBanner = NO;
 }
 
 - (void)initView
@@ -218,6 +235,73 @@
     tapGes.numberOfTapsRequired = 1;
     tapGes.numberOfTouchesRequired = 1;
     [dismissView addGestureRecognizer:tapGes];
+    
+    
+    bannerImageDataSource = [[NSMutableArray alloc] initWithCapacity:0];
+    int row = [Tool getRowNumWithTotalNum:[bannerImageDataSource count]];
+    int column = [Tool getColumnNumWithTotalNum:[bannerImageDataSource count]];
+    CGFloat bannerX = 0;
+    CGFloat bannerY = 0;
+    CGFloat bannerW = 0;
+    CGFloat bannerH = 0;
+    bannerImageBG = [[UIView alloc] initWithFrame:CGRectMake(bannerX, bannerY, bannerW, bannerH)];
+    [bannerImageBG setBackgroundColor:[UIColor whiteColor]];
+    bannerImageBG.userInteractionEnabled = YES;
+    [self updateImageBG];
+}
+
+- (void)updateImageBG
+{
+    for (UIView *subview in bannerImageBG.subviews) {
+        [subview removeFromSuperview];
+    }
+    CGFloat buttonH = IMAGEWIDTH;
+    CGFloat buttonW = IMAGEWIDTH;
+    
+    CGFloat buttonHDis = (SCREENWIDTH - 20 - MAX_column * buttonW) / (MAX_column - 1);
+    CGFloat buttonVDis = 10;
+    
+    int row = [Tool getRowNumWithTotalNum:[bannerImageDataSource count]];
+    int column = [Tool getColumnNumWithTotalNum:[bannerImageDataSource count]];
+    
+    CGFloat distributeX = bannerImageBG.frame.origin.x;
+    CGFloat distributeY = bannerImageBG.frame.origin.y;
+    CGFloat distributeW = bannerImageBG.frame.size.width;
+    CGFloat distributeH = 0;
+    
+    for (int i = 0; i < row; i++) {
+        if ((i + 1) * MAX_column <= [bannerImageDataSource count]) {
+            column = MAX_column;
+        }
+        else{
+            column = [bannerImageDataSource count] % MAX_column;
+        }
+        for (int j = 0; j < column; j++) {
+            
+            CGFloat buttonX = (buttonW + buttonHDis) * j;
+            CGFloat buttonY = (buttonH + buttonVDis) * i;
+            
+            NSInteger picIndex = i * MAX_column + j;
+            AsynImageView *asynImage = [bannerImageDataSource objectAtIndex:picIndex];
+            asynImage.tag = picIndex;
+            asynImage.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
+            asynImage.layer.borderColor = [UIColor clearColor].CGColor;
+            asynImage.layer.borderWidth = 0;
+            asynImage.layer.masksToBounds = YES;
+            asynImage.contentMode = UIViewContentModeScaleAspectFill;
+            asynImage.userInteractionEnabled = YES;
+            [bannerImageBG addSubview:asynImage];
+            
+            distributeH = CGRectGetMaxY(asynImage.frame);
+        }
+    }
+    
+    
+    
+    
+    bannerImageBG.frame = CGRectMake(distributeX, distributeY, distributeW, distributeH);
+    
+    [tableview reloadData];
 }
 
 - (void)dismissViewGes:(UITapGestureRecognizer *)ges
@@ -401,6 +485,24 @@
     NSData *base64Data = [GTMBase64 encodeData:data];
     NSString *zoneCover = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
     
+    NSMutableString *cover = [[NSMutableString alloc] initWithString:zoneCover];
+    for (NSInteger index = 0; index < self.bannerImageDataSource.count; index++) {
+        AsynImageView *imageview = self.bannerImageDataSource[index];
+        
+        UIImage *imageData = imageview.image;
+        NSData *data = UIImageJPEGRepresentation(imageData,0.2);
+        NSData *base64Data = [GTMBase64 encodeData:data];
+        NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+        [cover appendFormat:@"%@,%@",cover,base64String];
+//        if (index == 0) {
+//            [cover appendString:base64String];
+//        }
+//        else {
+//            [cover appendFormat:@"%@,%@",cover,base64String];
+//        }
+    }
+    
+    
     long long timeSp = [Tool convertStringToTimesp:self.tmpDateString dateFormate:@"yyyy-MM-dd HH:mm"];
     NSString *zoneDeathline = [NSString stringWithFormat:@"%lld",timeSp];
     if (zoneDeathline.length < 13) {
@@ -429,9 +531,21 @@
     if (zoneUser == nil) {
         zoneUser = @"";
     }
+    
+    
+//    NSString *paper = @"";
+//    NSString *zonePwd = @"";
+//    NSString *zoneSwith = @"";
+//    NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
+    
     NSString * requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZone.action",BASEURL];
     
-    NSDictionary *params = @{@"zoneTitle":zoneTitle,@"zoneCover":zoneCover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState};
+    NSDictionary *params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState};
+    if (zonePassword) {
+        NSString *zonePwd = zonePassword;
+        NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
+        params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zonePwd":zonePwd,@"zoneTeststate":zoneTeststate};
+    }
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -517,8 +631,17 @@
 
 - (void)editImageTap:(UITapGestureRecognizer *)tap
 {
+    currentSelectBanner = NO;
+    ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+    if (author == ALAuthorizationStatusRestricted || author ==ALAuthorizationStatusDenied){
+        //无权限
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"此应用没有权限访问您的照片或摄像机，请在: 隐私设置 中启用访问" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+    
     if (ISIOS8) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"修改头像" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"选择封面图片" preferredStyle:UIAlertControllerStyleActionSheet];
         
         // Create the actions.
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -541,7 +664,7 @@
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"修改头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
     [sheet showInView:self.coverImage];
 }
 
@@ -642,19 +765,31 @@
     }
     CGRect newframe = CGRectMake(0, 0, sizewidth, sizewidth);
     UIImage *scaleImage = [self imageFromImage:image inRect:newframe];
-    coverImage.image = scaleImage;
-    
-    
-    
-    [picker dismissViewControllerAnimated:YES completion:^{
-        coverImageHaveTake = YES;
-        [coverImage viewWithTag:8888].hidden = YES;
-    }];
+    if (!currentSelectBanner) {
+        coverImage.image = scaleImage;
+        [picker dismissViewControllerAnimated:YES completion:^{
+            coverImageHaveTake = YES;
+            [coverImage viewWithTag:8888].hidden = YES;
+        }];
+    }
+    else{
+        AsynImageView *asyncImage = [[AsynImageView alloc] init];
+        
+        UIImageJPEGRepresentation(image, 0.6);
+        [asyncImage setImage:image];
+        
+        asyncImage.bigImageURL = nil;
+        asyncImage.imageTag = -1; //表明是调用系统相机、相册的
+        [bannerImageDataSource addObject:asyncImage];
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self updateImageBG];
+        }];
+    }
 }
 
 -(float)getSize:(CGSize)size
 {
-    float a = size.width/480;
+    float a = size.width / 480.0;
     if (a > 1) {
         return a;
     }
@@ -727,6 +862,14 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (section == 1) {
+        if ([bannerImageDataSource count] == 0) {
+            return 2;
+        }
+        else{
+            return 3;
+        }
+    }
     return [iconDataSource[section] count];
 }
 
@@ -785,7 +928,39 @@
             
             break;
         }
-        case 1:{
+        case 1:
+        {
+            switch (row) {
+                case 0:{
+                    cell.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+                    break;
+                }
+                case 1:{
+                    UIImageView *editIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_edit"]];
+                    CGFloat imageW = 20;
+                    CGFloat imageH = imageW;
+                    CGFloat imageY = (cellSize.height - imageH) / 2.0;
+                    CGFloat imageX = SCREENWIDTH - imageW - 20;
+                    editIcon.frame = CGRectMake(imageX, imageY, imageW, imageH);
+                    [cell addSubview:editIcon];
+                    CGRect frame = cell.topicLabel.frame;
+                    frame.origin.x = 10;
+                    cell.topicLabel.frame = frame;
+                    break;
+                }
+                case 2:
+                {
+                    [cell addSubview:bannerImageBG];
+                    break;
+                }
+                
+                default:
+                    break;
+            }
+            
+            break;
+        }
+        case 2:{
             switch (row) {
                 case 0:{
                     cell.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
@@ -854,6 +1029,19 @@
                 }
                 case 5:
                 {
+                    CGFloat zjSwitchW = 50;
+                    CGFloat zjSwitchH = 30;
+                    CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
+                    CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
+                    ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
+                    zjSwitch.on = [[switchDict objectForKey:@"4"] boolValue];
+                    [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
+                    zjSwitch.tag = 4;
+                    [cell addSubview:zjSwitch];
+                    break;
+                }
+                case 6:
+                {
                     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 50, 0, 50, cellSize.height)];
                     titleLabel.font = [UIFont systemFontOfSize:16.0];
                     titleLabel.textColor = APPDEFAULTORANGE;
@@ -870,7 +1058,7 @@
                     [cell addSubview:rewardField];
                     break;
                 }
-                case 6:
+                case 7:
                 {
                     UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, SCREENWIDTH - 110, cellSize.height)];
                     tipLabel.textAlignment = NSTextAlignmentRight;
@@ -904,6 +1092,9 @@
         else{
             return 10;
         }
+    }
+    if (section == 1 && row == 2) {
+        return bannerImageBG.frame.size.height;
     }
     switch (row) {
         case 1:
@@ -955,7 +1146,49 @@
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     switch (section) {
-        case 1:
+        case 1:{
+            switch (row) {
+                case 1:
+                {
+                    if ([bannerImageDataSource count] > MAXUPLOADIMAGE) {
+                        [self showHint:[NSString stringWithFormat:@"上传图片最多不能超过%d张",MAXUPLOADIMAGE]];
+                        return;
+                    }
+                    currentSelectBanner = YES;
+                    if (ISIOS8) {
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"选择宣传图片" preferredStyle:UIAlertControllerStyleActionSheet];
+                        
+                        // Create the actions.
+                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                            //取消
+                        }];
+                        
+                        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"打开照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            [self pickerCamer];
+                        }];
+                        
+                        UIAlertAction *libAction = [UIAlertAction actionWithTitle:@"从手机相册获取" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            [self pickerPhotoLibrary];
+                        }];
+                        
+                        // Add the actions.
+                        [alertController addAction:cameraAction];
+                        [alertController addAction:libAction];
+                        [alertController addAction:cancelAction];
+                        
+                        [self presentViewController:alertController animated:YES completion:nil];
+                        return;
+                    }
+                    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择宣传图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+                    [sheet showInView:bannerImageBG];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case 2:
         {
             switch (row) {
                 case 1:

@@ -11,5 +11,6 @@
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>
 
 @interface HeDistributeContestVC : HeBaseViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@property(strong,nonatomic)NSString *zonePassword;
 
 @end
