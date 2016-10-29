@@ -11,5 +11,6 @@
 
 @interface HeUserInfoVC : HeBaseViewController
 @property(strong,nonatomic)User *userInfo;
+@property(assign,nonatomic)BOOL isScanUser;
 
 @end

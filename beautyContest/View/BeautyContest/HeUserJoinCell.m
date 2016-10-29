@@ -23,7 +23,7 @@
         CGFloat imageY = 10;
         CGFloat imageW = SCREENWIDTH - 2 * imageX;
         CGFloat imageH = cellsize.height - 2 * imageY;
-        bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index5.jpg"]];
+        bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
         bgImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
         bgImage.layer.cornerRadius = 5.0;
         bgImage.layer.masksToBounds = YES;

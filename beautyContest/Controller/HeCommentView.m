@@ -79,7 +79,7 @@
     navitem.leftBarButtonItem = cancelItem;
     navitem.rightBarButtonItem = commentItem;
     
-    commentTextView.placeholder = @"请输入评论内容";
+    commentTextView.placeholder = @"请输入留言内容";
     commentTextView.layer.borderColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0].CGColor;
     commentTextView.layer.borderWidth = 1.0;
     commentTextView.layer.cornerRadius = 5.0;

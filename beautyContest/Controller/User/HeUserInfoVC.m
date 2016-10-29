@@ -34,6 +34,7 @@
 @synthesize dataSource;
 @synthesize sectionHeaderView;
 @synthesize userInfo;
+@synthesize isScanUser;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,6 +60,7 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    [self loadUserDetail];
 }
 
 - (void)initializaiton
@@ -81,6 +83,8 @@
     editItem.target = self;
     editItem.action = @selector(editUserInfo:);
     self.navigationItem.rightBarButtonItem = editItem;
+    
+    
     
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
@@ -170,6 +174,53 @@
     tableview.tableHeaderView = sectionHeaderView;
 }
 
+- (void)loadUserDetail
+{
+    if (isScanUser) {
+        self.navigationItem.rightBarButtonItem.title = @"投票";
+    }
+    [self getUserInfo];
+}
+
+- (void)voteUser
+{
+    NSString *voteUser = userInfo.userId;
+    if (!voteUser) {
+        voteUser = @"";
+    }
+    NSString *voteHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];//投票者
+    if (voteHost == nil) {
+        voteHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+        if (!voteHost){
+            voteHost = @"";
+        }
+    }
+    
+    NSString *getUserInfoUrl = [NSString stringWithFormat:@"%@/vote/GodVoteUser.action",BASEURL];
+    NSDictionary *loginParams = @{@"voteHost":voteHost,@"voteUser":voteUser};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserInfoUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            [self showHint:@"投票成功"];
+        }
+        else{
+            NSString *data = respondDict[@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
 - (void)updateUserInfo:(NSNotification *)notificaiton
 {
     [self getUserInfo];
@@ -219,9 +270,12 @@
 - (void)getUserInfo
 {
     NSString *getUserInfoUrl = [NSString stringWithFormat:@"%@/user/getUserinfo.action",BASEURL];
-    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *userId = userInfo.userId;
     if (userId == nil) {
-        userId = @"";
+        userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+        if (!userId){
+            userId = @"";
+        }
     }
     NSDictionary *loginParams = @{@"userId":userId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserInfoUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
@@ -271,6 +325,10 @@
 
 - (void)editUserInfo:(UIBarButtonItem *)item
 {
+    if (isScanUser) {
+        [self voteUser];
+        return;
+    }
     HeEditUserInfoVC *editInfoVC = [[HeEditUserInfoVC alloc] init];
     editInfoVC.userInfo = [[User alloc] initUserWithUser:userInfo];
     editInfoVC.hidesBottomBarWhenPushed = YES;

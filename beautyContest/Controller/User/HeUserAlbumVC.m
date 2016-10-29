@@ -126,7 +126,11 @@
             [self addPhotoView];
         }
         else{
-            [self showHint:ERRORREQUESTTIP];
+            NSString *data = respondDict[@"data"];
+            if ([data isMemberOfClass:[NSNull class]]) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
         }
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];

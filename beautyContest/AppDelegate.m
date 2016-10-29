@@ -22,6 +22,10 @@
 #import "BrowserView.h"
 #import "BBLaunchAdMonitor.h"
 #import "TOWebViewController.h"
+#import "UMFeedback.h"
+#import "UMOpus.h"
+#import "UMOpenMacros.h"
+#import <SMS_SDK/SMSSDK.h>
 
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
@@ -225,6 +229,8 @@ BMKMapManager* _mapManager;
 
 - (void)initShareSDK
 {
+    [SMSSDK registerApp:SHARESDKSMSKEY
+             withSecret:SHARESDKSMSAPPSECRET];
     [ShareSDK registerApp:SHARESDKKEY
           activePlatforms:@[
                             @(SSDKPlatformTypeWechat)
@@ -466,6 +472,12 @@ BMKMapManager* _mapManager;
     [MobClick setLogSendInterval:90];//每隔两小时上传一次
     //    [MobClick ];  //在线参数配置
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onlineConfigCallBack:) name:UMOnlineConfigDidFinishedNotification object:nil];
+    
+    //友盟反馈
+    [UMOpus setAudioEnable:YES];
+    [UMFeedback setAppkey:UMANALYSISKEY];
+    [UMFeedback setLogEnabled:NO];
+    [[UMFeedback sharedInstance] setFeedbackViewController:[UMFeedback feedbackViewController] shouldPush:YES];
 }
 
 - (void)onlineConfigCallBack:(NSNotification *)note {

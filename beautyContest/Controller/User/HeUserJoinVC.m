@@ -461,10 +461,14 @@
     if ([zoneCover isMemberOfClass:[NSNull class]]) {
         zoneCover = @"";
     }
+    NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+    if (zoneCoverArray) {
+        zoneCover = zoneCoverArray[0];
+    }
     zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
     UIImageView *imageview = [imageCache objectForKey:zoneCover];
     if (!imageview) {
-        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
+        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         imageview = cell.bgImage;
     }
     cell.bgImage = imageview;

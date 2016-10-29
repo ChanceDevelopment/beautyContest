@@ -12,6 +12,7 @@
 @property(strong,nonatomic)IBOutlet UIWebView *webView;
 @property(strong,nonatomic)UIActivityIndicatorView *indicatorView;
 @property(strong,nonatomic)NSString *website;
+@property(strong,nonatomic)NSURL *webURL;
 
 @end
 
@@ -19,6 +20,8 @@
 @synthesize website;
 @synthesize webView;
 @synthesize indicatorView;
+@synthesize webURL;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -43,6 +46,24 @@
         self.website = [[NSString alloc] initWithString:string];
     }
    
+    return self;
+}
+-(id)initWithURL:(NSString *)filePath
+{
+    self = [super init];
+    if (self) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont boldSystemFontOfSize:20.0];
+        label.textColor = [UIColor whiteColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        self.navigationItem.titleView = label;
+        label.text = @"选美用户协议";
+        [label sizeToFit];
+        self.title = @"选美用户协议";
+        
+        self.webURL =  [NSURL fileURLWithPath:filePath];
+    }
     return self;
 }
 
@@ -89,6 +110,10 @@
         NSURL *baseURL = [NSURL fileURLWithPath:path];
         
         [self.webView loadHTMLString:self.htmlContent baseURL:baseURL];
+    }
+    else if (webURL){
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:webURL];
+        [webView loadRequest:request];
     }
     else{
         NSURL *url = [[NSURL alloc] initWithString:website];

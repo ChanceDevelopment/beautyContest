@@ -7,12 +7,15 @@
 //
 
 #import "HeContestantTableCell.h"
+#import "UIButton+Bootstrap.h"
 
 @implementation HeContestantTableCell
 @synthesize userImage;
 @synthesize nameLabel;
 @synthesize distanceLabel;
 @synthesize signLabel;
+@synthesize favButton;
+@synthesize userInfo;
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -57,9 +60,28 @@
         distanceLabel.text = @"承势网络 CEO";
         [self addSubview:distanceLabel];
         
+        CGFloat favW = 60;
+        CGFloat favH = 30;
+        CGFloat favX = SCREENWIDTH - favW - 10;
+        CGFloat favY = (cellsize.height - favH) / 2.0;
         
+        favButton = [[UIButton alloc] init];
+        favButton.frame = CGRectMake(favX, favY, favW, favH);
+        [favButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:favButton.frame.size] forState:UIControlStateNormal];
+        [favButton setTitle:@"锤一位" forState:UIControlStateNormal];
+        [favButton.titleLabel setTextColor:[UIColor whiteColor]];
+        [favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        favButton.layer.cornerRadius = 3.0;
+        favButton.layer.masksToBounds = YES;
+        [favButton addTarget:self action:@selector(favButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:favButton];
     }
     return self;
+}
+
+- (void)favButtonClick:(id)sender
+{
+    [self routerEventWithName:@"favButtonClick" userInfo:userInfo];
 }
 
 @end

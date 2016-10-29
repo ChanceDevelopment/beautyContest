@@ -408,7 +408,7 @@
         }
     }
     
-    NSString * requestRecommendDataPath = [NSString stringWithFormat:@"%@/recommend/releaseRecommen.action",BASEURL];
+    NSString * requestRecommendDataPath = [NSString stringWithFormat:@"%@/recommend/releaseRecommenPic.action",BASEURL];
     NSDictionary *params = @{@"userId":userId,@"content":content,@"cover":cover,@"moneyNum":moneyNum,@"moneySize":moneySize,@"video":video};
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:params success:^(AFHTTPRequestOperation* operation,id response){
@@ -417,10 +417,10 @@
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
-            NSString *data = [respondDict objectForKey:@"data"];
-            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
-                data = @"发布成功!";
-            }
+            NSString *data = @"发布成功!";
+//            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+//                data = @"发布成功!";
+//            }
             [self showHint:data];
             [self performSelector:@selector(backLastView) withObject:nil afterDelay:0.2];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRecommend" object:self];

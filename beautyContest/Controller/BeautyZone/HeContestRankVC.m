@@ -110,6 +110,42 @@
     }
 }
 
+- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
+{
+    if ([eventName isEqualToString:@"favButtonClick"]) {
+        NSString *userId = userInfo[@"userId"];
+        if (userId == nil) {
+            userId = @"";
+        }
+        NSString *voteZone = contestDict[@"zoneId"];
+        if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
+            voteZone = @"";
+        }
+        NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/flopOne.action",BASEURL];
+        NSDictionary *params = @{@"voteZone":voteZone};
+        [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+            [self hideHud];
+            NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+            NSDictionary *respondDict = [respondString objectFromJSONString];
+            NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+            
+            if (statueCode == REQUESTCODE_SUCCEED){
+                [self showHint:@"成功锤一位"];
+            }
+            else{
+                NSString *data = [respondDict objectForKey:@"data"];
+                if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                    data = ERRORREQUESTTIP;
+                }
+                [self showHint:data];
+            }
+        } failure:^(NSError *error){
+            [self showHint:ERRORREQUESTTIP];
+        }];
+        return;
+    }
+    [super routerEventWithName:eventName userInfo:userInfo];
+}
 
 - (void)getManTopRank
 {
@@ -384,7 +420,7 @@
     if (!cell) {
         cell = [[HeContestantTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     NSDictionary *dict = nil;
     @try {
@@ -394,6 +430,8 @@
     } @finally {
         
     }
+    cell.userInfo = [[NSDictionary alloc] initWithDictionary:dict];
+    
     NSString *userHeader = dict[@"userHeader"];
     if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
         userHeader = @"";
@@ -418,6 +456,15 @@
         infoProfession = @"";
     }
     cell.distanceLabel.text = infoProfession;
+    
+    NSString *userId = dict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]]) {
+        userId = @"";
+    }
+    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([myUserId isEqualToString:userId]) {
+        cell.favButton.hidden = YES;
+    }
     return cell;
 }
 

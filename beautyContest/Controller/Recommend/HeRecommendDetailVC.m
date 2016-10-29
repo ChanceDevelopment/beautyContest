@@ -10,12 +10,18 @@
 #import "HeBaseIconTitleTableCell.h"
 #import "HeCommentView.h"
 #import "HeBaseTableViewCell.h"
+#import "MJPhotoBrowser.h"
+#import "FTPopOverMenu.h"
+#import "UIButton+Bootstrap.h"
+#import "MLLinkLabel.h"
+#import "MLLabel+Size.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
-#define USERHEADTAG 100
+#define USERHEADTAG 400
 #define USERSEXTAG 300
 #define USERNAMETAG 200
+#define CONTENTTAG 500
 
 @interface HeRecommendDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol>
 {
@@ -97,11 +103,17 @@
     
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
     bgImage.layer.masksToBounds = YES;
-    bgImage.contentMode = UIViewContentModeScaleAspectFill;
+    bgImage.userInteractionEnabled = YES;
+    bgImage.contentMode = UIViewContentModeScaleAspectFit;
     bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
     bgImage.userInteractionEnabled = YES;
     [sectionHeaderView addSubview:bgImage];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(enlargeImage:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [bgImage addGestureRecognizer:tap];
     
     CGFloat userImageW = 50;
     CGFloat userImageH = userImageW;
@@ -126,16 +138,30 @@
     [sectionHeaderView addSubview:sexIcon];
     
     CGFloat nameX = 0;
-    CGFloat nameY = CGRectGetMaxY(sexIcon.frame) + 5;
-    CGFloat nameH = 40;
+    CGFloat nameY = CGRectGetMaxY(sexIcon.frame) + 2;
+    CGFloat nameH = 25;
     CGFloat nameW = SCREENWIDTH;
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(nameX, nameY, nameW, nameH)];
     nameLabel.tag = USERNAMETAG;
-    nameLabel.font = [UIFont boldSystemFontOfSize:20.0];
-    nameLabel.textColor = APPDEFAULTORANGE;
+    nameLabel.font = [UIFont systemFontOfSize:16.0];
+    nameLabel.textColor = [UIColor whiteColor];
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.text = recommendDict[@"userNick"];
     [sectionHeaderView addSubview:nameLabel];
+    
+    CGFloat contentX = 0;
+    CGFloat contentY = CGRectGetMaxY(nameLabel.frame);
+    CGFloat contentH = 25;
+    CGFloat contentW = SCREENWIDTH;
+    UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
+    contentLabel.tag = CONTENTTAG;
+    contentLabel.text = recommendDict[@"recommendContent"];
+    contentLabel.font = [UIFont systemFontOfSize:16.0];
+    contentLabel.textColor = [UIColor whiteColor];
+    contentLabel.textAlignment = NSTextAlignmentCenter;
+    contentLabel.backgroundColor = [UIColor clearColor];
+    [sectionHeaderView addSubview:contentLabel];
     
     UIView *buttonBG = [[UIView alloc] initWithFrame:CGRectMake(0, bgImage.frame.size.height - 40, SCREENWIDTH, 40)];
     buttonBG.userInteractionEnabled = YES;
@@ -192,7 +218,7 @@
 //    [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"投票领红包" image:@"icon_reward"];
     voteButton.tag = 2;
     [voteButton addTarget:self action:@selector(voteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [voteButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:voteButton.frame.size] forState:UIControlStateNormal];
+    [voteButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:voteButton.frame.size] forState:UIControlStateNormal];
     [footerview addSubview:voteButton];
     voteButton.layer.cornerRadius = 3.0;
     voteButton.layer.masksToBounds = YES;
@@ -210,11 +236,15 @@
     photoScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollX, scrollY, scrollW, scrollH)];
     NSString *recommendCover = [recommendDict objectForKey:@"recommendCover"];
     paperArray = [recommendCover componentsSeparatedByString:@","];
+    
+    [bgImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,paperArray[0]]] placeholderImage:bgImage.image];
+    
     CGFloat imageX = 0;
     CGFloat imageY = 0;
     CGFloat imageH = photoScrollView.frame.size.height;
     CGFloat imageW = imageH;
     CGFloat imageDistance = 5;
+    NSInteger index = 0;
     for (NSString *url in paperArray) {
         NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
         
@@ -225,12 +255,55 @@
         [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         [photoScrollView addSubview:imageview];
         imageX = imageX + imageW + imageDistance;
+        imageview.tag = index + 10000;
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanlargeImage:)];
+        tap.numberOfTapsRequired = 1;
+        tap.numberOfTouchesRequired = 1;
+        imageview.userInteractionEnabled = YES;
+        [imageview addGestureRecognizer:tap];
+        index++;
+        
     }
     if (imageX > photoScrollView.frame.size.width) {
         photoScrollView.contentSize = CGSizeMake(imageX, 0);
     }
-    
+}
 
+- (void)scanlargeImage:(UITapGestureRecognizer *)tap
+{
+    NSInteger index = 0;
+    NSMutableArray *photos = [NSMutableArray array];
+    for (NSString *url in paperArray) {
+        NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
+        MJPhoto *photo = [[MJPhoto alloc] init];
+        photo.url = [NSURL URLWithString:imageurl];
+        
+        UIImageView *srcImageView = [photoScrollView viewWithTag:index + 10000];
+        photo.image = srcImageView.image;
+        photo.srcImageView = srcImageView;
+        [photos addObject:photo];
+    }
+    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+    browser.currentPhotoIndex = tap.view.tag - 10000;
+    browser.photos = photos;
+    [browser show];
+}
+
+- (void)enlargeImage:(UITapGestureRecognizer *)tap
+{
+    NSString *zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,paperArray[0]];
+    
+    UIImageView *srcImageView = (UIImageView *)tap.view;
+    NSMutableArray *photos = [NSMutableArray array];
+    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+    MJPhoto *photo = [[MJPhoto alloc] init];
+    photo.url = [NSURL URLWithString:zoneCover];
+    photo.image = srcImageView.image;
+    photo.srcImageView = srcImageView;
+    [photos addObject:photo];
+    browser.photos = photos;
+    [browser show];
 }
 
 - (void)loadRecommendDetail

@@ -11,6 +11,7 @@
 #import "RDVTabBar.h"
 #import "RDVTabBarController.h"
 #import "HeSysbsModel.h"
+#import "HeNewRecommendVC.h"
 
 @interface HeTabBarVC ()
 
@@ -218,7 +219,7 @@
     beautyZoneVC = [[HeBeautyZoneVC alloc] init];
     CustomNavigationController *beautyZoneNav = [[CustomNavigationController alloc] initWithRootViewController:beautyZoneVC];
     
-    recommendVC = [[HeRecommendVC alloc] init];
+    recommendVC = [[HeNewRecommendVC alloc] init];
     CustomNavigationController *recommendNav = [[CustomNavigationController alloc] initWithRootViewController:recommendVC];
     
     discoverVC = [[HeDiscoverVC alloc] init];

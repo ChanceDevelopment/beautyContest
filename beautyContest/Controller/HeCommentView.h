@@ -18,4 +18,5 @@
 @interface HeCommentView : HeBaseViewController
 @property(assign,nonatomic)id<CommentProtocol>commentDelegate;
 
+
 @end

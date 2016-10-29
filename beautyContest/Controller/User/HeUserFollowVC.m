@@ -8,6 +8,7 @@
 
 #import "HeUserFollowVC.h"
 #import "HeUserFollowTableCell.h"
+#import "HeUserInfoVC.h"
 
 @interface HeUserFollowVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -332,7 +333,7 @@
     HeUserFollowTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
         cell = [[HeUserFollowTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     cell.userInfo = dict;
@@ -373,6 +374,21 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
+    NSDictionary *dict = nil;
+    @try {
+        dict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    userInfoVC.isScanUser = YES;
+    userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

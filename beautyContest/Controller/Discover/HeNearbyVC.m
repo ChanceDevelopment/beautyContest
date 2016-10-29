@@ -226,9 +226,7 @@
             }
         }
     } failure:^(NSError *error){
-        if (show) {
-            [Waiting dismiss];
-        }
+        [self hideHud];
         [self showHint:ERRORREQUESTTIP];
     }];
 }

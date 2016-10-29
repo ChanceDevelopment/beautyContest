@@ -13,6 +13,19 @@
 #import "HeBaseIconTitleTableCell.h"
 #import "HeCommentView.h"
 #import "HeContestZoneCommentVC.h"
+#import "ZJSwitch.h"
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKExtension/SSEShareHelper.h>
+#import <ShareSDKUI/ShareSDK+SSUI.h>
+#import <ShareSDKUI/SSUIShareActionSheetStyle.h>
+#import <ShareSDKUI/SSUIShareActionSheetCustomItem.h>
+#import <ShareSDK/ShareSDK+Base.h>
+#import "HeUserLocatiVC.h"
+#import "MJPhotoBrowser.h"
+#import "FTPopOverMenu.h"
+#import "UIButton+Bootstrap.h"
+#import "MLLinkLabel.h"
+#import "MLLabel+Size.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -29,6 +42,7 @@
 @property(strong,nonatomic)IBOutlet UIView *footerView;
 @property(strong,nonatomic)NSMutableArray *topManRank; //排名前面的男神
 @property(strong,nonatomic)NSMutableArray *topWomanRank; //排名前面的女神
+@property(strong,nonatomic)NSMutableDictionary *switchDict;
 
 @end
 
@@ -41,6 +55,7 @@
 @synthesize footerView;
 @synthesize topManRank;
 @synthesize topWomanRank;
+@synthesize switchDict;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -79,6 +94,7 @@
     myRank = 0;
     topManRank = [[NSMutableArray alloc] initWithCapacity:0];
     topWomanRank = [[NSMutableArray alloc] initWithCapacity:0];
+    switchDict = [[NSMutableDictionary alloc] initWithCapacity:0];
 }
 
 - (void)initView
@@ -94,12 +110,18 @@
     tableview.tableHeaderView = sectionHeaderView;
     
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
+    bgImage.userInteractionEnabled = YES;
     bgImage.layer.masksToBounds = YES;
     bgImage.contentMode = UIViewContentModeScaleAspectFill;
     bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
     bgImage.userInteractionEnabled = YES;
     [sectionHeaderView addSubview:bgImage];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(enlargeImage:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [bgImage addGestureRecognizer:tap];
     
     UIButton *distributeButton = [[UIButton alloc] init];
     [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_share"] forState:UIControlStateNormal];
@@ -114,7 +136,7 @@
     CGFloat buttonY = 5;
     CGFloat buttonH = 40;
     CGFloat buttonW = SCREENWIDTH / 2.0 - 2 * buttonX;
-    UIButton *joinButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"参加" image:@"appIcon"];
+    UIButton *joinButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"参加" image:@"icon_join_in"];
     joinButton.tag = 1;
     [joinButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [joinButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
@@ -131,6 +153,26 @@
     commentButton.layer.masksToBounds = YES;
 }
 
+- (void)enlargeImage:(UITapGestureRecognizer *)tap
+{
+    NSString *zoneCover = [NSString stringWithFormat:@"%@",[contestDetailDict objectForKey:@"zoneCover"]];
+    NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+    if (zoneCoverArray) {
+        zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCoverArray[0]];
+    }
+    
+    UIImageView *srcImageView = (UIImageView *)tap.view;
+    NSMutableArray *photos = [NSMutableArray array];
+    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+    MJPhoto *photo = [[MJPhoto alloc] init];
+    photo.url = [NSURL URLWithString:zoneCover];
+    photo.image = srcImageView.image;
+    photo.srcImageView = srcImageView;
+    [photos addObject:photo];
+    browser.photos = photos;
+    [browser show];
+}
+
 - (void)massageButtonClick:(UIButton *)button
 {
     HeContestZoneCommentVC *commentZoneVC = [[HeContestZoneCommentVC alloc] init];
@@ -138,6 +180,7 @@
     commentZoneVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:commentZoneVC animated:YES];
 }
+
 
 - (void)commentWithText:(NSString *)commentText user:(User *)commentUser
 {
@@ -183,7 +226,150 @@
 
 - (void)shareButtonClick:(UIButton *)shareButton
 {
+//    http://114.55.226.224:8088/xuanmei/shareZone.action?zoneId=92bcc5d6b58645d9be112d74c140723a&voteUser=73c69cf59b0e4f56badce7de300ac172
+    NSString *domain = @"http://114.55.226.224:8088/xuanmei/shareZone.action?";
+    NSString *zoneId = contestDetailDict[@"zoneId"];
+    NSString *voteUser = contestDetailDict[@"zoneUser"];;
+    NSString *shareUrl = [NSString stringWithFormat:@"%@zoneId=%@&voteUser=%@",domain,zoneId,voteUser];
+    //    NSString *shareUrl = [columnDict objectForKey:@"url"];
+    //    if ([shareUrl isMemberOfClass:[NSNull class]] || shareUrl == nil || [shareUrl isEqualToString:@""]) {
+    //        shareUrl = [columnDict objectForKey:@"url_new"];
+    //        if ([shareUrl isMemberOfClass:[NSNull class]] || shareUrl == nil || [shareUrl isEqualToString:@""]){
+    //            shareUrl = @"http://modify.modiauto.com.cn/";
+    //        }
+    //
+    //    }
+    
+    //    NSString *shareUrl = [columnDict objectForKey:@"url"];    //分享的链接地址
+    //    if ([shareUrl isMemberOfClass:[NSNull class]] || shareUrl == nil) {
+    //        shareUrl = @"";
+    //    }
+    NSString *shareContent = @"选美榜-颜值榜期待您的加入";
+    
+    NSString *shareTitleStr = @"选美榜-颜值榜";
+    NSString *imagePath = nil;
+    
+    NSArray* imageArray = nil;
+    if ([imagePath isMemberOfClass:[NSNull class]] || imagePath == nil || [imagePath isEqualToString:@""]) {
+        imagePath =[[NSBundle mainBundle] pathForResource:@"appIcon"  ofType:@"png"];
+    }
+    imageArray = @[imagePath];
+    
+    
+    NSArray *sharePlatFormArray = @[@(SSDKPlatformSubTypeWechatSession),@(SSDKPlatformSubTypeWechatTimeline),@(SSDKPlatformSubTypeQQFriend),@(SSDKPlatformSubTypeQZone)];
+    
+    shareUrl = [shareUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    //1、创建分享参数（必要）
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    [shareParams SSDKSetupShareParamsByText:shareContent
+                                     images:imageArray
+                                        url:[NSURL URLWithString:shareUrl]
+                                      title:shareTitleStr
+                                       type:SSDKContentTypeWebPage];
+    //2、分享
+    [ShareSDK showShareActionSheet:nil
+                             items:sharePlatFormArray
+                       shareParams:shareParams
+               onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+                   switch (state) {
+                           
+                       case SSDKResponseStateBegin:
+                       {
+                           
+                           break;
+                       }
+                       case SSDKResponseStateSuccess:
+                       {
+                           break;
+                       }
+                       case SSDKResponseStateFail:
+                       {
+                           if (platformType == SSDKPlatformTypeSMS && [error code] == 201)
+                           {
+                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                               message:@"失败原因可能是：1、短信应用没有设置帐号；2、设备不支持短信应用；3、短信应用在iOS 7以上才能发送带附件的短信。"
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:@"OK"
+                                                                     otherButtonTitles:nil, nil];
+                               [alert show];
+                               break;
+                           }
+                           else if(platformType == SSDKPlatformTypeMail && [error code] == 201)
+                           {
+                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                               message:@"失败原因可能是：1、邮件应用没有设置帐号；2、设备不支持邮件应用；"
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:@"OK"
+                                                                     otherButtonTitles:nil, nil];
+                               [alert show];
+                               break;
+                           }
+                           else
+                           {
+                               break;
+                           }
+                           break;
+                       }
+                       case SSDKResponseStateCancel:
+                       {
+                           break;
+                       }
+                       default:
+                           break;
+                   }
+                   
+                   
+               }];
+}
 
+- (void)zjSwitchChange:(ZJSwitch *)zjSwitch
+{
+    NSInteger tag = zjSwitch.tag;
+    NSString *key = [NSString stringWithFormat:@"%ld",tag];
+    NSNumber *number = [NSNumber numberWithBool:zjSwitch.on];
+    NSDictionary *params = nil;
+    NSString *requestUrl = nil;
+    NSString *zoneId = contestBaseDict[@"zoneId"];
+    if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
+        zoneId = @"";
+    }
+    if (tag == 3) {
+        requestUrl = [NSString stringWithFormat:@"%@/zone/limitComment.action",BASEURL];
+        params = @{@"zoneId":zoneId,@"zoneComment":number};
+    }
+    else{
+        requestUrl = [NSString stringWithFormat:@"%@/zone/updateTestState.action",BASEURL];
+        params = @{@"zoneId":zoneId,@"testState":number};
+    }
+    
+    [self showHudInView:self.view hint:@"修改中..."];
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            
+            if (tag == 3) {
+                [switchDict setObject:number forKey:@"3"];
+            }
+            else{
+                [switchDict setObject:number forKey:@"4"];
+            }
+            [tableview reloadData];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)getContestDetail
@@ -213,6 +399,28 @@
             
             UIImageView *imageview = [sectionHeaderView viewWithTag:BGTAG];
             [imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+            
+            NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
+            if ([userId isMemberOfClass:[NSNull class]]) {
+                userId = nil;
+            }
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            if ([myUserId isEqualToString:userId]) {
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward",@"icon_message",@"icon_pay_password",@""];
+            }
+            else{
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward",@""];
+            }
+            id zoneComment = contestDetailDict[@"zoneComment"];
+            if ([zoneComment isMemberOfClass:[NSNull class]]) {
+                zoneComment = @"";
+            }
+            id zoneTeststate = contestDetailDict[@"zoneTeststate"];
+            if ([zoneTeststate isMemberOfClass:[NSNull class]]) {
+                zoneTeststate = @"";
+            }
+            [switchDict setObject:[NSNumber numberWithBool:[zoneComment boolValue]] forKey:@"3"];
+            [switchDict setObject:[NSNumber numberWithBool:[zoneTeststate boolValue]] forKey:@"4"];
             [tableview reloadData];
         }
         else{
@@ -220,7 +428,7 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-            [self showHint:data];
+//            [self showHint:data];
         }
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
@@ -255,7 +463,7 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-            [self showHint:data];
+//            [self showHint:data];
         }
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
@@ -446,6 +654,74 @@
         }
         case 5:
         {
+            NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
+            if ([userId isMemberOfClass:[NSNull class]]) {
+                userId = nil;
+            }
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            if (![myUserId isEqualToString:userId]){
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.topicLabel.text = @"我的排名";
+                CGRect topFrame = cell.topicLabel.frame;
+                topFrame.origin.x = 10;
+                topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
+                cell.topicLabel.frame = topFrame;
+                cell.topicLabel.textColor = [UIColor blackColor];
+                
+                UILabel *rankLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 0, SCREENWIDTH - 90, cellSize.height)];
+                rankLabel.backgroundColor = [UIColor clearColor];
+                rankLabel.textColor = [UIColor redColor];
+                rankLabel.font = [UIFont systemFontOfSize:15.0];
+                rankLabel.text = [NSString stringWithFormat:@"%ld",myRank];
+                [cell addSubview:rankLabel];
+                
+                User *userInfo = [HeSysbsModel getSysModel].user;
+                NSString *userHead = userInfo.userHeader;
+                userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];
+                CGFloat imageY = 5;
+                CGFloat imageH = cellSize.height - 2 * imageY;
+                CGFloat imageW = imageH;
+                CGFloat imageX = cellSize.width - imageW - 10;
+                UIImageView *userIcon = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
+                userIcon.image = [UIImage imageNamed:@"userDefalut_icon"];
+                userIcon.layer.borderWidth = 1.0;
+                userIcon.layer.borderColor = [UIColor whiteColor].CGColor;
+                userIcon.layer.masksToBounds = YES;
+                userIcon.layer.cornerRadius = imageH / 2.0;
+                userIcon.contentMode = UIViewContentModeScaleAspectFill;
+                [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead]];
+                [cell addSubview:userIcon];
+            }
+            else{
+                cell.topicLabel.text = @"赛区评论";
+                CGFloat zjSwitchW = 50;
+                CGFloat zjSwitchH = 30;
+                CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
+                CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
+                ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
+                zjSwitch.on = [[switchDict objectForKey:@"3"] boolValue];
+                [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
+                zjSwitch.tag = 3;
+                [cell addSubview:zjSwitch];
+            }
+            
+            break;
+        }
+        case 6:{
+            cell.topicLabel.text = @"我要验证";
+            CGFloat zjSwitchW = 50;
+            CGFloat zjSwitchH = 30;
+            CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
+            CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
+            ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
+            zjSwitch.on = [[switchDict objectForKey:@"4"] boolValue];
+            [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
+            zjSwitch.tag = 4;
+            [cell addSubview:zjSwitch];
+            break;
+        }
+        case 7:{
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.topicLabel.text = @"我的排名";
@@ -523,20 +799,48 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    switch (row) {
-        case 5:
-        {
+    NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
+    if ([userId isMemberOfClass:[NSNull class]]) {
+        userId = nil;
+    }
+    if (row == 2) {
+        NSString *zoneLocationX = contestDetailDict[@"zoneLocationX"];
+        if ([zoneLocationX isMemberOfClass:[NSNull class]] || zoneLocationX == nil) {
+            zoneLocationX = @"";
+        }
+        NSString *zoneLocationY = contestDetailDict[@"zoneLocationY"];
+        if ([zoneLocationY isMemberOfClass:[NSNull class]] || zoneLocationY == nil) {
+            zoneLocationY = @"";
+        }
+        NSDictionary *locationDict = @{@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY};
+        HeUserLocatiVC *userLocationVC = [[HeUserLocatiVC alloc] init];
+        userLocationVC.userLocationDict = [[NSDictionary alloc] initWithDictionary:locationDict];
+        userLocationVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:userLocationVC animated:YES];
+        return;
+    }
+    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (![myUserId isEqualToString:userId]){
+        if (row == 5) {
             HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
             contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
             contestRankVC.topManRank = [[NSMutableArray alloc] initWithArray:topManRank];
             contestRankVC.topWomanRank = [[NSMutableArray alloc] initWithArray:topWomanRank];
             contestRankVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:contestRankVC animated:YES];
-            break;
         }
-        default:
-            break;
     }
+    else{
+        if (row == 7) {
+            HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
+            contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
+            contestRankVC.topManRank = [[NSMutableArray alloc] initWithArray:topManRank];
+            contestRankVC.topWomanRank = [[NSMutableArray alloc] initWithArray:topWomanRank];
+            contestRankVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contestRankVC animated:YES];
+        }
+    }
+    
     
 }
 

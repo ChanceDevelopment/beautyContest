@@ -578,6 +578,10 @@
 
 - (void)backLastView
 {
+    if (zonePassword){
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        return;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

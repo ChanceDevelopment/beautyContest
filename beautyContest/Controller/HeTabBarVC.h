@@ -12,11 +12,12 @@
 #import "HeRecommendVC.h"
 #import "HeDiscoverVC.h"
 #import "HeUserVC.h"
+#import "HeNewRecommendVC.h"
 
 @interface HeTabBarVC : RDVTabBarController<UIAlertViewDelegate>
 @property(strong,nonatomic)HeUserVC *userVC;
 @property(strong,nonatomic)HeBeautyZoneVC *beautyZoneVC;
-@property(strong,nonatomic)HeRecommendVC *recommendVC;
+@property(strong,nonatomic)HeNewRecommendVC *recommendVC;
 @property(strong,nonatomic)HeDiscoverVC *discoverVC;
 
 @end

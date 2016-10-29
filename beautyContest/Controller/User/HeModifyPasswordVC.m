@@ -37,10 +37,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"支付密码";
+        label.text = @"修改密码";
         [label sizeToFit];
         
-        self.title = @"支付密码";
+        self.title = @"修改密码";
     }
     return self;
 }
@@ -57,18 +57,38 @@
 -(void)initializaiton
 {
     [super initializaiton];
-    [loginButton infoStyleWhite];
-    [loginButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    loginButton.layer.borderColor = [[UIColor colorWithRed:214.0/255.0 green:155.0/255.0 blue:157.0/255.0 alpha:1.0] CGColor];
+//    [loginButton infoStyleWhite];
+//    [loginButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+//    loginButton.layer.borderColor = [[UIColor colorWithRed:214.0/255.0 green:155.0/255.0 blue:157.0/255.0 alpha:1.0] CGColor];
     
-    pswTF.delegate = self;
-    cpswTF.delegate = self;
+//    pswTF.delegate = self;
+//    cpswTF.delegate = self;
 }
 
 -(void)initView
 {
     [super initView];
     self.view.backgroundColor = [UIColor colorWithWhite:230.0f/255.0f alpha:1.0];
+    
+    pswTF.layer.borderWidth = 1.0;
+    pswTF.layer.borderColor = APPDEFAULTORANGE.CGColor;
+    pswTF.layer.cornerRadius = 5.0;
+    pswTF.layer.masksToBounds = YES;
+    
+    cpswTF.layer.borderWidth = 1.0;
+    cpswTF.layer.borderColor = APPDEFAULTORANGE.CGColor;
+    cpswTF.layer.cornerRadius = 5.0;
+    cpswTF.layer.masksToBounds = YES;
+    
+    commitpswTF.layer.borderWidth = 1.0;
+    commitpswTF.layer.borderColor = APPDEFAULTORANGE.CGColor;
+    commitpswTF.layer.cornerRadius = 5.0;
+    commitpswTF.layer.masksToBounds = YES;
+    
+    loginButton.layer.cornerRadius = 5.0;
+    loginButton.layer.masksToBounds = YES;
+    
+    return;
     UIView *spaceView = [[UIView alloc]init];
     spaceView.frame = CGRectMake(10, 0, 80, 40);
     
@@ -184,21 +204,22 @@
 
 -(void)loginButtonClick:(id)sender
 {
-    if ([cpswTF isFirstResponder]) {
-        [cpswTF resignFirstResponder];
-        
-    }
     if ([pswTF isFirstResponder]) {
         [pswTF resignFirstResponder];
         
     }
-    if ([commitpswTF isFirstResponder]) {
-        [commitpswTF resignFirstResponder];
+    if ([cpswTF isFirstResponder]) {
+        [cpswTF resignFirstResponder];
         
     }
-    NSString *oldPassword = cpswTF.text;
-    NSString *newPassword = pswTF.text;
-    NSString *commitPassword = commitpswTF.text;
+    
+//    if ([commitpswTF isFirstResponder]) {
+//        [commitpswTF resignFirstResponder];
+//        
+//    }
+    NSString *oldPassword = pswTF.text;
+    NSString *newPassword = cpswTF.text;
+//    NSString *commitPassword = commitpswTF.text;
     
     if (![self isOldPasswordVaild:oldPassword]) {
         return;
@@ -206,9 +227,9 @@
     if (![self isNewPasswordVaild:newPassword]) {
         return;
     }
-    if (![self isNewPasswordVaild:commitPassword]) {
-        return;
-    }
+//    if (![self isNewPasswordVaild:commitPassword]) {
+//        return;
+//    }
     NSString *correctPassword = [[NSUserDefaults standardUserDefaults] objectForKey:USERPASSWORDKEY];
     if (![oldPassword isEqualToString:correctPassword]) {
         [self showHint:@"旧密码有误"];
@@ -218,11 +239,11 @@
         [self showHint:@"旧密码与新密码不能相同"];
         return;
     }
-    if (![commitPassword isEqualToString:newPassword]) {
-        [self showHint:@"两次密码输入不一致"];
-        return;
-    }
-    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/setPassword.actionn",BASEURL];
+//    if (![commitPassword isEqualToString:newPassword]) {
+//        [self showHint:@"两次密码输入不一致"];
+//        return;
+//    }
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/changeUserPwd.action",BASEURL];
     
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (!userId) {
@@ -230,7 +251,7 @@
     }
     NSString *oldPayPswd = oldPassword;
     NSString *newPayPswd = newPassword;
-    NSDictionary *requestMessageParams = @{@"userId":userId,@"oldPayPswd":oldPayPswd,@"newPayPswd":newPayPswd};
+    NSDictionary *requestMessageParams = @{@"userId":userId,@"oldPwd":oldPayPswd,@"newPwd":newPayPswd};
     [self showHudInView:self.view hint:@"正在修改..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
@@ -246,12 +267,28 @@
         }
         [self showHint:data];
         if (statueCode == REQUESTCODE_SUCCEED){
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyAlipayAccountSucceed" object:nil];
-            [self performSelector:@selector(backToLastView) withObject:nil afterDelay:0.2];
+            [self showHint:@"修改密码成功"];
+            [self performSelector:@selector(loginOut) withObject:nil afterDelay:0.3];
+        }
+        else{
+            NSString *data = respondDict[@"data"];
+            if ([data isMemberOfClass:[NSNull class]]) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
         }
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
     }];
+}
+
+- (void)loginOut
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERACCOUNTKEY];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERPASSWORDKEY];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERIDKEY];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)backToLastView

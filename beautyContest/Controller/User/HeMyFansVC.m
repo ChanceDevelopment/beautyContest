@@ -8,6 +8,7 @@
 
 #import "HeMyFansVC.h"
 #import "HeFansTableCell.h"
+#import "HeUserInfoVC.h"
 
 @interface HeMyFansVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -106,9 +107,12 @@
                 [dataSource removeAllObjects];
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
-            for (NSDictionary *zoneDict in resultArray) {
-                [dataSource addObject:zoneDict];
+            if (![resultArray isMemberOfClass:[NSNull class]]) {
+                for (NSDictionary *zoneDict in resultArray) {
+                    [dataSource addObject:zoneDict];
+                }
             }
+            
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
             [self.tableview reloadData];
         }
@@ -285,7 +289,7 @@
     HeFansTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
         cell = [[HeFansTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[dict objectForKey:@"userHeader"]];
@@ -324,6 +328,21 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
+    NSDictionary *dict = nil;
+    @try {
+        dict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    userInfoVC.isScanUser = YES;
+    userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

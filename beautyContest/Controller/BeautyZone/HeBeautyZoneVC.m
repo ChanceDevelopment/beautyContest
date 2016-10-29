@@ -16,7 +16,7 @@
 #import "FTPopOverMenu.h"
 #import "HeFaceToFaceZoneVC.h"
 #import "HeZoneConfirmVC.h"
-
+#import "HeSearchBeautyZoneVC.h"
 
 #define TextLineHeight 1.2f
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -156,15 +156,34 @@
     [sectionHeaderView addSubview:timedropDownView];
     
     CGFloat searchX = 30;
-    CGFloat searchY = 5;
+    CGFloat searchY = 7;
     CGFloat searchW = SCREENWIDTH - 2 * searchX;
-    CGFloat searchH = SCREENHEIGH - 2 * searchY;
+    CGFloat searchH = 30;
+    
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(searchX, searchY, searchW, searchH)];
+    searchView.backgroundColor = [UIColor whiteColor];
+    searchView.layer.masksToBounds = YES;
+    searchView.layer.cornerRadius = 5.0;
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:searchView.bounds];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.textColor = [UIColor grayColor];
+    titleLabel.text = @"请输入关键字";
+    titleLabel.font = [UIFont systemFontOfSize:15.0];
+    [searchView addSubview:titleLabel];
+    self.navigationItem.titleView = searchView;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchMethod:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [searchView addGestureRecognizer:tap];
+    
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(searchX, searchY, searchW, searchH)];
     //    searchBar.tintColor = [UIColor colo]
     searchBar.delegate = self;
     searchBar.barStyle = UIBarStyleDefault;
     searchBar.placeholder = @"请输入关键字";
-    self.navigationItem.titleView = searchBar;
+//    self.navigationItem.titleView = searchBar;
     
     UIButton *distributeButton = [[UIButton alloc] init];
     [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_add"] forState:UIControlStateNormal];
@@ -176,6 +195,12 @@
     self.navigationItem.rightBarButtonItem = distributeItem;
 }
 
+- (void)searchMethod:(UITapGestureRecognizer *)tap
+{
+    HeSearchBeautyZoneVC *searchVC = [[HeSearchBeautyZoneVC alloc] init];
+    searchVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:searchVC animated:YES];
+}
 - (void)distributeButtonClick:(UIButton *)button
 {
     NSLog(@"distributeButtonClick");

@@ -12,6 +12,9 @@
 #import "BrowserView.h"
 #import "UIButton+WebCache.h"
 #import "UIButton+Bootstrap.h"
+#import "UMFeedback.h"
+#import "HeModifyPasswordVC.h"
+#import "HeFeedbackVC.h"
 
 @interface HeSettingVC ()<UIAlertViewDelegate>
 @property(strong,nonatomic)IBOutlet UITableView *settingTable;
@@ -51,18 +54,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    self.navigationController.navigationBarHidden = NO;
+//    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
-    self.navigationController.navigationBarHidden = YES;
+//    self.navigationController.navigationBarHidden = YES;
 }
 - (void)initializaiton
 {
     [super initializaiton];
-    dataSource = @[@[@"消息提醒"],@[@"手机搜索",@"选美号搜索"],@[@"版本信息",@"关于"]];
+    dataSource = @[@[@"修改密码"],@[@"意见反馈",@"关于"]];
 }
 
 - (void)initView
@@ -185,32 +188,32 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = dataSource[section][row];
-    switch (section) {
-        case 0:
-        {
-        }
-        case 1:
-        {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            ZJSwitch *switchControl = [[ZJSwitch alloc] init];
-            switchControl.frame = CGRectMake(cellsize.width - 62, (cellH - 25.0)/2.0, 44, 25);
-            [switchControl addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
-            NSString *notificaitonKey = [NSString stringWithFormat:@"%@notificaiton",[[NSUserDefaults standardUserDefaults] objectForKey:USERACCOUNTKEY]];
-            id notificaiotn = [[NSUserDefaults standardUserDefaults] objectForKey:notificaitonKey];
-            if (!notificaiotn) {
-                notificaiotn = [NSNumber numberWithBool:YES];
-                [[NSUserDefaults standardUserDefaults] setObject:notificaiotn forKey:notificaitonKey];
-            }
-            switchControl.on = [notificaiotn boolValue];
-            [cell.contentView addSubview:switchControl];
-            
-            break;
-        }
-        
-        default:
-            break;
-    }
+//    switch (section) {
+//        case 0:
+//        {
+//        }
+//        case 1:
+//        {
+//            cell.accessoryType = UITableViewCellAccessoryNone;
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            ZJSwitch *switchControl = [[ZJSwitch alloc] init];
+//            switchControl.frame = CGRectMake(cellsize.width - 62, (cellH - 25.0)/2.0, 44, 25);
+//            [switchControl addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
+//            NSString *notificaitonKey = [NSString stringWithFormat:@"%@notificaiton",[[NSUserDefaults standardUserDefaults] objectForKey:USERACCOUNTKEY]];
+//            id notificaiotn = [[NSUserDefaults standardUserDefaults] objectForKey:notificaitonKey];
+//            if (!notificaiotn) {
+//                notificaiotn = [NSNumber numberWithBool:YES];
+//                [[NSUserDefaults standardUserDefaults] setObject:notificaiotn forKey:notificaitonKey];
+//            }
+//            switchControl.on = [notificaiotn boolValue];
+//            [cell.contentView addSubview:switchControl];
+//            
+//            break;
+//        }
+//        
+//        default:
+//            break;
+//    }
     
     return cell;
     
@@ -229,7 +232,40 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    
+    switch (section) {
+        case 0:
+        {
+            switch (row) {
+                case 0:
+                {
+                    HeModifyPasswordVC *modifyPasswordVC = [[HeModifyPasswordVC alloc] init];
+                    modifyPasswordVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:modifyPasswordVC animated:YES];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case 1:
+        {
+            switch (row) {
+                case 0:
+                {
+                    HeFeedbackVC *feedBackVC = [[HeFeedbackVC alloc] init];
+                    feedBackVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:feedBackVC animated:YES];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
     
 }
 

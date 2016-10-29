@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeRecommendDetailVC">
@@ -14,23 +15,21 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="oBu-Wj-ebW">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="P1p-eL-hIL"/>
                         <outlet property="delegate" destination="-1" id="2aS-9K-F9A"/>
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GHs-WF-jKq">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="oBu-Wj-ebW" secondAttribute="bottom" id="9ed-ep-rqc">
                     <variation key="heightClass=regular-widthClass=compact" constant="50"/>
@@ -49,14 +48,14 @@
                     <exclude reference="GHs-WF-jKq"/>
                 </mask>
                 <mask key="constraints">
-                    <exclude reference="9ed-ep-rqc"/>
-                    <exclude reference="JW8-DH-sa9"/>
-                    <exclude reference="iN2-wO-sqg"/>
-                    <exclude reference="shg-1h-pdE"/>
                     <exclude reference="TiV-eW-2Rg"/>
                     <exclude reference="X8U-0B-ILz"/>
                     <exclude reference="XfR-lA-gkU"/>
                     <exclude reference="Ykh-G7-cpq"/>
+                    <exclude reference="9ed-ep-rqc"/>
+                    <exclude reference="JW8-DH-sa9"/>
+                    <exclude reference="iN2-wO-sqg"/>
+                    <exclude reference="shg-1h-pdE"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
@@ -65,14 +64,14 @@
                     <include reference="GHs-WF-jKq"/>
                 </mask>
                 <mask key="constraints">
-                    <include reference="9ed-ep-rqc"/>
-                    <include reference="JW8-DH-sa9"/>
-                    <include reference="iN2-wO-sqg"/>
-                    <include reference="shg-1h-pdE"/>
                     <include reference="TiV-eW-2Rg"/>
                     <include reference="X8U-0B-ILz"/>
                     <include reference="XfR-lA-gkU"/>
                     <include reference="Ykh-G7-cpq"/>
+                    <include reference="9ed-ep-rqc"/>
+                    <include reference="JW8-DH-sa9"/>
+                    <include reference="iN2-wO-sqg"/>
+                    <include reference="shg-1h-pdE"/>
                 </mask>
             </variation>
         </view>

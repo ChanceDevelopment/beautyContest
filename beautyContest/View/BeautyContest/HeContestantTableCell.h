@@ -14,5 +14,8 @@
 @property(strong,nonatomic)UILabel *nameLabel;
 @property(strong,nonatomic)UILabel *distanceLabel;
 @property(strong,nonatomic)UILabel *signLabel;
+@property(strong,nonatomic)UIButton *favButton;
+
+@property(strong,nonatomic)NSDictionary *userInfo;
 
 @end

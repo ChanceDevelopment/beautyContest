@@ -117,9 +117,13 @@
     CGFloat imageY = 10;
     CGFloat imageW = SCREENWIDTH - 2 * imageX;
     CGFloat imageH = headerH - 2 * imageY;
-    UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index2.jpg"]];
-    NSString *zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[contestZoneDict objectForKey:@"zoneCover"]];
-    [bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover]];
+    UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage.jpg"]];
+    NSString *zoneCover = [NSString stringWithFormat:@"%@",[contestZoneDict objectForKey:@"zoneCover"]];
+    NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+    if (zoneCoverArray) {
+        zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCoverArray[0]];
+    }
+    [bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
     
     bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
