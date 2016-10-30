@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07A7E9D11DC5F9900043802C /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 07A7E9D01DC5F9900043802C /* icon_search.png */; };
 		07D2A4BD1DBF0A4F0031DDE0 /* down_dark_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D2A4BC1DBF0A4F0031DDE0 /* down_dark_green.png */; };
 		07D2A4C11DBF328B0031DDE0 /* FTPopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2A4C01DBF328B0031DDE0 /* FTPopOverMenu.m */; };
 		07D2A4C51DBF381A0031DDE0 /* HeFaceToFaceZoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2A4C31DBF381A0031DDE0 /* HeFaceToFaceZoneVC.m */; };
@@ -707,6 +708,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07A7E9D01DC5F9900043802C /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
 		07D2A4BC1DBF0A4F0031DDE0 /* down_dark_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_dark_green.png; sourceTree = "<group>"; };
 		07D2A4BF1DBF328B0031DDE0 /* FTPopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPopOverMenu.h; sourceTree = "<group>"; };
 		07D2A4C01DBF328B0031DDE0 /* FTPopOverMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPopOverMenu.m; sourceTree = "<group>"; };
@@ -2352,6 +2354,7 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				07A7E9D01DC5F9900043802C /* icon_search.png */,
 				07F3AB251DC46445008AD00E /* icon_join_in.png */,
 				07E87FFE1DC394B9000A13E8 /* icon_message.png */,
 				07D2A4CC1DC0456D0031DDE0 /* icon_point.png */,
@@ -4655,6 +4658,7 @@
 				EADE330B1D76D2550025492B /* HeUserFinanceVC.xib in Resources */,
 				EAC2CEA81D4AF5EE00E282A8 /* WeiboSDK.bundle in Resources */,
 				EAC2CD231D4AF5D800E282A8 /* IQKeyboardManager.bundle in Resources */,
+				07A7E9D11DC5F9900043802C /* icon_search.png in Resources */,
 				07F3AB321DC4B5A0008AD00E /* 用户协议.doc in Resources */,
 				07E8803B1DC44F23000A13E8 /* microphone@2x.png in Resources */,
 				EAC2CCFD1D4AF5D800E282A8 /* fail@3x.png in Resources */,
@@ -5398,7 +5402,7 @@
 		EAC2C92E1D4AF0E600E282A8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "beautyContest/选美-颜值榜.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: jun zhou (ZM3AW8VQ6N)";
@@ -5445,7 +5449,7 @@
 		EAC2C92F1D4AF0E600E282A8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "beautyContest/选美-颜值榜.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
@@ -5576,7 +5580,7 @@
 		EAC2EA6B1D4B0D6E00DB4F6D /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "beautyContest/选美-颜值榜.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";

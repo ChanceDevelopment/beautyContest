@@ -662,7 +662,7 @@
             if (![myUserId isEqualToString:userId]){
                 cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.topicLabel.text = @"我的排名";
+                cell.topicLabel.text = @"我的排名:";
                 CGRect topFrame = cell.topicLabel.frame;
                 topFrame.origin.x = 10;
                 topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
@@ -676,6 +676,10 @@
                 rankLabel.text = [NSString stringWithFormat:@"%ld",myRank];
                 [cell addSubview:rankLabel];
                 
+                if (myRank == 0) {
+                    rankLabel.text = @"未参赛";
+                    rankLabel.textColor = [UIColor redColor];
+                }
                 User *userInfo = [HeSysbsModel getSysModel].user;
                 NSString *userHead = userInfo.userHeader;
                 userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];

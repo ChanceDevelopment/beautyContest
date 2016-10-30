@@ -161,17 +161,23 @@
     CGFloat searchH = 30;
     
     UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(searchX, searchY, searchW, searchH)];
-    searchView.backgroundColor = [UIColor whiteColor];
+    searchView.backgroundColor = APPDEFAULTORANGE;
     searchView.layer.masksToBounds = YES;
-    searchView.layer.cornerRadius = 5.0;
+    searchView.layer.cornerRadius = searchH / 2.0;
+    searchView.layer.borderWidth = 0.5;
+    searchView.layer.borderColor = [UIColor whiteColor].CGColor;
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:searchView.bounds];
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.textColor = [UIColor grayColor];
-    titleLabel.text = @"请输入关键字";
-    titleLabel.font = [UIFont systemFontOfSize:15.0];
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.text = @"        关键词搜索";
+    titleLabel.font = [UIFont systemFontOfSize:13.5];
     [searchView addSubview:titleLabel];
     self.navigationItem.titleView = searchView;
+    
+    UIImageView *searchIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_search"]];
+    searchIcon.frame = CGRectMake(5, (searchH - 20) / 2.0, 18, 20);
+    [titleLabel addSubview:searchIcon];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchMethod:)];
     tap.numberOfTapsRequired = 1;

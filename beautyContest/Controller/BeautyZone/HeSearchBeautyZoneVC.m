@@ -97,6 +97,15 @@
     CGFloat searchW = SCREENWIDTH - 2 * searchX - 60;
     CGFloat searchH = 30;
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(searchX, searchY, searchW, searchH)];
+//    searchBar.layer.cornerRadius = searchH / 2.0;
+//    searchBar.layer.masksToBounds = YES;
+//    searchBar.backgroundColor = APPDEFAULTORANGE;
+//    searchBar.barTintColor = APPDEFAULTORANGE;
+//    searchBar.backgroundImage = [Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:searchBar.frame.size];
+//    [searchBar setSearchFieldBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:searchBar.frame.size] forState:UIControlStateNormal];
+//    searchBar.layer.borderWidth = 0.5;
+//    searchBar.layer.borderColor = [UIColor whiteColor].CGColor;
+////    [searchBar ]
     searchBar.tintColor = APPDEFAULTORANGE;
     searchBar.delegate = self;
     searchBar.barStyle = UIBarStyleDefault;
