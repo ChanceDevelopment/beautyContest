@@ -51,7 +51,7 @@
     myscrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGH)];
     myscrollView.backgroundColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:230.0f/255.0f];
     pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 36)];
-    images = [NSMutableArray arrayWithObjects:@"ios_guide_step_1",@"ios_guide_step_2", nil];
+    images = [NSMutableArray arrayWithObjects:@"ios_guide_step_1",@"ios_guide_step_2",@"ios_guide_step_3",@"ios_guide_step_4", nil];
     
     [self.view addSubview:myscrollView];
     [self setupPage];
@@ -62,7 +62,7 @@
     
     pageControl.currentPageIndicatorTintColor = [UIColor redColor];
     
-    pageControl.pageIndicatorTintColor = [UIColor grayColor];
+    pageControl.pageIndicatorTintColor = APPDEFAULTORANGE;
 
     
 }
@@ -107,12 +107,15 @@
     
     NSInteger nimages = 0;
     CGFloat cx = 0;
+//    CGFloat imageScale = 750 / 1334.0;
     for (NSString *imagepath in images) {
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imagepath]];
         imageView.frame = CGRectZero;
         CGRect rect = myscrollView.frame;
         rect.size.height = SCREENHEIGH;
         rect.size.width = SCREENWIDTH;
+        
+        
         rect.origin.x = cx;
         rect.origin.y = 0;
         imageView.frame = rect;
@@ -123,18 +126,19 @@
         if (nimages == [images count] - 1) {
             enterButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [enterButton setTitle:@"立即体验" forState:UIControlStateNormal];
-            [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
             
             UIScreen *mainScreen = [UIScreen mainScreen];
             
             CGFloat buttonW = 200;
             CGFloat buttonH = 39.5;
             CGFloat buttonX = (SCREENWIDTH - buttonW)/2.0;
-            CGFloat buttonY = 270;
+            CGFloat buttonY = SCREENHEIGH - buttonH - 50;
             
             enterButton.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
             [enterButton defaultStyle];
-            [enterButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor clearColor] withImageSize:enterButton.frame.size] forState:UIControlStateNormal];
+            [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [enterButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:enterButton.frame.size] forState:UIControlStateNormal];
             enterButton.layer.borderWidth = 0.5;
             enterButton.layer.borderColor = APPDEFAULTORANGE.CGColor;
             myscrollView.userInteractionEnabled = YES;
@@ -157,12 +161,13 @@
 
 -(void)enterButtonClick:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     //此处应该做判断
-    HeTabBarVC *tabBarVC = [[HeTabBarVC alloc] init];
-    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    appDelegate.viewController = tabBarVC;
-    [appDelegate.window setRootViewController:appDelegate.viewController];
-    [appDelegate.window makeKeyAndVisible];
+//    HeTabBarVC *tabBarVC = [[HeTabBarVC alloc] init];
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    appDelegate.viewController = tabBarVC;
+//    [appDelegate.window setRootViewController:appDelegate.viewController];
+//    [appDelegate.window makeKeyAndVisible];
 }
 
 

@@ -49,7 +49,6 @@ BMKMapManager* _mapManager;
     [self launchBaiduMap];
     [self initAPServiceWithOptions:launchOptions];
     BOOL showGuide = [self isShowIntroduce];
-    showGuide = NO;
     if (showGuide) {
         /****  进入使用介绍界面  ****/
         HeInstructionView *howEnjoyLifeView = [[HeInstructionView alloc] init];
