@@ -29,7 +29,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier cellSize:cellsize];
     if (self) {
         CGFloat imageX = 10;
-        CGFloat imageY = 10;
+        CGFloat imageY = 15;
         CGFloat imageH = cellsize.height - 2 * imageY;
         CGFloat imageW = imageH;
         
@@ -61,13 +61,14 @@
         [self addSubview:distanceLabel];
         
         CGFloat favW = 60;
-        CGFloat favH = 30;
+        CGFloat favH = 25;
         CGFloat favX = SCREENWIDTH - favW - 10;
         CGFloat favY = (cellsize.height - favH) / 2.0;
         
         favButton = [[UIButton alloc] init];
         favButton.frame = CGRectMake(favX, favY, favW, favH);
         [favButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:favButton.frame.size] forState:UIControlStateNormal];
+        favButton.titleLabel.font = [UIFont systemFontOfSize:13.5];
         [favButton setTitle:@"锤一位" forState:UIControlStateNormal];
         [favButton.titleLabel setTextColor:[UIColor whiteColor]];
         [favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
