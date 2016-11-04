@@ -8,6 +8,9 @@
 
 #import "HeBalanceEditVC.h"
 #import "UIButton+Bootstrap.h"
+#import "Order.h"
+#import "DataSigner.h"
+#import <AlipaySDK/AlipaySDK.h>
 
 @interface HeBalanceEditVC ()<UITextFieldDelegate>
 @property(strong,nonatomic)IBOutlet UITextField *editField;
@@ -34,6 +37,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(GetAlipayResult:) name:@"GetAlipayResult" object:nil];
 }
 
 - (void)initView
@@ -66,7 +70,7 @@
             [label sizeToFit];
             self.title = @"充值";
             editField.placeholder = @"建议转入100元以上";
-            editField.keyboardType = UIKeyboardTypeNumberPad;
+            editField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             break;
         }
         case Balance_Edit_Withdraw:
@@ -76,7 +80,7 @@
             self.title = @"提现";
             editField.placeholder = [NSString stringWithFormat:@"本次最多可提现%.2f元",maxWithDrawMoney];
             tipLabel.hidden = NO;
-            editField.keyboardType = UIKeyboardTypeNumberPad;
+            editField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             break;
         }
         case Balance_Edit_BindAccount:
@@ -99,18 +103,51 @@
     
 }
 
+- (void)GetAlipayResult:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    if (![[userInfo objectForKey:@"result"] boolValue]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"支付未能成功" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (IBAction)commitButtonClick:(id)sender
 {
     NSLog(@"commitButtonClick");
+    if ([editField isFirstResponder]) {
+        [editField resignFirstResponder];
+    }
+    
+    CGFloat money = [editField.text floatValue];
     switch (banlanceType) {
         case Balance_Edit_Recharge:
         {
-            
+            if (editField.text == nil || [editField.text isEqualToString:@""]) {
+                [self showHint:@"请输入充值金额"];
+                return;
+            }
+            [self rechargeMoney:money];
             break;
         }
         case Balance_Edit_Withdraw:
         {
-            
+            if (editField.text == nil || [editField.text isEqualToString:@""]) {
+                [self showHint:@"请输入提现金额"];
+                return;
+            }
+            if (money >= 5 && money <= 2000) {
+                [self withDrawMoney:money];
+            }
+            else{
+                if (money < 5) {
+                    [self showHint:@"提现金额至少5块钱"];
+                }
+                else if (money > 2000){
+                    [self showHint:@"每次提现不能超过2000块"];
+                }
+            }
             break;
         }
         case Balance_Edit_BindAccount:
@@ -131,13 +168,82 @@
 //充值
 - (void)rechargeMoney:(CGFloat)money
 {
-
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/signProve.action",BASEURL];
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSString *moneyStr = @"0.1";
+    NSDictionary *requestMessageParams = @{@"userId":userId,@"money":moneyStr};
+    [self showHudInView:self.view hint:@"充值中..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (statueCode == REQUESTCODE_SUCCEED) {
+            NSString *appScheme = @"AlipaySdkBeautyContest";//-----回调id,返回应用
+            NSString *orderString = respondDict[@"json"];
+            [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic) {
+                NSLog(@"resultDic: %@",resultDic);
+                /*
+                 *
+                 *
+                 *此处不返回支付结果
+                 *
+                 *
+                 ***/
+            }];
+        }
+        else{
+            NSString *data = respondDict[@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 //提现
 - (void)withDrawMoney:(CGFloat)money
 {
-
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/ApplicationForWithdrawal.action",BASEURL];
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSString *moneyStr = [NSString stringWithFormat:@"%.2f",money];
+    NSDictionary *requestMessageParams = @{@"userId":userId,@"money":moneyStr};
+    [self showHudInView:self.view hint:@"提现中..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (statueCode == REQUESTCODE_SUCCEED) {
+            [self performSelector:@selector(backToLastView) withObject:nil afterDelay:1.0];
+            [self showHint:@"提现申请成功，等待客服人员审核"];
+        }
+        else{
+            NSString *data = respondDict[@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+        
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 //绑定支付宝账号

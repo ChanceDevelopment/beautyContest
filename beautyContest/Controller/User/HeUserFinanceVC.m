@@ -81,6 +81,11 @@
     [self getBalance];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self getBalance];
+}
 
 - (void)initializaiton
 {
@@ -89,6 +94,12 @@
     iconDataSource = @[@[@"icon_recharge",@"icon_withdrawals",@"icon_withdrawals_detail",@"icon_alipay",@"icon_pay_password"]];
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modifyAlipayAccountSucceed:) name:@"modifyAlipayAccountSucceed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(GetAlipayResult:) name:@"GetAlipayResult" object:nil];
+}
+
+- (void)GetAlipayResult:(NSNotification *)notification
+{
+    [self getBalance];
 }
 
 - (void)modifyAlipayAccountSucceed:(NSNotification *)notification
