@@ -20,6 +20,9 @@
 #import "HeUserContestCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
+#import "ScanPictureView.h"
+#import "HeModifyPayPasswordVC.h"
+#import "HcdDateTimePickerView.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -56,6 +59,11 @@
 
 @property(strong,nonatomic)NSMutableArray *bannerImageDataSource;
 @property(strong,nonatomic)UIView *bannerImageBG;
+@property(strong,nonatomic)UIButton *addPictureButton;
+
+@property(strong,nonatomic)NSMutableArray *selectedAssets;
+@property(strong,nonatomic)NSMutableArray *selectedPhotos;
+@property(strong,nonatomic)NSMutableArray *takePhotoArray;
 
 @end
 
@@ -75,7 +83,10 @@
 @synthesize dismissView;
 @synthesize bannerImageDataSource;
 @synthesize bannerImageBG;
+@synthesize addPictureButton;
 @synthesize zonePassword;
+@synthesize takePhotoArray;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -128,6 +139,15 @@
     
     coverImageHaveTake = NO;
     currentSelectBanner = NO;
+    
+    if (!_selectedPhotos) {
+        _selectedPhotos = [[NSMutableArray alloc] initWithCapacity:0];
+    }
+    if (!_selectedAssets) {
+        _selectedAssets = [[NSMutableArray alloc] initWithCapacity:0];
+    }
+    takePhotoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
 }
 
 - (void)initView
@@ -158,6 +178,11 @@
     coverImage.layer.masksToBounds = YES;
     coverImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:coverImage];
+    
+    addPictureButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, IMAGEWIDTH, IMAGEWIDTH)];
+    [addPictureButton setBackgroundImage:[UIImage imageNamed:@"icon_add_pho"] forState:UIControlStateNormal];
+    addPictureButton.tag = 100;
+    [addPictureButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat tipX = 10;
     CGFloat tipW = SCREENWIDTH - 2 * tipX;
@@ -240,12 +265,13 @@
     bannerImageDataSource = [[NSMutableArray alloc] initWithCapacity:0];
     int row = [Tool getRowNumWithTotalNum:[bannerImageDataSource count]];
     int column = [Tool getColumnNumWithTotalNum:[bannerImageDataSource count]];
-    CGFloat bannerX = 0;
-    CGFloat bannerY = 0;
-    CGFloat bannerW = 0;
-    CGFloat bannerH = 0;
+    CGFloat bannerX = 5;
+    CGFloat bannerY = 5;
+    CGFloat bannerW = SCREENWIDTH - 2 * bannerX;
+    CGFloat bannerH = IMAGEWIDTH;
     bannerImageBG = [[UIView alloc] initWithFrame:CGRectMake(bannerX, bannerY, bannerW, bannerH)];
     [bannerImageBG setBackgroundColor:[UIColor whiteColor]];
+    [bannerImageBG addSubview:addPictureButton];
     bannerImageBG.userInteractionEnabled = YES;
     [self updateImageBG];
 }
@@ -292,16 +318,150 @@
             asynImage.userInteractionEnabled = YES;
             [bannerImageBG addSubview:asynImage];
             
-            distributeH = CGRectGetMaxY(asynImage.frame);
+            UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanImageTap:)];
+            tapGes.numberOfTapsRequired = 1;
+            tapGes.numberOfTouchesRequired = 1;
+            [asynImage addGestureRecognizer:tapGes];
+        }
+    }
+    if ([bannerImageDataSource count] < MAXUPLOADIMAGE) {
+        
+        NSInteger last_i = -1;
+        NSInteger last_j = -1;
+        row = [Tool getRowNumWithTotalNum:[bannerImageDataSource count] + 1];
+        for (int i = 0; i < row; i++) {
+            if ((i + 1) * MAX_column <= [bannerImageDataSource count] + 1) {
+                column = MAX_column;
+            }
+            else{
+                column = ([bannerImageDataSource count] + 1) % MAX_column;
+            }
+            last_i = i;
+            for (int j = 0; j < column; j++) {
+                last_j = j;
+            }
+        }
+        if (last_i == -1 || last_j == -1) {
+            addPictureButton.hidden = YES;
+        }
+        else{
+            addPictureButton.hidden = NO;
+        }
+        
+        CGFloat buttonX = (buttonW + buttonHDis) * last_j;
+        CGFloat buttonY = (buttonH + buttonVDis) * last_i;
+        CGFloat buttonW = addPictureButton.frame.size.width;
+        CGFloat buttonH = addPictureButton.frame.size.height;
+        
+        addPictureButton.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
+        
+        CGFloat distributeX = bannerImageBG.frame.origin.x;
+        CGFloat distributeY = bannerImageBG.frame.origin.y;
+        CGFloat distributeW = bannerImageBG.frame.size.width;
+        CGFloat distributeH = addPictureButton.frame.origin.y + addPictureButton.frame.size.height;
+        
+        bannerImageBG.frame = CGRectMake(distributeX, distributeY, distributeW, distributeH);
+        
+    }
+    else{
+        
+        CGFloat distributeX = bannerImageBG.frame.origin.x;
+        CGFloat distributeY = bannerImageBG.frame.origin.y;
+        CGFloat distributeW = bannerImageBG.frame.size.width;
+        CGFloat distributeH = (buttonH + buttonVDis) * (MAX_row - 1) + buttonH;
+        
+        bannerImageBG.frame = CGRectMake(distributeX, distributeY, distributeW, distributeH);
+        
+        addPictureButton.hidden = YES;
+    }
+    [bannerImageBG addSubview:addPictureButton];
+    
+    [tableview reloadData];
+}
+
+- (void)scanImageTap:(UITapGestureRecognizer *)tap
+{
+    NSInteger selectIndex = tap.view.tag + 1;
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    for (AsynImageView *asyImage in bannerImageDataSource) {
+        if (asyImage.highlightedImage == nil) {
+            [array addObject:asyImage];
         }
     }
     
+    ScanPictureView *scanPictureView = [[ScanPictureView alloc] initWithArray:array selectButtonIndex:selectIndex];
+    scanPictureView.deleteDelegate = self;
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] init];
+    [backButton setTintColor:[UIColor colorWithRed:65.0f/255.0f green:164.0f/255.0f blue:220.0f/255.0f alpha:1.0f]];
+    scanPictureView.navigationItem.backBarButtonItem = backButton;
+    scanPictureView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:scanPictureView animated:YES];
+}
+
+//删除所选图片的代理方法
+-(void)deleteImageAtIndex:(int)index
+{
+    [bannerImageDataSource removeObjectAtIndex:index];
+    [self updateImageBG];
+}
+
+-(void)initButtonWithImage:(UIImage *)image
+{
+    
+    CGSize sizeImage = image.size;
+    CGFloat width = sizeImage.width;
+    CGFloat hight = sizeImage.height;
+    CGFloat standarW = width;
+    CGRect frame = CGRectMake(0, hight - width, standarW, standarW);
+    
+    if (width > hight) {
+        standarW = hight;
+        
+        frame = CGRectMake(0, 0, standarW, standarW);
+    }
+    //截取图片
+    UIImage *jiequImage = [self imageFromImage:image inRect:frame];
+    //    CGSize jiequSize = jiequImage.size;
     
     
-    
-    bannerImageBG.frame = CGRectMake(distributeX, distributeY, distributeW, distributeH);
-    
-    [tableview reloadData];
+    addPictureButton.tag = 1;
+    [addPictureButton setImage:jiequImage forState:UIControlStateNormal];
+}
+
+- (void)addButtonClick:(UIButton *)sender
+{
+    if ([bannerImageDataSource count] > MAXUPLOADIMAGE) {
+        [self showHint:[NSString stringWithFormat:@"上传图片最多不能超过%d张",MAXUPLOADIMAGE]];
+        return;
+    }
+    currentSelectBanner = YES;
+    if (ISIOS8) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"选择宣传图片" preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            //取消
+        }];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"打开照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self pickerCamer];
+        }];
+        
+        UIAlertAction *libAction = [UIAlertAction actionWithTitle:@"从手机相册获取" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self pickerPhotoLibrary];
+        }];
+        
+        // Add the actions.
+        [alertController addAction:cameraAction];
+        [alertController addAction:libAction];
+        [alertController addAction:cancelAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择宣传图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+    [sheet showInView:bannerImageBG];
 }
 
 - (void)dismissViewGes:(UITapGestureRecognizer *)ges
@@ -626,11 +786,59 @@
         [self showHint:@"请输入比赛的赏金"];
         return;
     }
+    NSString *payPassword = [HeSysbsModel getSysModel].user.userPayPwd;
+    if ([payPassword isEqualToString:@""] || payPassword == nil) {
+        if (ISIOS8) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"尚未设置密码，马上设置？" preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                [self.navigationController popViewControllerAnimated:YES];
+                //取消
+            }];
+            
+            UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [self setPayPassword];
+            }];
+            
+            
+            // Add the actions.
+            [alertController addAction:cameraAction];
+            [alertController addAction:cancelAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+            return;
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"尚未设置密码，马上设置？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"马上设置", nil];
+        alert.tag = 100;
+        [alert show];
+        
+        return;
+    }
     NSNumber *boyJoin = [NSNumber numberWithBool:[[switchDict objectForKey:@"2"] boolValue]];
     NSNumber *girlJoin = [NSNumber numberWithBool:[[switchDict objectForKey:@"3"] boolValue]];
     [self inputPayPassword];
     
     
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 100) {
+        if (buttonIndex == 0) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else if(buttonIndex == 1){
+            [self setPayPassword];
+        }
+    }
+}
+- (void)setPayPassword
+{
+    //支付密码
+    HeModifyPayPasswordVC *modifyPasswordVC = [[HeModifyPayPasswordVC alloc] init];
+    modifyPasswordVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:modifyPasswordVC animated:YES];
 }
 
 - (void)editImageTap:(UITapGestureRecognizer *)tap
@@ -691,6 +899,24 @@
         default:
             break;
     }
+}
+
+- (void)handleSelectPhoto
+{
+    for (AsynImageView *imageview in bannerImageDataSource) {
+        if (imageview.imageTag != -1) {
+            [bannerImageDataSource removeObject:imageview];
+        }
+    }
+    
+    for (UIImage *image in _selectedPhotos) {
+        AsynImageView *asyncImage = [[AsynImageView alloc] init];
+        [asyncImage setImage:image];
+        asyncImage.bigImageURL = nil;
+        [bannerImageDataSource addObject:asyncImage];
+        
+    }
+    [self updateImageBG];
 }
 
 #pragma mark -
@@ -867,12 +1093,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
-        if ([bannerImageDataSource count] == 0) {
-            return 2;
-        }
-        else{
-            return 3;
-        }
+        return 3;
     }
     return [iconDataSource[section] count];
 }
@@ -946,7 +1167,7 @@
                     CGFloat imageY = (cellSize.height - imageH) / 2.0;
                     CGFloat imageX = SCREENWIDTH - imageW - 20;
                     editIcon.frame = CGRectMake(imageX, imageY, imageW, imageH);
-                    [cell addSubview:editIcon];
+//                    [cell addSubview:editIcon];
                     CGRect frame = cell.topicLabel.frame;
                     frame.origin.x = 10;
                     cell.topicLabel.frame = frame;
@@ -1098,7 +1319,7 @@
         }
     }
     if (section == 1 && row == 2) {
-        return bannerImageBG.frame.size.height;
+        return 2 * bannerImageBG.frame.origin.y + bannerImageBG.frame.size.height;
     }
     switch (row) {
         case 1:
@@ -1154,37 +1375,7 @@
             switch (row) {
                 case 1:
                 {
-                    if ([bannerImageDataSource count] > MAXUPLOADIMAGE) {
-                        [self showHint:[NSString stringWithFormat:@"上传图片最多不能超过%d张",MAXUPLOADIMAGE]];
-                        return;
-                    }
-                    currentSelectBanner = YES;
-                    if (ISIOS8) {
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"选择宣传图片" preferredStyle:UIAlertControllerStyleActionSheet];
-                        
-                        // Create the actions.
-                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                            //取消
-                        }];
-                        
-                        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"打开照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                            [self pickerCamer];
-                        }];
-                        
-                        UIAlertAction *libAction = [UIAlertAction actionWithTitle:@"从手机相册获取" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                            [self pickerPhotoLibrary];
-                        }];
-                        
-                        // Add the actions.
-                        [alertController addAction:cameraAction];
-                        [alertController addAction:libAction];
-                        [alertController addAction:cancelAction];
-                        
-                        [self presentViewController:alertController animated:YES completion:nil];
-                        return;
-                    }
-                    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择宣传图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
-                    [sheet showInView:bannerImageBG];
+                    
                     break;
                 }
                 default:
@@ -1197,21 +1388,48 @@
             switch (row) {
                 case 1:
                 {
-                    if ([self.tmpDateString isMemberOfClass:[NSNull class]] || self.tmpDateString == nil || [self.tmpDateString isEqualToString:@""]) {
-                        NSDate * startDate = [[NSDate alloc] init];
-                        NSCalendar * chineseCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-                        NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit |
-                        NSSecondCalendarUnit | NSDayCalendarUnit  | NSMonthCalendarUnit | NSYearCalendarUnit;
-                        NSDateComponents * cps = [chineseCalendar components:unitFlags fromDate:startDate];
-                        NSUInteger day = [cps day];
-                        NSUInteger month = [cps month];
-                        NSUInteger year = [cps year];
-                        NSUInteger hour = [cps hour];
-                        NSUInteger minute = [cps minute];
-                        self.tmpDateString = [NSString stringWithFormat:@"%d-%d-%d %d:%d",(int)year,(int)month,(int)day,(int)hour,(int)minute];
+                    NSDate *nowDate = [NSDate date];
+                    if (!([self.tmpDateString isMemberOfClass:[NSNull class]] || self.tmpDateString == nil || [self.tmpDateString isEqualToString:@""])) {
+                        
+                        //设置转换格式
+                        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+                        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+                        //NSString转NSDate
+                        nowDate = [formatter dateFromString:self.tmpDateString];
                     }
-                    
-                    [self dateButtonClick:nil withString:self.tmpDateString];
+                    __block HeDistributeContestVC *weakSelf = self;
+                    HcdDateTimePickerView *dateTimePickerView = [[HcdDateTimePickerView alloc] initWithDatePickerMode:DatePickerDateHourMinuteMode defaultDateTime:nowDate];
+                    dateTimePickerView.topViewColor = [UIColor greenColor];
+                    dateTimePickerView.buttonTitleColor = [UIColor redColor];
+                    [dateTimePickerView setMinYear:2016];
+                    [dateTimePickerView setMaxYear:2100];
+                    dateTimePickerView.topViewColor = APPDEFAULTORANGE;
+                    dateTimePickerView.buttonTitleColor = [UIColor whiteColor];
+                    dateTimePickerView.clickedOkBtn = ^(NSString * datetimeStr){
+                        NSLog(@"%@", datetimeStr);
+                        weakSelf.tmpDateString = datetimeStr;
+                        [tableView reloadData];
+                    };
+                    if (dateTimePickerView) {
+                        [self.view addSubview:dateTimePickerView];
+                        [dateTimePickerView showHcdDateTimePicker];
+                    }
+                    return;
+//                    if ([self.tmpDateString isMemberOfClass:[NSNull class]] || self.tmpDateString == nil || [self.tmpDateString isEqualToString:@""]) {
+//                        NSDate * startDate = [[NSDate alloc] init];
+//                        NSCalendar * chineseCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//                        NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit |
+//                        NSSecondCalendarUnit | NSDayCalendarUnit  | NSMonthCalendarUnit | NSYearCalendarUnit;
+//                        NSDateComponents * cps = [chineseCalendar components:unitFlags fromDate:startDate];
+//                        NSUInteger day = [cps day];
+//                        NSUInteger month = [cps month];
+//                        NSUInteger year = [cps year];
+//                        NSUInteger hour = [cps hour];
+//                        NSUInteger minute = [cps minute];
+//                        self.tmpDateString = [NSString stringWithFormat:@"%d-%d-%d %d:%d",(int)year,(int)month,(int)day,(int)hour,(int)minute];
+//                    }
+//                    
+//                    [self dateButtonClick:nil withString:self.tmpDateString];
                     break;
                 }
                     

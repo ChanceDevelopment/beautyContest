@@ -98,10 +98,10 @@
         [self showHint:@"请输入用户密码"];
         return;
     }
-    if (![Tool isMobileNumber:account]) {
-        [self showHint:@"请输入正确的手机号"];
-        return;
-    }
+//    if (![Tool isMobileNumber:account]) {
+//        [self showHint:@"请输入正确的手机号"];
+//        return;
+//    }
     
     [self showHudInView:self.view hint:@"登录中..."];
     NSString *loginUrl = [NSString stringWithFormat:@"%@/user/userLogin.action",BASEURL];

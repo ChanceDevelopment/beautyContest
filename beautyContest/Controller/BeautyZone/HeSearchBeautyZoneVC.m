@@ -510,7 +510,7 @@
     }
     
     NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY-MM-dd"];
-    cell.tipLabel.text = [NSString stringWithFormat:@"$%.2f",[zoneReward floatValue]];
+    cell.tipLabel.text = [NSString stringWithFormat:@"￥%.2f",[zoneReward floatValue]];
     cell.timeLabel.text = time;
     
     return cell;

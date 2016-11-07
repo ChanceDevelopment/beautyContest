@@ -11,6 +11,7 @@
 #import "HeBaseTableViewCell.h"
 #import "MLLinkLabel.h"
 #import "HeCommentView.h"
+#import "MJPhotoBrowser.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -260,7 +261,20 @@
     UIButton *commentButton = [Tool getButton:CGRectMake(SCREENWIDTH / 2.0 + buttonX, buttonY, buttonW, buttonH) title:@"留言" image:@"icon_comment"];
     joinButton.tag = 2;
     [commentButton addTarget:self action:@selector(massageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [commentButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+    
+    NSString *userId = contestantBaseDict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]]) {
+        userId = @"";
+    }
+    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([myUserId isEqualToString:userId]) {
+        [commentButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor grayColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+        commentButton.enabled = NO;
+    }
+    else{
+        [commentButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+    }
+    
     [footerView addSubview:commentButton];
     
     
@@ -376,7 +390,7 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-            [self showHint:data];
+//            [self showHint:data];
         }
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
@@ -541,6 +555,7 @@
             CGFloat imageH = myScrollView.frame.size.height;
             CGFloat imageW = imageH;
             CGFloat imageDistance = 5;
+            NSInteger index = 0;
             for (NSString *url in wallArray) {
                 NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
                 [contestantImageArray addObject:imageurl];
@@ -548,10 +563,19 @@
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
                 imageview.layer.masksToBounds = YES;
                 imageview.layer.cornerRadius = 5.0;
+                imageview.tag = index + 10000;
                 imageview.contentMode = UIViewContentModeScaleAspectFill;
                 [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
                 [myScrollView addSubview:imageview];
                 imageX = imageX + imageW + imageDistance;
+                
+                imageview.userInteractionEnabled = YES;
+                UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanImageTap:)];
+                tapGes.numberOfTapsRequired = 1;
+                tapGes.numberOfTouchesRequired = 1;
+                [imageview addGestureRecognizer:tapGes];
+                
+                index++;
             }
             if (imageX > myScrollView.frame.size.width) {
                 myScrollView.contentSize = CGSizeMake(imageX, 0);
@@ -563,11 +587,32 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-            [self showHint:data];
+//            [self showHint:data];
         }
     } failure:^(NSError *error){
         //        [self showHint:ERRORREQUESTTIP];
     }];
+}
+
+- (void)scanImageTap:(UITapGestureRecognizer *)tap
+{
+    NSInteger index = 0;
+    NSMutableArray *photos = [NSMutableArray array];
+    for (NSString *url in contestantImageArray) {
+        NSString *imageurl = url;
+        MJPhoto *photo = [[MJPhoto alloc] init];
+        photo.url = [NSURL URLWithString:imageurl];
+        
+        UIImageView *srcImageView = [myScrollView viewWithTag:index + 10000];
+        photo.image = srcImageView.image;
+        photo.srcImageView = srcImageView;
+        [photos addObject:photo];
+        index++;
+    }
+    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+    browser.currentPhotoIndex = tap.view.tag - 10000;
+    browser.photos = photos;
+    [browser show];
 }
 
 - (void)followButtonClick:(UIButton *)button
@@ -625,13 +670,13 @@
     if ([voteUser isMemberOfClass:[NSNull class]] || voteUser == nil) {
         voteUser = @"";
     }
-    NSString *voteZone = contestantBaseDict[@"zoneId"];
+    NSString *voteZone = contestZoneDict[@"zoneId"];
     if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
         voteZone = @"";
     }
     [self showHudInView:self.view hint:@"投票中..."];
     
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/follow.action",BASEURL];
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/voteUser.action",BASEURL];
     NSDictionary *params = @{@"voteHost":voteHost,@"voteUser":voteUser,@"voteZone":voteZone};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];

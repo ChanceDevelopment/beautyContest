@@ -19,6 +19,7 @@
 #import "HeUserFollowVC.h"
 #import "HeUserFinanceVC.h"
 #import "HeUserInfoVC.h"
+#import "HeMyTicketVC.h"
 
 #define TextLineHeight 1.2f
 #define SEXTAG 1000
@@ -376,6 +377,12 @@
             HeMyFansVC *userFansVC = [[HeMyFansVC alloc] init];
             userFansVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:userFansVC animated:YES];
+            break;
+        }
+        case 1:{
+            HeMyTicketVC *userTicketVC = [[HeMyTicketVC alloc] init];
+            userTicketVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:userTicketVC animated:YES];
             break;
         }
         case 2:

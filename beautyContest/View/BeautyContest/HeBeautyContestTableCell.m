@@ -106,7 +106,7 @@
         tipLabel = [[UILabel alloc] init];
         tipLabel.textAlignment = NSTextAlignmentRight;
         tipLabel.backgroundColor = [UIColor clearColor];
-        tipLabel.text = @"$2000";
+        tipLabel.text = @"￥2000";
         tipLabel.numberOfLines = 1;
         tipLabel.textColor = [UIColor orangeColor];
         tipLabel.font = [UIFont systemFontOfSize:13.5];

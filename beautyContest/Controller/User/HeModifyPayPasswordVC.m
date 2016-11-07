@@ -15,6 +15,7 @@
 #define PasswordMAXLength    20
 
 @interface HeModifyPayPasswordVC ()
+@property(assign,nonatomic)BOOL isChangeView;
 
 @end
 
@@ -41,6 +42,7 @@
         [label sizeToFit];
         
         self.title = @"支付密码";
+        self.isChangeView = NO;
     }
     return self;
 }
@@ -53,6 +55,31 @@
     [self initializaiton];
     [self initView];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    NSString *userPayPassword = balanceDict[@"userPayPwd"];
+    if ([userPayPassword isMemberOfClass:[NSNull class]] || userPayPassword == nil) {
+        userPayPassword = @"";
+    }
+    if (userPayPassword == nil || [userPayPassword isEqualToString:@""]) {
+        cpswTF.hidden = YES;
+        CGRect pswFrame = pswTF.frame;
+        pswFrame.origin.y = pswFrame.origin.y - 55;
+        pswTF.frame = pswFrame;
+        
+        pswFrame = commitpswTF.frame;
+        pswFrame.origin.y = pswFrame.origin.y - 55;
+        commitpswTF.frame = pswFrame;
+        
+        pswFrame = loginButton.frame;
+        pswFrame.origin.y = pswFrame.origin.y - 55;
+        loginButton.frame = pswFrame;
+        
+    }
+}
+
 
 -(void)initializaiton
 {
@@ -87,6 +114,15 @@
     
     loginButton.layer.cornerRadius = 5.0;
     loginButton.layer.masksToBounds = YES;
+    
+    NSString *userPayPassword = balanceDict[@"userPayPwd"];
+    if ([userPayPassword isMemberOfClass:[NSNull class]] || userPayPassword == nil) {
+        userPayPassword = @"";
+    }
+    if (userPayPassword == nil || [userPayPassword isEqualToString:@""]) {
+        cpswTF.hidden = YES;
+    }
+    
     return;
     UIView *spaceView = [[UIView alloc]init];
     spaceView.frame = CGRectMake(10, 0, 80, 40);
@@ -152,6 +188,8 @@
     commitItem.action = @selector(loginButtonClick:);
     commitItem.tintColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = commitItem;
+    
+    
     
 }
 
@@ -219,9 +257,14 @@
     NSString *newPassword = pswTF.text;
     NSString *commitPassword = commitpswTF.text;
     
-    if (![self isOldPasswordVaild:oldPassword]) {
-        return;
+    NSString *userPayPassword = [HeSysbsModel getSysModel].user.userPayPwd;
+    
+    if (![userPayPassword isEqualToString:@""] && userPayPassword != nil) {
+        if (![self isOldPasswordVaild:oldPassword]) {
+            return;
+        }
     }
+    
     if (![self isNewPasswordVaild:newPassword]) {
         return;
     }
@@ -248,6 +291,9 @@
         userId = @"";
     }
     NSString *oldPayPswd = oldPassword;
+    if (oldPayPswd == nil || [oldPayPswd isEqualToString:@""]) {
+        oldPayPswd = @"";
+    }
     NSString *newPayPswd = newPassword;
     NSDictionary *requestMessageParams = @{@"userId":userId,@"oldPayPswd":oldPayPswd,@"newPayPswd":newPayPswd};
     [self showHudInView:self.view hint:@"正在修改..."];
@@ -265,6 +311,8 @@
         }
         [self showHint:data];
         if (statueCode == REQUESTCODE_SUCCEED){
+            //更新用户的支付密码
+            [HeSysbsModel getSysModel].user.userPayPwd = newPayPswd;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyAlipayAccountSucceed" object:nil];
             [self performSelector:@selector(backToLastView) withObject:nil afterDelay:0.2];
         }

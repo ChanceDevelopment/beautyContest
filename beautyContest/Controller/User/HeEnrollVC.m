@@ -198,7 +198,7 @@
 {
     NSString *account = acountField.text;
     NSString *password = passwordField.text;
-    NSString *userNick = nicknameField.text;
+    NSString *userNick = [NSString stringWithFormat:@"user_%@",account];
     if ([acountField isFirstResponder]) {
         [acountField resignFirstResponder];
     }

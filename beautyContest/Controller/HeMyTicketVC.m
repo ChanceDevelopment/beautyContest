@@ -6,19 +6,12 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeNearbyVC.h"
-#import "HeNearbyTableCell.h"
-#import <BaiduMapAPI_Location/BMKLocationService.h>
-#import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
+#import "HeMyTicketVC.h"
+#import "HeFansTableCell.h"
 #import "HeUserInfoVC.h"
+#import "HeUserTicketCell.h"
 
-#define MinLocationSucceedNum 1   //要求最少成功定位的次数
-
-
-@interface HeNearbyVC ()<BMKLocationServiceDelegate>
-{
-    BMKLocationService *_locService;
-}
+@interface HeMyTicketVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSMutableArray *dataSource;
@@ -27,12 +20,9 @@
 @property(assign,nonatomic)NSInteger pageNo;
 @property(strong,nonatomic)NSCache *imageCache;
 
-@property (nonatomic,assign)NSInteger locationSucceedNum; //定位成功的次数
-@property (nonatomic,strong)NSMutableDictionary *userLocationDict;
-
 @end
 
-@implementation HeNearbyVC
+@implementation HeMyTicketVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
@@ -40,9 +30,6 @@
 @synthesize refreshHeaderView;
 @synthesize pageNo;
 @synthesize imageCache;
-
-@synthesize locationSucceedNum;
-@synthesize userLocationDict;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,10 +42,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"附近选我的人";
+        label.text = @"我的票数";
         [label sizeToFit];
         
-        self.title = @"附近选我的人";
+        self.title = @"我的票数";
     }
     return self;
 }
@@ -68,14 +55,7 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
-    //获取用户的地理位置
-    [self getLocation];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:YES];
-    [_locService stopUserLocationService];
+    [self loadNearbyUserShow:YES];
 }
 
 - (void)initializaiton
@@ -100,110 +80,25 @@
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
-    
-    //初始化BMKLocationService
-    _locService = [[BMKLocationService alloc] init];
-    _locService.delegate = self;
-    //启动LocationService
-    _locService.desiredAccuracy = kCLLocationAccuracyBest;
-    _locService.distanceFilter  = 1.5f;
-    
-    
-    
-    userLocationDict = [[NSMutableDictionary alloc] initWithCapacity:0];
-    locationSucceedNum = 0;
-}
-
-- (void)getLocation
-{
-    if([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"定位服务未开启" message:@"请在系统设置中开启定位服务设置->隐私->定位服务" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil, nil];
-        [alertView show];
-    }else{
-        [self showHudInView:self.view hint:@"定位中..."];
-        [_locService startUserLocationService];
-    }
-}
-
-//处理位置坐标更新
-- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
-{
-    //NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
-    CLLocation *newLocation = userLocation.location;
-    CLLocationCoordinate2D coordinate1 = newLocation.coordinate;
-    
-    CLLocationCoordinate2D coordinate = [self returnBDPoi:coordinate1];
-    NSString *latitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.latitude];
-    NSString *longitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.longitude];
-    
-    
-    if (newLocation && ![userLocationDict objectForKey:@"latitude"]) {
-        locationSucceedNum = locationSucceedNum + 1;
-        if (locationSucceedNum >= MinLocationSucceedNum) {
-            [self hideHud];
-            locationSucceedNum = 0;
-            [userLocationDict setObject:latitudeStr forKey:@"latitude"];
-            [userLocationDict setObject:longitudeStr forKey:@"longitude"];
-            [_locService stopUserLocationService];
-            
-            
-            //上传坐标
-            NSString *latitudeStr = [userLocationDict objectForKey:@"latitude"];
-            if (latitudeStr == nil) {
-                latitudeStr = @"";
-            }
-            NSString *longitudeStr = [userLocationDict objectForKey:@"longitude"];
-            if (longitudeStr == nil) {
-                longitudeStr = @"";
-            }
-            [self loadNearbyUserShow:YES];
-            
-        }
-    }
-    
-}
-
-- (void)didFailToLocateUserWithError:(NSError *)error
-{
-    [self hideHud];
-    [self showHint:@"定位失败!"];
-}
-
-#pragma 火星坐标系 (GCJ-02) 转 mark-(BD-09) 百度坐标系 的转换算法
--(CLLocationCoordinate2D)returnBDPoi:(CLLocationCoordinate2D)PoiLocation
-{
-    const double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
-    float x = PoiLocation.longitude + 0.0065, y = PoiLocation.latitude + 0.006;
-    float z = sqrt(x * x + y * y) + 0.00002 * sin(y * x_pi);
-    float theta = atan2(y, x) + 0.000003 * cos(x * x_pi);
-    CLLocationCoordinate2D GCJpoi=
-    CLLocationCoordinate2DMake( z * sin(theta),z * cos(theta));
-    return GCJpoi;
 }
 
 - (void)loadNearbyUserShow:(BOOL)show
 {
-    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/vote/sortUserNearbyvote.action",BASEURL];
-    
-    NSString *latitudeStr = [userLocationDict objectForKey:@"latitude"];
-    if (latitudeStr == nil) {
-        latitudeStr = @"";
-    }
-    NSString *longitudeStr = [userLocationDict objectForKey:@"longitude"];
-    if (longitudeStr == nil) {
-        longitudeStr = @"";
-    }
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/vote/votedForMe.action",BASEURL];
     
     NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (!userid) {
         userid = @"";
     }
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
-    NSDictionary *requestMessageParams = @{@"UserId":userid,@"number":pageNum,@"latitude":latitudeStr,@"longitude":longitudeStr};
+    NSDictionary *requestMessageParams = @{@"UserId":userid,@"number":pageNum};
     [self showHudInView:self.view hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
+        if (show) {
+            [Waiting dismiss];
+        }
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
@@ -213,27 +108,26 @@
                 [dataSource removeAllObjects];
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
-            if ([resultArray isMemberOfClass:[NSNull class]]) {
-                resultArray = nil;
+            if (![resultArray isMemberOfClass:[NSNull class]]) {
+                for (NSDictionary *zoneDict in resultArray) {
+                    [dataSource addObject:zoneDict];
+                }
             }
-            for (NSDictionary *zoneDict in resultArray) {
-                [dataSource addObject:zoneDict];
-            }
+            
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
             [self.tableview reloadData];
         }
         else{
             NSArray *resultArray = [respondDict objectForKey:@"json"];
-            if ([resultArray isMemberOfClass:[NSNull class]]) {
-                resultArray = nil;
-            }
             if (updateOption == 2 && [resultArray count] == 0) {
                 pageNo--;
                 return;
             }
         }
     } failure:^(NSError *error){
-        [self hideHud];
+        if (show) {
+            [Waiting dismiss];
+        }
         [self showHint:ERRORREQUESTTIP];
     }];
 }
@@ -380,7 +274,7 @@
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeNearbyTableCellIndentifier";
+    static NSString *cellIndentifier = @"HeUserTicketCell";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     NSDictionary *dict = nil;
     @try {
@@ -393,54 +287,61 @@
         
     }
     
-    HeNearbyTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeUserTicketCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeNearbyTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell = [[HeUserTicketCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    id distance = [dict objectForKey:@"distance"];
-    if ([distance isMemberOfClass:[NSNull class]]) {
-        distance = @"";
-    }
-    cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[distance floatValue]];
-    
-    NSString *userHeader = dict[@"userHeader"];
-    if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
-        userHeader = @"";
-    }
-    NSString *imageKey = [NSString stringWithFormat:@"%@/%@_%ld",HYTIMAGEURL,userHeader,row];
-    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[dict objectForKey:@"voteHostheader"]];
+    NSString *imageKey = [NSString stringWithFormat:@"%@_%ld",userHeader,row];
     UIImageView *imageview = [imageCache objectForKey:imageKey];
     if (!imageview) {
-        [cell.userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
-        imageview = cell.userImage;
+        [cell.userHeadImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        imageview = cell.userHeadImage;
+        [imageCache setObject:imageview forKey:userHeader];
     }
-    cell.userImage = imageview;
-    [cell addSubview:cell.userImage];
+    cell.userHeadImage = imageview;
+    [cell addSubview:cell.userHeadImage];
     
-    NSString *userSign = dict[@"userSign"];
+    NSString *userNick = dict[@"voteHostNikc"];
+    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+        userNick = @"";
+    }
+    cell.nameLabel.text = userNick;
+    
+    NSString *userSign = dict[@"zoneTitle"];
     if ([userSign isMemberOfClass:[NSNull class]] || userSign == nil) {
         userSign = @"";
     }
     cell.signLabel.text = userSign;
     
-    NSString *userNick = dict[@"userNick"];
-    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
-        userNick = @"";
+    id zoneCreatetimeObj = [dict objectForKey:@"voteHostCreatime"];
+    if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
+        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+        zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
     }
-    cell.nameLabel.text = userNick;
+    long long timestamp = [zoneCreatetimeObj longLongValue];
+    NSString *zoneCreatetime = [NSString stringWithFormat:@"%lld",timestamp];
+    if ([zoneCreatetime length] > 3) {
+        //时间戳
+        zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
+    }
+    
+    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY-MM-dd HH:mm"];
+    cell.timeLabel.text = time;
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 90;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;

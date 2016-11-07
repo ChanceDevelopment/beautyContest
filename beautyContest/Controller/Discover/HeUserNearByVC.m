@@ -10,6 +10,7 @@
 #import "HeNearbyTableCell.h"
 #import <BaiduMapAPI_Location/BMKLocationService.h>
 #import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
+#import "HeUserInfoVC.h"
 
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
 
@@ -391,8 +392,8 @@
     HeNearbyTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
         cell = [[HeNearbyTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[[dict objectForKey:@"distance"] floatValue]];
     
@@ -435,6 +436,21 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
+    NSDictionary *dict = nil;
+    @try {
+        dict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    userInfoVC.isScanUser = YES;
+    userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

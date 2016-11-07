@@ -26,6 +26,7 @@
 #import "UIButton+Bootstrap.h"
 #import "MLLinkLabel.h"
 #import "MLLabel+Size.h"
+#import "HeComplaintVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -43,6 +44,8 @@
 @property(strong,nonatomic)NSMutableArray *topManRank; //排名前面的男神
 @property(strong,nonatomic)NSMutableArray *topWomanRank; //排名前面的女神
 @property(strong,nonatomic)NSMutableDictionary *switchDict;
+@property(strong,nonatomic)UIScrollView *myScrollView;
+@property(strong,nonatomic)NSMutableArray *bannerImageDataSource;
 
 @end
 
@@ -56,6 +59,8 @@
 @synthesize topManRank;
 @synthesize topWomanRank;
 @synthesize switchDict;
+@synthesize myScrollView;
+@synthesize bannerImageDataSource;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -95,6 +100,7 @@
     topManRank = [[NSMutableArray alloc] initWithCapacity:0];
     topWomanRank = [[NSMutableArray alloc] initWithCapacity:0];
     switchDict = [[NSMutableDictionary alloc] initWithCapacity:0];
+    bannerImageDataSource = [[NSMutableArray alloc] initWithCapacity:0];
 }
 
 - (void)initView
@@ -124,12 +130,17 @@
     [bgImage addGestureRecognizer:tap];
     
     UIButton *distributeButton = [[UIButton alloc] init];
-    [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_share"] forState:UIControlStateNormal];
-    [distributeButton addTarget:self action:@selector(shareButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [distributeButton setBackgroundImage:[UIImage imageNamed:@"icon_more"] forState:UIControlStateNormal];
+    [distributeButton addTarget:self action:@selector(moreItemClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     
     distributeButton.frame = CGRectMake(0, 0, 25, 25);
     UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
-    distributeItem.target = self;
+//    distributeItem.title = @"更多";
+//    distributeItem.tintColor = [UIColor whiteColor];
+//    distributeItem.target = self;
+//    distributeItem.action = @selector(moreItemClick:);
     self.navigationItem.rightBarButtonItem = distributeItem;
     
     CGFloat buttonX = 10;
@@ -151,6 +162,44 @@
     [footerView addSubview:commentButton];
     commentButton.layer.cornerRadius = 3.0;
     commentButton.layer.masksToBounds = YES;
+    
+    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
+
+}
+
+- (void)moreItemClick:(id)sender
+{
+    NSArray *menuArray = @[@"分享",@"投诉"];
+    [FTPopOverMenu setTintColor:APPDEFAULTORANGE];
+    [FTPopOverMenu showForSender:sender
+                        withMenu:menuArray
+                  imageNameArray:nil
+                       doneBlock:^(NSInteger selectedIndex) {
+                           switch (selectedIndex) {
+                               case 0:
+                               {
+                                   [self shareButtonClick:nil];
+                                   break;
+                               }
+                               case 1:
+                               {
+                                   //投诉
+                                   HeComplaintVC *complaintVC = [[HeComplaintVC alloc] init];
+                                   complaintVC.hidesBottomBarWhenPushed = YES;
+                                   [self.navigationController pushViewController:complaintVC animated:YES];
+                                   break;
+                               }
+                               default:
+                                   break;
+                           }
+                           
+                           
+                           
+                       } dismissBlock:^{
+                           
+                           NSLog(@"user canceled. do nothing.");
+                           
+                       }];
 }
 
 - (void)enlargeImage:(UITapGestureRecognizer *)tap
@@ -211,6 +260,7 @@
         
         if (statueCode == REQUESTCODE_SUCCEED){
             [self showHint:@"成功参加"];
+            [self getContestDetail];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -396,7 +446,13 @@
             if (zoneCoverArray) {
                 zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCoverArray[0]];
             }
-            
+            [bannerImageDataSource removeAllObjects];
+            if ([zoneCoverArray count] > 1) {
+                for (NSInteger index = 1; index < [zoneCoverArray count]; index++) {
+                    NSString *imageURL = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCoverArray[index]];
+                    [bannerImageDataSource addObject:imageURL];
+                }
+            }
             UIImageView *imageview = [sectionHeaderView viewWithTag:BGTAG];
             [imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
             
@@ -421,6 +477,36 @@
             }
             [switchDict setObject:[NSNumber numberWithBool:[zoneComment boolValue]] forKey:@"3"];
             [switchDict setObject:[NSNumber numberWithBool:[zoneTeststate boolValue]] forKey:@"4"];
+            
+            CGFloat imageX = 5;
+            CGFloat imageY = 5;
+            CGFloat imageH = 200;
+            CGFloat imageW = 150;
+            for (NSInteger index = 0; index < [bannerImageDataSource count]; index++) {
+                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
+                [imageView sd_setImageWithURL:[NSURL URLWithString:bannerImageDataSource[index]] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+                imageView.layer.cornerRadius = 5.0;
+                imageView.tag = index + 10000;
+                imageView.contentMode = UIViewContentModeScaleAspectFill;
+                imageView.layer.masksToBounds = YES;
+                [myScrollView addSubview:imageView];
+                imageX = imageX + imageW + 5;
+                
+                imageView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanImageTap:)];
+                tapGes.numberOfTapsRequired = 1;
+                tapGes.numberOfTouchesRequired = 1;
+                [imageView addGestureRecognizer:tapGes];
+                
+            }
+            myScrollView.contentSize = CGSizeMake(imageX, 0);
+            if ([bannerImageDataSource count] > 0) {
+                UIView *myfooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, myScrollView.frame.size.height)];
+                myfooterView.backgroundColor = [UIColor whiteColor];
+                [myfooterView addSubview:myScrollView];
+                
+                tableview.tableFooterView = myfooterView;
+            }
             [tableview reloadData];
         }
         else{
@@ -433,6 +519,27 @@
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
     }];
+}
+
+- (void)scanImageTap:(UITapGestureRecognizer *)tap
+{
+    NSInteger index = 0;
+    NSMutableArray *photos = [NSMutableArray array];
+    for (NSString *url in bannerImageDataSource) {
+        NSString *imageurl = url;
+        MJPhoto *photo = [[MJPhoto alloc] init];
+        photo.url = [NSURL URLWithString:imageurl];
+        
+        UIImageView *srcImageView = [myScrollView viewWithTag:index + 10000];
+        photo.image = srcImageView.image;
+        photo.srcImageView = srcImageView;
+        [photos addObject:photo];
+        index++;
+    }
+    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+    browser.currentPhotoIndex = tap.view.tag - 10000;
+    browser.photos = photos;
+    [browser show];
 }
 
 - (void)getMyRank
@@ -631,6 +738,7 @@
             
             cell.topicLabel.numberOfLines = 2;
             cell.topicLabel.text = zoneAddress;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
         case 3:

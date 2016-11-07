@@ -117,12 +117,17 @@
         if (userId == nil) {
             userId = @"";
         }
+        NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+        if ([myUserId isEqualToString:userId]) {
+            //不能自己锤自己
+            return;
+        }
         NSString *voteZone = contestDict[@"zoneId"];
         if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
             voteZone = @"";
         }
         NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/flopOne.action",BASEURL];
-        NSDictionary *params = @{@"voteZone":voteZone};
+        NSDictionary *params = @{@"selectedZone":voteZone,@"selectedUser":userId};
         [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
             [self hideHud];
             NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];

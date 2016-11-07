@@ -425,7 +425,7 @@
 {
     NSInteger row = indexPath.row;
     
-    static NSString *cellIndentifier = @"HeUserJoinCell";
+    static NSString *cellIndentifier = @"HeBeautyContestTableCellIndentifier";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     NSDictionary *zoneDict = nil;
     @try {
@@ -438,42 +438,50 @@
         
     }
     
-    HeUserJoinCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeBeautyContestTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeUserJoinCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell = [[HeBeautyContestTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    
+    id zoneReward = [zoneDict objectForKey:@"zoneReward"];
+    if ([zoneReward isMemberOfClass:[NSNull class]]) {
+        zoneReward = @"";
+    }
     id zoneTitle = [zoneDict objectForKey:@"zoneTitle"];
     if ([zoneTitle isMemberOfClass:[NSNull class]]) {
         zoneTitle = @"";
     }
     cell.topicLabel.text = zoneTitle;
     
-    id zoneAddress = [zoneDict objectForKey:@"zoneAddress"];
-    if ([zoneAddress isMemberOfClass:[NSNull class]]) {
-        zoneAddress = @"";
-    }
-    cell.addressLabel.text = zoneAddress;
     
     NSString *zoneCover = [zoneDict objectForKey:@"zoneCover"];
     if ([zoneCover isMemberOfClass:[NSNull class]]) {
         zoneCover = @"";
     }
     NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
-    if (zoneCoverArray) {
-        zoneCover = zoneCoverArray[0];
-    }
-    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
+    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[zoneCoverArray firstObject]];
     UIImageView *imageview = [imageCache objectForKey:zoneCover];
     if (!imageview) {
         [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         imageview = cell.bgImage;
     }
     cell.bgImage = imageview;
-    [cell addSubview:cell.bgImage];
+    [cell.bgView addSubview:cell.bgImage];
     
+    
+    NSString *userHear = [zoneDict objectForKey:@"userHeader"];
+    if ([userHear isMemberOfClass:[NSNull class]]) {
+        userHear = @"";
+    }
+    userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
+    UIImageView *userHearimageview = [imageCache objectForKey:userHear];
+    if (!userHearimageview) {
+        [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHear] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        userHearimageview = cell.detailImage;
+    }
+    cell.detailImage = userHearimageview;
+    [cell.bgView addSubview:cell.detailImage];
     
     id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
     if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
@@ -487,26 +495,95 @@
         zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
     }
     
-    
-    id zoneDeathlineObj = [zoneDict objectForKey:@"zoneDeathline"];
-    if ([zoneDeathlineObj isMemberOfClass:[NSNull class]] || zoneDeathlineObj == nil) {
-        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
-        zoneDeathlineObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
-    }
-    long long zoneDeathlinetimestamp = [zoneDeathlineObj longLongValue];
-    NSString *zoneDeathlinezoneCreatetime = [NSString stringWithFormat:@"%lld",zoneDeathlinetimestamp];
-    if ([zoneDeathlinezoneCreatetime length] > 3) {
-        //时间戳
-        zoneDeathlinezoneCreatetime = [zoneDeathlinezoneCreatetime substringToIndex:[zoneDeathlinezoneCreatetime length] - 3];
-    }
-    
-    
-    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
-    
-    NSString *endtime = [Tool convertTimespToString:[zoneDeathlinezoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
-    cell.timeLabel.text = [NSString stringWithFormat:@"%@ - %@",time,endtime];
+    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY-MM-dd"];
+    cell.tipLabel.text = [NSString stringWithFormat:@"$%.2f",[zoneReward floatValue]];
+    cell.timeLabel.text = time;
     
     return cell;
+//    NSInteger row = indexPath.row;
+//    
+//    static NSString *cellIndentifier = @"HeUserJoinCell";
+//    CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
+//    NSDictionary *zoneDict = nil;
+//    @try {
+//        zoneDict = [dataSource objectAtIndex:row];
+//    }
+//    @catch (NSException *exception) {
+//        
+//    }
+//    @finally {
+//        
+//    }
+//    
+//    HeUserJoinCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+//    if (!cell) {
+//        cell = [[HeUserJoinCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.accessoryType = UITableViewCellAccessoryNone;
+//    }
+//    
+//    id zoneTitle = [zoneDict objectForKey:@"zoneTitle"];
+//    if ([zoneTitle isMemberOfClass:[NSNull class]]) {
+//        zoneTitle = @"";
+//    }
+//    cell.topicLabel.text = zoneTitle;
+//    
+//    id zoneAddress = [zoneDict objectForKey:@"zoneAddress"];
+//    if ([zoneAddress isMemberOfClass:[NSNull class]]) {
+//        zoneAddress = @"";
+//    }
+//    cell.addressLabel.text = zoneAddress;
+//    
+//    NSString *zoneCover = [zoneDict objectForKey:@"zoneCover"];
+//    if ([zoneCover isMemberOfClass:[NSNull class]]) {
+//        zoneCover = @"";
+//    }
+//    NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+//    if (zoneCoverArray) {
+//        zoneCover = zoneCoverArray[0];
+//    }
+//    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
+//    UIImageView *imageview = [imageCache objectForKey:zoneCover];
+//    if (!imageview) {
+//        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+//        imageview = cell.bgImage;
+//    }
+//    cell.bgImage = imageview;
+//    [cell addSubview:cell.bgImage];
+//    
+//    
+//    id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
+//    if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
+//        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+//        zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+//    }
+//    long long timestamp = [zoneCreatetimeObj longLongValue];
+//    NSString *zoneCreatetime = [NSString stringWithFormat:@"%lld",timestamp];
+//    if ([zoneCreatetime length] > 3) {
+//        //时间戳
+//        zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
+//    }
+//    
+//    
+//    id zoneDeathlineObj = [zoneDict objectForKey:@"zoneDeathline"];
+//    if ([zoneDeathlineObj isMemberOfClass:[NSNull class]] || zoneDeathlineObj == nil) {
+//        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
+//        zoneDeathlineObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
+//    }
+//    long long zoneDeathlinetimestamp = [zoneDeathlineObj longLongValue];
+//    NSString *zoneDeathlinezoneCreatetime = [NSString stringWithFormat:@"%lld",zoneDeathlinetimestamp];
+//    if ([zoneDeathlinezoneCreatetime length] > 3) {
+//        //时间戳
+//        zoneDeathlinezoneCreatetime = [zoneDeathlinezoneCreatetime substringToIndex:[zoneDeathlinezoneCreatetime length] - 3];
+//    }
+//    
+//    
+//    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
+//    
+//    NSString *endtime = [Tool convertTimespToString:[zoneDeathlinezoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
+//    cell.timeLabel.text = [NSString stringWithFormat:@"%@ - %@",time,endtime];
+//    
+//    return cell;
 }
 
 //- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -521,7 +598,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+//    return 150;
+    return 250;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -529,10 +607,28 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    return;
+    NSDictionary *zoneDict = nil;
+    @try {
+        zoneDict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    
     HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
+    contestDetailVC.contestBaseDict = [[NSDictionary alloc] initWithDictionary:zoneDict];
     contestDetailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:contestDetailVC animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    NSInteger row = indexPath.row;
+//    NSInteger section = indexPath.section;
+//    return;
+//    HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
+//    contestDetailVC.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:contestDetailVC animated:YES];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchbar

@@ -13,6 +13,7 @@
 #import "MLLinkLabel.h"
 #import "MLLabel+Size.h"
 #import "HeEditUserInfoVC.h"
+#import "UIButton+Bootstrap.h"
 
 #define TextLineHeight 1.2f
 #define HEADTAG 1000
@@ -78,20 +79,19 @@
 {
     [super initView];
     
-    UIBarButtonItem *editItem = [[UIBarButtonItem alloc] init];
-    editItem.title = @"编辑";
-    editItem.target = self;
-    editItem.action = @selector(editUserInfo:);
-    self.navigationItem.rightBarButtonItem = editItem;
-    
-    
-    
+    if (!isScanUser) {
+        UIBarButtonItem *editItem = [[UIBarButtonItem alloc] init];
+        editItem.title = @"编辑";
+        editItem.target = self;
+        editItem.action = @selector(editUserInfo:);
+        self.navigationItem.rightBarButtonItem = editItem;
+    }
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
-    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
-    sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 170)];
+    sectionHeaderView.backgroundColor = [UIColor whiteColor];
     sectionHeaderView.userInteractionEnabled = YES;
     tableview.tableHeaderView = sectionHeaderView;
     
@@ -177,12 +177,28 @@
 - (void)loadUserDetail
 {
     if (isScanUser) {
-        self.navigationItem.rightBarButtonItem.title = @"投票";
+        self.navigationItem.rightBarButtonItem.title = nil;
+        
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 60)];
+        
+        footerView.userInteractionEnabled = YES;
+        CGFloat buttonX = 20;
+        CGFloat buttonH = 40;
+        CGFloat buttonY = 10;
+        CGFloat buttonW = SCREENWIDTH - 2 * buttonX;
+        UIButton *voteButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
+        [voteButton setTitle:@"投    票" forState:UIControlStateNormal];
+        [voteButton dangerStyle];
+        [voteButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:voteButton.frame.size] forState:UIControlStateNormal];
+        [voteButton addTarget:self action:@selector(voteUser:) forControlEvents:UIControlEventTouchUpInside];
+        [footerView addSubview:voteButton];
+        
+        tableview.tableFooterView = footerView;
     }
     [self getUserInfo];
 }
 
-- (void)voteUser
+- (void)voteUser:(id)sender
 {
     NSString *voteUser = userInfo.userId;
     if (!voteUser) {
@@ -291,14 +307,23 @@
             //                [self showHint:@"当前用户不可用"];
             //                return ;
             //            }
-            NSString *userDataPath = [Tool getUserDataPath];
-            NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
-            BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
-            if (succeed) {
-                NSLog(@"用户资料写入成功");
-            }
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
             User *user = [[User alloc] initUserWithDict:userDictInfo];
-            [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
+            user.userId = userInfo.userId;
+            user.userNick = userInfo.userNick;
+            user.userSign = userInfo.userSign;
+            
+            if ([userId isEqualToString:myUserId]) {
+                NSString *userDataPath = [Tool getUserDataPath];
+                NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
+                BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
+                if (succeed) {
+                    NSLog(@"用户资料写入成功");
+                }
+                
+                [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
+            }
+            
             userInfo = user;
             [self updateUser];
             [tableview reloadData];
@@ -325,10 +350,6 @@
 
 - (void)editUserInfo:(UIBarButtonItem *)item
 {
-    if (isScanUser) {
-        [self voteUser];
-        return;
-    }
     HeEditUserInfoVC *editInfoVC = [[HeEditUserInfoVC alloc] init];
     editInfoVC.userInfo = [[User alloc] initUserWithUser:userInfo];
     editInfoVC.hidesBottomBarWhenPushed = YES;
