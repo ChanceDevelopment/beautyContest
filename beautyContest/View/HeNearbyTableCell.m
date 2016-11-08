@@ -39,7 +39,7 @@
         
         CGFloat nameLabelX = CGRectGetMaxX(userImage.frame) + 5;
         CGFloat nameLabelY = imageY;
-        CGFloat nameLabelW = SCREENWIDTH / 2.0 - 5 - CGRectGetMaxX(userImage.frame);
+        CGFloat nameLabelW = SCREENWIDTH - 5 - CGRectGetMaxX(userImage.frame);
         CGFloat nameLabelH = imageH / 2.0;
         nameLabel = [[UILabel alloc] init];
         nameLabel.frame = CGRectMake(nameLabelX, nameLabelY, nameLabelW, nameLabelH);

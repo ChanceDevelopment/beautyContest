@@ -23,6 +23,8 @@
 #import "ScanPictureView.h"
 #import "HeModifyPayPasswordVC.h"
 #import "HcdDateTimePickerView.h"
+#import "HeUserLocatiVC.h"
+#import "LocationViewController.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -33,7 +35,7 @@
 #define MAX_row 3
 #define IMAGEWIDTH 70
 
-@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView>
+@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView,GetUserLocationInfoDelegate>
 {
     BMKLocationService *_locService;
     BMKGeoCodeSearch *_geoSearch;
@@ -1221,9 +1223,20 @@
                     CGFloat textH = cellSize.height;
                     CGFloat textY = 0;
                     CGFloat textX = SCREENWIDTH - 10 - textW;
+                    
+                    
                     addressField.textAlignment = NSTextAlignmentRight;
                     addressField.frame = CGRectMake(textX, textY, textW, textH);
+                    addressField.enabled = NO;
+                    addressField.backgroundColor = [UIColor clearColor];
+                    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(textX, textY, textW, textH)];
+                    addressLabel.textColor = APPDEFAULTORANGE;
+                    addressLabel.backgroundColor = [UIColor clearColor];
+                    addressLabel.text = addressField.text;
                     [cell addSubview:addressField];
+                    addressLabel.textAlignment = NSTextAlignmentRight;
+                
+//                    [cell addSubview:addressField];
                     break;
                 }
                 case 3:
@@ -1290,7 +1303,7 @@
                     tipLabel.backgroundColor = [UIColor clearColor];
                     tipLabel.textColor = APPDEFAULTORANGE;
                     tipLabel.font = textFont;
-                    tipLabel.text = @"平台回收20%赏金";
+                    tipLabel.text = @"平台回收10%赏金";
                     [cell addSubview:tipLabel];
                     break;
                 }
@@ -1375,7 +1388,6 @@
             switch (row) {
                 case 1:
                 {
-                    
                     break;
                 }
                 default:
@@ -1432,7 +1444,14 @@
 //                    [self dateButtonClick:nil withString:self.tmpDateString];
                     break;
                 }
-                    
+                case 2:{
+                    HeUserLocatiVC *locationVC = [[HeUserLocatiVC alloc] init];
+                    locationVC.editLocation = YES;
+                    locationVC.addressDelegate = self;
+                    locationVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:locationVC animated:YES];
+                    break;
+                }
                 default:
                     break;
             }
@@ -1441,6 +1460,17 @@
         default:
             break;
     }
+}
+
+- (void)getUserInfoWithDict:(NSDictionary *)addressDict
+{
+    NSString *zoneLocationX = addressDict[@"zoneLocationX"];
+    NSString *zoneLocationY = addressDict[@"zoneLocationY"];
+    NSString *address = addressDict[@"address"];
+    [userLocationDict setObject:zoneLocationX forKey:@"zoneLocationX"];
+    [userLocationDict setObject:zoneLocationY forKey:@"zoneLocationY"];
+    [userLocationDict setObject:address forKey:@"address"];
+    addressField.text = address;
 }
 
 //实现相关delegate 处理位置信息更新

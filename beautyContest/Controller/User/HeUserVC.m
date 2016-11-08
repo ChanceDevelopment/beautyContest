@@ -73,12 +73,17 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = YES;
+    [self getUserFans];
+    [self getUserTicket];
+    [self getUserFollow];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -178,6 +183,7 @@
  
     
     UIView *buttonBG = [[UIView alloc] initWithFrame:CGRectMake(0, headerH - 40, SCREENWIDTH, 40)];
+    buttonBG.tag = 10000;
     buttonBG.userInteractionEnabled = YES;
 //    buttonBG.backgroundColor = [UIColor whiteColor];
     
@@ -213,6 +219,116 @@
         [buttonBG addSubview:button];
     }
     
+}
+
+- (void)getUserFans
+{
+    
+    NSString *getUserFansUrl = [NSString stringWithFormat:@"%@/user/getFansNum.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (userId == nil) {
+        userId = @"";
+    }
+    NSDictionary *params = @{@"userId":userId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserFansUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            id fansNumObj = [respondDict objectForKey:@"json"];
+            if ([fansNumObj isMemberOfClass:[NSNull class]]) {
+                fansNumObj = @"";
+            }
+            [HeSysbsModel getSysModel].fansNum = [fansNumObj integerValue];
+            NSLog(@"%ld",[HeSysbsModel getSysModel].fansNum);
+            UIView *buttonBG = [sectionHeaderView viewWithTag:10000];
+            UIButton *button = [buttonBG viewWithTag:100];
+            UILabel *label = [button viewWithTag:200];
+            label.text = [NSString stringWithFormat:@"%ld",[HeSysbsModel getSysModel].fansNum];
+        }
+        
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+- (void)getUserTicket
+{
+    //    User *user = [HeSysbsModel getSysModel].user;
+    //    NSMutableArray *ticketArray = user.ticketArray;
+    //    if (ticketArray == nil) {
+    //        ticketArray = [[NSMutableArray alloc] initWithCapacity:0];
+    //    }
+    NSString *getUserTicketUrl = [NSString stringWithFormat:@"%@/vote/selectVoteCount.action",BASEURL];
+    NSString *voteUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    
+    if (voteUser == nil) {
+        voteUser = @"";
+    }
+    NSDictionary *params = @{@"voteUser":voteUser};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserTicketUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            id fansNumObj = [respondDict objectForKey:@"json"];
+            if ([fansNumObj isMemberOfClass:[NSNull class]]) {
+                fansNumObj = @"";
+            }
+            [HeSysbsModel getSysModel].ticketNum = [fansNumObj integerValue];
+            UIView *buttonBG = [sectionHeaderView viewWithTag:10000];
+            UIButton *button = [buttonBG viewWithTag:101];
+            UILabel *label = [button viewWithTag:200];
+            label.text = [NSString stringWithFormat:@"%ld",[HeSysbsModel getSysModel].ticketNum];
+        }
+        
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+- (void)getUserFollow
+{
+    //    User *user = [HeSysbsModel getSysModel].user;
+    //    NSMutableArray *followArray = user.followArray;
+    //    if (followArray == nil) {
+    //        followArray = [[NSMutableArray alloc] initWithCapacity:0];
+    //    }
+    NSString *getUserFollowUrl = [NSString stringWithFormat:@"%@/user/getFollowNum.action",BASEURL];
+    NSString *hostId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (hostId == nil) {
+        hostId = @"";
+    }
+    NSDictionary *params = @{@"hostId":hostId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserFollowUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            id fansNumObj = [respondDict objectForKey:@"json"];
+            if ([fansNumObj isMemberOfClass:[NSNull class]]) {
+                fansNumObj = @"";
+            }
+            [HeSysbsModel getSysModel].followNum = [fansNumObj integerValue];
+            UIView *buttonBG = [sectionHeaderView viewWithTag:10000];
+            UIButton *button = [buttonBG viewWithTag:102];
+            UILabel *label = [button viewWithTag:200];
+            label.text = [NSString stringWithFormat:@"%ld",[HeSysbsModel getSysModel].followNum];
+        }
+        
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)updateUserInfo:(NSNotification *)notificaiton

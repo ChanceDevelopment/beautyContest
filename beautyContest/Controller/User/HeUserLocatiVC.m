@@ -11,11 +11,18 @@
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 
 @interface HeUserLocatiVC ()
+{
+    bool isGeoSearch;
+    BMKGeoCodeSearch* _geocodesearch;
+    BOOL updateLocationSucceed;
+}
 
 @end
 
 @implementation HeUserLocatiVC
 @synthesize userLocationDict;
+@synthesize editLocation;
+@synthesize addressDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,14 +65,19 @@
     [_mapView viewWillAppear];
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
     _locService.delegate = self;
+    _geocodesearch.delegate = self;
+    [self updateAnnotion];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:YES];
+    [_mapView removeAnnotations:_mapView.annotations];
     [BMKMapView enableCustomMapStyle:NO];//关闭个性化地图
     [_mapView viewWillDisappear];
     _mapView.delegate = nil; // 不用时，置nil
     _locService.delegate = nil;
+    _geocodesearch.delegate = nil;
+    
 }
 - (void)viewDidUnload {
     [super viewDidUnload];
@@ -81,13 +93,38 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    updateLocationSucceed = NO;
     _locService = [[BMKLocationService alloc]init];
+    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
 }
 
 - (void)initView
 {
     [super initView];
     _mapView.showsUserLocation = YES;
+    if (editLocation) {
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] init];
+        rightItem.title = @"确定";
+        rightItem.target = self;
+        rightItem.action = @selector(commitAddress:);
+        self.navigationItem.rightBarButtonItem = rightItem;
+    }
+}
+
+- (void)commitAddress:(id)sender
+{
+    if ([self.addressDelegate respondsToSelector:@selector(getUserInfoWithDict:)]) {
+        [self.addressDelegate getUserInfoWithDict:userLocationDict];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
+}
+
+- (void)updateAnnotion
+{
+    if (!userLocationDict) {
+        return;
+    }
     NSString *zoneLocationX = userLocationDict[@"zoneLocationX"];
     if ([zoneLocationX isMemberOfClass:[NSNull class]] || zoneLocationX == nil) {
         zoneLocationX = @"";
@@ -113,6 +150,8 @@
 // Override
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
+    [annotation setCoordinate:_mapView.centerCoordinate];
+    
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
         newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
@@ -120,6 +159,49 @@
         return newAnnotationView;
     }
     return nil;
+}
+
+- (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    NSLog(@"regionDidChangeAnimated");
+    if (updateLocationSucceed) {
+        if (editLocation) {
+            CLLocationCoordinate2D coordinate = _mapView.centerCoordinate;
+            [self reverseGeocodeWithCLLocationCoordinate:coordinate];
+        }
+    }
+}
+
+-(void)reverseGeocodeWithCLLocationCoordinate:(CLLocationCoordinate2D)pt
+{
+    isGeoSearch = false;
+    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+    reverseGeocodeSearchOption.reverseGeoPoint = pt;
+    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
+    if(flag)
+    {
+        NSLog(@"反geo检索发送成功");
+    }
+    else
+    {
+        NSLog(@"反geo检索发送失败");
+    }
+    
+}
+
+- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+    UILabel *label = (UILabel *)self.navigationItem.titleView;
+    label.text = result.address;
+    [label sizeToFit];
+    NSString *zoneLocationX = [NSString stringWithFormat:@"%f",result.location.longitude];
+    NSString *zoneLocationY = [NSString stringWithFormat:@"%f",result.location.latitude];
+    userLocationDict = @{@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"address":result.address};
+    NSLog(@"address = %@",result.address);
+}
+- (void)onGetGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+    NSLog(@"address = %@",result.address);
 }
 
 /**
@@ -133,7 +215,7 @@
 //    BMKCoordinateSpan span = BMKCoordinateSpanMake(0.013142, 0.011678);
 //    BMKCoordinateRegion region = BMKCoordinateRegionMake(userLocation.location.coordinate, span);
 //    [_mapView setRegion:region animated:YES];
-    
+
     NSLog(@"heading is %@",userLocation.heading);
 }
 
@@ -145,6 +227,16 @@
 {
     //    NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
 //    [_mapView updateLocationData:userLocation];
+    //    zoneLocationX
+    //    zoneLocationY
+    NSString *zoneLocationX = [NSString stringWithFormat:@"%f",userLocation.location.coordinate.longitude];
+    NSString *zoneLocationY = [NSString stringWithFormat:@"%f",userLocation.location.coordinate.latitude];
+    if (!updateLocationSucceed) {
+        updateLocationSucceed = YES;
+        userLocationDict = @{@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY};
+        [self updateAnnotion];
+    }
+    
 }
 
 /**

@@ -27,6 +27,8 @@
 {
     CGFloat imageScrollViewHeigh;
     CGFloat receiveScrollViewHeigh;
+    UIImageView *alertBG;
+    UIView *dismissView;
 }
 @property(strong,nonatomic)UIScrollView *photoScrollView;
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -85,7 +87,7 @@
 {
     [super initializaiton];
     redPocketArray = [[NSMutableArray alloc] initWithCapacity:0];
-    imageScrollViewHeigh = 80;
+    imageScrollViewHeigh = 200;
     receiveScrollViewHeigh = 60;
 }
 
@@ -218,9 +220,9 @@
 //    [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"投票领红包" image:@"icon_reward"];
     voteButton.tag = 2;
     [voteButton addTarget:self action:@selector(voteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [voteButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:voteButton.frame.size] forState:UIControlStateNormal];
+    [voteButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor colorWithRed:253.0 / 255.0 green:149.0 / 255.0 blue:38.0 / 255.0 alpha:1.0] withImageSize:voteButton.frame.size] forState:UIControlStateNormal];
     [footerview addSubview:voteButton];
-    voteButton.layer.cornerRadius = 3.0;
+    voteButton.layer.cornerRadius = 5.0;
     voteButton.layer.masksToBounds = YES;
     
     CGFloat receivescrollX = 5;
@@ -229,7 +231,7 @@
     CGFloat receivescrollH = receiveScrollViewHeigh;
     userReceivePocketScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(receivescrollX, receivescrollY, receivescrollW, receivescrollH)];
     
-    CGFloat scrollX = 10;
+    CGFloat scrollX = 5;
     CGFloat scrollY = 5;
     CGFloat scrollW = SCREENWIDTH - 2 * scrollX;
     CGFloat scrollH = imageScrollViewHeigh;
@@ -237,7 +239,13 @@
     NSString *recommendCover = [recommendDict objectForKey:@"recommendCover"];
     paperArray = [recommendCover componentsSeparatedByString:@","];
     
-    [bgImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,paperArray[0]]] placeholderImage:bgImage.image];
+    if ([paperArray count] == 0 || [paperArray[0] isEqualToString:@""]) {
+        
+    }
+    else{
+        [bgImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,paperArray[0]]] placeholderImage:bgImage.image];
+    }
+    
     
     CGFloat imageX = 0;
     CGFloat imageY = 0;
@@ -357,7 +365,7 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-            [self showHint:data];
+//            [self showHint:data];
         }
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
@@ -371,6 +379,69 @@
         userId = @"";
     }
     [self godVoteWithUserId:userId];
+}
+
+- (void)showAlerWithText:(NSString *)text
+{
+    if (!alertBG) {
+        
+        dismissView = [[UIView alloc] init];
+        dismissView.frame = self.view.bounds;
+        dismissView.backgroundColor = [UIColor blackColor];
+        dismissView.alpha = 0.7;
+        [self.view addSubview:dismissView];
+        
+        UIImage *alertImage = [UIImage imageNamed:@"icon_red_big"];
+        CGFloat imageScale = alertImage.size.width / alertImage.size.height;
+        
+        
+        CGFloat alertW = 200;
+        CGFloat alertX = (SCREENWIDTH - alertW) / 2.0;
+        CGFloat alertH = alertW / imageScale;
+        CGFloat alertY = 50;
+        alertBG = [[UIImageView alloc] init];
+        alertBG.frame = CGRectMake(alertX, alertY, alertW, alertH);
+        alertBG.image = alertImage;
+        alertBG.userInteractionEnabled = YES;
+        //        alertBG.center = self.view.center;
+        [self.view addSubview:alertBG];
+        
+        UILabel *tipLabel = [[UILabel alloc] init];
+        tipLabel.backgroundColor = [UIColor clearColor];
+        tipLabel.textColor = [UIColor whiteColor];
+        tipLabel.font = [UIFont systemFontOfSize:16.0];
+        tipLabel.textAlignment = NSTextAlignmentCenter;
+        tipLabel.text = text;
+        tipLabel.frame = CGRectMake(0, alertH - 50, alertW, 20);
+        [alertBG addSubview:tipLabel];
+        
+        
+        UITapGestureRecognizer *disGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
+        disGes.numberOfTapsRequired = 1;
+        disGes.numberOfTouchesRequired = 1;
+        [dismissView addGestureRecognizer:disGes];
+    }
+    
+    dismissView.hidden = NO;
+    alertBG.hidden = NO;
+    //    [inputField becomeFirstResponder];
+    CAKeyframeAnimation *popAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    popAnimation.duration = 0.4;
+    popAnimation.values = @[[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.01f, 0.01f, 1.0f)],
+                            [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.1f, 1.1f, 1.0f)],
+                            [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.9f, 0.9f, 1.0f)],
+                            [NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    popAnimation.keyTimes = @[@0.2f, @0.5f, @0.75f, @1.0f];
+    popAnimation.timingFunctions = @[[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
+                                     [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
+                                     [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [alertBG.layer addAnimation:popAnimation forKey:nil];
+}
+
+- (void)dismiss:(UITapGestureRecognizer *)tap
+{
+    dismissView.hidden = YES;
+    alertBG.hidden = YES;
 }
 
 - (void)godVoteWithUserId:(NSString *)userId
@@ -436,11 +507,13 @@
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         
         if (statueCode == REQUESTCODE_SUCCEED){
-            NSString *data = [respondDict objectForKey:@"data"];
-            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
-                data = @"领取成功";
-            }
-            [self showHint:data];
+//            NSString *data = [respondDict objectForKey:@"data"];
+//            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+//                data = @"领取成功";
+//            }
+            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%@",respondDict[@"json"]];
+            [self showAlerWithText:data];
+//            [self showHint:data];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -522,7 +595,15 @@
     if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
         userHeader = @"";
     }
+    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
     [userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:userImage.image];
+    
+    if ([paperArray count] == 0 || [paperArray[0] isEqualToString:@""]) {
+        //如果没有图，用头像替代
+        UIImageView *bgImage = [sectionHeaderView viewWithTag:BGTAG];
+        [bgImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:bgImage.image];
+    }
+    
     
     UIImageView *sexIcon = [sectionHeaderView viewWithTag:USERSEXTAG];
     id userSex = recommendDetailDict[@"userSex"];
@@ -547,7 +628,7 @@
 - (void)commentWithText:(NSString *)commentText user:(User *)commentUser
 {
     NSString *blogHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-    NSString *blogUser = recommendDict[@"recommendId"];
+    NSString *blogUser = recommendDict[@"recommendUser"];
     NSString *blogContent = commentText;
     if (blogContent == nil) {
         blogContent = @"";

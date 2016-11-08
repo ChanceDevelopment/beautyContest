@@ -14,11 +14,14 @@
 
 @interface HeCommentView ()<UITextViewDelegate>
 @property(strong,nonatomic)IBOutlet CPTextViewPlaceholder *commentTextView;
+@property(strong,nonatomic)IBOutlet UILabel *inputTextLengthLabel;
 
 @end
 
 @implementation HeCommentView
 @synthesize commentTextView;
+@synthesize limitNumber;
+@synthesize inputTextLengthLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,6 +33,9 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    if (limitNumber == 0) {
+        limitNumber = 64;
+    }
 }
 
 - (void)initView
@@ -111,6 +117,30 @@
     }
     return YES;
 }
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@""] && range.length > 0) {
+        //删除字符肯定是安全的
+        return YES;
+    }
+    else {
+        if (textView.text.length - range.length + text.length > limitNumber) {
+            
+            return NO;
+        }
+        else {
+            return YES;
+        }
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    NSInteger currentLength = textView.text.length;
+    inputTextLengthLabel.text = [NSString stringWithFormat:@"%ld/%d",currentLength,limitNumber];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

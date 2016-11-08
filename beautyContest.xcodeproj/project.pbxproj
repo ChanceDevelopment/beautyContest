@@ -12,6 +12,9 @@
 		077D0EB01DC83512009F48E9 /* ios_guide_step_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 077D0EAC1DC83512009F48E9 /* ios_guide_step_2.png */; };
 		077D0EB11DC83512009F48E9 /* ios_guide_step_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 077D0EAD1DC83512009F48E9 /* ios_guide_step_3.png */; };
 		077D0EB21DC83512009F48E9 /* ios_guide_step_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 077D0EAE1DC83512009F48E9 /* ios_guide_step_4.png */; };
+		0784C0511DD16532004BF89F /* UIButton+countDown.m in Sources */ = {isa = PBXBuildFile; fileRef = 0784C0501DD16532004BF89F /* UIButton+countDown.m */; };
+		0784C0541DD1740A004BF89F /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0784C0531DD1740A004BF89F /* LocationViewController.m */; };
+		0784C0591DD1C03C004BF89F /* icon_red_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 0784C0581DD1C03C004BF89F /* icon_red_big.png */; };
 		07A7E9D11DC5F9900043802C /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 07A7E9D01DC5F9900043802C /* icon_search.png */; };
 		07D2A4BD1DBF0A4F0031DDE0 /* down_dark_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D2A4BC1DBF0A4F0031DDE0 /* down_dark_green.png */; };
 		07D2A4C11DBF328B0031DDE0 /* FTPopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2A4C01DBF328B0031DDE0 /* FTPopOverMenu.m */; };
@@ -734,6 +737,11 @@
 		077D0EAC1DC83512009F48E9 /* ios_guide_step_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_guide_step_2.png; sourceTree = "<group>"; };
 		077D0EAD1DC83512009F48E9 /* ios_guide_step_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_guide_step_3.png; sourceTree = "<group>"; };
 		077D0EAE1DC83512009F48E9 /* ios_guide_step_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_guide_step_4.png; sourceTree = "<group>"; };
+		0784C04F1DD16532004BF89F /* UIButton+countDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+countDown.h"; sourceTree = "<group>"; };
+		0784C0501DD16532004BF89F /* UIButton+countDown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+countDown.m"; sourceTree = "<group>"; };
+		0784C0521DD1740A004BF89F /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
+		0784C0531DD1740A004BF89F /* LocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
+		0784C0581DD1C03C004BF89F /* icon_red_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_red_big.png; sourceTree = "<group>"; };
 		07A7E9D01DC5F9900043802C /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
 		07D2A4BC1DBF0A4F0031DDE0 /* down_dark_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_dark_green.png; sourceTree = "<group>"; };
 		07D2A4BF1DBF328B0031DDE0 /* FTPopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPopOverMenu.h; sourceTree = "<group>"; };
@@ -2325,6 +2333,8 @@
 		EA0E9D2C1D4C2968009CBF64 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				0784C0521DD1740A004BF89F /* LocationViewController.h */,
+				0784C0531DD1740A004BF89F /* LocationViewController.m */,
 				07F3AB201DC4580F008AD00E /* HeFeedbackVC.h */,
 				07F3AB211DC4580F008AD00E /* HeFeedbackVC.m */,
 				07F3AB221DC4580F008AD00E /* HeFeedbackVC.xib */,
@@ -2413,6 +2423,7 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				0784C0581DD1C03C004BF89F /* icon_red_big.png */,
 				EAC1B88A1DD0DE0100505B45 /* icon_more.png */,
 				07A7E9D01DC5F9900043802C /* icon_search.png */,
 				07F3AB251DC46445008AD00E /* icon_join_in.png */,
@@ -4368,6 +4379,8 @@
 				EAC2CECA1D4AF71900E282A8 /* UIViewController+DismissKeyboard.m */,
 				EAC2CECB1D4AF71900E282A8 /* UIViewController+HUD.h */,
 				EAC2CECC1D4AF71900E282A8 /* UIViewController+HUD.m */,
+				0784C04F1DD16532004BF89F /* UIButton+countDown.h */,
+				0784C0501DD16532004BF89F /* UIButton+countDown.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -4903,6 +4916,7 @@
 				EAC2CD631D4AF5D800E282A8 /* arrow_down@2x.png in Resources */,
 				EA4D017B1D4D8FF100A0CCA1 /* index6.jpg in Resources */,
 				EAC1B8881DD0D99200505B45 /* uncheckBox.png in Resources */,
+				0784C0591DD1C03C004BF89F /* icon_red_big.png in Resources */,
 				EAC2CEA61D4AF5EE00E282A8 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				07E880411DC44F23000A13E8 /* umeng_add_photo@2x.png in Resources */,
 				EA0E9D101D4C269E009CBF64 /* comonDefaultImage.png in Resources */,
@@ -5035,6 +5049,7 @@
 				EAC2CCD31D4AF5D800E282A8 /* CPTextViewPlaceholder.m in Sources */,
 				EAC2CE051D4AF5D800E282A8 /* UIResponder+Router.m in Sources */,
 				EAC2CDAB1D4AF5D800E282A8 /* RACSignal.m in Sources */,
+				0784C0511DD16532004BF89F /* UIButton+countDown.m in Sources */,
 				EAC2CD541D4AF5D800E282A8 /* MLLabelLayoutManager.m in Sources */,
 				EAC2CDD91D4AF5D800E282A8 /* SDWebImageManager.m in Sources */,
 				EAC2CD1E1D4AF5D800E282A8 /* FMDatabaseQueue.m in Sources */,
@@ -5353,6 +5368,7 @@
 				EAC1B89A1DD0F74200505B45 /* HeMyTicketVC.m in Sources */,
 				EAE88B5D1DAF587B00AD946F /* HeBalanceDetailCell.m in Sources */,
 				EAC2CDD71D4AF5D800E282A8 /* SDWebImageDownloader.m in Sources */,
+				0784C0541DD1740A004BF89F /* LocationViewController.m in Sources */,
 				EAC2CD481D4AF5D800E282A8 /* MJRefreshBackStateFooter.m in Sources */,
 				EAC2CD881D4AF5D800E282A8 /* NSUserDefaults+RACSupport.m in Sources */,
 				EAC2CE081D4AF5D800E282A8 /* VIPhotoView.m in Sources */,

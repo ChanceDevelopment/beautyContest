@@ -12,6 +12,7 @@
 #import "UIButton+Bootstrap.h"
 #import <SMS_SDK/SMSSDK.h>
 #import "BrowserView.h"
+#import "UIButton+countDown.h"
 
 @interface HeEnrollVC ()<UITextFieldDelegate>
 @property(strong,nonatomic)IBOutlet UITextField *acountField;
@@ -104,7 +105,7 @@
 }
 
 //取消输入
-- (IBAction)cancelInputTap:(id)sender
+- (IBAction)cancelInputTap:(UIButton *)sender
 {
     if ([acountField isFirstResponder]) {
         [acountField resignFirstResponder];
@@ -130,8 +131,7 @@
         return;
     }
     
-//    [self myTimer];
-//    return;
+     [sender startWithTime:60 title:@"获取验证码" countDownTitle:@"s" mainColor:APPDEFAULTORANGE countColor:[UIColor lightGrayColor]];
     //获取注册手机号的验证码
     NSString *zone = @"86"; //区域号
     NSString *phoneNumber = acountField.text;

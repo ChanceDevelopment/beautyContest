@@ -133,22 +133,22 @@
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
 {
     if ([eventName isEqualToString:@"cancelFollow"]) {
-        NSString *hostId = userInfo[@"userId"];
-        [self cancelFollowWithHostId:hostId];
+        NSString *userId = userInfo[@"userId"];
+        [self cancelFollowWithUserId:userId];
         return;
     }
     [super routerEventWithName:eventName userInfo:userInfo];
 }
 
-- (void)cancelFollowWithHostId:(NSString *)hostId
+- (void)cancelFollowWithUserId:(NSString *)userId
 {
     NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/cancelfollow.action",BASEURL];
     
-    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-    if (!userid) {
-        userid = @"";
+    NSString *hostId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!hostId) {
+        hostId = @"";
     }
-    NSDictionary *requestMessageParams = @{@"userId":userid,@"hostId":hostId};
+    NSDictionary *requestMessageParams = @{@"userId":userId,@"hostId":hostId};
     [self showHudInView:self.tableview hint:@"正在取消..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){

@@ -92,7 +92,7 @@
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
     NSDictionary *requestMessageParams = @{@"userId":userid,@"start":pageNum};
     [self showHudInView:self.view hint:@"正在获取..."];
-    
+    __block HeMyFansVC *weakSelf = self;
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         if (show) {
@@ -113,8 +113,12 @@
                 }
             }
             
-            [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
-            [self.tableview reloadData];
+            [weakSelf performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [tableview reloadData];
+                
+            });
+            
         }
         else{
             NSArray *resultArray = [respondDict objectForKey:@"json"];

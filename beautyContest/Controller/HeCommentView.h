@@ -17,6 +17,7 @@
 
 @interface HeCommentView : HeBaseViewController
 @property(assign,nonatomic)id<CommentProtocol>commentDelegate;
+@property(assign,nonatomic)NSInteger limitNumber; //限制输入字数
 
 
 @end
