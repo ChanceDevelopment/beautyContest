@@ -11,4 +11,6 @@
 @interface HeContestDetailVC : HeBaseViewController
 @property(strong,nonatomic)NSDictionary *contestBaseDict;
 
+@property(strong,nonatomic)NSString *myzoneId;
+
 @end

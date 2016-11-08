@@ -81,7 +81,7 @@
     distributeButton.layer.borderWidth = 0;
     distributeButton.layer.borderColor = [UIColor clearColor].CGColor;
     [distributeButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:distributeButton.frame.size] forState:UIControlStateNormal];
-    [distributeButton setTitle:@"发 表" forState:UIControlStateNormal];
+    [distributeButton setTitle:@"完  成" forState:UIControlStateNormal];
     [distributeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [distributeButton addTarget:self action:@selector(distributeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.footview addSubview:distributeButton];

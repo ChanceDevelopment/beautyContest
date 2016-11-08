@@ -379,7 +379,7 @@
         blogTime = [blogTime substringToIndex:[blogTime length] - 3];
     }
     
-    NSString *blogtimeStr = [Tool convertTimespToString:[blogTime longLongValue] dateFormate:@"yyyy-MM-dd HH:mm"];
+    NSString *blogtimeStr = [Tool convertTimespToString:[blogTime longLongValue] dateFormate:@"yyyy-MM-dd"];
     
     cell.timeLabel.text = blogtimeStr;
     

@@ -25,6 +25,7 @@
 #import "HcdDateTimePickerView.h"
 #import "HeUserLocatiVC.h"
 #import "LocationViewController.h"
+#import "HeContestDetailVC.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -67,6 +68,8 @@
 @property(strong,nonatomic)NSMutableArray *selectedPhotos;
 @property(strong,nonatomic)NSMutableArray *takePhotoArray;
 
+@property(strong,nonatomic)NSDictionary *userBalance;
+
 @end
 
 @implementation HeDistributeContestVC
@@ -88,6 +91,7 @@
 @synthesize addPictureButton;
 @synthesize zonePassword;
 @synthesize takePhotoArray;
+@synthesize userBalance;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -114,6 +118,7 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
+    [self getBalance];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -150,6 +155,39 @@
     }
     takePhotoArray = [[NSMutableArray alloc] initWithCapacity:0];
     
+}
+
+- (void)getBalance
+{
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/getBalance.action",BASEURL];
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSDictionary *requestMessageParams = @{@"userId":userId};
+    //    [self showHudInView:self.view hint:@"正在获取..."];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            self.userBalance = respondDict[@"json"];
+            
+        }
+        else{
+            NSString *data = respondDict[@"data"];
+            if (!data) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)initView
@@ -719,8 +757,16 @@
                 data = @"发布成功!";
             }
             [self showHint:data];
-            [self performSelector:@selector(backLastView) withObject:nil afterDelay:0.2];
+//            [self performSelector:@selector(backLastView) withObject:nil afterDelay:0.2];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateContestZone" object:self];
+            NSString *zoneId = respondDict[@"json"];
+            if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
+                zoneId = @"";
+            }
+            HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
+            contestDetailVC.myzoneId = [[NSString alloc] initWithFormat:@"%@",zoneId];
+            contestDetailVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contestDetailVC animated:YES];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -788,8 +834,9 @@
         [self showHint:@"请输入比赛的赏金"];
         return;
     }
-    NSString *payPassword = [HeSysbsModel getSysModel].user.userPayPwd;
-    if ([payPassword isEqualToString:@""] || payPassword == nil) {
+    BOOL havePayPassword = [userBalance[@"userPayPwd"] boolValue];
+    
+    if (!havePayPassword) {
         if (ISIOS8) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"尚未设置密码，马上设置？" preferredStyle:UIAlertControllerStyleAlert];
             

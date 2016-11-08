@@ -11,9 +11,10 @@
 #import "HeTabBarVC.h"
 #import "CustomNavigationController.h"
 #import "CPTextViewPlaceholder.h"
+#import "SAMTextView.h"
 
 @interface HeCommentView ()<UITextViewDelegate>
-@property(strong,nonatomic)IBOutlet CPTextViewPlaceholder *commentTextView;
+@property(strong,nonatomic)IBOutlet SAMTextView *commentTextView;
 @property(strong,nonatomic)IBOutlet UILabel *inputTextLengthLabel;
 
 @end

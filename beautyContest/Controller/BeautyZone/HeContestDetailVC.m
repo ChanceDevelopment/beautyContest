@@ -61,6 +61,7 @@
 @synthesize switchDict;
 @synthesize myScrollView;
 @synthesize bannerImageDataSource;
+@synthesize myzoneId;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -101,6 +102,12 @@
     topWomanRank = [[NSMutableArray alloc] initWithCapacity:0];
     switchDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     bannerImageDataSource = [[NSMutableArray alloc] initWithCapacity:0];
+    if (!contestBaseDict) {
+        if (myzoneId) {
+            contestBaseDict = @{@"zoneId":myzoneId};
+        }
+        
+    }
 }
 
 - (void)initView
@@ -428,7 +435,7 @@
     if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
         zoneId = @"";
     }
-    [self showHudInView:self.view hint:@"加载中..."];
+    [self showHudInView:self.tableview hint:@"加载中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/getZoneInfo.action",BASEURL];
     NSDictionary *params = @{@"zoneId":zoneId};
@@ -956,6 +963,14 @@
     
 }
 
+- (void)backItemClick:(id)sender
+{
+    if (myzoneId) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        return;
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

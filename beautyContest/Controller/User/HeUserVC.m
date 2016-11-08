@@ -96,7 +96,7 @@
 {
     [super initializaiton];
     dataSource = @[@[@"我的相册",@"我的发布",@"我的参与",@"我的资金"],@[@"设置"]];
-    iconDataSource = @[@[@"icon_album",@"icon_put",@"icon_participation",@"icon_reward"],@[@"icon_setting"]];
+    iconDataSource = @[@[@"icon_album",@"icon_put",@"icon_participation",@"icon_reward_green"],@[@"icon_setting"]];
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserInfo:) name:@"updateUserInfo" object:nil];
 }

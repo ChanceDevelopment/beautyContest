@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSContactsUsageDescription</key>
-	<string>选美-颜值榜访问您的通讯录，方便你收到短信</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -60,7 +58,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>15</string>
+	<string>16</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>mqzone</string>
@@ -117,6 +115,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>选美-颜值榜访问您的相机，让你修改属于自己的头像</string>
+	<key>NSContactsUsageDescription</key>
+	<string>选美-颜值榜访问您的通讯录，方便你收到短信</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>选美-颜值榜获取您的位置，让你获取附近的选美赛区</string>
 	<key>NSLocationWhenInUseDescription</key>

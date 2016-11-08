@@ -15,6 +15,8 @@
 #import "UIButton+Bootstrap.h"
 #import "MLLinkLabel.h"
 #import "MLLabel+Size.h"
+#import "HeUserInfoVC.h"
+#import "HeComplaintVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -94,6 +96,13 @@
 - (void)initView
 {
     [super initView];
+    UIBarButtonItem *complaintItem = [[UIBarButtonItem alloc] init];
+    complaintItem.title = @"投诉";
+    complaintItem.tintColor = [UIColor whiteColor];
+    complaintItem.target = self;
+    complaintItem.action = @selector(complaintAction:);
+    self.navigationItem.rightBarButtonItem = complaintItem;
+    
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
@@ -106,7 +115,7 @@
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
     bgImage.layer.masksToBounds = YES;
     bgImage.userInteractionEnabled = YES;
-    bgImage.contentMode = UIViewContentModeScaleAspectFit;
+    bgImage.contentMode = UIViewContentModeScaleAspectFill;
     bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
     bgImage.userInteractionEnabled = YES;
@@ -129,6 +138,13 @@
     userImage.layer.borderWidth = 1.0;
     userImage.layer.borderColor = [UIColor whiteColor].CGColor;
     [sectionHeaderView addSubview:userImage];
+    
+    UITapGestureRecognizer *scanUserTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanUser:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    userImage.userInteractionEnabled = YES;
+    sectionHeaderView.userInteractionEnabled = YES;
+    [userImage addGestureRecognizer:scanUserTap];
     
     CGFloat sexW = 20;
     CGFloat sexH = 20;
@@ -159,7 +175,7 @@
     UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
     contentLabel.tag = CONTENTTAG;
     contentLabel.text = recommendDict[@"recommendContent"];
-    contentLabel.font = [UIFont systemFontOfSize:16.0];
+    contentLabel.font = [UIFont systemFontOfSize:15.0];
     contentLabel.textColor = [UIColor whiteColor];
     contentLabel.textAlignment = NSTextAlignmentCenter;
     contentLabel.backgroundColor = [UIColor clearColor];
@@ -176,7 +192,7 @@
     gradient.frame = CGRectMake(rX, rY, rW, rH);
     gradient.colors = [NSArray arrayWithObjects:
                        (id)[UIColor clearColor].CGColor,
-                       (id)[UIColor blackColor].CGColor,
+                       (id)[UIColor colorWithWhite:150.0 / 255.0 alpha:0.8].CGColor,
                        nil];
     [buttonBG.layer insertSublayer:gradient atIndex:0];
     [bgImage addSubview:buttonBG];
@@ -276,6 +292,35 @@
     if (imageX > photoScrollView.frame.size.width) {
         photoScrollView.contentSize = CGSizeMake(imageX, 0);
     }
+}
+
+- (void)complaintAction:(id)sender
+{
+    HeComplaintVC *complaintVC = [[HeComplaintVC alloc] init];
+    complaintVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:complaintVC animated:YES];
+}
+
+- (void)scanUser:(UITapGestureRecognizer *)tap
+{
+    NSString *recommendUser = recommendDict[@"recommendUser"];
+    if ([recommendUser isMemberOfClass:[NSNull class]] || recommendUser == nil) {
+        recommendUser = @"";
+    }
+    NSString *userNick = recommendDict[@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+        userNick = @"";
+    }
+    
+    User *user = [[User alloc] init];
+    user.userNick = userNick;
+    user.userId = recommendUser;
+    
+    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    userInfoVC.isScanUser = YES;
+    userInfoVC.userInfo = [[User alloc] initUserWithUser:user];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 - (void)scanlargeImage:(UITapGestureRecognizer *)tap

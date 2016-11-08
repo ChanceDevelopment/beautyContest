@@ -113,7 +113,7 @@
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (IBAction)commitButtonClick:(id)sender
+- (IBAction)commitButtonClick:(UIButton *)sender
 {
     NSLog(@"commitButtonClick");
     if ([editField isFirstResponder]) {
@@ -128,6 +128,7 @@
                 [self showHint:@"请输入充值金额"];
                 return;
             }
+            
             [self rechargeMoney:money];
             break;
         }
@@ -163,6 +164,8 @@
         default:
             break;
     }
+    //防止充值按钮多次被点击
+    sender.enabled = NO;
 }
 
 //充值

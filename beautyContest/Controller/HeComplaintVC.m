@@ -338,7 +338,7 @@
     CGFloat distributeH = 50 - 2 * distributeY;
     
     distributeTF = [[UITextField alloc] initWithFrame:CGRectMake(distributeX, distributeY, distributeW, distributeH)];
-    distributeTF.font = [UIFont systemFontOfSize:20.0];
+    distributeTF.font = [UIFont systemFontOfSize:16.0];
     distributeTF.textColor = [UIColor blackColor];
     distributeTF.placeholder = @"请输入投诉详情";
     [headerBGView addSubview:distributeTF];
@@ -412,7 +412,7 @@
     if (uploadType == 2) {
         [self showHint:@"你的投诉我们会24小时内处理"];
 //        [self showTipLabelWith:@"你的投诉我们会24小时内处理"];
-        [self performSelector:@selector(backTolastView:) withObject:nil afterDelay:0.5];
+        [self performSelector:@selector(backTolastView:) withObject:nil afterDelay:1.0];
     }
 }
 

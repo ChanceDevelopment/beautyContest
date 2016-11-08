@@ -112,11 +112,11 @@
     self.navigationItem.rightBarButtonItem = saveItem;
     
     tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
+    tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
-    sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    sectionHeaderView.backgroundColor = [UIColor whiteColor];
     sectionHeaderView.userInteractionEnabled = YES;
 //    tableview.tableHeaderView = sectionHeaderView;
     

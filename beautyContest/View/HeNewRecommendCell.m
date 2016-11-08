@@ -57,6 +57,8 @@
         favButton = [[UIButton alloc] initWithFrame:CGRectMake(agreeX, agreeY, agreeW, agreeH)];
         [favButton setTitle:@"关注" forState:UIControlStateNormal];
         [favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        favButton.layer.cornerRadius = 3.0;
+        favButton.layer.masksToBounds = YES;
         [favButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:favButton.frame.size] forState:UIControlStateNormal];
         [favButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [favButton.titleLabel setFont:[UIFont systemFontOfSize:13.0]];

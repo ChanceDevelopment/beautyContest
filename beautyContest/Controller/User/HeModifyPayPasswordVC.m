@@ -59,11 +59,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    NSString *userPayPassword = balanceDict[@"userPayPwd"];
-    if ([userPayPassword isMemberOfClass:[NSNull class]] || userPayPassword == nil) {
-        userPayPassword = @"";
-    }
-    if (userPayPassword == nil || [userPayPassword isEqualToString:@""]) {
+    BOOL haveUserPayPwd = [balanceDict[@"userPayPwd"] boolValue];
+    if (!haveUserPayPwd) {
         cpswTF.hidden = YES;
         CGRect pswFrame = pswTF.frame;
         pswFrame.origin.y = pswFrame.origin.y - 55;
@@ -115,11 +112,8 @@
     loginButton.layer.cornerRadius = 5.0;
     loginButton.layer.masksToBounds = YES;
     
-    NSString *userPayPassword = balanceDict[@"userPayPwd"];
-    if ([userPayPassword isMemberOfClass:[NSNull class]] || userPayPassword == nil) {
-        userPayPassword = @"";
-    }
-    if (userPayPassword == nil || [userPayPassword isEqualToString:@""]) {
+    BOOL haveUserPayPwd = [balanceDict[@"userPayPwd"] boolValue];
+    if (!haveUserPayPwd) {
         cpswTF.hidden = YES;
     }
     
@@ -257,14 +251,12 @@
     NSString *newPassword = pswTF.text;
     NSString *commitPassword = commitpswTF.text;
     
-    NSString *userPayPassword = [HeSysbsModel getSysModel].user.userPayPwd;
-    
-    if (![userPayPassword isEqualToString:@""] && userPayPassword != nil) {
+    BOOL haveUserPayPwd = [balanceDict[@"userPayPwd"] boolValue];
+    if (haveUserPayPwd) {
         if (![self isOldPasswordVaild:oldPassword]) {
             return;
         }
     }
-    
     if (![self isNewPasswordVaild:newPassword]) {
         return;
     }
@@ -272,14 +264,14 @@
         return;
     }
     NSString *correctPassword = [[NSUserDefaults standardUserDefaults] objectForKey:USERPASSWORDKEY];
-    if (![oldPassword isEqualToString:correctPassword]) {
-        [self showHint:@"旧密码有误"];
-        return;
-    }
-    if ([oldPassword isEqualToString:newPassword]) {
-        [self showHint:@"旧密码与新密码不能相同"];
-        return;
-    }
+//    if (![oldPassword isEqualToString:correctPassword]) {
+//        [self showHint:@"旧密码有误"];
+//        return;
+//    }
+//    if ([oldPassword isEqualToString:newPassword]) {
+//        [self showHint:@"旧密码与新密码不能相同"];
+//        return;
+//    }
     if (![commitPassword isEqualToString:newPassword]) {
         [self showHint:@"两次密码输入不一致"];
         return;

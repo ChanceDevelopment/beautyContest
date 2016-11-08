@@ -36,12 +36,12 @@
         tipLabel.backgroundColor = [UIColor clearColor];
         tipLabel.text = @"留言给";
         tipLabel.textColor = [UIColor grayColor];
-        [self.contentView addSubview:tipLabel];
+//        [self.contentView addSubview:tipLabel];
         tipLabel.font = smallFont;
         
-        CGFloat userX = CGRectGetMaxX(tipLabel.frame) + 5;
+        CGFloat userX = 10;
         CGFloat userY = tipY;
-        CGFloat userW = 150;
+        CGFloat userW = 200;
         CGFloat userH = tipH;
         userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(userX, userY, userW, userH)];
         userNameLabel.backgroundColor = [UIColor clearColor];

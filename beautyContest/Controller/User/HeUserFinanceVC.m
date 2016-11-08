@@ -485,6 +485,7 @@
                 {
                     //支付密码
                     HeModifyPayPasswordVC *modifyPasswordVC = [[HeModifyPayPasswordVC alloc] init];
+                    modifyPasswordVC.balanceDict = [[NSDictionary alloc] initWithDictionary:userBalance];
                     modifyPasswordVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:modifyPasswordVC animated:YES];
                     break;

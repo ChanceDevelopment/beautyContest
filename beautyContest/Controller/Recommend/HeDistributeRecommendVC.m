@@ -454,6 +454,10 @@
 
 - (void)addButtonClick:(UIButton *)sender
 {
+    if (sender.tag == 200) {
+        [self showHint:@"暂不支持视频上传"];
+        return;
+    }
     if ([recommendTextView isFirstResponder]) {
         [recommendTextView resignFirstResponder];
     }

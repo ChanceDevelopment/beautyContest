@@ -57,6 +57,7 @@
     _mapView.showsUserLocation = NO;//先关闭显示的定位图层
     _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态
     _mapView.showsUserLocation = YES;//显示定位图层
+    [self updateAnnotion];
     
 }
 
@@ -66,7 +67,7 @@
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
     _locService.delegate = self;
     _geocodesearch.delegate = self;
-    [self updateAnnotion];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -133,8 +134,8 @@
     if ([zoneLocationY isMemberOfClass:[NSNull class]] || zoneLocationY == nil) {
         zoneLocationY = @"";
     }
-    
-    BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
+    [_mapView removeAnnotations:_mapView.annotations];
+    BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc] init];
     CLLocationCoordinate2D coor;
     coor.latitude = [zoneLocationY floatValue];
     coor.longitude = [zoneLocationX floatValue];;
@@ -142,7 +143,7 @@
     annotation.title = @"赛区位置";
     [_mapView addAnnotation:annotation];
     
-    BMKCoordinateSpan span = BMKCoordinateSpanMake(0.013142, 0.011678);
+    BMKCoordinateSpan span = BMKCoordinateSpanMake(0.003142, 0.001678);
     BMKCoordinateRegion region = BMKCoordinateRegionMake(coor, span);
     [_mapView setRegion:region animated:YES];
     [_mapView setCenterCoordinate:coor animated:YES];
@@ -150,7 +151,10 @@
 // Override
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
-    [annotation setCoordinate:_mapView.centerCoordinate];
+    if (editLocation) {
+        [annotation setCoordinate:_mapView.centerCoordinate];
+    }
+    
     
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
@@ -231,7 +235,7 @@
     //    zoneLocationY
     NSString *zoneLocationX = [NSString stringWithFormat:@"%f",userLocation.location.coordinate.longitude];
     NSString *zoneLocationY = [NSString stringWithFormat:@"%f",userLocation.location.coordinate.latitude];
-    if (!updateLocationSucceed) {
+    if (!updateLocationSucceed && editLocation) {
         updateLocationSucceed = YES;
         userLocationDict = @{@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY};
         [self updateAnnotion];
