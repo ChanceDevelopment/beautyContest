@@ -26,6 +26,7 @@
 #import "HeUserLocatiVC.h"
 #import "LocationViewController.h"
 #import "HeContestDetailVC.h"
+#import "UWDatePickerView.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -36,7 +37,7 @@
 #define MAX_row 3
 #define IMAGEWIDTH 70
 
-@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView,GetUserLocationInfoDelegate>
+@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView,GetUserLocationInfoDelegate,UWDatePickerViewDelegate>
 {
     BMKLocationService *_locService;
     BMKGeoCodeSearch *_geoSearch;
@@ -1447,15 +1448,18 @@
             switch (row) {
                 case 1:
                 {
+                    
                     NSDate *nowDate = [NSDate date];
-//                    if (!([self.tmpDateString isMemberOfClass:[NSNull class]] || self.tmpDateString == nil || [self.tmpDateString isEqualToString:@""])) {
-//                        
-//                        //设置转换格式
-//                        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-//                        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-//                        //NSString转NSDate
-//                        nowDate = [formatter dateFromString:self.tmpDateString];
-//                    }
+                    if (!([self.tmpDateString isMemberOfClass:[NSNull class]] || self.tmpDateString == nil || [self.tmpDateString isEqualToString:@""])) {
+                        
+                        //设置转换格式
+                        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+                        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+                        //NSString转NSDate
+                        nowDate = [formatter dateFromString:self.tmpDateString];
+                    }
+                    [self setupDateView:DateTypeOfStart minDate:nowDate];
+                    return;
                     __block HeDistributeContestVC *weakSelf = self;
                     HcdDateTimePickerView *dateTimePickerView = [[HcdDateTimePickerView alloc] initWithDatePickerMode:DatePickerDateHourMinuteMode defaultDateTime:nowDate];
                     dateTimePickerView.topViewColor = [UIColor greenColor];
@@ -1469,6 +1473,7 @@
                         weakSelf.tmpDateString = datetimeStr;
                         [tableView reloadData];
                     };
+//                    return;
                     if (dateTimePickerView) {
                         [self.view addSubview:dateTimePickerView];
                         [dateTimePickerView showHcdDateTimePicker];
@@ -1507,6 +1512,39 @@
         default:
             break;
     }
+}
+
+- (void)getSelectDate:(NSString *)date type:(DateType)type {
+    
+    NSLog(@"时间 : %@",date);
+    switch (type) {
+        case DateTypeOfStart:
+            // TODO 日期确定选择
+            self.tmpDateString = date;
+            [tableview reloadData];
+            break;
+            
+        case DateTypeOfEnd:
+            // TODO 日期取消选择
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)setupDateView:(DateType)type minDate:(NSDate *)minDate{
+    
+    UWDatePickerView *pickerView = [UWDatePickerView instanceDatePickerView];
+    pickerView.datePickerView.minimumDate = minDate;
+    if (!minDate) {
+        pickerView.datePickerView.minimumDate = [NSDate date];
+    }
+    pickerView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    [pickerView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]];
+    pickerView.delegate = self;
+    pickerView.type = type;
+    [self.view addSubview:pickerView];
+    
 }
 
 - (void)getUserInfoWithDict:(NSDictionary *)addressDict

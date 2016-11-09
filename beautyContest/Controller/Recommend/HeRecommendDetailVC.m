@@ -253,6 +253,9 @@
     CGFloat scrollH = imageScrollViewHeigh;
     photoScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollX, scrollY, scrollW, scrollH)];
     NSString *recommendCover = [recommendDict objectForKey:@"recommendCover"];
+    if ([recommendCover isMemberOfClass:[NSNull class]]) {
+        recommendCover = @"";
+    }
     paperArray = [recommendCover componentsSeparatedByString:@","];
     
     if ([paperArray count] == 0 || [paperArray[0] isEqualToString:@""]) {
