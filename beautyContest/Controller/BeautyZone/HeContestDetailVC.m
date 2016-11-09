@@ -125,7 +125,7 @@
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
     bgImage.userInteractionEnabled = YES;
     bgImage.layer.masksToBounds = YES;
-    bgImage.contentMode = UIViewContentModeScaleAspectFill;
+//    bgImage.contentMode = UIViewContentModeScaleAspectFill;
     bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
     bgImage.userInteractionEnabled = YES;

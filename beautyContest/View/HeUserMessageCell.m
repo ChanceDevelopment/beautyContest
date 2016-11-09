@@ -13,6 +13,8 @@
 @synthesize userNameLabel;
 @synthesize contentLabel;
 @synthesize timeLabel;
+@synthesize tipLabel;
+@synthesize replyLabel;
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -32,16 +34,16 @@
         CGFloat tipY = 5;
         CGFloat tipW = 40;
         CGFloat tipH = 30;
-        UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(tipX, tipY, tipW, tipH)];
+        tipLabel = [[MLLinkLabel alloc] initWithFrame:CGRectMake(tipX, tipY, tipW, tipH)];
         tipLabel.backgroundColor = [UIColor clearColor];
         tipLabel.text = @"留言给";
         tipLabel.textColor = [UIColor grayColor];
-//        [self.contentView addSubview:tipLabel];
+        [self.contentView addSubview:tipLabel];
         tipLabel.font = smallFont;
         
-        CGFloat userX = 10;
+        CGFloat userX = CGRectGetMaxX(tipLabel.frame) + 5;
         CGFloat userY = tipY;
-        CGFloat userW = 200;
+        CGFloat userW = 150;
         CGFloat userH = tipH;
         userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(userX, userY, userW, userH)];
         userNameLabel.backgroundColor = [UIColor clearColor];
@@ -66,7 +68,7 @@
         UIFont *bigFont = [UIFont systemFontOfSize:15.0];
         CGFloat contentX = 10;
         CGFloat contentY = CGRectGetMaxY(tipLabel.frame);
-        CGFloat contentW = 100;
+        CGFloat contentW = SCREENWIDTH - 10 - 50;
         CGFloat contentH = tipH;
         contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
         contentLabel.numberOfLines = 0;
@@ -77,22 +79,24 @@
         [self.contentView addSubview:contentLabel];
         contentLabel.font = bigFont;
         
-        CGFloat messageIconW = 15;
-        CGFloat messageIconH = 15;
+        CGFloat messageIconW = 12;
+        CGFloat messageIconH = 12;
         CGFloat messageIconX = 0;
         CGFloat messageIconY = 0;
         UIImageView *messageIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_message_black"]];
         messageIcon.frame = CGRectMake(messageIconX, messageIconY, messageIconW, messageIconH);
         
-        CGFloat replyY = CGRectGetMaxY(tipLabel.frame);
+        CGFloat replyH = messageIconH;
+        CGFloat replyY = cellsize.height - messageIconH - 10;
         CGFloat replyW = 45;
         CGFloat replyX = SCREENWIDTH - replyW - 10;
-        CGFloat replyH = messageIconH;
-        UILabel *replyLabel = [[UILabel alloc] initWithFrame:CGRectMake(replyX, replyY, replyW, replyH)];
+        
+        replyLabel = [[UILabel alloc] initWithFrame:CGRectMake(replyX, replyY, replyW, replyH)];
         replyLabel.backgroundColor = [UIColor clearColor];
         replyLabel.text = @"回复";
+        replyLabel.font = [UIFont systemFontOfSize:13.5];
         replyLabel.textAlignment = NSTextAlignmentRight;
-        replyLabel.textColor = [UIColor blackColor];
+        replyLabel.textColor = [UIColor grayColor];
         [self.contentView addSubview:replyLabel];
         replyLabel.font = smallFont;
         

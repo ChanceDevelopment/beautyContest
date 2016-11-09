@@ -216,7 +216,7 @@
     coverImage.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     coverImage.userInteractionEnabled = YES;
     coverImage.layer.masksToBounds = YES;
-    coverImage.contentMode = UIViewContentModeScaleAspectFill;
+//    coverImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:coverImage];
     
     addPictureButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, IMAGEWIDTH, IMAGEWIDTH)];

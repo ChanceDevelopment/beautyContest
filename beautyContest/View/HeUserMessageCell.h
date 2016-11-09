@@ -7,12 +7,14 @@
 //
 
 #import "HeBaseTableViewCell.h"
+#import "MLLinkLabel.h"
 
 @interface HeUserMessageCell : HeBaseTableViewCell
 @property(strong,nonatomic)NSDictionary *messageDict;
 @property(strong,nonatomic)UILabel *userNameLabel;
 @property(strong,nonatomic)UILabel *contentLabel;
 @property(strong,nonatomic)UILabel *timeLabel;
-
+@property(strong,nonatomic)MLLinkLabel *tipLabel;
+@property(strong,nonatomic)UILabel *replyLabel;
 
 @end

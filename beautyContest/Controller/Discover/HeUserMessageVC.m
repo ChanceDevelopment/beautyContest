@@ -21,6 +21,8 @@
 @property(assign,nonatomic)NSInteger pageNo;
 @property(strong,nonatomic)NSCache *imageCache;
 @property(strong,nonatomic)NSMutableDictionary *replyDict;
+@property(strong,nonatomic)NSMutableDictionary *replyIndexDict;
+@property(strong,nonatomic)NSMutableDictionary *replyShowDict;
 
 @end
 
@@ -33,6 +35,8 @@
 @synthesize pageNo;
 @synthesize imageCache;
 @synthesize replyDict;
+@synthesize replyIndexDict;
+@synthesize replyShowDict;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -69,6 +73,8 @@
     pageNo = 1;
     updateOption = 1;
     imageCache = [[NSCache alloc] init];
+    replyIndexDict = [[NSMutableDictionary alloc] initWithCapacity:0];
+    replyShowDict = [[NSMutableDictionary alloc] initWithCapacity:0];
 }
 
 - (void)initView
@@ -86,10 +92,28 @@
     sectionHeaderView.userInteractionEnabled = YES;
 }
 
+- (void)showTableWithBlogId:(NSString *)blogId
+{
+    NSInteger index = [[replyIndexDict objectForKey:blogId] integerValue];
+    BOOL show = [[replyShowDict objectForKey:blogId] boolValue];
+    [replyShowDict setObject:[NSNumber numberWithBool:!show] forKey:blogId];
+    //话题
+    NSDictionary *dict = dataSource[index];
+    //话题的相关对话
+    NSArray *replyArray = [replyDict objectForKey:blogId];
+    
+    [tableview reloadData];
+    
+}
+
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
 {
     if ([eventName isEqualToString:@"showReplyMessage"]) {
-        
+        NSLog(@"showReplyMessage");
+        NSString *blogId = userInfo[@"blogId"];
+        if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
+            blogId = @"";
+        }
     }
     else if ([eventName isEqualToString:@"replyMessage"]){
     
@@ -110,7 +134,7 @@
     }
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
     NSDictionary *requestMessageParams = @{@"blogUser":blogUser};
-    [self showHudInView:self.view hint:@"正在获取..."];
+    [self showHudInView:self.tableview hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
@@ -124,12 +148,18 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             if (updateOption == 1) {
                 [dataSource removeAllObjects];
+                [replyIndexDict removeAllObjects];
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
+            NSInteger index = 0;
             for (NSDictionary *zoneDict in resultArray) {
                 [dataSource addObject:zoneDict];
                 NSString *blogId = [NSString stringWithFormat:@"%@",[zoneDict objectForKey:@"blogId"]];
+                [replyIndexDict setObject:[NSNumber numberWithInteger:index] forKey:blogId];
+                [replyShowDict setObject:[NSNumber numberWithBool:NO] forKey:blogId];
+                index++;
                 [self getReplyWithBlogID:blogId];
+                
             }
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
             [self.tableview reloadData];
@@ -164,19 +194,10 @@
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         
         if (statueCode == REQUESTCODE_SUCCEED){
-            if (updateOption == 1) {
-                [dataSource removeAllObjects];
-            }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
             [replyDict setObject:resultArray forKey:blogId];
         }
-        else{
-            NSArray *resultArray = [respondDict objectForKey:@"json"];
-            if (updateOption == 2 && [resultArray count] == 0) {
-                pageNo--;
-                return;
-            }
-        }
+        
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
     }];
@@ -312,6 +333,16 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSDictionary *dict = dataSource[section];
+    NSString *blogId = dict[@"blogId"];
+    if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
+        blogId = @"";
+    }
+    BOOL show = [[replyShowDict objectForKey:blogId] boolValue];
+    if (show) {
+        NSArray *replyArray = [replyDict objectForKey:blogId];
+        return 1 + [replyArray count];
+    }
     return 1;
 }
 
@@ -337,7 +368,15 @@
     @finally {
         
     }
-    
+    if (row != 0) {
+        NSString *blogId = dict[@"blogId"];
+        if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
+            blogId = @"";
+        }
+        NSArray *replyArray = [replyDict objectForKey:blogId];
+        dict = [replyArray objectAtIndex:row - 1];
+        
+    }
     HeUserMessageCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
         cell = [[HeUserMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
@@ -346,6 +385,13 @@
     }
     
     NSString *blogContent = dict[@"blogContent"];
+    if (row != 0) {
+        blogContent = dict[@"replyContent"];
+        CGRect contentFrame = cell.contentLabel.frame;
+        contentFrame.origin.x = contentFrame.origin.x + 10;
+        contentFrame.size.width = contentFrame.size.width - 10;
+        cell.contentLabel.frame = contentFrame;
+    }
     if ([blogContent isMemberOfClass:[NSNull class]] || blogContent == nil) {
         blogContent = @"";
     }
@@ -362,12 +408,36 @@
     cell.contentLabel.frame = contentFrame;
     
     NSString *userNick = dict[@"userNick"];
+    if (row != 0) {
+        userNick = dict[@"userNick"];
+        cell.tipLabel.text = nil;
+        CGRect tipFrame = cell.tipLabel.frame;
+        tipFrame.origin.x = tipFrame.origin.x + 10;
+        cell.tipLabel.frame = tipFrame;
+        
+        NSString *tipString = @"我回复";
+        NSString *subString = @"我";
+        NSMutableAttributedString *hintString = [[NSMutableAttributedString alloc]initWithString:tipString];
+        //获取要调整颜色的文字位置,调整颜色
+        NSRange range1 = [[hintString string]rangeOfString:subString];
+        [hintString addAttribute:NSForegroundColorAttributeName value:APPDEFAULTORANGE range:range1];
+        cell.tipLabel.attributedText = hintString;
+        
+        CGRect userNameFrame = cell.userNameLabel.frame;
+        userNameFrame.origin.x = userNameFrame.origin.x + 10;
+        userNameFrame.size.width = userNameFrame.size.width - 10;
+        cell.userNameLabel.frame = userNameFrame;
+    }
     if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
         userNick = @"";
     }
     cell.userNameLabel.text = userNick;
     
     id blogTimeObj = [dict objectForKey:@"blogTime"];
+    if (row != 0) {
+        blogTimeObj = dict[@"replyTime"];
+    }
+    
     if ([blogTimeObj isMemberOfClass:[NSNull class]] || blogTimeObj == nil) {
         NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
         blogTimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
@@ -383,6 +453,33 @@
     
     cell.timeLabel.text = blogtimeStr;
     
+    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *blogHost = dict[@"blogHost"];
+    if ([blogHost isMemberOfClass:[NSNull class]]) {
+        blogHost = @"";
+    }
+    if (row == 0) {
+        if (![myUserId isEqualToString:blogHost]) {
+            //如果是别人留言给用户
+            NSString *hostNick = dict[@"hostNick"];
+            if ([hostNick isMemberOfClass:[NSNull class]] || hostNick == nil) {
+                hostNick = @"";
+            }
+            cell.userNameLabel.text = hostNick;
+            
+            cell.tipLabel.hidden = YES;
+            CGRect userNameFrame = cell.userNameLabel.frame;
+            userNameFrame.origin.x = 10;
+            cell.userNameLabel.frame = userNameFrame;
+            cell.replyLabel.hidden = NO;
+        }
+        else{
+            cell.replyLabel.hidden = YES;
+        }
+    }
+    else{
+        cell.replyLabel.hidden = YES;
+    }
     return cell;
 }
 
@@ -438,6 +535,10 @@
     NSArray *replyArray = [replyDict objectForKey:@"blogId"];
     if (replyArray && [replyArray count] > 0) {
         
+    }
+        
+    if (row == 0) {
+        [self showTableWithBlogId:blogId];
     }
 }
 
