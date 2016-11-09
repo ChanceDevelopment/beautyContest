@@ -1448,20 +1448,20 @@
                 case 1:
                 {
                     NSDate *nowDate = [NSDate date];
-                    if (!([self.tmpDateString isMemberOfClass:[NSNull class]] || self.tmpDateString == nil || [self.tmpDateString isEqualToString:@""])) {
-                        
-                        //设置转换格式
-                        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-                        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-                        //NSString转NSDate
-                        nowDate = [formatter dateFromString:self.tmpDateString];
-                    }
+//                    if (!([self.tmpDateString isMemberOfClass:[NSNull class]] || self.tmpDateString == nil || [self.tmpDateString isEqualToString:@""])) {
+//                        
+//                        //设置转换格式
+//                        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+//                        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+//                        //NSString转NSDate
+//                        nowDate = [formatter dateFromString:self.tmpDateString];
+//                    }
                     __block HeDistributeContestVC *weakSelf = self;
                     HcdDateTimePickerView *dateTimePickerView = [[HcdDateTimePickerView alloc] initWithDatePickerMode:DatePickerDateHourMinuteMode defaultDateTime:nowDate];
                     dateTimePickerView.topViewColor = [UIColor greenColor];
                     dateTimePickerView.buttonTitleColor = [UIColor redColor];
                     [dateTimePickerView setMinYear:2016];
-                    [dateTimePickerView setMaxYear:2100];
+                    [dateTimePickerView setMaxYear:2020];
                     dateTimePickerView.topViewColor = APPDEFAULTORANGE;
                     dateTimePickerView.buttonTitleColor = [UIColor whiteColor];
                     dateTimePickerView.clickedOkBtn = ^(NSString * datetimeStr){
