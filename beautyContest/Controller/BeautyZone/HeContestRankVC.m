@@ -118,8 +118,7 @@
             userId = @"";
         }
         NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-        if ([myUserId isEqualToString:userId]) {
-            //不能自己锤自己
+        if (![myUserId isEqualToString:userId]) {
             return;
         }
         NSString *voteZone = contestDict[@"zoneId"];

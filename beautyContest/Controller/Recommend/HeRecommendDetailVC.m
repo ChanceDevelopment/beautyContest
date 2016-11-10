@@ -17,6 +17,7 @@
 #import "MLLabel+Size.h"
 #import "HeUserInfoVC.h"
 #import "HeComplaintVC.h"
+#import "HeRecommendMessageVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -456,7 +457,7 @@
         
         UILabel *tipLabel = [[UILabel alloc] init];
         tipLabel.backgroundColor = [UIColor clearColor];
-        tipLabel.textColor = [UIColor whiteColor];
+        tipLabel.textColor = [UIColor orangeColor];
         tipLabel.font = [UIFont systemFontOfSize:16.0];
         tipLabel.textAlignment = NSTextAlignmentCenter;
         tipLabel.text = text;
@@ -559,7 +560,12 @@
 //            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
 //                data = @"领取成功";
 //            }
-            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%@",respondDict[@"json"]];
+            id redPocketNum = respondDict[@"json"];
+            if ([redPocketNum isMemberOfClass:[NSNull class]]) {
+                redPocketNum = @"";
+            }
+            
+            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%@",[redPocketNum integerValue]];
             [self showAlerWithText:data];
 //            [self showHint:data];
         }
@@ -588,10 +594,19 @@
             break;
         }
         case 2:{
-            HeCommentView *commentView = [[HeCommentView alloc] init];
-            commentView.title = @"留言";
-            commentView.commentDelegate = self;
-            [self presentViewController:commentView animated:YES completion:nil];
+            NSString *userId = recommendDict[@"recommendUser"];
+            if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+                userId = @"";
+            }
+
+            HeRecommendMessageVC *recommendMessageVC = [[HeRecommendMessageVC alloc] init];
+            recommendMessageVC.userId = [[NSString alloc] initWithFormat:@"%@",userId];
+            recommendMessageVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:recommendMessageVC animated:YES];
+//            HeCommentView *commentView = [[HeCommentView alloc] init];
+//            commentView.title = @"留言";
+//            commentView.commentDelegate = self;
+//            [self presentViewController:commentView animated:YES completion:nil];
             break;
         }
         default:

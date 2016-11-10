@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		073BB7DF1DD4614500EB616C /* HeRecommendMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 073BB7DD1DD4614500EB616C /* HeRecommendMessageVC.m */; };
+		073BB7E01DD4614500EB616C /* HeRecommendMessageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073BB7DE1DD4614500EB616C /* HeRecommendMessageVC.xib */; };
 		077D0EA01DC83368009F48E9 /* HeInstructionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 077D0E9F1DC83368009F48E9 /* HeInstructionView.m */; };
 		077D0EAF1DC83512009F48E9 /* ios_guide_step_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 077D0EAB1DC83512009F48E9 /* ios_guide_step_1.png */; };
 		077D0EB01DC83512009F48E9 /* ios_guide_step_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 077D0EAC1DC83512009F48E9 /* ios_guide_step_2.png */; };
@@ -734,6 +736,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		073BB7DC1DD4614500EB616C /* HeRecommendMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeRecommendMessageVC.h; sourceTree = "<group>"; };
+		073BB7DD1DD4614500EB616C /* HeRecommendMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendMessageVC.m; sourceTree = "<group>"; };
+		073BB7DE1DD4614500EB616C /* HeRecommendMessageVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeRecommendMessageVC.xib; sourceTree = "<group>"; };
 		077D0E9E1DC83368009F48E9 /* HeInstructionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeInstructionView.h; sourceTree = "<group>"; };
 		077D0E9F1DC83368009F48E9 /* HeInstructionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeInstructionView.m; sourceTree = "<group>"; };
 		077D0EAB1DC83512009F48E9 /* ios_guide_step_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_guide_step_1.png; sourceTree = "<group>"; };
@@ -2333,6 +2338,9 @@
 				07E880001DC39B71000A13E8 /* HeNewRecommendVC.h */,
 				07E880011DC39B71000A13E8 /* HeNewRecommendVC.m */,
 				07E880021DC39B71000A13E8 /* HeNewRecommendVC.xib */,
+				073BB7DC1DD4614500EB616C /* HeRecommendMessageVC.h */,
+				073BB7DD1DD4614500EB616C /* HeRecommendMessageVC.m */,
+				073BB7DE1DD4614500EB616C /* HeRecommendMessageVC.xib */,
 			);
 			path = Recommend;
 			sourceTree = "<group>";
@@ -4815,6 +4823,7 @@
 				EA8027FE1D52E654008BC4E6 /* sdRefeshView_arrow@2x.png in Resources */,
 				EAC2CDE61D4AF5D800E282A8 /* LICENSE.txt in Resources */,
 				EAC2CD151D4AF5D800E282A8 /* grayArrow.png in Resources */,
+				073BB7E01DD4614500EB616C /* HeRecommendMessageVC.xib in Resources */,
 				EAE88BC41DAF5BC900AD946F /* aliPay.png in Resources */,
 				EACC98361D50E5DB00E627B8 /* icon_nearby_supporter.png in Resources */,
 				EA0E9D331D4C2968009CBF64 /* HeUserVC.xib in Resources */,
@@ -5200,6 +5209,7 @@
 				077D0EA01DC83368009F48E9 /* HeInstructionView.m in Sources */,
 				EAC2CD3F1D4AF5D800E282A8 /* MJRefreshBackFooter.m in Sources */,
 				EA4D018D1D4D94AB00A0CCA1 /* HeContestDetailVC.m in Sources */,
+				073BB7DF1DD4614500EB616C /* HeRecommendMessageVC.m in Sources */,
 				EAC2CD8A1D4AF5D800E282A8 /* RACBacktrace.m in Sources */,
 				EAC2CCBC1D4AF5D800E282A8 /* AFURLSessionManager.m in Sources */,
 				EAC2CCBB1D4AF5D800E282A8 /* AFURLResponseSerialization.m in Sources */,

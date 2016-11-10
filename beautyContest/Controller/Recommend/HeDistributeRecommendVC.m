@@ -19,7 +19,7 @@
 #import <Photos/Photos.h>
 #import "TZImageManager.h"
 
-#define MAXUPLOADIMAGE 9
+#define MAXUPLOADIMAGE 6
 #define MAX_column  4
 #define MAX_row 3
 #define IMAGEWIDTH 70
@@ -85,6 +85,21 @@
     // Do any additional setup after loading the view from its nib.
     [self initializaiton];
     [self initView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self showEULA];
+}
+
+- (void)showEULA
+{
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"RecommendEULA"] boolValue]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"RecommendEULA"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请发布健康向上的内容，禁止发布色情内容，否则我们会追究法律责任。" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
+    }
 }
 
 - (void)initializaiton
@@ -658,7 +673,7 @@
 }
 
 - (void)mutiplepickPhotoSelect{
-    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:9 delegate:self];
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:MAXUPLOADIMAGE delegate:self];
     imagePickerVc.selectedAssets = _selectedAssets; // optional, 可选的
     
     // You can get the photos by block, the same as by delegate.

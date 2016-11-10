@@ -18,7 +18,10 @@
     if (self) {
         NSArray *subArray = [dateString componentsSeparatedByString:@"-"];
         if ([subArray count] == 3) {
-            _dateFormat = @"yyyy-MM-dd HH:mm";
+            _dateFormat = @"yyyy-MM-dd";
+        }
+        else if ([subArray count] == 2){
+            _dateFormat = @"yyyy-MM-dd";
         }
         _actionToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
         _actionToolbar.barStyle = UIBarStyleBlackTranslucent;

@@ -27,7 +27,7 @@
 
 @interface HeEditUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,IQActionSheetPickerView,UITextFieldDelegate>
 {
-    
+    BOOL haveSelectUserImage;
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)NSArray *iconDataSource;
@@ -99,6 +99,7 @@
     }
     self.updateByUserInfoFinish = NO;
     self.updateByUserNameFinish = NO;
+    haveSelectUserImage = NO;
 }
 
 - (void)initView
@@ -115,12 +116,12 @@
     tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
     
-    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
+    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 250)];
     sectionHeaderView.backgroundColor = [UIColor whiteColor];
     sectionHeaderView.userInteractionEnabled = YES;
 //    tableview.tableHeaderView = sectionHeaderView;
     
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 80)];
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 130)];
     bgView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavBarIOS7"]];
     [sectionHeaderView addSubview:bgView];
     
@@ -138,6 +139,17 @@
     userHeadImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:userHeadImage];
     userHeadImage.tag = HEADTAG;
+    
+    NSString *userHeader = userInfo.userHeader;
+    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    [userHeadImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:userHeadImage.image];
+    
+    userHeadImage.userInteractionEnabled = YES;
+    sectionHeaderView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *editTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editUserHead:)];
+    editTap.numberOfTapsRequired = 1;
+    editTap.numberOfTouchesRequired = 1;
+    [userHeadImage addGestureRecognizer:editTap];
     
     CGFloat nameX = 0;
     CGFloat nameH = 30;
@@ -265,15 +277,25 @@
     if (infoWeight == nil) {
         infoWeight = userInfo.infoWeight;
     }
-    NSString *infoZodiac = userInfo.infoZodiac;
+    NSString *infoZodiac = [NSString stringWithFormat:@"%ld",[userInfo.infoZodiac integerValue]];
     
-    NSDictionary *userInfo_param = @{@"infoBirth":infoBirth,@"infoBlood":infoBlood,@"infoProfession":infoProfession,@"infoTall":infoTall,@"infoUser":infoUser,@"infoWeight":infoWeight,@"infoZodiac":infoZodiac};
+    NSDictionary *userInfo_param = @{@"infoBirth":infoBirth,@"infoBlood":infoBlood,@"infoProfession":infoProfession,@"infoTall":infoTall,@"infoUser":infoUser,@"infoWeight":infoWeight,@"infoZodiac":infoZodiac,@"infoMeasurements":@""};
     
     if (userNick == nil || [userNick isEqualToString:@""]) {
         [self showHint:@"请输入用户昵称"];
         return;
     }
     
+    
+    if (haveSelectUserImage) {
+        UIImageView *userImage = [sectionHeaderView viewWithTag:HEADTAG];
+        UIImage *imageData = userImage.image;
+        NSData *data = UIImageJPEGRepresentation(imageData,0.2);
+        NSData *base64Data = [GTMBase64 encodeData:data];
+        NSString *userHeader = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+        
+        userName_param = @{@"userHeader":userHeader,@"userAddress":userAddress,@"userHeader":userHeader,@"userId":userId,@"userNick":userNick,@"userPositionX":userPositionX,@"userPositionY":userPositionY,@"userSex":userSex,@"userSign":userSign};
+    }
     [self updateUserByUserNameWith:@{@"jsonDate":[userName_param JSONString]}];
     [self updateUserInfoByInfoUser:@{@"jsonDate":[userInfo_param JSONString]}];
 }
@@ -372,6 +394,115 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)editUserHead:(UITapGestureRecognizer *)tap
+{
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+    sheet.tag = 2;
+    [sheet showInView:tap.view];
+}
+
+#pragma mark -
+#pragma mark ImagePicker method
+//从相册中打开照片选择画面(图片库)：UIImagePickerControllerSourceTypePhotoLibrary
+//启动摄像头打开照片摄影画面(照相机)：UIImagePickerControllerSourceTypeCamera
+
+//按下相机触发事件
+-(void)pickerCamer
+{
+    //照相机类型
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+    //判断属性值是否可用
+    if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+        //UIImagePickerController是UINavigationController的子类
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+        imagePicker.delegate = self;
+        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+        //设置可以编辑
+        //        imagePicker.allowsEditing = YES;
+        //设置类型为照相机
+        imagePicker.sourceType = sourceType;
+        //进入照相机画面
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+}
+
+//当按下相册按钮时触发事件
+-(void)pickerPhotoLibrary
+{
+    //图片库类型
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    UIImagePickerController *photoAlbumPicker = [[UIImagePickerController alloc] init];
+    photoAlbumPicker.delegate = self;
+    photoAlbumPicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+    //设置可以编辑
+    //    photoAlbumPicker.allowsEditing = YES;
+    //设置类型
+    photoAlbumPicker.sourceType = sourceType;
+    //进入图片库画面
+    [self presentViewController:photoAlbumPicker animated:YES completion:nil];
+}
+
+
+#pragma mark -
+#pragma mark imagePickerController method
+//当拍完照或者选取好照片之后所要执行的方法
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    CGSize sizeImage = image.size;
+    float a = [self getSize:sizeImage];
+    if (a>0) {
+        CGSize size = CGSizeMake(sizeImage.width/a, sizeImage.height/a);
+        image = [self scaleToSize:image size:size];
+    }
+    
+    //    [self initButtonWithImage:image];
+    
+//    AsynImageView *asyncImage = [[AsynImageView alloc] init];
+    
+    UIImageJPEGRepresentation(image, 0.6);
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        haveSelectUserImage = YES;
+        UIImageView *userImage = [sectionHeaderView viewWithTag:HEADTAG];
+        [userImage setImage:image];
+    }];
+    
+}
+
+
+//相应取消动作
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(float)getSize:(CGSize)size
+{
+    float a = size.width / 480.0;
+    if (a > 1) {
+        return a;
+    }
+    else
+        return -1;
+}
+
+- (UIImage *)scaleToSize:(UIImage *)img size:(CGSize)size{
+    // 创建一个bitmap的context
+    // 并把它设置成为当前正在使用的context
+    UIGraphicsBeginImageContext(size);
+    // 绘制改变大小的图片
+    [img drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    // 从当前context中创建一个改变大小后的图片
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    // 使当前的context出堆栈
+    UIGraphicsEndImageContext();
+    // 返回新的改变大小后的图片
+    return scaledImage;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [dataSource count];
@@ -444,12 +575,24 @@
         }
         case 4:
         {
-            content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoTall floatValue]];
+            if (userInfo.infoTall == nil || [userInfo.infoTall isEqualToString:@""]) {
+                content = @"";
+            }
+            else{
+                content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoTall floatValue]];
+            }
+            
             break;
         }
         case 5:
         {
-            content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoWeight floatValue]];
+            if (userInfo.infoTall == nil || [userInfo.infoTall isEqualToString:@""]) {
+                content = @"";
+            }
+            else{
+                content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoWeight floatValue]];
+            }
+            
             break;
         }
         case 6:
@@ -769,6 +912,25 @@
                 userInfo.infoBlood = @"O";
                 break;
             }
+            default:
+                break;
+        }
+    }
+    else if (actionSheet.tag == 2){
+        switch (buttonIndex) {
+            case 0:
+            {
+                [self pickerPhotoLibrary];
+                break;
+            }
+            case 1:{
+                //查看大图
+                [self pickerCamer];
+                break;
+            }
+            case 2:
+                //取消
+                break;
             default:
                 break;
         }

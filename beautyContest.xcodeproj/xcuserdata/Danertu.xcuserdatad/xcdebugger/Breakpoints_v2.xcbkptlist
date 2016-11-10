@@ -40,13 +40,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "beautyContest/Controller/BeautyZone/HeDistributeContestVC.m"
-            timestampString = "500281890.3655"
+            filePath = "beautyContest/Custom/DFCommon/DFCommon/DFCommon/Lib/PullToView/PullToRefreshView.m"
+            timestampString = "500452371.664345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1591"
-            endingLineNumber = "1591"
-            landmarkName = "-locationManager:didUpdateLocations:"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "-initWithScrollView:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

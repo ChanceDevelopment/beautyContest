@@ -8,7 +8,7 @@
 
 #import "HeBaseViewController.h"
 
-@interface HeEditUserInfoVC : HeBaseViewController
+@interface HeEditUserInfoVC : HeBaseViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
 @property(strong,nonatomic)User *userInfo;
 
 @end

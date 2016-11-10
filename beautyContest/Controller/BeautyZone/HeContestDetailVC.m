@@ -96,7 +96,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward",@""];
+    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@""];
     myRank = 0;
     topManRank = [[NSMutableArray alloc] initWithCapacity:0];
     topWomanRank = [[NSMutableArray alloc] initWithCapacity:0];
@@ -255,7 +255,7 @@
     }
     long long nowTime = [[NSDate date] timeIntervalSince1970];
     NSString *timeSting = [NSString stringWithFormat:@"%lld",nowTime];
-    [self showHudInView:self.view hint:@"投票中..."];
+    [self showHudInView:self.view hint:@"参加中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/partInZone.action",BASEURL];
     NSDictionary *params = @{@"partInUser":partInUser,@"partInZone":partInZone,@"nowTime":timeSting};
@@ -469,10 +469,10 @@
             }
             NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
             if ([myUserId isEqualToString:userId]) {
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward",@"icon_message",@"icon_pay_password",@""];
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@""];
             }
             else{
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward",@""];
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@""];
             }
             id zoneComment = contestDetailDict[@"zoneComment"];
             if ([zoneComment isMemberOfClass:[NSNull class]]) {
@@ -733,7 +733,7 @@
             NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
             
             NSString *endtime = [Tool convertTimespToString:[zoneDeathlinezoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
-            cell.topicLabel.text = [NSString stringWithFormat:@"%@ - %@",time,endtime];
+            cell.topicLabel.text = [NSString stringWithFormat:@"截止于 %@",time,endtime];
             break;
         }
         case 2:

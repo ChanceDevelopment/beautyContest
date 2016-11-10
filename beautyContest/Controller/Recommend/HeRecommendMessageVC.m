@@ -6,14 +6,14 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeUserMessageVC.h"
+#import "HeRecommendMessageVC.h"
 #import "HeUserMessageCell.h"
 #import "MLLabel+Size.h"
 #import "HeCommentView.h"
 
 #define TextLineHeight 1.2f
 
-@interface HeUserMessageVC ()<CommentProtocol>
+@interface HeRecommendMessageVC ()<CommentProtocol>
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSMutableArray *dataSource;
@@ -29,7 +29,7 @@
 
 @end
 
-@implementation HeUserMessageVC
+@implementation HeRecommendMessageVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize dataSource;
@@ -41,6 +41,7 @@
 @synthesize replyIndexDict;
 @synthesize replyShowDict;
 @synthesize currentReplyDict;
+@synthesize userId;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -182,7 +183,8 @@
     NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getMyMessagesList.action",BASEURL];
     ///user/getMyMessagesList.action 留言
     ///user/getMessageReply.action  回复
-    NSString *blogUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *blogUser = userId;
+//    [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (!blogUser) {
         blogUser = @"";
     }
@@ -509,7 +511,7 @@
     
     cell.timeLabel.text = blogtimeStr;
     
-    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *myUserId = userId;
     NSString *blogHost = dict[@"blogHost"];
     if ([blogHost isMemberOfClass:[NSNull class]]) {
         blogHost = @"";
@@ -595,7 +597,7 @@
     if (replyArray && [replyArray count] > 0) {
         
     }
-        
+    
     if (row == 0) {
         [self showTableWithBlogId:blogId];
     }

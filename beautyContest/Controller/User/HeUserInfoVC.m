@@ -244,6 +244,11 @@
 
 - (void)updateUser
 {
+    UIImageView *userImage = [sectionHeaderView viewWithTag:HEADTAG];
+    NSString *userHeader = userInfo.userHeader;
+    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    [userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:userImage.image];
+    
     UILabel *nameLabel = [sectionHeaderView viewWithTag:NAMETAG];
     nameLabel.text = userInfo.userNick;
     
@@ -268,6 +273,7 @@
         addressH = 30;
     }
     
+    
     UILabel *addressLabel = [sectionHeaderView viewWithTag:ADDRESSTAG];
     addressLabel.textAlignment = NSTextAlignmentCenter;
     addressLabel.backgroundColor = [UIColor clearColor];
@@ -287,7 +293,7 @@
 {
     NSString *getUserInfoUrl = [NSString stringWithFormat:@"%@/user/getUserinfo.action",BASEURL];
     NSString *userId = userInfo.userId;
-    if (userId == nil) {
+    if ((userId == nil || [userId isEqualToString:@""]) && !isScanUser) {
         userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
         if (!userId){
             userId = @"";
@@ -412,12 +418,24 @@
         }
         case 2:
         {
-            content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoTall floatValue]];
+            if ([userInfo.infoTall isEqualToString:@""]) {
+                content = @"";
+            }
+            else{
+                content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoTall floatValue]];
+            }
+            
             break;
         }
         case 3:
         {
-            content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoWeight floatValue]];
+            if ([userInfo.infoTall isEqualToString:@""]) {
+                content = @"";
+            }
+            else{
+                content = [NSString stringWithFormat:@"%.1lf",[userInfo.infoWeight floatValue]];
+            }
+            
             break;
         }
         case 4:

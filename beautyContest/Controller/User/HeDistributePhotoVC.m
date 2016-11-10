@@ -50,6 +50,16 @@
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
+    [self showEULA];
+}
+
+- (void)showEULA
+{
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"PhotoEULA"] boolValue]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"PhotoEULA"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请发布健康向上的内容，禁止发布色情内容，否则我们会追究法律责任。" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
+    }
 }
 
 - (void)initializaiton
@@ -163,7 +173,7 @@
         AsynImageView *imageview = self.pictureArray[index];
         
         UIImage *imageData = imageview.image;
-        NSData *data = UIImageJPEGRepresentation(imageData,0.2);
+        NSData *data = UIImageJPEGRepresentation(imageData,0.1);
         NSData *base64Data = [GTMBase64 encodeData:data];
         NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
         if (index == 0) {
@@ -182,6 +192,9 @@
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
+        if (![respondDict isKindOfClass:[NSDictionary class]]) {
+            respondDict = [[NSDictionary alloc] init];
+        }
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserAlbum" object:self];

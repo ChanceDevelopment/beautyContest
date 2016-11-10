@@ -27,17 +27,25 @@
 #import "LocationViewController.h"
 #import "HeContestDetailVC.h"
 #import "UWDatePickerView.h"
+#import "ScanPictureView.h"
+#import <AVFoundation/AVFoundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "TZImagePickerController.h"
+#import "UIView+Layout.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
+#import "TZImageManager.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
 #define TextLineHeight 1.2f
 
-#define MAXUPLOADIMAGE 9
+#define MAXUPLOADIMAGE 6
 #define MAX_column  4
 #define MAX_row 3
 #define IMAGEWIDTH 70
 
-@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView,GetUserLocationInfoDelegate,UWDatePickerViewDelegate>
+@interface HeDistributeContestVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,IQActionSheetPickerView,GetUserLocationInfoDelegate,UWDatePickerViewDelegate,TZImagePickerControllerDelegate>
 {
     BMKLocationService *_locService;
     BMKGeoCodeSearch *_geoSearch;
@@ -126,12 +134,22 @@
 {
     [super viewWillAppear:YES];
     _locService.delegate = self;
+    [self showEULA];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
     _locService.delegate = nil;
+}
+
+- (void)showEULA
+{
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"ContestEULA"] boolValue]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"ContestEULA"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请发布健康向上的内容，禁止发布色情内容，否则我们会追究法律责任。" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
+    }
 }
 
 - (void)initializaiton
@@ -477,6 +495,11 @@
         return;
     }
     currentSelectBanner = YES;
+    
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+    sheet.tag = 1;
+    [sheet showInView:bannerImageBG];
+    return;
     if (ISIOS8) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"选择宣传图片" preferredStyle:UIAlertControllerStyleActionSheet];
         
@@ -501,8 +524,78 @@
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择宣传图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
-    [sheet showInView:bannerImageBG];
+//    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择宣传图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+//    [sheet showInView:bannerImageBG];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == 1) {
+        switch (buttonIndex) {
+            case 1:
+            {
+                if (ISIOS7) {
+                    NSString *mediaType = AVMediaTypeVideo;
+                    AVAuthorizationStatus  authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
+                    if (authorizationStatus == AVAuthorizationStatusRestricted|| authorizationStatus == AVAuthorizationStatusDenied) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"此应用没有权限访问您的照片或摄像机，请在: 隐私设置 中启用访问" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                        [alert show];
+                    }else{
+                        [self pickerCamer];
+                    }
+                }
+                else{
+                    [self pickerCamer];
+                }
+                
+                
+                break;
+            }
+            case 0:
+            {
+                if (ISIOS7) {
+                    ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+                    if (author == ALAuthorizationStatusRestricted || author ==ALAuthorizationStatusDenied){
+                        //无权限
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"此应用没有权限访问您的照片或摄像机，请在: 隐私设置 中启用访问" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                        [alert show];
+                    }
+                    else{
+                        [self mutiplepickPhotoSelect];
+                    }
+                }
+                else{
+                    [self mutiplepickPhotoSelect];
+                }
+                break;
+            }
+            case 2:
+            {
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    else if (actionSheet.tag == 2){
+        switch (buttonIndex) {
+            case 0:
+            {
+                [self pickerPhotoLibrary];
+                break;
+            }
+            case 1:{
+                //查看大图
+                [self pickerCamer];
+                break;
+            }
+            case 2:
+                //取消
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 - (void)dismissViewGes:(UITapGestureRecognizer *)ges
@@ -927,29 +1020,30 @@
         return;
     }
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+    sheet.tag = 2;
     [sheet showInView:self.coverImage];
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 0:
-        {
-            [self pickerPhotoLibrary];
-            break;
-        }
-        case 1:{
-            //查看大图
-            [self pickerCamer];
-            break;
-        }
-        case 2:
-            //取消
-            break;
-        default:
-            break;
-    }
-}
+//-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    switch (buttonIndex) {
+//        case 0:
+//        {
+//            [self pickerPhotoLibrary];
+//            break;
+//        }
+//        case 1:{
+//            //查看大图
+//            [self pickerCamer];
+//            break;
+//        }
+//        case 2:
+//            //取消
+//            break;
+//        default:
+//            break;
+//    }
+//}
 
 - (void)handleSelectPhoto
 {
@@ -1003,7 +1097,66 @@
 }
 
 
+- (void)mutiplepickPhotoSelect{
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:MAXUPLOADIMAGE delegate:self];
+    imagePickerVc.selectedAssets = _selectedAssets; // optional, 可选的
+    
+    // You can get the photos by block, the same as by delegate.
+    // 你可以通过block或者代理，来得到用户选择的照片.
+    [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+        
+    }];
+    
+    // Set the appearance
+    // 在这里设置imagePickerVc的外观
+    // imagePickerVc.navigationBar.barTintColor = [UIColor greenColor];
+    // imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
+    // imagePickerVc.oKButtonTitleColorNormal = [UIColor greenColor];
+    
+    // Set allow picking video & photo & originalPhoto or not
+    // 设置是否可以选择视频/图片/原图
+    // imagePickerVc.allowPickingVideo = NO;
+    // imagePickerVc.allowPickingImage = NO;
+    // imagePickerVc.allowPickingOriginalPhoto = NO;
+    
+    [self presentViewController:imagePickerVc animated:YES completion:nil];
+}
 
+#pragma mark TZImagePickerControllerDelegate
+
+
+
+/// User finish picking photo，if assets are not empty, user picking original photo.
+/// 用户选择好了图片，如果assets非空，则用户选择了原图。
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto {
+    
+    _selectedPhotos = [NSMutableArray arrayWithArray:photos];
+    _selectedAssets = [NSMutableArray arrayWithArray:assets];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self handleSelectPhoto];
+    }];
+}
+
+/// User finish picking video,
+/// 用户选择好了视频
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingVideo:(UIImage *)coverImage sourceAssets:(id)asset {
+    [_selectedPhotos addObjectsFromArray:@[coverImage]];
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self handleSelectPhoto];
+    }];
+    
+    /*
+     // open this code to send video / 打开这段代码发送视频
+     [[TZImageManager manager] getVideoOutputPathWithAsset:asset completion:^(NSString *outputPath) {
+     NSLog(@"视频导出到本地完成,沙盒路径为:%@",outputPath);
+     // Export completed, send video here, send by outputPath or NSData
+     // 导出完成，在这里写上传代码，通过路径或者通过NSData上传
+     
+     }];
+     */
+    
+}
 
 //当按下相册按钮时触发事件
 -(void)pickerPhotoLibrary

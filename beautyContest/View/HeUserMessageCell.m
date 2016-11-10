@@ -115,7 +115,7 @@
 
 - (void)replyMessage:(UITapGestureRecognizer *)tap
 {
-    [super routerEventWithName:@"showReplyMessage" userInfo:messageDict];
+    [super routerEventWithName:@"replyMessage" userInfo:messageDict];
 }
 
 @end
