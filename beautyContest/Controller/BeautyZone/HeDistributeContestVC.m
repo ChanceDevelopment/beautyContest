@@ -147,7 +147,7 @@
 {
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"ContestEULA"] boolValue]) {
         [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"ContestEULA"];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请发布健康向上的内容，禁止发布色情内容，否则我们会追究法律责任。" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请发布健康向上的内容，禁止发布色情内容，否则我们会追究法律责任。您发布的内容我们平台会先审核，只有通过审核的内容才会在App里显示出来。" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
         [alert show];
     }
 }
@@ -960,7 +960,28 @@
     }
     NSNumber *boyJoin = [NSNumber numberWithBool:[[switchDict objectForKey:@"2"] boolValue]];
     NSNumber *girlJoin = [NSNumber numberWithBool:[[switchDict objectForKey:@"3"] boolValue]];
-    [self inputPayPassword];
+    
+    BOOL notShowAlert = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notShowContestReviewAlert"] boolValue];
+    if (notShowAlert) {
+        [self inputPayPassword];
+        return;
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"notShowContestReviewAlert"];
+    if (ISIOS8) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"为了维护平台良好的发展，发布的内容我们会进行审核，只有通过审核的内容才会在App显示出来，不便之处，敬请原谅！" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self inputPayPassword];
+        }];
+        [alertController addAction:cancelAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"为了维护平台良好的发展，发布的内容我们会进行审核，只有通过审核的内容才会在App显示出来，不便之处，敬请原谅！" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
+        alert.tag = 3000;
+        [alert show];
+    }
+    
+    
     
     
 }
@@ -974,6 +995,9 @@
         else if(buttonIndex == 1){
             [self setPayPassword];
         }
+    }
+    else if (alertView.tag == 3000){
+        [self inputPayPassword];
     }
 }
 - (void)setPayPassword

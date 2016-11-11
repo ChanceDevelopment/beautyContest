@@ -57,7 +57,7 @@
 {
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"PhotoEULA"] boolValue]) {
         [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"PhotoEULA"];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请发布健康向上的内容，禁止发布色情内容，否则我们会追究法律责任。" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请发布健康向上的内容，禁止发布色情内容，否则我们会追究法律责任。您发布的内容我们平台会先审核，只有通过审核的内容才会在App里显示出来。" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
         [alert show];
     }
 }
@@ -124,6 +124,11 @@
             }
             break;
         }
+        case 3000:{
+            [self showHudInView:self.scrollView hint:@"上传中..."];
+            [self performSelector:@selector(uploadImage) withObject:nil afterDelay:0.2];
+            break;
+        }
         default:
             break;
     }
@@ -162,8 +167,28 @@
         [self showHint:@"请选择上传的图片"];
         return;
     }
-    [self showHudInView:self.scrollView hint:@"上传中..."];
-    [self performSelector:@selector(uploadImage) withObject:nil afterDelay:0.2];
+    BOOL notShowAlert = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notShowPhotoReviewAlert"] boolValue];
+    if (notShowAlert) {
+        
+        [self showHudInView:self.scrollView hint:@"上传中..."];
+        [self performSelector:@selector(uploadImage) withObject:nil afterDelay:0.2];
+        return;
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"notShowPhotoReviewAlert"];
+    if (ISIOS8) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"为了维护平台良好的发展，发布的内容我们会进行审核，只有通过审核的内容才会在App显示出来，不便之处，敬请原谅！" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self showHudInView:self.scrollView hint:@"上传中..."];
+            [self performSelector:@selector(uploadImage) withObject:nil afterDelay:0.2];
+        }];
+        [alertController addAction:cancelAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"为了维护平台良好的发展，发布的内容我们会进行审核，只有通过审核的内容才会在App显示出来，不便之处，敬请原谅！" delegate:self cancelButtonTitle:nil otherButtonTitles:@"知道了", nil];
+        alert.tag = 3000;
+        [alert show];
+    }
 }
 
 - (void)uploadImage

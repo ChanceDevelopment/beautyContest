@@ -60,7 +60,7 @@
         CGFloat signLabelX = SCREENWIDTH / 2.0;
         CGFloat signLabelY = imageY;
         CGFloat signLabelH = imageH;
-        CGFloat signLabelW = SCREENWIDTH / 2.0 - 5;
+        CGFloat signLabelW = SCREENWIDTH / 2.0 - 15;
         
         signLabel = [[UILabel alloc] init];
         signLabel.numberOfLines = 2;
