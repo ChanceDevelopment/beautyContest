@@ -95,6 +95,12 @@
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
+    
+    UIBarButtonItem *messageItem = [[UIBarButtonItem alloc] init];
+    messageItem.title = @"留言";
+    messageItem.target = self;
+    messageItem.action = @selector(leaveMessage:);
+    self.navigationItem.rightBarButtonItem = messageItem;
 }
 
 - (void)showTableWithBlogId:(NSString *)blogId
@@ -118,18 +124,26 @@
     [self presentViewController:commentView animated:YES completion:nil];
 }
 
+- (void)leaveMessage:(UIBarButtonItem *)item
+{
+    HeCommentView *commentView = [[HeCommentView alloc] init];
+    commentView.title = @"留言";
+    commentView.commentDelegate = self;
+    [self presentViewController:commentView animated:YES completion:nil];
+}
+
 - (void)commentWithText:(NSString *)commentText user:(User *)commentUser
 {
-    NSString *replyHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-    NSString *replyBlog = currentReplyDict[@"blogId"];
-    NSString *replyContent = commentText;
-    if (replyContent == nil) {
-        replyContent = @"";
+    NSString *blogHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (blogHost == nil) {
+        blogHost = @"";
     }
+    NSString *blogUser = userId;
+    NSString *blogContent = [NSString stringWithFormat:@"%@",commentText];
     [self showHudInView:self.view hint:@"回复中..."];
     
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/reply.action",BASEURL];
-    NSDictionary *params = @{@"replyHost":replyHost,@"replyBlog":replyBlog,@"replyContent":replyContent};
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/message.action",BASEURL];
+    NSDictionary *params = @{@"blogHost":blogHost,@"blogUser":blogUser,@"blogContent":blogContent};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -142,7 +156,9 @@
                 data = @"回复成功";
             }
             [self showHint:data];
-            [self getReplyWithBlogID:replyBlog];
+            updateOption = 1;
+            [self loadUserMessageShow:YES];
+//            [self getReplyWithBlogID:replyBlog];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -180,16 +196,16 @@
 
 - (void)loadUserMessageShow:(BOOL)show
 {
-    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getMyMessagesList.action",BASEURL];
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getMyMessagesForPeople.action",BASEURL];
     ///user/getMyMessagesList.action 留言
     ///user/getMessageReply.action  回复
-    NSString *blogUser = userId;
-//    [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *OtherUserid = userId;
+    NSString *blogUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (!blogUser) {
         blogUser = @"";
     }
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
-    NSDictionary *requestMessageParams = @{@"blogUser":blogUser};
+    NSDictionary *requestMessageParams = @{@"blogUser":blogUser,@"OtherUserid":OtherUserid};
     [self showHudInView:self.tableview hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
@@ -210,11 +226,11 @@
             NSInteger index = 0;
             for (NSDictionary *zoneDict in resultArray) {
                 [dataSource addObject:zoneDict];
-                NSString *blogId = [NSString stringWithFormat:@"%@",[zoneDict objectForKey:@"blogId"]];
-                [replyIndexDict setObject:[NSNumber numberWithInteger:index] forKey:blogId];
-                [replyShowDict setObject:[NSNumber numberWithBool:NO] forKey:blogId];
-                index++;
-                [self getReplyWithBlogID:blogId];
+//                NSString *blogId = [NSString stringWithFormat:@"%@",[zoneDict objectForKey:@"blogId"]];
+//                [replyIndexDict setObject:[NSNumber numberWithInteger:index] forKey:blogId];
+//                [replyShowDict setObject:[NSNumber numberWithBool:YES] forKey:blogId];
+//                index++;
+//                [self getReplyWithBlogID:blogId];
                 
             }
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
@@ -390,16 +406,16 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSDictionary *dict = dataSource[section];
-    NSString *blogId = dict[@"blogId"];
-    if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
-        blogId = @"";
-    }
-    BOOL show = [[replyShowDict objectForKey:blogId] boolValue];
-    if (show) {
-        NSArray *replyArray = [replyDict objectForKey:blogId];
-        return 1 + [replyArray count];
-    }
+//    NSDictionary *dict = dataSource[section];
+//    NSString *blogId = dict[@"blogId"];
+//    if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
+//        blogId = @"";
+//    }
+//    BOOL show = [[replyShowDict objectForKey:blogId] boolValue];
+//    if (show) {
+//        NSArray *replyArray = [replyDict objectForKey:blogId];
+//        return 1 + [replyArray count];
+//    }
     return 1;
 }
 
@@ -425,15 +441,15 @@
     @finally {
         
     }
-    if (row != 0) {
-        NSString *blogId = dict[@"blogId"];
-        if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
-            blogId = @"";
-        }
-        NSArray *replyArray = [replyDict objectForKey:blogId];
-        dict = [replyArray objectAtIndex:row - 1];
-        
-    }
+//    if (row != 0) {
+//        NSString *blogId = dict[@"blogId"];
+//        if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
+//            blogId = @"";
+//        }
+//        NSArray *replyArray = [replyDict objectForKey:blogId];
+//        dict = [replyArray objectAtIndex:row - 1];
+//        
+//    }
     HeUserMessageCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
         cell = [[HeUserMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
@@ -443,13 +459,7 @@
     
     
     NSString *blogContent = dict[@"blogContent"];
-    if (row != 0) {
-        blogContent = dict[@"replyContent"];
-        CGRect contentFrame = cell.contentLabel.frame;
-        contentFrame.origin.x = contentFrame.origin.x + 10;
-        contentFrame.size.width = contentFrame.size.width - 10;
-        cell.contentLabel.frame = contentFrame;
-    }
+    
     if ([blogContent isMemberOfClass:[NSNull class]] || blogContent == nil) {
         blogContent = @"";
     }
@@ -466,35 +476,14 @@
     cell.contentLabel.frame = contentFrame;
     
     NSString *userNick = dict[@"userNick"];
-    if (row != 0) {
-        userNick = dict[@"userNick"];
-        cell.tipLabel.text = nil;
-        CGRect tipFrame = cell.tipLabel.frame;
-        tipFrame.origin.x = tipFrame.origin.x + 10;
-        cell.tipLabel.frame = tipFrame;
-        
-        NSString *tipString = @"我回复";
-        NSString *subString = @"我";
-        NSMutableAttributedString *hintString = [[NSMutableAttributedString alloc]initWithString:tipString];
-        //获取要调整颜色的文字位置,调整颜色
-        NSRange range1 = [[hintString string]rangeOfString:subString];
-        [hintString addAttribute:NSForegroundColorAttributeName value:APPDEFAULTORANGE range:range1];
-        cell.tipLabel.attributedText = hintString;
-        
-        CGRect userNameFrame = cell.userNameLabel.frame;
-        userNameFrame.origin.x = userNameFrame.origin.x + 10;
-        userNameFrame.size.width = userNameFrame.size.width - 10;
-        cell.userNameLabel.frame = userNameFrame;
-    }
+    
     if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
         userNick = @"";
     }
     cell.userNameLabel.text = userNick;
     
     id blogTimeObj = [dict objectForKey:@"blogTime"];
-    if (row != 0) {
-        blogTimeObj = dict[@"replyTime"];
-    }
+    
     
     if ([blogTimeObj isMemberOfClass:[NSNull class]] || blogTimeObj == nil) {
         NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
@@ -507,7 +496,7 @@
         blogTime = [blogTime substringToIndex:[blogTime length] - 3];
     }
     
-    NSString *blogtimeStr = [Tool convertTimespToString:[blogTime longLongValue] dateFormate:@"yyyy-MM-dd"];
+    NSString *blogtimeStr = [Tool convertTimespToString:[blogTime longLongValue] dateFormate:@"yyyy-MM-dd HH:mm"];
     
     cell.timeLabel.text = blogtimeStr;
     
@@ -516,28 +505,13 @@
     if ([blogHost isMemberOfClass:[NSNull class]]) {
         blogHost = @"";
     }
-    if (row == 0) {
-        if (![myUserId isEqualToString:blogHost]) {
-            //如果是别人留言给用户
-            NSString *hostNick = dict[@"hostNick"];
-            if ([hostNick isMemberOfClass:[NSNull class]] || hostNick == nil) {
-                hostNick = @"";
-            }
-            cell.userNameLabel.text = hostNick;
-            
-            cell.tipLabel.hidden = YES;
-            CGRect userNameFrame = cell.userNameLabel.frame;
-            userNameFrame.origin.x = 10;
-            cell.userNameLabel.frame = userNameFrame;
-            cell.replyLabel.hidden = NO;
-        }
-        else{
-            cell.replyLabel.hidden = YES;
-        }
-    }
-    else{
-        cell.replyLabel.hidden = YES;
-    }
+    
+    cell.replyLabel.hidden = YES;
+    cell.tipLabel.hidden = YES;
+    
+    CGRect userNickFrame = cell.userNameLabel.frame;
+    userNickFrame.origin.x = 10;
+    cell.userNameLabel.frame = userNickFrame;
     
     cell.messageDict = [[NSDictionary alloc] initWithDictionary:dict];
     
@@ -577,6 +551,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    return;
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     NSDictionary *dict = nil;

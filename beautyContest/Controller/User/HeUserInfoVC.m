@@ -316,8 +316,6 @@
             NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
             User *user = [[User alloc] initUserWithDict:userDictInfo];
             user.userId = userInfo.userId;
-            user.userNick = userInfo.userNick;
-            user.userSign = userInfo.userSign;
             
             if ([userId isEqualToString:myUserId]) {
                 NSString *userDataPath = [Tool getUserDataPath];
@@ -414,6 +412,16 @@
         case 1:
         {
             content = userInfo.infoBirth;
+            if (userInfo.infoBirth.length > 5) {
+                @try {
+                    content = [userInfo.infoBirth substringFromIndex:5];
+                } @catch (NSException *exception) {
+                    
+                } @finally {
+        
+                }
+                
+            }
             break;
         }
         case 2:

@@ -290,6 +290,7 @@
     rewardField.layer.borderColor = [UIColor clearColor].CGColor;
     rewardField.delegate = self;
     rewardField.placeholder = @"0.00";
+    rewardField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     rewardField.font = [UIFont systemFontOfSize:16.0];
     rewardField.textColor = APPDEFAULTORANGE;
     

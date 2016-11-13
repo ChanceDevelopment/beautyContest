@@ -564,8 +564,10 @@
             if ([redPocketNum isMemberOfClass:[NSNull class]]) {
                 redPocketNum = @"";
             }
-            
-            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%@",[redPocketNum integerValue]];
+            if (![redPocketNum isKindOfClass:[NSString class]]) {
+                redPocketNum = @"";
+            }
+            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%ld",[redPocketNum integerValue]];
             [self showAlerWithText:data];
 //            [self showHint:data];
         }
@@ -599,14 +601,11 @@
                 userId = @"";
             }
 
-//            HeRecommendMessageVC *recommendMessageVC = [[HeRecommendMessageVC alloc] init];
-//            recommendMessageVC.userId = [[NSString alloc] initWithFormat:@"%@",userId];
-//            recommendMessageVC.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:recommendMessageVC animated:YES];
-            HeCommentView *commentView = [[HeCommentView alloc] init];
-            commentView.title = @"留言";
-            commentView.commentDelegate = self;
-            [self presentViewController:commentView animated:YES completion:nil];
+            HeRecommendMessageVC *recommendMessageVC = [[HeRecommendMessageVC alloc] init];
+            recommendMessageVC.userId = [[NSString alloc] initWithFormat:@"%@",userId];
+            recommendMessageVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:recommendMessageVC animated:YES];
+            
             break;
         }
         default:

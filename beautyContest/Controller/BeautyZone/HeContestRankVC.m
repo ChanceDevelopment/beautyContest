@@ -466,7 +466,8 @@
         userId = @"";
     }
     NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-    if ([myUserId isEqualToString:userId]) {
+    if (![myUserId isEqualToString:userId]) {
+        //按钮不能显示在非发布用户的页面中
         cell.favButton.hidden = YES;
     }
     return cell;
