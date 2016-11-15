@@ -18,6 +18,7 @@
 #import "HeUserInfoVC.h"
 #import "HeComplaintVC.h"
 #import "HeRecommendMessageVC.h"
+#import "HeComplaintUserVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -97,11 +98,14 @@
 - (void)initView
 {
     [super initView];
-    UIBarButtonItem *complaintItem = [[UIBarButtonItem alloc] init];
-    complaintItem.title = @"投诉";
-    complaintItem.tintColor = [UIColor whiteColor];
-    complaintItem.target = self;
-    complaintItem.action = @selector(complaintAction:);
+    
+    UIButton *moreButton = [[UIButton alloc] init];
+    [moreButton setTitle:@"投诉" forState:UIControlStateNormal];
+    [moreButton addTarget:self action:@selector(complaintAction:) forControlEvents:UIControlEventTouchUpInside];
+    moreButton.frame = CGRectMake(0, 0, 40, 25);
+    [moreButton.titleLabel setFont:[UIFont systemFontOfSize:13.5]];
+    
+    UIBarButtonItem *complaintItem = [[UIBarButtonItem alloc] initWithCustomView:moreButton];
     self.navigationItem.rightBarButtonItem = complaintItem;
     
     tableview.backgroundView = nil;
@@ -300,9 +304,41 @@
 
 - (void)complaintAction:(id)sender
 {
-    HeComplaintVC *complaintVC = [[HeComplaintVC alloc] init];
-    complaintVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:complaintVC animated:YES];
+    NSArray *menuArray = @[@"举报不良信息",@"投诉用户"];
+    [FTPopOverMenu setTintColor:APPDEFAULTORANGE];
+    [FTPopOverMenu showForSender:sender
+                        withMenu:menuArray
+                  imageNameArray:nil
+                       doneBlock:^(NSInteger selectedIndex) {
+                           switch (selectedIndex) {
+                               case 0:
+                               {
+                                   //投诉
+                                   HeComplaintVC *complaintVC = [[HeComplaintVC alloc] init];
+                                   complaintVC.hidesBottomBarWhenPushed = YES;
+                                   [self.navigationController pushViewController:complaintVC animated:YES];
+                                   break;
+                               }
+                               case 1:
+                               {
+                                   //投诉
+                                   HeComplaintUserVC *complaintVC = [[HeComplaintUserVC alloc] init];
+                                   complaintVC.userNick = recommendDict[@"userNick"];
+                                   complaintVC.hidesBottomBarWhenPushed = YES;
+                                   [self.navigationController pushViewController:complaintVC animated:YES];
+                                   break;
+                               }
+                               default:
+                                   break;
+                           }
+                           
+                           
+                           
+                       } dismissBlock:^{
+                           
+                           NSLog(@"user canceled. do nothing.");
+                           
+                       }];
 }
 
 - (void)scanUser:(UITapGestureRecognizer *)tap
@@ -340,6 +376,7 @@
         photo.image = srcImageView.image;
         photo.srcImageView = srcImageView;
         [photos addObject:photo];
+        index++;
     }
     MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
     browser.currentPhotoIndex = tap.view.tag - 10000;
@@ -567,7 +604,11 @@
             if (![redPocketNum isKindOfClass:[NSString class]]) {
                 redPocketNum = @"";
             }
-            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%ld",[redPocketNum integerValue]];
+            if ([redPocketNum integerValue] == 0) {
+                [self showHint:@"红包已领取完"];
+                return;
+            }
+            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%ld",(long)[redPocketNum integerValue]];
             [self showAlerWithText:data];
 //            [self showHint:data];
         }

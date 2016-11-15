@@ -189,6 +189,8 @@
 		EA9D93521D6DF5CA003DFBBE /* HeUserJoinVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D93501D6DF5CA003DFBBE /* HeUserJoinVC.m */; };
 		EA9D93531D6DF5CA003DFBBE /* HeUserJoinVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */; };
 		EA9D93561D6DF6F5003DFBBE /* HeUserJoinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */; };
+		EAAB7AEB1DDA9E9B004F1D0C /* HeComplaintUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAB7AE91DDA9E9B004F1D0C /* HeComplaintUserVC.m */; };
+		EAAB7AEC1DDA9E9B004F1D0C /* HeComplaintUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAAB7AEA1DDA9E9B004F1D0C /* HeComplaintUserVC.xib */; };
 		EAB538D61D6F4C77008BCC17 /* ic_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D51D6F4C77008BCC17 /* ic_empty.png */; };
 		EAB538D81D6F4CAE008BCC17 /* icon_add_pho.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D71D6F4CAE008BCC17 /* icon_add_pho.png */; };
 		EAB538DA1D6F4EB2008BCC17 /* icon_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D91D6F4EB2008BCC17 /* icon_delete.png */; };
@@ -1003,6 +1005,9 @@
 		EA9D93511D6DF5CA003DFBBE /* HeUserJoinVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeUserJoinVC.xib; sourceTree = "<group>"; };
 		EA9D93541D6DF6F5003DFBBE /* HeUserJoinCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeUserJoinCell.h; path = BeautyContest/HeUserJoinCell.h; sourceTree = "<group>"; };
 		EA9D93551D6DF6F5003DFBBE /* HeUserJoinCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeUserJoinCell.m; path = BeautyContest/HeUserJoinCell.m; sourceTree = "<group>"; };
+		EAAB7AE81DDA9E9B004F1D0C /* HeComplaintUserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeComplaintUserVC.h; sourceTree = "<group>"; };
+		EAAB7AE91DDA9E9B004F1D0C /* HeComplaintUserVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeComplaintUserVC.m; sourceTree = "<group>"; };
+		EAAB7AEA1DDA9E9B004F1D0C /* HeComplaintUserVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeComplaintUserVC.xib; sourceTree = "<group>"; };
 		EAB538D51D6F4C77008BCC17 /* ic_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_empty.png; sourceTree = "<group>"; };
 		EAB538D71D6F4CAE008BCC17 /* icon_add_pho.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_add_pho.png; sourceTree = "<group>"; };
 		EAB538D91D6F4EB2008BCC17 /* icon_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_delete.png; sourceTree = "<group>"; };
@@ -2660,6 +2665,9 @@
 				EAC1B8741DD0D76200505B45 /* HeComplaintVC.xib */,
 				EAC1B87B1DD0D8E800505B45 /* TKAddressBook.h */,
 				EAC1B87C1DD0D8E800505B45 /* TKAddressBook.m */,
+				EAAB7AE81DDA9E9B004F1D0C /* HeComplaintUserVC.h */,
+				EAAB7AE91DDA9E9B004F1D0C /* HeComplaintUserVC.m */,
+				EAAB7AEA1DDA9E9B004F1D0C /* HeComplaintUserVC.xib */,
 			);
 			name = Complaint;
 			sourceTree = "<group>";
@@ -4818,6 +4826,7 @@
 				EA4D01931D4D9A6B00A0CCA1 /* HeContestRankVC.xib in Resources */,
 				EAC4F9E81D6D72B700F96DDA /* HeEnrollVC.xib in Resources */,
 				077D0EAF1DC83512009F48E9 /* ios_guide_step_1.png in Resources */,
+				EAAB7AEC1DDA9E9B004F1D0C /* HeComplaintUserVC.xib in Resources */,
 				EA5090491DB07471007E721A /* icon_message_black.png in Resources */,
 				EAC2CD5D1D4AF5D800E282A8 /* LICENSE in Resources */,
 				EA8027FE1D52E654008BC4E6 /* sdRefeshView_arrow@2x.png in Resources */,
@@ -5268,6 +5277,7 @@
 				EAB538DD1D6F5509008BCC17 /* HeZoneCommentCell.m in Sources */,
 				EAC2CD8D1D4AF5D800E282A8 /* RACChannel.m in Sources */,
 				EAC2CCF71D4AF5D800E282A8 /* DFTableViewRefreshControl.m in Sources */,
+				EAAB7AEB1DDA9E9B004F1D0C /* HeComplaintUserVC.m in Sources */,
 				EA0508F41D6E9FE8003947EE /* HeUserDistributeVC.m in Sources */,
 				EA4D01441D4CE8FF00A0CCA1 /* BBLaunchAdMonitor.m in Sources */,
 				07E880481DC44F23000A13E8 /* UMFeedbackViewController.m in Sources */,

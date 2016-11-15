@@ -14,6 +14,9 @@
 #import "MLLabel+Size.h"
 #import "HeEditUserInfoVC.h"
 #import "UIButton+Bootstrap.h"
+#import "FTPopOverMenu.h"
+#import "HeComplaintUserVC.h"
+#import "HeComplaintVC.h"
 
 #define TextLineHeight 1.2f
 #define HEADTAG 1000
@@ -86,6 +89,17 @@
         editItem.action = @selector(editUserInfo:);
         self.navigationItem.rightBarButtonItem = editItem;
     }
+    else{
+        UIButton *moreButton = [[UIButton alloc] init];
+        [moreButton setTitle:@"投诉" forState:UIControlStateNormal];
+        [moreButton addTarget:self action:@selector(complaintAction:) forControlEvents:UIControlEventTouchUpInside];
+        moreButton.frame = CGRectMake(0, 0, 40, 25);
+        [moreButton.titleLabel setFont:[UIFont systemFontOfSize:13.5]];
+        
+        UIBarButtonItem *complaintItem = [[UIBarButtonItem alloc] initWithCustomView:moreButton];
+        self.navigationItem.rightBarButtonItem = complaintItem;
+    }
+    
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
@@ -174,11 +188,17 @@
     tableview.tableHeaderView = sectionHeaderView;
 }
 
+- (void)complaintAction:(id)sender
+{
+    HeComplaintUserVC *complaintVC = [[HeComplaintUserVC alloc] init];
+    complaintVC.userNick = userInfo.userNick;
+    complaintVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:complaintVC animated:YES];
+}
+
 - (void)loadUserDetail
 {
     if (isScanUser) {
-        self.navigationItem.rightBarButtonItem.title = nil;
-        
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 60)];
         
         footerView.userInteractionEnabled = YES;

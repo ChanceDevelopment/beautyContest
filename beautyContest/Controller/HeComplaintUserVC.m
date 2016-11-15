@@ -6,19 +6,19 @@
 //  Copyright (c) 2014年 何 栋明. All rights reserved.
 //
 
-#import "HeComplaintVC.h"
+#import "HeComplaintUserVC.h"
 #import "ScanPictureView.h"
 #import "AppDelegate.h"
 #import "UIButton+Bootstrap.h"
 #import "TKAddressBook.h"
 #import "UMFeedback.h"
 
-@interface HeComplaintVC ()
+@interface HeComplaintUserVC ()
 @property(strong,nonatomic)NSMutableArray *dataSource;
 
 @end
 
-@implementation HeComplaintVC
+@implementation HeComplaintUserVC
 @synthesize distributeTable;
 @synthesize distributeTF;
 @synthesize headerBGView;
@@ -28,6 +28,7 @@
 @synthesize buttonArray;
 @synthesize dataSource;
 @synthesize fzid;
+@synthesize userNick;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,7 +40,7 @@
         label.font = [UIFont boldSystemFontOfSize:20.0];
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
-        label.text = @"举报不良信息";
+        label.text = @"投诉用户";
         [label sizeToFit];
         self.navigationItem.titleView = label;
         
@@ -80,7 +81,7 @@
     addPictureButton.frame = CGRectMake(10, 5, 70, 70);
     [addPictureButton addTarget:self action:@selector(addPictureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-   
+    
     UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(distributeNews:)];
     distributeItem.tintColor = [UIColor whiteColor];
     if (!ISIOS7) {
@@ -284,7 +285,7 @@
     }
     //截取图片
     UIImage *jiequImage = [self imageFromImage:image inRect:frame];
-//    CGSize jiequSize = jiequImage.size;
+    //    CGSize jiequSize = jiequImage.size;
     
     
     addPictureButton.tag = 1;
@@ -341,7 +342,7 @@
     distributeTF = [[UITextField alloc] initWithFrame:CGRectMake(distributeX, distributeY, distributeW, distributeH)];
     distributeTF.font = [UIFont systemFontOfSize:16.0];
     distributeTF.textColor = [UIColor blackColor];
-    distributeTF.placeholder = @"请输入举报详情";
+    distributeTF.placeholder = @"请输入投诉详情";
     [headerBGView addSubview:distributeTF];
     
 }
@@ -361,17 +362,17 @@
 {
     NSString *content = distributeTF.text;
     if ([content isEqualToString:@""] || content == nil) {
-        [self showHint:@"请输入举报内容"];
+        [self showHint:@"请输入投诉内容"];
         return;
     }
     if ([buttonArray count] == 0) {
-        [self showHint:@"请选择图片作为举报凭证"];
+        [self showHint:@"请选择图片作为投诉凭证"];
     }
     [self showHudInView:self.distributeTable hint:@"提交中..."];
     NSDictionary *feedDict = @{@"content":content};
     
     UMFeedback *feedback = [[UMFeedback alloc] init];
-    __block HeComplaintVC *weakSelf = self;
+    __block HeComplaintUserVC *weakSelf = self;
     [feedback post:feedDict completion:^(NSError *error){
         [self hideHud];
         if (error) {
@@ -414,10 +415,10 @@
     if (stateid != 1) {
         NSString *msg = [receiveDic objectForKey:@"msg"];
         if ([msg isMemberOfClass:[NSNull class]] || msg == nil) {
-            msg = @"举报出错，请重试";
+            msg = @"投诉出错，请重试";
         }
         [self showHint:msg];
-//        [self showTipLabelWith:msg];
+        //        [self showTipLabelWith:msg];
         return;
     }
     if (uploadType == 1) {
@@ -426,8 +427,8 @@
         return;
     }
     if (uploadType == 2) {
-        [self showHint:@"你的举报我们会24小时内处理"];
-//        [self showTipLabelWith:@"你的投诉我们会24小时内处理"];
+        [self showHint:@"你的投诉我们会24小时内处理"];
+        //        [self showTipLabelWith:@"你的投诉我们会24小时内处理"];
         [self performSelector:@selector(backTolastView:) withObject:nil afterDelay:1.0];
     }
 }
@@ -448,7 +449,8 @@
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return @"请选择举报原因";
+        return [[NSString alloc] initWithFormat:@"被投诉人：%@，请选择投诉原因",userNick];
+//        @"请选择投诉原因";
     }
     return @"请选择上传图片";
 }
@@ -459,7 +461,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
         
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        //        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     }
     NSInteger row = indexPath.row;
@@ -532,7 +534,7 @@
         }
         case 1:
         {
-            return 80;
+            return 100;
             break;
         }
         default:

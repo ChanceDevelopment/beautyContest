@@ -27,6 +27,7 @@
 #import "MLLinkLabel.h"
 #import "MLLabel+Size.h"
 #import "HeComplaintVC.h"
+#import "HeComplaintUserVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -176,7 +177,7 @@
 
 - (void)moreItemClick:(id)sender
 {
-    NSArray *menuArray = @[@"分享",@"投诉"];
+    NSArray *menuArray = @[@"分享",@"举报不良信息",@"投诉用户"];
     [FTPopOverMenu setTintColor:APPDEFAULTORANGE];
     [FTPopOverMenu showForSender:sender
                         withMenu:menuArray
@@ -192,6 +193,15 @@
                                {
                                    //投诉
                                    HeComplaintVC *complaintVC = [[HeComplaintVC alloc] init];
+                                   complaintVC.hidesBottomBarWhenPushed = YES;
+                                   [self.navigationController pushViewController:complaintVC animated:YES];
+                                   break;
+                               }
+                               case 2:
+                               {
+                                   //投诉
+                                   HeComplaintUserVC *complaintVC = [[HeComplaintUserVC alloc] init];
+                                   complaintVC.userNick = contestDetailDict[@"userNick"];
                                    complaintVC.hidesBottomBarWhenPushed = YES;
                                    [self.navigationController pushViewController:complaintVC animated:YES];
                                    break;
@@ -580,7 +590,7 @@
 //            [self showHint:data];
         }
     } failure:^(NSError *error){
-        [self showHint:ERRORREQUESTTIP];
+//        [self showHint:ERRORREQUESTTIP];
     }];
 }
 

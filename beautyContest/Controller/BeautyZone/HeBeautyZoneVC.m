@@ -327,7 +327,7 @@
             break;
     }
     
-    [self showHudInView:self.view hint:@"获取赛区中..."];
+    [self showHudInView:self.tableview hint:@"获取赛区中..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];

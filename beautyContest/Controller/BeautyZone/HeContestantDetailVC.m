@@ -12,6 +12,9 @@
 #import "MLLinkLabel.h"
 #import "HeCommentView.h"
 #import "MJPhotoBrowser.h"
+#import "FTPopOverMenu.h"
+#import "HeComplaintVC.h"
+#import "HeComplaintUserVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -107,6 +110,15 @@
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
+    
+    UIButton *moreButton = [[UIButton alloc] init];
+    [moreButton setTitle:@"投诉" forState:UIControlStateNormal];
+    [moreButton addTarget:self action:@selector(complaintAction:) forControlEvents:UIControlEventTouchUpInside];
+    moreButton.frame = CGRectMake(0, 0, 40, 25);
+    [moreButton.titleLabel setFont:[UIFont systemFontOfSize:13.5]];
+    
+    UIBarButtonItem *complaintItem = [[UIBarButtonItem alloc] initWithCustomView:moreButton];
+    self.navigationItem.rightBarButtonItem = complaintItem;
     
     CGFloat headerH = 200;
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, headerH)];
@@ -290,6 +302,19 @@
     CGFloat scrollH = imageScrollViewHeigh;
     myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollX, scrollY, scrollW, scrollH)];
     
+}
+
+- (void)complaintAction:(id)sender
+{
+    NSString *userNick = [contestantDetailDict objectForKey:@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+        userNick = @"";
+    }
+    
+    HeComplaintUserVC *complaintVC = [[HeComplaintUserVC alloc] init];
+    complaintVC.userNick = userNick;
+    complaintVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:complaintVC animated:YES];
 }
 
 - (void)massageButtonClick:(UIButton *)button
