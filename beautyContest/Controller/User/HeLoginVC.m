@@ -11,6 +11,8 @@
 #import "UIButton+Bootstrap.h"
 #import "User.h"
 #import "HeSysbsModel.h"
+#import "WXApi.h"
+#import <ShareSDK/ShareSDK.h>
 
 @interface HeLoginVC ()<UITextFieldDelegate>
 @property(strong,nonatomic)IBOutlet UITextField *accountField;
@@ -71,6 +73,106 @@
     [loginButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:loginButton.frame.size] forState:UIControlStateNormal];
     
     self.view.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    
+#pragma mark - 微信登录
+    /*
+     目前移动应用上德微信登录只提供原生的登录方式，需要用户安装微信客户端才能配合使用。
+     对于iOS应用,考虑到iOS应用商店审核指南中的相关规定，建议开发者接入微信登录时，先检测用户手机是否已经安装
+     微信客户端(使用sdk中的isWXAppInstall函数),对于未安装的用户隐藏微信 登录按钮，只提供其他登录方式。
+     */
+    if ([WXApi isWXAppInstalled]) {
+        loginButton.hidden = NO;
+    }
+    else{
+        loginButton.hidden = YES;
+    }
+}
+
+//第三方登录
+- (IBAction)thirdPartyLogin
+{
+    //微信第三方登录
+    [ShareSDK getUserInfo:SSDKPlatformTypeWechat
+           onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error)
+     {
+         if (state == SSDKResponseStateSuccess)
+         {
+             NSString *nickname = user.nickname;
+             NSString *icon = user.icon;
+             if ([nickname isMemberOfClass:[NSNull class]] || nickname == nil) {
+                 nickname = @"";
+             }
+             if ([icon isMemberOfClass:[NSNull class]] || icon == nil) {
+                 icon = @"";
+             }
+             
+             NSDictionary *rootDict = @{@"MemLoginID":[user.credential.rawData objectForKey:@"unionid"],@"nickname":nickname,@"userIcon":icon,@"thirdPartyLogin":[NSNumber numberWithBool:YES]};
+             
+             
+        
+         }
+         
+         else
+         {
+             
+             NSLog(@"%@",error);
+         }
+         
+     }];
+    
+}
+
+- (void)loginWithLoginParams:(NSDictionary *)loginParams
+{
+    [self showHudInView:self.view hint:@"登录中..."];
+    NSString *loginUrl = [NSString stringWithFormat:@"%@/user/WXLogin.action",BASEURL];
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:loginUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
+            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
+            if (userState == 0) {
+                [self showHint:@"当前用户不可用"];
+                return ;
+            }
+            NSString *userDataPath = [Tool getUserDataPath];
+            NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
+            BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
+            if (succeed) {
+                NSLog(@"用户资料写入成功");
+            }
+            User *user = [[User alloc] initUserWithDict:userDictInfo];
+            [HeSysbsModel getSysModel].user = user;
+            NSString *userId = [HeSysbsModel getSysModel].user.userId;
+            if (userId == nil) {
+                userId = @"";
+            }
+            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:USERACCOUNTKEY];
+            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:USERPASSWORDKEY];
+            [[NSUserDefaults standardUserDefaults] setObject:userId forKey:USERIDKEY];
+            User *userInfo = [[User alloc] initUserWithDict:userDictInfo];
+            [HeSysbsModel getSysModel].user = userInfo;
+            
+            //发送自动登陆状态通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+        }
+        else{
+            [self hideHud];
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = @"登录失败!";
+            }
+            [self showHint:data];
+        }
+        
+    } failure:^(NSError *error){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)enrollMethod:(id)sender

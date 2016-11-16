@@ -263,7 +263,7 @@
     [footerView addSubview:joinButton];
     
     
-    UIButton *voteButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"谢谢您" image:nil];
+    UIButton *voteButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"投票" image:nil];
     voteButton.hidden = YES;
     voteButton.tag = VOTETAGSUCCESS;
     [voteButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -685,6 +685,7 @@
 {
     NSLog(@"button = %@",button);
     if (!haveNOVoted) {
+        [self showHint:@"您已投票"];
         return;
     }
     NSString *voteHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];

@@ -110,7 +110,7 @@
         userid = @"";
     }
     NSDictionary *requestMessageParams = @{@"userId":userid};
-    [self showHudInView:self.view hint:@"正在获取..."];
+    [self showHudInView:self.myScrollView hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
