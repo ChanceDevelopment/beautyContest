@@ -40,11 +40,6 @@
 
 - (void)getUserFans
 {
-//    User *user = [HeSysbsModel getSysModel].user;
-//    NSMutableArray *fansArray = user.fansArray;
-//    if (fansArray == nil) {
-//        fansArray = [[NSMutableArray alloc] initWithCapacity:0];
-//    }
     NSString *getUserFansUrl = [NSString stringWithFormat:@"%@/user/getFansNum.action",BASEURL];
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (userId == nil) {

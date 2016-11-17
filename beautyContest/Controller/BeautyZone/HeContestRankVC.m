@@ -461,14 +461,17 @@
     }
     cell.distanceLabel.text = infoProfession;
     
-    NSString *userId = dict[@"userId"];
+    NSString *userId = contestDict[@"userId"];
     if ([userId isMemberOfClass:[NSNull class]]) {
         userId = @"";
     }
     NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (![myUserId isEqualToString:userId]) {
         //按钮不能显示在非发布用户的页面中
-//        cell.favButton.hidden = YES;
+        cell.favButton.hidden = YES;
+    }
+    else{
+        cell.favButton.hidden = NO;
     }
     return cell;
 }
