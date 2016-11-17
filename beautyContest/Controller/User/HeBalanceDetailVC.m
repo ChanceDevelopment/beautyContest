@@ -198,7 +198,7 @@
 - (void)egoRefreshTableFootDidTriggerRefresh:(EGORefreshTableFootView*)view
 {
     updateOption = 2;//加载历史标志
-    pageNo++;
+    pageNo = [dataSource count];
     
     @try {
         

@@ -15,6 +15,7 @@
 #import "UMFeedback.h"
 #import "HeModifyPasswordVC.h"
 #import "HeFeedbackVC.h"
+#import "HeBlockUserVC.h"
 
 @interface HeSettingVC ()<UIAlertViewDelegate>
 @property(strong,nonatomic)IBOutlet UITableView *settingTable;
@@ -65,7 +66,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    dataSource = @[@[@"修改密码"],@[@"意见反馈",@"关于"]];
+    dataSource = @[@[@"修改密码",@"黑名单"],@[@"意见反馈",@"关于"]];
 }
 
 - (void)initView
@@ -241,6 +242,13 @@
                     HeModifyPasswordVC *modifyPasswordVC = [[HeModifyPasswordVC alloc] init];
                     modifyPasswordVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:modifyPasswordVC animated:YES];
+                    break;
+                }
+                case 1:
+                {
+                    HeBlockUserVC *blockUserVC = [[HeBlockUserVC alloc] init];
+                    blockUserVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:blockUserVC animated:YES];
                     break;
                 }
                 default:

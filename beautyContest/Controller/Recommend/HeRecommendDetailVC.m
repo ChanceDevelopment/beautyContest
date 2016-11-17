@@ -100,7 +100,7 @@
     [super initView];
     
     UIButton *moreButton = [[UIButton alloc] init];
-    [moreButton setTitle:@"投诉" forState:UIControlStateNormal];
+    [moreButton setTitle:@"更多" forState:UIControlStateNormal];
     [moreButton addTarget:self action:@selector(complaintAction:) forControlEvents:UIControlEventTouchUpInside];
     moreButton.frame = CGRectMake(0, 0, 40, 25);
     [moreButton.titleLabel setFont:[UIFont systemFontOfSize:13.5]];
@@ -304,7 +304,7 @@
 
 - (void)complaintAction:(id)sender
 {
-    NSArray *menuArray = @[@"举报不良信息",@"投诉用户"];
+    NSArray *menuArray = @[@"举报",@"屏蔽该发布人"];
     [FTPopOverMenu setTintColor:APPDEFAULTORANGE];
     [FTPopOverMenu showForSender:sender
                         withMenu:menuArray
@@ -321,7 +321,9 @@
                                }
                                case 1:
                                {
-                                   //投诉
+                                   //屏蔽用户
+                                   [self blockUserButtonClick];
+                                   return;
                                    HeComplaintUserVC *complaintVC = [[HeComplaintUserVC alloc] init];
                                    complaintVC.userNick = recommendDict[@"userNick"];
                                    complaintVC.hidesBottomBarWhenPushed = YES;
@@ -339,6 +341,87 @@
                            NSLog(@"user canceled. do nothing.");
                            
                        }];
+}
+
+//屏蔽用户
+- (void)blockUserButtonClick
+{
+    NSString *userId = recommendDict[@"recommendUser"]; //发布人的ID
+    if ([userId isMemberOfClass:[NSNull class]]) {
+        userId = nil;
+    }
+    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([userId isEqualToString:myUserId]) {
+        [self showHint:@"不能屏蔽自己"];
+        return;
+    }
+    if (ISIOS8) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"屏蔽该用户之后，他发布的内容将不会出现你的内容列表里面" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){
+            NSLog(@"cancelAction");
+        }];
+        UIAlertAction *blockAction = [UIAlertAction actionWithTitle:@"屏蔽" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            NSString *userId = recommendDict[@"recommendUser"]; //发布人的ID
+            if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+                userId = @"";
+            }
+            NSString *userNick = recommendDict[@"userNick"];
+            if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+                userNick = @"";
+            }
+            NSDictionary *userDict = @{@"userId":userId,@"userNick":userNick};
+            [self blockUserWithUser:userDict];
+        }];
+        [alertController addAction:cancelAction];
+        [alertController addAction:blockAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
+    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"屏蔽该用户之后，他发布的内容将不会出现你的内容列表里面" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"屏蔽", nil];
+    alertview.tag = 200;
+    [alertview show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 200) {
+        switch (buttonIndex) {
+            case 1:
+            {
+                NSString *userId = recommendDict[@"recommendUser"]; //发布人的ID
+                if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+                    userId = @"";
+                }
+                NSString *userNick = recommendDict[@"userNick"];
+                if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
+                    userNick = @"";
+                }
+                NSDictionary *userDict = @{@"userId":userId,@"userNick":userNick};
+                [self blockUserWithUser:userDict];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+- (void)blockUserWithUser:(NSDictionary *)userDict
+{
+    NSLog(@"blockUser");
+    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSMutableArray *tmpArray = [[NSMutableArray alloc] initWithCapacity:0];
+    NSString *blockKey = [NSString stringWithFormat:@"%@_%@",BLOCKINGLIST,myUserId];
+    NSArray *blockArray = [[NSUserDefaults standardUserDefaults] objectForKey:blockKey];
+    if (blockArray != nil) {
+        [tmpArray addObjectsFromArray:blockArray];
+    }
+    [tmpArray addObject:userDict];
+    blockArray = [[NSArray alloc] initWithArray:tmpArray];
+    [[NSUserDefaults standardUserDefaults] setObject:blockArray forKey:blockKey];
+    NSNotification *notification = [NSNotification notificationWithName:@"blockUserSucceed" object:nil userInfo:userDict];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    [self showHint:@"成功屏蔽用户"];
 }
 
 - (void)scanUser:(UITapGestureRecognizer *)tap

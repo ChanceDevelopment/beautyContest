@@ -206,7 +206,7 @@ BMKMapManager* _mapManager;
 
 - (void)loginStateChange:(NSNotification *)notification
 {
-    NSString *userAccount = [[NSUserDefaults standardUserDefaults] objectForKey:USERACCOUNTKEY];
+    NSString *userAccount = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     BOOL haveLogin = (userAccount == nil) ? NO : YES;
     
     if (haveLogin) {//登陆成功加载主窗口控制器

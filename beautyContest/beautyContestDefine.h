@@ -74,6 +74,9 @@
 //图片上传成功发出的通知
 #define UPLOADIMAGESUCCEED_NOTIFICATION @"uploadImageSucceed"
 
+//黑名单
+#define BLOCKINGLIST @"blockingList"
+
 //用户的签名 sign
 #define USERSIGNKEY @"userSignKey"
 //用户的ID userid

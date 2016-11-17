@@ -80,6 +80,7 @@
     pageNo = 0;
     imageCache = [[NSCache alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRecommend:) name:@"updateRecommend" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blockUserSucceed:) name:@"blockUserSucceed" object:nil];
 }
 
 - (void)initView
@@ -114,6 +115,24 @@
     [self loadBeautyContestShow:NO];
 }
 
+- (void)blockUserSucceed:(NSNotification *)notificaition
+{
+    NSDictionary *userInfo = notificaition.userInfo;
+    NSString *userId = userInfo[@"userId"];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:0];
+    for (NSDictionary *zoneDict in dataSource) {
+        NSString *zoneUserId = zoneDict[@"recommendUser"];
+        if ([zoneUserId isMemberOfClass:[NSNull class]]) {
+            zoneUserId = @"";
+        }
+        if (![zoneUserId isEqualToString:userId]) {
+            [array addObject:zoneDict];
+        }
+    }
+    dataSource = [[NSMutableArray alloc] initWithArray:array];
+    [tableview reloadData];
+}
+
 - (void)loadBeautyContestShow:(BOOL)show
 {
     NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/recommend/showwaterfallflow.action",BASEURL];
@@ -133,8 +152,27 @@
                 [dataSource removeAllObjects];
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            NSString *blockKey = [NSString stringWithFormat:@"%@_%@",BLOCKINGLIST,myUserId];
+            
+            NSArray *blockArray = [[NSUserDefaults standardUserDefaults] objectForKey:blockKey];
             for (NSDictionary *zoneDict in resultArray) {
-                [dataSource addObject:zoneDict];
+                BOOL isBlock = NO;
+                for (NSDictionary *dict in blockArray) {
+                    NSString *userId = dict[@"userId"];
+                    NSString *zoneUserId = zoneDict[@"recommendUser"];
+                    if ([zoneUserId isMemberOfClass:[NSNull class]]) {
+                        zoneUserId = @"";
+                    }
+                    if ([zoneUserId isEqualToString:userId]) {
+                        isBlock = YES;
+                        break;
+                    }
+                }
+                if (!isBlock) {
+                    [dataSource addObject:zoneDict];
+                }
+                
             }
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
             [self.tableview reloadData];
@@ -336,7 +374,7 @@
 - (void)egoRefreshTableFootDidTriggerRefresh:(EGORefreshTableFootView*)view
 {
     updateOption = 2;//加载历史标志
-    pageNo++;
+    pageNo = [dataSource count];
     
     @try {
         

@@ -105,8 +105,18 @@
              if ([icon isMemberOfClass:[NSNull class]] || icon == nil) {
                  icon = @"";
              }
+             NSDictionary *rawData = user.rawData;
              
-             NSDictionary *rootDict = @{@"MemLoginID":[user.credential.rawData objectForKey:@"unionid"],@"nickname":nickname,@"userIcon":icon,@"thirdPartyLogin":[NSNumber numberWithBool:YES]};
+             NSString *WeiXinId = rawData[@"openid"];
+             NSString *userHeader = rawData[@"headimgurl"];
+             NSString *userNick = rawData[@"nickname"];
+             NSString *userName = @"";
+             NSString *userPwd = @"";
+             NSString *userSex = [NSString stringWithFormat:@"%@",rawData[@"sex"]];
+             
+             NSDictionary *wechatLoginParam = @{@"WeiXinId":WeiXinId,@"userHeader":userHeader,@"userNick":userNick,@"userName":userName,@"userPwd":userPwd,@"userSex":userSex};
+             
+             [self loginWithLoginParams:@{@"WXinfo":[wechatLoginParam JSONString]}];
              
              
         
@@ -125,7 +135,7 @@
 - (void)loginWithLoginParams:(NSDictionary *)loginParams
 {
     [self showHudInView:self.view hint:@"登录中..."];
-    NSString *loginUrl = [NSString stringWithFormat:@"%@/user/WXLogin.action",BASEURL];
+    NSString *loginUrl = [NSString stringWithFormat:@"%@user/WXLogin.action",BASEURL];
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:loginUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -133,12 +143,20 @@
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
-            NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
-            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
-            if (userState == 0) {
-                [self showHint:@"当前用户不可用"];
-                return ;
+            NSString *myuserId = [respondDict objectForKey:@"json"];
+            if ([myuserId isMemberOfClass:[NSNull class]]) {
+                myuserId = @"";
             }
+            NSString *userInfoString = loginParams[@"WXinfo"];
+            NSDictionary *wechatDict = [userInfoString objectFromJSONString];
+            NSDictionary *userDictInfo = @{@"userState":wechatDict[@"userSex"],@"userId":myuserId};
+//            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
+//            if (userState == 0) {
+//                [self showHint:@"当前用户不可用"];
+//                return ;
+//            }
+            NSDictionary *myUserDict = @{@"data":@"success",@"errorCode":@"200",@"json":userDictInfo};
+            respondString = [myUserDict JSONString];
             NSString *userDataPath = [Tool getUserDataPath];
             NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
             BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];

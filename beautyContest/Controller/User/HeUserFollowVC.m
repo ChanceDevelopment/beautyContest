@@ -10,7 +10,7 @@
 #import "HeUserFollowTableCell.h"
 #import "HeUserInfoVC.h"
 
-@interface HeUserFollowVC ()
+@interface HeUserFollowVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSMutableArray *dataSource;

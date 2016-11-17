@@ -172,6 +172,8 @@
 		EA5EC6221D77C0FF004D5FEC /* TOActivitySafari.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC6191D77C0FF004D5FEC /* TOActivitySafari.m */; };
 		EA5EC6231D77C0FF004D5FEC /* TOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61B1D77C0FF004D5FEC /* TOWebViewController.m */; };
 		EA5EC6241D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */; };
+		EA71A1751DDD525C00B16333 /* HeBlockUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */; };
+		EA71A1761DDD525C00B16333 /* HeBlockUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */; };
 		EA7F2FCF1DD37C10001857F4 /* UWDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */; };
 		EA7F2FD01DD37C10001857F4 /* UWDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */; };
 		EA8027E81D52DC20008BC4E6 /* AoiroSoraLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027E71D52DC20008BC4E6 /* AoiroSoraLayout.m */; };
@@ -974,6 +976,9 @@
 		EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TOWebViewControllerIcons.m"; sourceTree = "<group>"; };
 		EA5EC61E1D77C0FF004D5FEC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/TOWebViewControllerLocalizable.strings"; sourceTree = "<group>"; };
 		EA5EC61F1D77C0FF004D5FEC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/TOWebViewControllerLocalizable.strings"; sourceTree = "<group>"; };
+		EA71A1721DDD525C00B16333 /* HeBlockUserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBlockUserVC.h; sourceTree = "<group>"; };
+		EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBlockUserVC.m; sourceTree = "<group>"; };
+		EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBlockUserVC.xib; sourceTree = "<group>"; };
 		EA7F2FCC1DD37C10001857F4 /* UWDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWDatePickerView.h; sourceTree = "<group>"; };
 		EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWDatePickerView.m; sourceTree = "<group>"; };
 		EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UWDatePickerView.xib; sourceTree = "<group>"; };
@@ -2403,6 +2408,9 @@
 				07F3AB271DC473E7008AD00E /* HeUserLocatiVC.h */,
 				07F3AB281DC473E8008AD00E /* HeUserLocatiVC.m */,
 				07F3AB291DC473E8008AD00E /* HeUserLocatiVC.xib */,
+				EA71A1721DDD525C00B16333 /* HeBlockUserVC.h */,
+				EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */,
+				EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -4792,6 +4800,7 @@
 				EA4D01891D4D93E500A0CCA1 /* HeBaseTableViewCell.xib in Resources */,
 				EACC98351D50E5DB00E627B8 /* icon_nearby_message.png in Resources */,
 				EAC2CD111D4AF5D800E282A8 /* blueArrow.png in Resources */,
+				EA71A1761DDD525C00B16333 /* HeBlockUserVC.xib in Resources */,
 				EA0508F51D6E9FE8003947EE /* HeUserDistributeVC.xib in Resources */,
 				EA4645481D51B9D800CD539F /* icon_love.png in Resources */,
 				EAC2CDF21D4AF5D800E282A8 /* ProvincesAndCities.plist in Resources */,
@@ -5386,6 +5395,7 @@
 				EAC2CCCD1D4AF5D800E282A8 /* ASIHTTPRequest.m in Sources */,
 				EADE32F41D76B4B30025492B /* HeDistributePhotoVC.m in Sources */,
 				EAC2CCEC1D4AF5D800E282A8 /* Reachability.m in Sources */,
+				EA71A1751DDD525C00B16333 /* HeBlockUserVC.m in Sources */,
 				EAC2CCB61D4AF5D800E282A8 /* AFHTTPSessionManager.m in Sources */,
 				EAC2CDC71D4AF5D800E282A8 /* UISlider+RACSignalSupport.m in Sources */,
 				EAC2CD581D4AF5D800E282A8 /* NSAttributedString+MLExpression.m in Sources */,

@@ -99,6 +99,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blockUserSucceed:) name:@"blockUserSucceed" object:nil];
     imageCache = [[NSCache alloc] init];
     requestReply = NO;
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
@@ -199,6 +200,24 @@
     UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
     distributeItem.target = self;
     self.navigationItem.rightBarButtonItem = distributeItem;
+}
+
+- (void)blockUserSucceed:(NSNotification *)notificaition
+{
+    NSDictionary *userInfo = notificaition.userInfo;
+    NSString *userId = userInfo[@"userId"];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:0];
+    for (NSDictionary *zoneDict in dataSource) {
+        NSString *zoneUserId = zoneDict[@"userId"];
+        if ([zoneUserId isMemberOfClass:[NSNull class]]) {
+            zoneUserId = @"";
+        }
+        if (![zoneUserId isEqualToString:userId]) {
+            [array addObject:zoneDict];
+        }
+    }
+    dataSource = [[NSMutableArray alloc] initWithArray:array];
+    [tableview reloadData];
 }
 
 - (void)searchMethod:(UITapGestureRecognizer *)tap
@@ -343,8 +362,27 @@
                 [dataSource removeAllObjects];
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            NSString *blockKey = [NSString stringWithFormat:@"%@_%@",BLOCKINGLIST,myUserId];
+            
+            NSArray *blockArray = [[NSUserDefaults standardUserDefaults] objectForKey:blockKey];
             for (NSDictionary *zoneDict in resultArray) {
-                [dataSource addObject:zoneDict];
+                BOOL isBlock = NO;
+                for (NSDictionary *dict in blockArray) {
+                    NSString *userId = dict[@"userId"];
+                    NSString *zoneUserId = zoneDict[@"userId"];
+                    if ([zoneUserId isMemberOfClass:[NSNull class]]) {
+                        zoneUserId = @"";
+                    }
+                    if ([zoneUserId isEqualToString:userId]) {
+                        isBlock = YES;
+                        break;
+                    }
+                }
+                if (!isBlock) {
+                    [dataSource addObject:zoneDict];
+                }
+                
             }
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
             [self.tableview reloadData];
@@ -509,7 +547,6 @@
     //刚开始拖拽的时候触发下载数据
     [refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
     [refreshFooterView egoRefreshScrollViewDidScroll:scrollView];
-    
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
@@ -523,7 +560,7 @@
 - (void)egoRefreshTableFootDidTriggerRefresh:(EGORefreshTableFootView*)view
 {
     updateOption = 2;//加载历史标志
-    pageNo++;
+    pageNo = [dataSource count];
     
     @try {
         
@@ -810,6 +847,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateContestZone" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"blockUserSucceed" object:nil];
 }
 /*
  #pragma mark - Navigation
