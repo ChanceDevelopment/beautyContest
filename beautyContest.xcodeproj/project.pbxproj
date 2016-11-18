@@ -174,6 +174,7 @@
 		EA5EC6241D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */; };
 		EA71A1751DDD525C00B16333 /* HeBlockUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */; };
 		EA71A1761DDD525C00B16333 /* HeBlockUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */; };
+		EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */; };
 		EA7F2FCF1DD37C10001857F4 /* UWDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */; };
 		EA7F2FD01DD37C10001857F4 /* UWDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */; };
 		EA8027E81D52DC20008BC4E6 /* AoiroSoraLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8027E71D52DC20008BC4E6 /* AoiroSoraLayout.m */; };
@@ -979,6 +980,8 @@
 		EA71A1721DDD525C00B16333 /* HeBlockUserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBlockUserVC.h; sourceTree = "<group>"; };
 		EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBlockUserVC.m; sourceTree = "<group>"; };
 		EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBlockUserVC.xib; sourceTree = "<group>"; };
+		EA71A1781DDEE86500B16333 /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMediaPickerController.h; sourceTree = "<group>"; };
+		EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMediaPickerController.m; sourceTree = "<group>"; };
 		EA7F2FCC1DD37C10001857F4 /* UWDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWDatePickerView.h; sourceTree = "<group>"; };
 		EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWDatePickerView.m; sourceTree = "<group>"; };
 		EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UWDatePickerView.xib; sourceTree = "<group>"; };
@@ -2598,6 +2601,15 @@
 			path = TOWebViewController;
 			sourceTree = "<group>";
 		};
+		EA71A1771DDEE86500B16333 /* CRMediaPickerController */ = {
+			isa = PBXGroup;
+			children = (
+				EA71A1781DDEE86500B16333 /* CRMediaPickerController.h */,
+				EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */,
+			);
+			path = CRMediaPickerController;
+			sourceTree = "<group>";
+		};
 		EA7F2FCB1DD37C10001857F4 /* UWDatePickerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2869,6 +2881,7 @@
 		EAC2C9CE1D4AF5D700E282A8 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EA71A1771DDEE86500B16333 /* CRMediaPickerController */,
 				EA7F2FCB1DD37C10001857F4 /* UWDatePickerView */,
 				EAC1B88C1DD0E37400505B45 /* HcdDateTimePicker */,
 				07D2A4BE1DBF328B0031DDE0 /* FTPopOverMenu */,
@@ -5041,6 +5054,7 @@
 				EA0508F91D6EA000003947EE /* HeUserAlbumVC.m in Sources */,
 				EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */,
 				EAC2CDD51D4AF5D800E282A8 /* SDWebImageCompat.m in Sources */,
+				EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */,
 				EAC2CD4A1D4AF5D800E282A8 /* MJRefreshNormalHeader.m in Sources */,
 				EAC2CD7F1D4AF5D800E282A8 /* NSObject+RACLifting.m in Sources */,
 				EAC2CDFE1D4AF5D800E282A8 /* TZVideoPlayerController.m in Sources */,

@@ -9,6 +9,9 @@
 #import "HeBaseViewController.h"
 #import "DeleteImageProtocol.h"
 
+@import UIKit;
+@import AssetsLibrary;
+
 @protocol DistributeProtocol <NSObject>
 
 - (void)distributeSucceed;

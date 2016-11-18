@@ -18,6 +18,13 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
 #import "TZImageManager.h"
+#import "TZVideoPlayerController.h"
+#import "CRMediaPickerController.h"
+#import <MediaPlayer/MPMoviePlayerController.h>
+#import <MediaPlayer/MediaPlayer.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import "AFHTTPSessionManager.h"
+#import "AFHTTPRequestOperationManager.h"
 
 #define MAXUPLOADIMAGE 6
 #define MAX_column  4
@@ -26,7 +33,7 @@
 
 #define ALERTTAG 400
 
-@interface HeDistributeRecommendVC ()<UITextViewDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,TZImagePickerControllerDelegate,UIAlertViewDelegate>
+@interface HeDistributeRecommendVC ()<UITextViewDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,TZImagePickerControllerDelegate,UIAlertViewDelegate,CRMediaPickerControllerDelegate>
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)IBOutlet UIButton *distributeButton;
 @property(strong,nonatomic)NSArray *dataSource;
@@ -43,6 +50,8 @@
 @property(strong,nonatomic)UIView *distributeImageBG;
 @property(strong,nonatomic)UIView *dismissView;
 @property(strong,nonatomic)NSMutableArray *takePhotoArray;
+@property(strong,nonatomic)NSMutableDictionary *videoDict;
+@property(strong,nonatomic)MPMoviePlayerController *moviePlayer;
 
 @end
 
@@ -60,6 +69,8 @@
 @synthesize dismissView;
 
 @synthesize takePhotoArray;
+@synthesize videoDict;
+@synthesize moviePlayer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -107,6 +118,7 @@
     [super initializaiton];
     dataSource = @[@[@"推荐自己"],@[@"",@"添加图片",@""],@[@"",@"添加视频",@""],@[@"",@"红包",@"红包个数"]];
     pictureArray = [[NSMutableArray alloc] initWithCapacity:0];
+    videoDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     
     CGFloat textViewX = 5;
     CGFloat textViewY = 5;
@@ -450,6 +462,12 @@
     
     NSString * requestRecommendDataPath = [NSString stringWithFormat:@"%@/recommend/releaseRecommenPic.action",BASEURL];
     NSDictionary *params = @{@"userId":userId,@"content":content,@"cover":cover,@"moneyNum":moneyNum,@"moneySize":moneySize,@"video":video};
+    NSURL *filePath = videoDict[@"filePath"];
+    if (filePath) {
+        NSString *fileName = videoDict[@"fileName"];
+        [self uploadOneFileData:filePath imgType:@"video/mp4" imgName:fileName otherParams:params];
+        return;
+    }
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
@@ -495,7 +513,7 @@
 - (void)addButtonClick:(UIButton *)sender
 {
     if (sender.tag == 200) {
-        [self showHint:@"暂不支持视频上传"];
+        [self videoPicker];
         return;
     }
     if ([recommendTextView isFirstResponder]) {
@@ -505,6 +523,57 @@
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
     sheet.tag = 1;
     [sheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+}
+
+- (void)videoPicker
+{
+    //照相机类型
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    //判断属性值是否可用
+    if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+        //UIImagePickerController是UINavigationController的子类
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+        imagePicker.delegate = self;
+        imagePicker.videoMaximumDuration = 60.0;
+        //如果是视频，调为低质量
+        imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
+        //设置类型为照相机
+        imagePicker.sourceType = sourceType;
+//        imagePicker.showsCameraControls = NO;
+        imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
+        //设置可以编辑
+        //        imagePicker.allowsEditing = YES;
+        
+        //进入照相机画面
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+}
+
+- (void)convertVideoQuailtyWithInputURL:(NSURL*)inputURL
+                               outputURL:(NSURL*)outputURL
+                         completeHandler:(void (^)(AVAssetExportSession*))handler
+{
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:inputURL options:nil];
+    AVAssetExportSession *exportSession= [[AVAssetExportSession alloc] initWithAsset:asset     presetName:AVAssetExportPresetMediumQuality];
+    exportSession.outputURL = outputURL;
+    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^(void) {
+        switch (exportSession.status)
+        {
+            case AVAssetExportSessionStatusUnknown:
+                break;
+            case AVAssetExportSessionStatusWaiting:
+                break;
+            case AVAssetExportSessionStatusExporting:
+                break;
+            case AVAssetExportSessionStatusCompleted: {
+                handler(exportSession);
+                break;
+            }
+            case AVAssetExportSessionStatusFailed:
+                break;
+        }
+    }];
 }
 
 
@@ -805,38 +874,131 @@
 //当拍完照或者选取好照片之后所要执行的方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
-    CGSize sizeImage = image.size;
-    float a = [self getSize:sizeImage];
-    if (a>0) {
-        CGSize size = CGSizeMake(sizeImage.width/a, sizeImage.height/a);
-        image = [self scaleToSize:image size:size];
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    if (CFStringCompare((__bridge CFStringRef) mediaType, kUTTypeMovie, (CFStringCompareFlags)0) == kCFCompareEqualTo){
+        NSURL *sourceURL = [info objectForKey:UIImagePickerControllerMediaURL];
+        
+        NSDate *senddate=[NSDate date];
+        NSDateFormatter *dateformatter=[[NSDateFormatter alloc] init];
+        [dateformatter setDateFormat:@"YYYYMMddhhmmss"];
+        NSString *timeStr   = [dateformatter stringFromDate:senddate];
+        
+        NSString *fileName = [NSString stringWithFormat:@"output_%@.mp4",timeStr];
+        //经过转过之后视频的存取路径
+        NSString *outfilePath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", fileName];
+        
+        NSURL *newVideoUrl = [NSURL URLWithString:outfilePath]; //一般.mp4
+        [self convertVideoQuailtyWithInputURL:sourceURL outputURL:newVideoUrl completeHandler:^(AVAssetExportSession  *session) {
+            //转换完成
+            [videoDict setObject:outfilePath forKey:@"filePath"];
+            [videoDict setObject:fileName forKey:@"fileName"];
+            moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:newVideoUrl];
+            moviePlayer.movieSourceType = MPMediaTypeMovie;
+            moviePlayer.controlStyle = MPMovieControlStyleDefault;
+            moviePlayer.scalingMode = MPMovieScalingModeAspectFit;
+            moviePlayer.repeatMode = MPMovieRepeatModeNone;
+            moviePlayer.allowsAirPlay = NO;
+            moviePlayer.shouldAutoplay = NO;
+            
+            moviePlayer.view.frame = self.addVideoButton.bounds;
+            moviePlayer.view.autoresizingMask = (UIViewAutoresizing)(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+            [addVideoButton addSubview:self.moviePlayer.view];
+            
+            [moviePlayer prepareToPlay];
+        }];
+    }
+    else{
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        
+        CGSize sizeImage = image.size;
+        float a = [self getSize:sizeImage];
+        if (a>0) {
+            CGSize size = CGSizeMake(sizeImage.width/a, sizeImage.height/a);
+            image = [self scaleToSize:image size:size];
+        }
+        
+        //    [self initButtonWithImage:image];
+        
+        AsynImageView *asyncImage = [[AsynImageView alloc] init];
+        
+        UIImageJPEGRepresentation(image, 0.6);
+        [asyncImage setImage:image];
+        
+        asyncImage.bigImageURL = nil;
+        asyncImage.imageTag = -1; //表明是调用系统相机、相册的
+        [pictureArray addObject:asyncImage];
+        
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self updateImageBG];
+        }];
     }
     
-    //    [self initButtonWithImage:image];
-    
-    AsynImageView *asyncImage = [[AsynImageView alloc] init];
-    
-    UIImageJPEGRepresentation(image, 0.6);
-    [asyncImage setImage:image];
-    
-    asyncImage.bigImageURL = nil;
-    asyncImage.imageTag = -1; //表明是调用系统相机、相册的
-    [pictureArray addObject:asyncImage];
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self updateImageBG];
-    }];
     
 }
 
+-(void)uploadOneFileData:(NSURL *)fileUrl imgType:(NSString*)typeStr imgName:(NSString *)fileName otherParams:(NSDictionary *)otherParams{
+    if (fileUrl) {
+        NSDictionary *params = [[NSDictionary alloc] initWithDictionary:otherParams];
+        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BASEURL]];
+        [client POST:@"http://114.55.226.224:8088/xuanmei/recommend/releaseRecommenVideo.action" parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            
+            [formData appendPartWithFileURL:fileUrl name:@"video" fileName:fileName mimeType:typeStr error:nil];
+        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self hideHud];
+            NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+            NSDictionary *respondDict = [respondString objectFromJSONString];
+            NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+            if (errorCode == REQUESTCODE_SUCCEED) {
+                NSString *data = @"发布成功!";
+                [self showHint:data];
+                [self performSelector:@selector(backLastView) withObject:nil afterDelay:0.2];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRecommend" object:self];
+            }
+            else{
+                NSString *data = [respondDict objectForKey:@"data"];
+                if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                    data = ERRORREQUESTTIP;
+                }
+                [self showHint:data];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self hideHud];
+            [self showHint:ERRORREQUESTTIP];
+        }];
+    }
+}
 
 //相应取消动作
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - 清除documents中的视频文件
+-(void)clearMovieFromDoucments{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSArray *contents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+    NSEnumerator *e = [contents objectEnumerator];
+    NSString *filename;
+    while ((filename = [e nextObject])) {
+        NSLog(@"%@",filename);
+//        if ([filename isEqualToString:@"tmp.PNG"]) {
+//            NSLog(@"删除%@",filename);
+//            [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
+//            continue;
+//        }
+        if ([[[filename pathExtension] lowercaseString] isEqualToString:@"mp4"]||
+            [[[filename pathExtension] lowercaseString] isEqualToString:@"mov"]||
+            [[[filename pathExtension] lowercaseString] isEqualToString:@"png"]) {
+            NSLog(@"删除%@",filename);
+            [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
+        }
+    }
 }
 
 -(float)getSize:(CGSize)size

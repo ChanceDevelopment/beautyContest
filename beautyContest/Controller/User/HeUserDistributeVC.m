@@ -156,13 +156,10 @@
     }
     
     
-    [self showHudInView:self.view hint:@"正在获取..."];
+    [self showHudInView:self.tableview hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
-        if (show) {
-            [Waiting dismiss];
-        }
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
@@ -177,6 +174,9 @@
                 }
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if ([resultArray isMemberOfClass:[NSNull class]]) {
+                return;
+            }
             for (NSDictionary *zoneDict in resultArray) {
                 if (!requestReply) {
                     [dataSource addObject:zoneDict];
@@ -197,9 +197,7 @@
             }
         }
     } failure:^(NSError *error){
-        if (show) {
-            [Waiting dismiss];
-        }
+        [self hideHud];
         [self showHint:ERRORREQUESTTIP];
     }];
 }

@@ -18,6 +18,7 @@
 @property(strong,nonatomic)IBOutlet UITextField *accountField;
 @property(strong,nonatomic)IBOutlet UITextField *passwordField;
 @property(strong,nonatomic)IBOutlet UIButton *loginButton;
+@property(strong,nonatomic)IBOutlet UIButton *wechatLoginButton;
 
 
 @end
@@ -26,6 +27,7 @@
 @synthesize accountField;
 @synthesize passwordField;
 @synthesize loginButton;
+@synthesize wechatLoginButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -81,10 +83,10 @@
      微信客户端(使用sdk中的isWXAppInstall函数),对于未安装的用户隐藏微信 登录按钮，只提供其他登录方式。
      */
     if ([WXApi isWXAppInstalled]) {
-        loginButton.hidden = NO;
+        wechatLoginButton.hidden = YES;
     }
     else{
-        loginButton.hidden = YES;
+        wechatLoginButton.hidden = YES;
     }
 }
 
