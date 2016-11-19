@@ -430,7 +430,10 @@
         UIImageView *userIcon = [imageCache objectForKey:imageKey];
         if (!userIcon) {
             userIcon = [[UIImageView alloc] initWithFrame:CGRectMake(userX, userY, userW, userH)];
-            NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+            NSString *imageUrl = userHeader;
+            if (![imageUrl hasPrefix:@"http"]) {
+                imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,imageUrl];
+            }
             [userIcon sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
             userIcon.layer.cornerRadius = userW / 2.0;
             userIcon.layer.masksToBounds = YES;
@@ -488,7 +491,10 @@
     if ([userHear isMemberOfClass:[NSNull class]]) {
         userHear = @"";
     }
-    userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
+    if (![userHear hasPrefix:@"http"]) {
+        userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
+    }
+    
     UIImageView *userHearimageview = [imageCache objectForKey:userHear];
     if (!userHearimageview) {
         [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHear] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];

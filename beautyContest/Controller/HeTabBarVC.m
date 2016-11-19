@@ -164,11 +164,6 @@
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
             NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
-//            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
-//            if (userState == 0) {
-//                [self showHint:@"当前用户不可用"];
-//                return ;
-//            }
             NSString *userDataPath = [Tool getUserDataPath];
             NSString *userFileName = [userDataPath stringByAppendingPathComponent:@"userInfo.plist"];
             BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
@@ -176,6 +171,28 @@
                 NSLog(@"用户资料写入成功");
             }
             User *user = [[User alloc] initUserWithDict:userDictInfo];
+            NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            if (userId == nil) {
+                userId = @"";
+            }
+            user.userId = userId;
+            
+            BOOL isthirdPartyLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isthirdPartyLogin"] boolValue];
+            NSDictionary *thirdPartyDict = [[NSUserDefaults standardUserDefaults] objectForKey:@"thirdPartyData"];
+            
+            if (isthirdPartyLogin) {
+                NSString *userHeader = user.userHeader;
+                if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil || [userHeader isEqualToString:@""]) {
+                    userHeader = thirdPartyDict[@"userHeader"];
+                }
+                user.userHeader = userHeader;
+                NSString *userNick = user.userNick;
+                if (userNick == nil || [userNick isEqualToString:@""]) {
+                    userNick = thirdPartyDict[@"userNick"];
+                }
+                user.userNick = userNick;
+            }
+            
             [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
         }
         else{
@@ -187,6 +204,25 @@
                 NSDictionary *respondDict = [myresponseString objectFromJSONString];
                 NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
                 User *user = [[User alloc] initUserWithDict:userDictInfo];
+                NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+                if (userId == nil) {
+                    userId = @"";
+                }
+                user.userId = userId;
+                BOOL isthirdPartyLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isthirdPartyLogin"] boolValue];
+                NSDictionary *thirdPartyDict = [[NSUserDefaults standardUserDefaults] objectForKey:@"thirdPartyData"];
+                if (isthirdPartyLogin) {
+                    NSString *userHeader = user.userHeader;
+                    if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil || [userHeader isEqualToString:@""]) {
+                        userHeader = thirdPartyDict[@"userHeader"];
+                    }
+                    user.userHeader = userHeader;
+                    NSString *userNick = user.userNick;
+                    if (userNick == nil || [userNick isEqualToString:@""]) {
+                        userNick = thirdPartyDict[@"userNick"];
+                    }
+                    user.userNick = userNick;
+                }
                 [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
             }
         }

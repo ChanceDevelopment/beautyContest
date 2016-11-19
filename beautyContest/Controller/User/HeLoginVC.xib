@@ -162,7 +162,7 @@
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="手机号快捷登录">
-                        <color key="titleColor" red="0.20000000000000001" green="0.72549019609999998" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" red="0.13333333333333333" green="0.61568627450980395" blue="0.73333333333333328" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <variation key="default">
                         <mask key="constraints">
@@ -186,7 +186,7 @@
                         <constraint firstAttribute="width" constant="40" id="P0D-XZ-she"/>
                         <constraint firstAttribute="height" constant="40" id="SUF-PT-FIs"/>
                     </constraints>
-                    <state key="normal" image="5C6A15A5-E6CF-4406-A72F-CA6FD1830620"/>
+                    <state key="normal" image="FD4B7EE6-A0BE-467C-8F4C-866FFC8CF3AD"/>
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="P0D-XZ-she"/>
@@ -209,7 +209,7 @@
                         <constraint firstAttribute="height" constant="40" id="Lfa-pl-Bf9"/>
                         <constraint firstAttribute="width" constant="40" id="bpb-7o-gJB"/>
                     </constraints>
-                    <state key="normal" image="DEC2F46B-F59E-4037-AE74-27C69DDDDA50"/>
+                    <state key="normal" image="F86016D5-85E5-46E6-8A19-E5829E676F53"/>
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="Lfa-pl-Bf9"/>
@@ -226,7 +226,7 @@
                         <action selector="thirdPartyLogin:" destination="-1" eventType="touchUpInside" id="Ahq-GU-XFy"/>
                     </connections>
                 </button>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgP-aV-C80">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgP-aV-C80">
                     <rect key="frame" x="20" y="210" width="60" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="6QN-Uw-SyZ"/>
@@ -234,7 +234,7 @@
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="微信登陆">
-                        <color key="titleColor" red="0.20000000000000001" green="0.72549019607843135" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" red="0.13333333333333333" green="0.61568627450980395" blue="0.73333333333333328" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <variation key="default">
                         <mask key="constraints">
@@ -280,7 +280,7 @@
                         <constraint firstAttribute="height" constant="40" id="cDt-kN-wFr"/>
                         <constraint firstAttribute="width" constant="40" id="xkv-ew-8in"/>
                     </constraints>
-                    <state key="normal" title="Button" image="3F5AD667-5C6A-4207-871F-85274D1E0927"/>
+                    <state key="normal" title="Button" image="12A0A153-0DFF-4BEE-9B43-9600DF8D1727"/>
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="cDt-kN-wFr"/>
@@ -388,7 +388,7 @@
         </view>
     </objects>
     <resources>
-        <image name="3F5AD667-5C6A-4207-871F-85274D1E0927" width="194" height="194">
+        <image name="12A0A153-0DFF-4BEE-9B43-9600DF8D1727" width="194" height="194">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYsLzU4VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -404,7 +404,7 @@ AZkBoAGoAbUBugG8Ab4BwwHLAc4B0wHbAd4B8AHzAfgAAAAAAAACAQAAAAAAAAA/AAAAAAAAAAAAAAAA
 AAAB+g
 </mutableData>
         </image>
-        <image name="5C6A15A5-E6CF-4406-A72F-CA6FD1830620" width="194" height="194">
+        <image name="F86016D5-85E5-46E6-8A19-E5829E676F53" width="194" height="194">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYsLzU4VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -420,7 +420,7 @@ AZkBoAGoAbUBugG8Ab4BwwHLAc4B0wHbAd4B8AHzAfgAAAAAAAACAQAAAAAAAAA/AAAAAAAAAAAAAAAA
 AAAB+g
 </mutableData>
         </image>
-        <image name="DEC2F46B-F59E-4037-AE74-27C69DDDDA50" width="194" height="194">
+        <image name="FD4B7EE6-A0BE-467C-8F4C-866FFC8CF3AD" width="194" height="194">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYsLzU4VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz

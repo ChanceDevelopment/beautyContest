@@ -343,7 +343,10 @@
     NSString *imageKey = [NSString stringWithFormat:@"%ld_%@",row,userHeader];
     UIImageView *imageview = [imageCache objectForKey:imageKey];
     if (!imageview) {
-        NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+        NSString *imageUrl = userHeader;
+        if (![imageUrl hasPrefix:@"http"]) {
+            imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,imageUrl];
+        }
         [cell.userImage sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
         imageview = cell.userImage;
     }

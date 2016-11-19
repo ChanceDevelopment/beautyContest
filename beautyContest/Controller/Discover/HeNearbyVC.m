@@ -410,7 +410,10 @@
         userHeader = @"";
     }
     NSString *imageKey = [NSString stringWithFormat:@"%@/%@_%ld",HYTIMAGEURL,userHeader,row];
-    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
+    
     UIImageView *imageview = [imageCache objectForKey:imageKey];
     if (!imageview) {
         [cell.userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];

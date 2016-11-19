@@ -440,7 +440,10 @@
     if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
         userHeader = @"";
     }
-    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
+    
     UIImageView *imageview = [imageCache objectForKey:userHeader];
     if (!imageview) {
         [cell.userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];

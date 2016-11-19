@@ -308,8 +308,58 @@ BMKMapManager* _mapManager;
     }
 }
 
+- (void)cleardocument
+{
+    return;
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    NSString *plistPath1 = [paths objectAtIndex:0];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    NSEnumerator *childFilesEnumerator = [[manager subpathsAtPath:plistPath1] objectEnumerator];
+    NSString* fileName;
+    while ((fileName = [childFilesEnumerator nextObject]) != nil){
+        NSString* fileAbsolutePath = [plistPath1 stringByAppendingPathComponent:fileName];
+        if ([fm fileExistsAtPath:fileAbsolutePath]) {
+            BOOL result = [manager removeItemAtPath:fileAbsolutePath error:nil];
+            if (result) {
+                NSLog(@"remove %@ succeed",fileAbsolutePath);
+            }
+            else{
+                NSLog(@"remove %@ faild",fileAbsolutePath);
+            }
+        }
+    }
+}
+
+-(void)clearMovieFromDoucments{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSArray *contents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+    NSEnumerator *e = [contents objectEnumerator];
+    NSString *filename;
+    while ((filename = [e nextObject])) {
+        NSLog(@"%@",filename);
+        //        if ([filename isEqualToString:@"tmp.PNG"]) {
+        //            NSLog(@"删除%@",filename);
+        //            [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
+        //            continue;
+        //        }
+        if ([[[filename pathExtension] lowercaseString] isEqualToString:@"mp4"]||
+            [[[filename pathExtension] lowercaseString] isEqualToString:@"mov"]||
+            [[[filename pathExtension] lowercaseString] isEqualToString:@"png"]) {
+            NSLog(@"删除%@",filename);
+            [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
+        }
+    }
+}
+
 - (void)clearImg:(id)sender
 {
+    [self cleardocument];
+    [self clearMovieFromDoucments];
+    
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *folderPath = [NSHomeDirectory() stringByAppendingString:@"/tmp"];
     NSEnumerator *childFilesEnumerator = [[manager subpathsAtPath:folderPath] objectEnumerator];

@@ -19,6 +19,7 @@
 #import "HeComplaintVC.h"
 #import "HeRecommendMessageVC.h"
 #import "HeComplaintUserVC.h"
+#import "WMPlayer.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -44,6 +45,7 @@
 @property(strong,nonatomic)NSDictionary *recommendDetailDict;
 
 @property(strong,nonatomic)UIScrollView *userReceivePocketScrollView;
+@property(strong,nonatomic)WMPlayer *wmPlayer;
 
 @end
 
@@ -57,6 +59,7 @@
 @synthesize redPocketArray;
 @synthesize paperArray;
 @synthesize recommendDetailDict;
+@synthesize wmPlayer;
 
 @synthesize userReceivePocketScrollView;
 
@@ -93,6 +96,79 @@
     redPocketArray = [[NSMutableArray alloc] initWithCapacity:0];
     imageScrollViewHeigh = 200;
     receiveScrollViewHeigh = 60;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullScreenBtnClick:) name:@"fullScreenBtnClickNotice" object:nil];
+    
+}
+
+-(void)fullScreenBtnClick:(NSNotification *)notice{
+    UIButton *fullScreenBtn = (UIButton *)[notice object];
+    if (fullScreenBtn.isSelected) {//全屏显示
+        [self toFullScreenWithInterfaceOrientation:UIInterfaceOrientationLandscapeLeft];
+    }else{
+        [self toNormal];
+    }
+}
+
+-(void)toFullScreenWithInterfaceOrientation:(UIInterfaceOrientation )interfaceOrientation{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES animated:NO];
+    [wmPlayer removeFromSuperview];
+//    wmPlayer.transform = CGAffineTransformIdentity;
+//    if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft) {
+//        wmPlayer.transform = CGAffineTransformMakeRotation(-M_PI_2);
+//    }else if(interfaceOrientation==UIInterfaceOrientationLandscapeRight){
+//        wmPlayer.transform = CGAffineTransformMakeRotation(M_PI_2);
+//    }
+    wmPlayer.frame = CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGH);
+    wmPlayer.playerLayer.frame =  CGRectMake(0,0, SCREENWIDTH,SCREENHEIGH);
+    
+//    [wmPlayer.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.height.mas_equalTo(40);
+//        make.top.mas_equalTo(self.view.frame.size.width-40);
+//        make.width.mas_equalTo(self.view.frame.size.height);
+//    }];
+//    
+//    [wmPlayer.closeBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(wmPlayer).with.offset((-self.view.frame.size.height/2));
+//        make.height.mas_equalTo(30);
+//        make.width.mas_equalTo(30);
+//        make.top.equalTo(wmPlayer).with.offset(5);
+//        
+//    }];
+    [[UIApplication sharedApplication].keyWindow addSubview:wmPlayer];
+    wmPlayer.isFullscreen = YES;
+    wmPlayer.fullScreenBtn.selected = YES;
+    [wmPlayer bringSubviewToFront:wmPlayer.bottomView];
+    
+}
+-(void)toNormal{
+    [wmPlayer removeFromSuperview];
+    
+    CGRect playerFrame = CGRectMake(0, 0, SCREENWIDTH, 150);
+    [UIView animateWithDuration:0.5f animations:^{
+        wmPlayer.transform = CGAffineTransformIdentity;
+        wmPlayer.frame =CGRectMake(playerFrame.origin.x, playerFrame.origin.y, playerFrame.size.width, playerFrame.size.height);
+        wmPlayer.playerLayer.frame =  wmPlayer.bounds;
+        [tableview.tableFooterView addSubview:wmPlayer];
+        [wmPlayer.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(wmPlayer).with.offset(0);
+            make.right.equalTo(wmPlayer).with.offset(0);
+            make.height.mas_equalTo(40);
+            make.bottom.equalTo(wmPlayer).with.offset(0);
+        }];
+        [wmPlayer.closeBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(wmPlayer).with.offset(5);
+            make.height.mas_equalTo(30);
+            make.width.mas_equalTo(30);
+            make.top.equalTo(wmPlayer).with.offset(5);
+        }];
+        
+    }completion:^(BOOL finished) {
+        wmPlayer.isFullscreen = NO;
+        wmPlayer.fullScreenBtn.selected = NO;
+        [[UIApplication sharedApplication] setStatusBarHidden:NO animated:NO];
+        
+    }];
 }
 
 - (void)initView
@@ -513,8 +589,10 @@
             CGFloat imageW = imageH;
             CGFloat imageDistance = 5;
             for (NSString *url in redPocketArray) {
-                NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
-                
+                NSString *imageurl = url;
+                if (![url hasPrefix:@"http"]) {
+                    imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
+                }
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
                 imageview.layer.masksToBounds = YES;
                 imageview.layer.cornerRadius = imageH / 2.0;
@@ -527,6 +605,7 @@
                 userReceivePocketScrollView.contentSize = CGSizeMake(imageX, 0);
             }
             [self updateUserInfo];
+            [self addVideoView];
             [tableview reloadData];
         }
         else{
@@ -539,6 +618,41 @@
     } failure:^(NSError *error){
         [self showHint:ERRORREQUESTTIP];
     }];
+}
+
+- (void)addVideoView
+{
+    NSString *recommendVideo = recommendDetailDict[@"recommendVideo"];
+    if ([recommendVideo isMemberOfClass:[NSNull class]] || recommendVideo == nil) {
+        recommendVideo = nil;
+    }
+    if (!recommendVideo) {
+        tableview.tableFooterView = nil;
+        return;
+    }
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 150)];
+    tableview.tableFooterView = footerView;
+    recommendVideo = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,recommendVideo];
+    
+    wmPlayer = [[WMPlayer alloc]initWithFrame:footerView.bounds videoURLStr:recommendVideo];
+    wmPlayer.closeBtn.hidden = YES;
+    [footerView addSubview:wmPlayer];
+//    [wmPlayer.player play];
+    
+    
+//    MPMoviePlayerController *moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:recommendVideo]];
+//    moviePlayer.movieSourceType = MPMediaTypeMovie;
+//    moviePlayer.controlStyle = MPMovieControlStyleDefault;
+//    moviePlayer.scalingMode = MPMovieScalingModeAspectFit;
+//    moviePlayer.repeatMode = MPMovieRepeatModeNone;
+//    moviePlayer.allowsAirPlay = NO;
+//    moviePlayer.shouldAutoplay = NO;
+//    moviePlayer.controlStyle = MPMovieControlStyleFullscreen;
+//    moviePlayer.view.frame = footerView.bounds;
+//    moviePlayer.view.autoresizingMask = (UIViewAutoresizing)(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+//    [moviePlayer prepareToPlay];
+//    [footerView addSubview:moviePlayer.view];
+    
 }
 
 - (void)voteButtonClick:(UIButton *)button
@@ -781,7 +895,9 @@
     if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
         userHeader = @"";
     }
-    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
     [userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:userImage.image];
     
     if ([paperArray count] == 0 || [paperArray[0] isEqualToString:@""]) {
@@ -862,6 +978,7 @@
     if ([redPocketArray count] != 0) {
         section++;
     }
+    
     return section;
 }
 

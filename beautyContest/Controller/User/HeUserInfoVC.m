@@ -266,7 +266,9 @@
 {
     UIImageView *userImage = [sectionHeaderView viewWithTag:HEADTAG];
     NSString *userHeader = userInfo.userHeader;
-    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
     [userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:userImage.image];
     
     UILabel *nameLabel = [sectionHeaderView viewWithTag:NAMETAG];
@@ -328,14 +330,14 @@
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
             NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
-            //            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
-            //            if (userState == 0) {
-            //                [self showHint:@"当前用户不可用"];
-            //                return ;
-            //            }
             NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
             User *user = [[User alloc] initUserWithDict:userDictInfo];
             user.userId = userInfo.userId;
+            
+            BOOL isthirdPartyLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isthirdPartyLogin"] boolValue];
+            NSDictionary *thirdPartyDict = [[NSUserDefaults standardUserDefaults] objectForKey:@"thirdPartyData"];
+            
+            
             
             if ([userId isEqualToString:myUserId]) {
                 NSString *userDataPath = [Tool getUserDataPath];
@@ -343,6 +345,18 @@
                 BOOL succeed = [@{@"user":respondString} writeToFile:userFileName atomically:YES];
                 if (succeed) {
                     NSLog(@"用户资料写入成功");
+                }
+                if (isthirdPartyLogin) {
+                    NSString *userHeader = user.userHeader;
+                    if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil || [userHeader isEqualToString:@""]) {
+                        userHeader = thirdPartyDict[@"userHeader"];
+                    }
+                    user.userHeader = userHeader;
+                    NSString *userNick = user.userNick;
+                    if (userNick == nil || [userNick isEqualToString:@""]) {
+                        userNick = thirdPartyDict[@"userNick"];
+                    }
+                    user.userNick = userNick;
                 }
                 
                 [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
@@ -361,6 +375,27 @@
                 NSDictionary *respondDict = [myresponseString objectFromJSONString];
                 NSDictionary *userDictInfo = [respondDict objectForKey:@"json"];
                 User *user = [[User alloc] initUserWithDict:userDictInfo];
+                
+                NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+                if ([myUserId isEqualToString:userId]) {
+                    BOOL isthirdPartyLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isthirdPartyLogin"] boolValue];
+                    NSDictionary *thirdPartyDict = [[NSUserDefaults standardUserDefaults] objectForKey:@"thirdPartyData"];
+                    
+                    if (isthirdPartyLogin) {
+                        NSString *userHeader = user.userHeader;
+                        if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil || [userHeader isEqualToString:@""]) {
+                            userHeader = thirdPartyDict[@"userHeader"];
+                        }
+                        user.userHeader = userHeader;
+                        NSString *userNick = user.userNick;
+                        if (userNick == nil || [userNick isEqualToString:@""]) {
+                            userNick = thirdPartyDict[@"userNick"];
+                        }
+                        user.userNick = userNick;
+                    }
+                }
+                
+                
                 [HeSysbsModel getSysModel].user = [[User alloc] initUserWithUser:user];
             }
         }

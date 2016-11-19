@@ -43,7 +43,7 @@
 @property(strong,nonatomic)UILabel *supportNumLabel;
 @property(strong,nonatomic)NSDictionary *contestantDetailDict;
 @property(strong,nonatomic)NSMutableArray *contestantImageArray;
-@property(strong,nonatomic)NSMutableDictionary *contestantImageDict;
+@property(strong,nonatomic)NSMutableArray *contestantImageDetailArray;
 @property(strong,nonatomic)UIScrollView *myScrollView;
 
 @end
@@ -62,7 +62,7 @@
 @synthesize contestZoneDict;
 @synthesize contestantDetailDict;
 @synthesize contestantImageArray;
-@synthesize contestantImageDict;
+@synthesize contestantImageDetailArray;
 @synthesize myScrollView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -100,7 +100,7 @@
 {
     [super initializaiton];
     contestantImageArray = [[NSMutableArray alloc] initWithCapacity:0];
-    contestantImageDict = [[NSMutableDictionary alloc] initWithCapacity:0];
+    contestantImageDetailArray = [[NSMutableArray alloc] initWithCapacity:0];
     imageScrollViewHeigh = 80;
 }
 
@@ -406,6 +406,9 @@
             userNoLabel.text = userNo;
             
             NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,contestantDetailDict[@"userHeader"]];
+            if (![userHeader hasPrefix:@"http"]) {
+                userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+            }
             [detailImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
             
             [tableview reloadData];
@@ -566,9 +569,17 @@
         
         if (statueCode == REQUESTCODE_SUCCEED){
             id jsonObj = [respondDict objectForKey:@"json"];
-            contestantImageDict = [[NSMutableDictionary alloc] initWithDictionary:jsonObj];
-            NSString *wallUrl = [contestantImageDict objectForKey:@"wallUrl"];
-            NSArray *wallArray = [wallUrl componentsSeparatedByString:@","];
+            NSMutableArray *wallArray = [[NSMutableArray alloc] initWithCapacity:0];
+            [contestantImageDetailArray removeAllObjects];
+            [contestantImageArray removeAllObjects];
+            for (NSDictionary *dict in jsonObj) {
+                NSString *wallUrl = dict[@"wallUrl"];
+                if ([wallUrl isMemberOfClass:[NSNull class]]) {
+                    wallUrl = @"";
+                }
+                [wallArray addObject:wallUrl];
+                [contestantImageDetailArray addObject:dict];
+            }
             
             NSArray *subviewArray = myScrollView.subviews;
             for (UIView *subview in subviewArray) {

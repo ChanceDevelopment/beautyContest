@@ -15,7 +15,7 @@
 #import "HeDistributePhotoVC.h"
 
 #define MAx_row 100000
-#define MAx_column 3
+#define MAx_column 4
 
 @interface HeUserAlbumVC ()
 {
@@ -23,8 +23,10 @@
 }
 @property(strong,nonatomic)UIScrollView *myScrollView;
 @property(strong,nonatomic)NSMutableArray *photoArray;
+@property(strong,nonatomic)NSMutableArray *photoDetailArray;
 @property(strong,nonatomic)IBOutlet UIButton *addButton;
 @property(strong,nonatomic)IBOutlet UIButton *deleteButton;
+@property(strong,nonatomic)NSCache *imageCache;
 
 @end
 
@@ -33,6 +35,8 @@
 @synthesize photoArray;
 @synthesize addButton;
 @synthesize deleteButton;
+@synthesize photoDetailArray;
+@synthesize imageCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,8 +68,10 @@
 {
     [super initializaiton];
     photoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    photoDetailArray = [[NSMutableArray alloc] initWithCapacity:0];
     isEditing = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserAlbum:) name:@"updateUserAlbum" object:nil];
+    imageCache = [[NSCache alloc] init];
 }
 
 - (void)initView
@@ -75,15 +81,18 @@
     editItem.title = @"编辑";
     editItem.target = self;
     editItem.action = @selector(editAlbum:);
-    self.navigationItem.rightBarButtonItem = editItem;
+//    self.navigationItem.rightBarButtonItem = editItem;
     
     self.view.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
-    CGFloat viewX = 5;
+    CGFloat viewX = 0;
     CGFloat viewY = 5;
     CGFloat viewW = SCREENWIDTH - 2 * viewX;
     CGFloat viewH = SCREENHEIGH - 2 * viewY - 50;
     myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(viewX, viewY, viewW, viewH)];
     [self.view addSubview:myScrollView];
+    
+    myScrollView.showsVerticalScrollIndicator = NO;
+    myScrollView.showsHorizontalScrollIndicator = NO;
     
     [addButton dangerStyle];
     addButton.layer.borderColor = [UIColor clearColor].CGColor;
@@ -119,10 +128,18 @@
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         
         if (statueCode == REQUESTCODE_SUCCEED){
-            NSDictionary *jsonDict = [respondDict objectForKey:@"json"];
-            NSString *wallUrl = [jsonDict objectForKey:@"wallUrl"];
-            NSArray *myArray = [wallUrl componentsSeparatedByString:@","];
-            photoArray = [[NSMutableArray alloc] initWithArray:myArray];
+            [photoDetailArray removeAllObjects];
+            [photoArray removeAllObjects];
+            NSArray *myArray = [respondDict objectForKey:@"json"];
+            for (NSDictionary *dict in myArray) {
+                NSString *wallUrl = dict[@"wallUrl"];
+                if ([wallUrl isMemberOfClass:[NSNull class]]) {
+                    wallUrl = @"";
+                }
+                [photoArray addObject:wallUrl];
+                [photoDetailArray addObject:dict];
+            }
+//            photoArray = [[NSMutableArray alloc] initWithArray:myArray];
             [self addPhotoView];
         }
         else{
@@ -258,8 +275,14 @@
     CGFloat buttonW = 90;
     CGFloat buttonH = 90;
     CGFloat buttonY = 10;
-    CGFloat buttonDistanceX = (SCREENWIDTH - MAx_column * buttonW - 2 * buttonX - 2 * myScrollView.frame.origin.x) / ((CGFloat)(MAx_column - 1));
+    CGFloat buttonDistanceX = 10;
     CGFloat buttonDistanceY = 10;
+    
+    buttonW = (SCREENWIDTH - (MAx_column - 1) * buttonDistanceX - 2 * buttonX) / ((CGFloat)MAx_column);
+    buttonH = buttonW;
+    
+    
+    
     CGFloat hight = buttonY;
     for (int i = 0; i < row; i++) {
         
@@ -271,14 +294,15 @@
         }
         
         for (int j = 0; j < column; j++) {
-            buttonX = 10 + j * buttonW + j * buttonDistanceX;
+            buttonX = 5 + j * buttonW + j * buttonDistanceX;
             buttonY = 10 + i * buttonH + i * buttonDistanceY;
             CGRect buttonFrame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
             
-            NSInteger index = i * 3 + j;
+            NSInteger index = i * MAx_column + j;
             NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[photoArray objectAtIndex:index]];
             
-            HeAlbumImage *albumImage = [myScrollView viewWithTag:index + 200];
+            NSString *imageKey = imageUrl;
+            HeAlbumImage *albumImage = [imageCache objectForKey:imageKey];
             if (albumImage == nil) {
                 albumImage = [[HeAlbumImage alloc] initWithFrame:buttonFrame];
                 albumImage.selected = NO;
@@ -298,6 +322,7 @@
                 tap.numberOfTapsRequired = 1;
                 tap.numberOfTouchesRequired = 1;
                 [albumImage addGestureRecognizer:tap];
+                [imageCache setObject:albumImage forKey:imageKey];
             }
             
             [myScrollView addSubview:albumImage];
@@ -305,12 +330,13 @@
             albumImage.imageView.userInteractionEnabled = YES;
             albumImage.userInteractionEnabled = YES;
             
-            hight = albumImage.imageView.frame.origin.y + albumImage.imageView.frame.size.height + buttonDistanceY;
+            hight = albumImage.frame.origin.y + albumImage.frame.size.height + buttonDistanceY;
         }
     }
-    if (hight > myScrollView.frame.size.height) {
-        myScrollView.contentSize = CGSizeMake(0, hight + 10);
+    if (hight < myScrollView.frame.size.height) {
+        hight = myScrollView.frame.size.height;
     }
+    myScrollView.contentSize = CGSizeMake(0, hight + 60);
 }
 
 -(void)onClickImage:(UITapGestureRecognizer *) tap

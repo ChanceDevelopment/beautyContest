@@ -116,6 +116,15 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                            selector:@selector(myMovieFinishedCallback:)
+     
+                                                name:MPMoviePlayerPlaybackDidFinishNotification
+     
+                                              object:nil];
+    
     dataSource = @[@[@"推荐自己"],@[@"",@"添加图片",@""],@[@"",@"添加视频",@""],@[@"",@"红包",@"红包个数"]];
     pictureArray = [[NSMutableArray alloc] initWithCapacity:0];
     videoDict = [[NSMutableDictionary alloc] initWithCapacity:0];
@@ -169,7 +178,7 @@
     [addVideoButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     redPocketTextField = [[UITextField alloc] init];
-    redPocketTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    redPocketTextField.keyboardType = UIKeyboardTypeNumberPad;
     redPocketTextField.font = [UIFont systemFontOfSize:16.0];
     redPocketTextField.textColor = APPDEFAULTORANGE;
     redPocketTextField.placeholder = @"0.00";
@@ -177,7 +186,7 @@
     redPocketTextField.delegate = self;
     
     redPocketNumField = [[UITextField alloc] init];
-    redPocketTextField.keyboardType = UIKeyboardTypeNumberPad;
+    redPocketNumField.keyboardType = UIKeyboardTypeNumberPad;
     redPocketNumField.font = [UIFont systemFontOfSize:16.0];
     redPocketNumField.textColor = APPDEFAULTORANGE;
     redPocketNumField.placeholder = @"输入红包个数";
@@ -465,6 +474,7 @@
     NSURL *filePath = videoDict[@"filePath"];
     if (filePath) {
         NSString *fileName = videoDict[@"fileName"];
+        params = @{@"userId":userId,@"content":content,@"cover":cover,@"moneyNum":moneyNum,@"moneySize":moneySize};
         [self uploadOneFileData:filePath imgType:@"video/mp4" imgName:fileName otherParams:params];
         return;
     }
@@ -513,7 +523,9 @@
 - (void)addButtonClick:(UIButton *)sender
 {
     if (sender.tag == 200) {
-        [self videoPicker];
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍摄", nil];
+        sheet.tag = 2;
+        [sheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
         return;
     }
     if ([recommendTextView isFirstResponder]) {
@@ -525,10 +537,10 @@
     [sheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
-- (void)videoPicker
+- (void)videoCamerSource:(UIImagePickerControllerSourceType)sourceType
 {
     //照相机类型
-    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     //判断属性值是否可用
     if([UIImagePickerController isSourceTypeAvailable:sourceType]){
         //UIImagePickerController是UINavigationController的子类
@@ -536,13 +548,13 @@
         imagePicker.delegate = self;
         imagePicker.videoMaximumDuration = 60.0;
         //如果是视频，调为低质量
-        imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
+        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         //设置类型为照相机
         imagePicker.sourceType = sourceType;
-//        imagePicker.showsCameraControls = NO;
+        if (sourceType == UIImagePickerControllerSourceTypeCamera) {
+            imagePicker.showsCameraControls = YES;
+        }
         imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
-        //设置可以编辑
-        //        imagePicker.allowsEditing = YES;
         
         //进入照相机画面
         [self presentViewController:imagePicker animated:YES completion:nil];
@@ -571,6 +583,8 @@
                 break;
             }
             case AVAssetExportSessionStatusFailed:
+                break;
+            default:
                 break;
         }
     }];
@@ -615,6 +629,53 @@
                 }
                 else{
                     [self mutiplepickPhotoSelect];
+                }
+                break;
+            }
+            case 2:
+            {
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    else if (actionSheet.tag == 2){
+        switch (buttonIndex) {
+            case 1:
+            {
+                if (ISIOS7) {
+                    NSString *mediaType = AVMediaTypeVideo;
+                    AVAuthorizationStatus  authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
+                    if (authorizationStatus == AVAuthorizationStatusRestricted|| authorizationStatus == AVAuthorizationStatusDenied) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"此应用没有权限访问您的照片或摄像机，请在: 隐私设置 中启用访问" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                        [alert show];
+                    }else{
+                        [self videoCamerSource:UIImagePickerControllerSourceTypeCamera];
+                    }
+                }
+                else{
+                    [self videoCamerSource:UIImagePickerControllerSourceTypeCamera];
+                }
+                
+                
+                break;
+            }
+            case 0:
+            {
+                if (ISIOS7) {
+                    ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+                    if (author == ALAuthorizationStatusRestricted || author ==ALAuthorizationStatusDenied){
+                        //无权限
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"此应用没有权限访问您的照片或摄像机，请在: 隐私设置 中启用访问" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                        [alert show];
+                    }
+                    else{
+                        [self videoCamerSource:UIImagePickerControllerSourceTypePhotoLibrary];
+                    }
+                }
+                else{
+                    [self videoCamerSource:UIImagePickerControllerSourceTypePhotoLibrary];
                 }
                 break;
             }
@@ -889,24 +950,42 @@
         //经过转过之后视频的存取路径
         NSString *outfilePath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", fileName];
         
-        NSURL *newVideoUrl = [NSURL URLWithString:outfilePath]; //一般.mp4
+        NSURL *newVideoUrl = [NSURL fileURLWithPath:outfilePath]; //一般.mp4
         [self convertVideoQuailtyWithInputURL:sourceURL outputURL:newVideoUrl completeHandler:^(AVAssetExportSession  *session) {
             //转换完成
-            [videoDict setObject:outfilePath forKey:@"filePath"];
+            [videoDict setObject:newVideoUrl forKey:@"filePath"];
             [videoDict setObject:fileName forKey:@"fileName"];
             moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:newVideoUrl];
+            
+            
             moviePlayer.movieSourceType = MPMediaTypeMovie;
             moviePlayer.controlStyle = MPMovieControlStyleDefault;
             moviePlayer.scalingMode = MPMovieScalingModeAspectFit;
             moviePlayer.repeatMode = MPMovieRepeatModeNone;
             moviePlayer.allowsAirPlay = NO;
             moviePlayer.shouldAutoplay = NO;
-            
-            moviePlayer.view.frame = self.addVideoButton.bounds;
+            moviePlayer.controlStyle = MPMovieControlStyleFullscreen;
+            moviePlayer.view.frame = CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGH);
             moviePlayer.view.autoresizingMask = (UIViewAutoresizing)(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-            [addVideoButton addSubview:self.moviePlayer.view];
-            
             [moviePlayer prepareToPlay];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIImage *thumbnail = [self thumbnailImageForVideo:newVideoUrl atTime:0.0];
+                UIImageView *imageView = [[UIImageView alloc] initWithImage:thumbnail];
+                imageView.frame = self.addVideoButton.bounds;
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(playVideo:)];
+                tap.numberOfTapsRequired = 1;
+                tap.numberOfTouchesRequired = 1;
+                imageView.userInteractionEnabled = YES;
+                [imageView addGestureRecognizer:tap];
+                
+                [addVideoButton addSubview:imageView];
+            });
+                           
+            
+        }];
+        [self dismissViewControllerAnimated:YES completion:^{
+            
         }];
     }
     else{
@@ -936,6 +1015,40 @@
     }
     
     
+}
+
+- (void)playVideo:(UITapGestureRecognizer *)ges
+{
+    [self.navigationController.view addSubview:moviePlayer.view];
+    moviePlayer.view.hidden = NO;
+    [moviePlayer prepareToPlay];
+    [moviePlayer play];
+}
+
+- (void)myMovieFinishedCallback:(NSNotification *)notificaiton
+{
+    moviePlayer.view.hidden = YES;
+}
+
+- (UIImage*)thumbnailImageForVideo:(NSURL *)videoURL atTime:(NSTimeInterval)time {
+    
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:videoURL options:nil];
+    NSParameterAssert(asset);
+    AVAssetImageGenerator *assetImageGenerator =[[AVAssetImageGenerator alloc] initWithAsset:asset];
+    assetImageGenerator.appliesPreferredTrackTransform = YES;
+    assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
+    
+    CGImageRef thumbnailImageRef = NULL;
+    CFTimeInterval thumbnailImageTime = time;
+    NSError *thumbnailImageGenerationError = nil;
+    thumbnailImageRef = [assetImageGenerator copyCGImageAtTime:CMTimeMake(thumbnailImageTime, 60)actualTime:NULL error:&thumbnailImageGenerationError];
+    
+    if(!thumbnailImageRef)
+        NSLog(@"thumbnailImageGenerationError %@",thumbnailImageGenerationError);
+    
+    UIImage *thumbnailImage = thumbnailImageRef ? [[UIImage alloc]initWithCGImage: thumbnailImageRef] : nil;
+    
+    return thumbnailImage;
 }
 
 -(void)uploadOneFileData:(NSURL *)fileUrl imgType:(NSString*)typeStr imgName:(NSString *)fileName otherParams:(NSDictionary *)otherParams{
@@ -1268,6 +1381,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    [moviePlayer stop];
 }
 
 /*

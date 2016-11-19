@@ -104,6 +104,31 @@
 		EA1627981DA8BCA100B64B18 /* HeBalanceEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */; };
 		EA1627991DA8BCA100B64B18 /* HeBalanceEditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */; };
 		EA1A03D81DD21B1000C575EC /* icon_reward_green.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1A03D71DD21B1000C575EC /* icon_reward_green.png */; };
+		EA1FE4601DE02735006435D3 /* clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4361DE02735006435D3 /* clear@2x.png */; };
+		EA1FE4611DE02735006435D3 /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4371DE02735006435D3 /* close@2x.png */; };
+		EA1FE4621DE02735006435D3 /* found@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4381DE02735006435D3 /* found@2x.png */; };
+		EA1FE4631DE02735006435D3 /* found_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4391DE02735006435D3 /* found_s@2x.png */; };
+		EA1FE4641DE02735006435D3 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE43A1DE02735006435D3 /* logo.png */; };
+		EA1FE4651DE02735006435D3 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE43B1DE02735006435D3 /* message@2x.png */; };
+		EA1FE4661DE02735006435D3 /* message_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE43C1DE02735006435D3 /* message_s@2x.png */; };
+		EA1FE4671DE02735006435D3 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE43D1DE02735006435D3 /* play.png */; };
+		EA1FE4681DE02735006435D3 /* playcount.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE43E1DE02735006435D3 /* playcount.png */; };
+		EA1FE4691DE02735006435D3 /* share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE43F1DE02735006435D3 /* share@2x.png */; };
+		EA1FE46A1DE02735006435D3 /* share_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4401DE02735006435D3 /* share_s@2x.png */; };
+		EA1FE46B1DE02735006435D3 /* time.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4411DE02735006435D3 /* time.png */; };
+		EA1FE46C1DE02735006435D3 /* video_play_btn_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4421DE02735006435D3 /* video_play_btn_bg@2x.png */; };
+		EA1FE46D1DE02735006435D3 /* WMPlayer.gif in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4431DE02735006435D3 /* WMPlayer.gif */; };
+		EA1FE46E1DE02735006435D3 /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE4471DE02735006435D3 /* MASCompositeConstraint.m */; };
+		EA1FE46F1DE02735006435D3 /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE44A1DE02735006435D3 /* MASConstraint.m */; };
+		EA1FE4701DE02735006435D3 /* MASConstraintMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE44C1DE02735006435D3 /* MASConstraintMaker.m */; };
+		EA1FE4711DE02735006435D3 /* MASLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE44E1DE02735006435D3 /* MASLayoutConstraint.m */; };
+		EA1FE4721DE02735006435D3 /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE4521DE02735006435D3 /* MASViewAttribute.m */; };
+		EA1FE4731DE02735006435D3 /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE4541DE02735006435D3 /* MASViewConstraint.m */; };
+		EA1FE4741DE02735006435D3 /* NSArray+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE4561DE02735006435D3 /* NSArray+MASAdditions.m */; };
+		EA1FE4751DE02735006435D3 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE4591DE02735006435D3 /* NSLayoutConstraint+MASDebugAdditions.m */; };
+		EA1FE4761DE02735006435D3 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE45B1DE02735006435D3 /* View+MASAdditions.m */; };
+		EA1FE4771DE02735006435D3 /* WMPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE45D1DE02735006435D3 /* WMPlayer.bundle */; };
+		EA1FE4781DE02735006435D3 /* WMPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE45F1DE02735006435D3 /* WMPlayer.m */; };
 		EA356A7A1D79651C00EE64A2 /* HeUserRecommendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */; };
 		EA356A7D1D79655100EE64A2 /* HeUserContestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */; };
 		EA428E3B1D79C0390053DC69 /* HeUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA428E391D79C0390053DC69 /* HeUserInfoVC.m */; };
@@ -879,6 +904,46 @@
 		EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBalanceEditVC.m; sourceTree = "<group>"; };
 		EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBalanceEditVC.xib; sourceTree = "<group>"; };
 		EA1A03D71DD21B1000C575EC /* icon_reward_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_reward_green.png; sourceTree = "<group>"; };
+		EA1FE4361DE02735006435D3 /* clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear@2x.png"; sourceTree = "<group>"; };
+		EA1FE4371DE02735006435D3 /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
+		EA1FE4381DE02735006435D3 /* found@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "found@2x.png"; sourceTree = "<group>"; };
+		EA1FE4391DE02735006435D3 /* found_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "found_s@2x.png"; sourceTree = "<group>"; };
+		EA1FE43A1DE02735006435D3 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		EA1FE43B1DE02735006435D3 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@2x.png"; sourceTree = "<group>"; };
+		EA1FE43C1DE02735006435D3 /* message_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_s@2x.png"; sourceTree = "<group>"; };
+		EA1FE43D1DE02735006435D3 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		EA1FE43E1DE02735006435D3 /* playcount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playcount.png; sourceTree = "<group>"; };
+		EA1FE43F1DE02735006435D3 /* share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share@2x.png"; sourceTree = "<group>"; };
+		EA1FE4401DE02735006435D3 /* share_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share_s@2x.png"; sourceTree = "<group>"; };
+		EA1FE4411DE02735006435D3 /* time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = time.png; sourceTree = "<group>"; };
+		EA1FE4421DE02735006435D3 /* video_play_btn_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video_play_btn_bg@2x.png"; sourceTree = "<group>"; };
+		EA1FE4431DE02735006435D3 /* WMPlayer.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = WMPlayer.gif; sourceTree = "<group>"; };
+		EA1FE4461DE02735006435D3 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
+		EA1FE4471DE02735006435D3 /* MASCompositeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASCompositeConstraint.m; sourceTree = "<group>"; };
+		EA1FE4481DE02735006435D3 /* MASConstraint+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASConstraint+Private.h"; sourceTree = "<group>"; };
+		EA1FE4491DE02735006435D3 /* MASConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraint.h; sourceTree = "<group>"; };
+		EA1FE44A1DE02735006435D3 /* MASConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraint.m; sourceTree = "<group>"; };
+		EA1FE44B1DE02735006435D3 /* MASConstraintMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraintMaker.h; sourceTree = "<group>"; };
+		EA1FE44C1DE02735006435D3 /* MASConstraintMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraintMaker.m; sourceTree = "<group>"; };
+		EA1FE44D1DE02735006435D3 /* MASLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASLayoutConstraint.h; sourceTree = "<group>"; };
+		EA1FE44E1DE02735006435D3 /* MASLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASLayoutConstraint.m; sourceTree = "<group>"; };
+		EA1FE44F1DE02735006435D3 /* Masonry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Masonry.h; sourceTree = "<group>"; };
+		EA1FE4501DE02735006435D3 /* MASUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASUtilities.h; sourceTree = "<group>"; };
+		EA1FE4511DE02735006435D3 /* MASViewAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewAttribute.h; sourceTree = "<group>"; };
+		EA1FE4521DE02735006435D3 /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
+		EA1FE4531DE02735006435D3 /* MASViewConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewConstraint.h; sourceTree = "<group>"; };
+		EA1FE4541DE02735006435D3 /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
+		EA1FE4551DE02735006435D3 /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASAdditions.h"; sourceTree = "<group>"; };
+		EA1FE4561DE02735006435D3 /* NSArray+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MASAdditions.m"; sourceTree = "<group>"; };
+		EA1FE4571DE02735006435D3 /* NSArray+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASShorthandAdditions.h"; sourceTree = "<group>"; };
+		EA1FE4581DE02735006435D3 /* NSLayoutConstraint+MASDebugAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+MASDebugAdditions.h"; sourceTree = "<group>"; };
+		EA1FE4591DE02735006435D3 /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
+		EA1FE45A1DE02735006435D3 /* View+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASAdditions.h"; sourceTree = "<group>"; };
+		EA1FE45B1DE02735006435D3 /* View+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "View+MASAdditions.m"; sourceTree = "<group>"; };
+		EA1FE45C1DE02735006435D3 /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
+		EA1FE45D1DE02735006435D3 /* WMPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WMPlayer.bundle; sourceTree = "<group>"; };
+		EA1FE45E1DE02735006435D3 /* WMPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPlayer.h; sourceTree = "<group>"; };
+		EA1FE45F1DE02735006435D3 /* WMPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPlayer.m; sourceTree = "<group>"; };
 		EA356A781D79651C00EE64A2 /* HeUserRecommendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserRecommendCell.h; sourceTree = "<group>"; };
 		EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserRecommendCell.m; sourceTree = "<group>"; };
 		EA356A7B1D79655100EE64A2 /* HeUserContestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserContestCell.h; sourceTree = "<group>"; };
@@ -2418,6 +2483,77 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		EA1FE4341DE02722006435D3 /* WMPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				EA1FE4351DE02735006435D3 /* Resource */,
+				EA1FE4441DE02735006435D3 /* WMPlayer */,
+			);
+			name = WMPlayer;
+			sourceTree = "<group>";
+		};
+		EA1FE4351DE02735006435D3 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				EA1FE4361DE02735006435D3 /* clear@2x.png */,
+				EA1FE4371DE02735006435D3 /* close@2x.png */,
+				EA1FE4381DE02735006435D3 /* found@2x.png */,
+				EA1FE4391DE02735006435D3 /* found_s@2x.png */,
+				EA1FE43A1DE02735006435D3 /* logo.png */,
+				EA1FE43B1DE02735006435D3 /* message@2x.png */,
+				EA1FE43C1DE02735006435D3 /* message_s@2x.png */,
+				EA1FE43D1DE02735006435D3 /* play.png */,
+				EA1FE43E1DE02735006435D3 /* playcount.png */,
+				EA1FE43F1DE02735006435D3 /* share@2x.png */,
+				EA1FE4401DE02735006435D3 /* share_s@2x.png */,
+				EA1FE4411DE02735006435D3 /* time.png */,
+				EA1FE4421DE02735006435D3 /* video_play_btn_bg@2x.png */,
+				EA1FE4431DE02735006435D3 /* WMPlayer.gif */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		EA1FE4441DE02735006435D3 /* WMPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				EA1FE4451DE02735006435D3 /* Masonry */,
+				EA1FE45D1DE02735006435D3 /* WMPlayer.bundle */,
+				EA1FE45E1DE02735006435D3 /* WMPlayer.h */,
+				EA1FE45F1DE02735006435D3 /* WMPlayer.m */,
+			);
+			path = WMPlayer;
+			sourceTree = "<group>";
+		};
+		EA1FE4451DE02735006435D3 /* Masonry */ = {
+			isa = PBXGroup;
+			children = (
+				EA1FE4461DE02735006435D3 /* MASCompositeConstraint.h */,
+				EA1FE4471DE02735006435D3 /* MASCompositeConstraint.m */,
+				EA1FE4481DE02735006435D3 /* MASConstraint+Private.h */,
+				EA1FE4491DE02735006435D3 /* MASConstraint.h */,
+				EA1FE44A1DE02735006435D3 /* MASConstraint.m */,
+				EA1FE44B1DE02735006435D3 /* MASConstraintMaker.h */,
+				EA1FE44C1DE02735006435D3 /* MASConstraintMaker.m */,
+				EA1FE44D1DE02735006435D3 /* MASLayoutConstraint.h */,
+				EA1FE44E1DE02735006435D3 /* MASLayoutConstraint.m */,
+				EA1FE44F1DE02735006435D3 /* Masonry.h */,
+				EA1FE4501DE02735006435D3 /* MASUtilities.h */,
+				EA1FE4511DE02735006435D3 /* MASViewAttribute.h */,
+				EA1FE4521DE02735006435D3 /* MASViewAttribute.m */,
+				EA1FE4531DE02735006435D3 /* MASViewConstraint.h */,
+				EA1FE4541DE02735006435D3 /* MASViewConstraint.m */,
+				EA1FE4551DE02735006435D3 /* NSArray+MASAdditions.h */,
+				EA1FE4561DE02735006435D3 /* NSArray+MASAdditions.m */,
+				EA1FE4571DE02735006435D3 /* NSArray+MASShorthandAdditions.h */,
+				EA1FE4581DE02735006435D3 /* NSLayoutConstraint+MASDebugAdditions.h */,
+				EA1FE4591DE02735006435D3 /* NSLayoutConstraint+MASDebugAdditions.m */,
+				EA1FE45A1DE02735006435D3 /* View+MASAdditions.h */,
+				EA1FE45B1DE02735006435D3 /* View+MASAdditions.m */,
+				EA1FE45C1DE02735006435D3 /* View+MASShorthandAdditions.h */,
+			);
+			path = Masonry;
+			sourceTree = "<group>";
+		};
 		EA356A771D7964C000EE64A2 /* Distribute */ = {
 			isa = PBXGroup;
 			children = (
@@ -2881,6 +3017,7 @@
 		EAC2C9CE1D4AF5D700E282A8 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EA1FE4341DE02722006435D3 /* WMPlayer */,
 				EA71A1771DDEE86500B16333 /* CRMediaPickerController */,
 				EA7F2FCB1DD37C10001857F4 /* UWDatePickerView */,
 				EAC1B88C1DD0E37400505B45 /* HcdDateTimePicker */,
@@ -4774,6 +4911,7 @@
 				EA4D01761D4D8FF100A0CCA1 /* index1.jpg in Resources */,
 				EADE33151D76D49F0025492B /* icon_pay_password.png in Resources */,
 				EAC2CCBD1D4AF5D800E282A8 /* LICENSE in Resources */,
+				EA1FE4681DE02735006435D3 /* playcount.png in Resources */,
 				EA1A03D81DD21B1000C575EC /* icon_reward_green.png in Resources */,
 				EAC2CDE31D4AF5D800E282A8 /* sr_refresh@2X.png in Resources */,
 				EA0508F01D6E9AD7003947EE /* HeCommentView.xib in Resources */,
@@ -4801,6 +4939,7 @@
 				EAC2CDF91D4AF5D800E282A8 /* TZImagePickerController.bundle in Resources */,
 				EACC98391D50E7E400E627B8 /* icon_put.png in Resources */,
 				EA0E9D111D4C269E009CBF64 /* NavBarIOS7_white.png in Resources */,
+				EA1FE4661DE02735006435D3 /* message_s@2x.png in Resources */,
 				EACC98341D50E5DB00E627B8 /* icon_nearby_beauty.png in Resources */,
 				EAE88BC51DAF5BC900AD946F /* AlipaySDK.bundle in Resources */,
 				07E880391DC44F22000A13E8 /* bubble_min@2x.png in Resources */,
@@ -4817,6 +4956,7 @@
 				EA0508F51D6E9FE8003947EE /* HeUserDistributeVC.xib in Resources */,
 				EA4645481D51B9D800CD539F /* icon_love.png in Resources */,
 				EAC2CDF21D4AF5D800E282A8 /* ProvincesAndCities.plist in Resources */,
+				EA1FE4651DE02735006435D3 /* message@2x.png in Resources */,
 				EA4645541D51ECC100CD539F /* FLCollectionSeparator.xib in Resources */,
 				EAC2CEA31D4AF5EE00E282A8 /* ShareSDKUI.bundle in Resources */,
 				EA4D01621D4CF0A300A0CCA1 /* navigationBar_back_icon.png in Resources */,
@@ -4829,23 +4969,28 @@
 				EADE32E91D76AF6A0025492B /* HeRecommendDetailVC.xib in Resources */,
 				07F3AB261DC46445008AD00E /* icon_join_in.png in Resources */,
 				EAC2CE001D4AF5D800E282A8 /* FontAwesome.ttf in Resources */,
+				EA1FE46D1DE02735006435D3 /* WMPlayer.gif in Resources */,
 				EAC1B8891DD0D99200505B45 /* uncheckBox@2x.png in Resources */,
 				EAC2CDF01D4AF5D800E282A8 /* btn_021.press@2x.png in Resources */,
 				EA0E9D121D4C269E009CBF64 /* NavBarIOS7.png in Resources */,
 				EAC2C9131D4AF0E600E282A8 /* LaunchScreen.storyboard in Resources */,
 				EAC2CEB31D4AF5EE00E282A8 /* zbar-samples.png in Resources */,
 				EADE330B1D76D2550025492B /* HeUserFinanceVC.xib in Resources */,
+				EA1FE4671DE02735006435D3 /* play.png in Resources */,
 				EAC2CEA81D4AF5EE00E282A8 /* WeiboSDK.bundle in Resources */,
 				EAC2CD231D4AF5D800E282A8 /* IQKeyboardManager.bundle in Resources */,
 				07A7E9D11DC5F9900043802C /* icon_search.png in Resources */,
 				07F3AB321DC4B5A0008AD00E /* 用户协议.doc in Resources */,
 				07E8803B1DC44F23000A13E8 /* microphone@2x.png in Resources */,
+				EA1FE4631DE02735006435D3 /* found_s@2x.png in Resources */,
+				EA1FE4611DE02735006435D3 /* close@2x.png in Resources */,
 				EAC1B8851DD0D99200505B45 /* checkBox@2x.png in Resources */,
 				EAC2CCFD1D4AF5D800E282A8 /* fail@3x.png in Resources */,
 				07E880471DC44F23000A13E8 /* umeng_fb_audio_play_default@2x.png in Resources */,
 				EAC2CDEE1D4AF5D800E282A8 /* btn_020@2x.png in Resources */,
 				EA46452C1D51884000CD539F /* HeNearbyVC.xib in Resources */,
 				EA4D01931D4D9A6B00A0CCA1 /* HeContestRankVC.xib in Resources */,
+				EA1FE4771DE02735006435D3 /* WMPlayer.bundle in Resources */,
 				EAC4F9E81D6D72B700F96DDA /* HeEnrollVC.xib in Resources */,
 				077D0EAF1DC83512009F48E9 /* ios_guide_step_1.png in Resources */,
 				EAAB7AEC1DDA9E9B004F1D0C /* HeComplaintUserVC.xib in Resources */,
@@ -4879,6 +5024,7 @@
 				EAC2CEAA1D4AF5EE00E282A8 /* README.txt in Resources */,
 				EAC2CD321D4AF5D800E282A8 /* MBProgressHUD.bundle in Resources */,
 				EA0509041D6EC24D003947EE /* icon_reward.png in Resources */,
+				EA1FE4641DE02735006435D3 /* logo.png in Resources */,
 				EA4645361D51914900CD539F /* icon_sponsor.png in Resources */,
 				EAC2CD161D4AF5D800E282A8 /* grayArrow@2x.png in Resources */,
 				07E8803C1DC44F23000A13E8 /* save@2x.png in Resources */,
@@ -4888,6 +5034,7 @@
 				EADE32F01D76B3860025492B /* album_uncheckBox.png in Resources */,
 				EA0508EA1D6E9957003947EE /* HeContestZoneCommentVC.xib in Resources */,
 				EA46453A1D51916F00CD539F /* icon_puter.png in Resources */,
+				EA1FE4691DE02735006435D3 /* share@2x.png in Resources */,
 				EA0229521D74197800F57965 /* HeUserMessageVC.xib in Resources */,
 				EA0E9D271D4C295F009CBF64 /* HeDiscoverVC.xib in Resources */,
 				EA4D01751D4D8FF100A0CCA1 /* index0.jpg in Resources */,
@@ -4899,6 +5046,7 @@
 				EAC2CDD11D4AF5D800E282A8 /* sharemore_pic@3x.png in Resources */,
 				07E8803F1DC44F23000A13E8 /* ToolViewInputVoice@2x.png in Resources */,
 				077D0EB01DC83512009F48E9 /* ios_guide_step_2.png in Resources */,
+				EA1FE4601DE02735006435D3 /* clear@2x.png in Resources */,
 				EAC1B88B1DD0DE0100505B45 /* icon_more.png in Resources */,
 				EADE330D1D76D45F0025492B /* icon_recharge.png in Resources */,
 				07E880461DC44F23000A13E8 /* umeng_fb_audio_play_03@2x.png in Resources */,
@@ -4924,6 +5072,7 @@
 				EAC2CD0C1D4AF5D800E282A8 /* i2KEPCMultiComponentPickerView.xib in Resources */,
 				EAC1B8871DD0D99200505B45 /* had_checkBox@2x.png in Resources */,
 				07E8803E1DC44F23000A13E8 /* ToolViewInputTextHL@2x.png in Resources */,
+				EA1FE4621DE02735006435D3 /* found@2x.png in Resources */,
 				EAC2CD361D4AF5D800E282A8 /* MJPhotoBrowser.bundle in Resources */,
 				EAC2CD181D4AF5D800E282A8 /* whiteArrow@2x.png in Resources */,
 				EAC2CDEF1D4AF5D800E282A8 /* btn_021.disable@2x.png in Resources */,
@@ -4939,6 +5088,7 @@
 				EAC2CD191D4AF5D800E282A8 /* LICENSE.txt in Resources */,
 				EAC2CEB01D4AF5EE00E282A8 /* zbar-back.png in Resources */,
 				EA4D017C1D4D8FF100A0CCA1 /* index7.jpg in Resources */,
+				EA1FE46A1DE02735006435D3 /* share_s@2x.png in Resources */,
 				EAC1B8861DD0D99200505B45 /* had_checkBox.png in Resources */,
 				EA4645381D51915000CD539F /* icon_location.png in Resources */,
 				EAD0B1BF1D4F200D0017C20B /* Images.xcassets in Resources */,
@@ -4956,6 +5106,7 @@
 				EAC2CD0E1D4AF5D800E282A8 /* i2KEPCSingleComponentPickerView.xib in Resources */,
 				EA7F2FD01DD37C10001857F4 /* UWDatePickerView.xib in Resources */,
 				EAC2CEB21D4AF5EE00E282A8 /* zbar-helpicons.png in Resources */,
+				EA1FE46C1DE02735006435D3 /* video_play_btn_bg@2x.png in Resources */,
 				EACC98471D50F59400E627B8 /* HeDistributeContestVC.xib in Resources */,
 				EA0E9D091D4C2676009CBF64 /* tabbar_normal_background.png in Resources */,
 				EAC2CCD21D4AF5D800E282A8 /* BrowserView.xib in Resources */,
@@ -4966,6 +5117,7 @@
 				EAC2CCFA1D4AF5D800E282A8 /* ClippedExpression.bundle in Resources */,
 				EA5EC6201D77C0FF004D5FEC /* TOWebViewControllerLocalizable.strings in Resources */,
 				EAC2CCF91D4AF5D800E282A8 /* back-arrow@3x.png in Resources */,
+				EA1FE46B1DE02735006435D3 /* time.png in Resources */,
 				EAC2CDEB1D4AF5D800E282A8 /* bg_023@2x.png in Resources */,
 				EAC2CEBB1D4AF5FC00E282A8 /* loading_anim1.png in Resources */,
 				07E880431DC44F23000A13E8 /* umeng_fb_audio_dialog_content@2x.png in Resources */,
@@ -5016,6 +5168,7 @@
 			files = (
 				EA4D01A01D4D9D4A00A0CCA1 /* HeContestantTableCell.m in Sources */,
 				EAC2CD731D4AF5D800E282A8 /* RACEXTRuntimeExtensions.m in Sources */,
+				EA1FE4751DE02735006435D3 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				EAC2CD3B1D4AF5D800E282A8 /* MJPhotoView.m in Sources */,
 				EAC2CDA71D4AF5D800E282A8 /* RACScopedDisposable.m in Sources */,
 				EAC2CD421D4AF5D800E282A8 /* MJRefreshHeader.m in Sources */,
@@ -5052,6 +5205,7 @@
 				EADE32EC1D76B2710025492B /* HeAlbumImage.m in Sources */,
 				EAC2CCC71D4AF5D800E282A8 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
 				EA0508F91D6EA000003947EE /* HeUserAlbumVC.m in Sources */,
+				EA1FE46E1DE02735006435D3 /* MASCompositeConstraint.m in Sources */,
 				EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */,
 				EAC2CDD51D4AF5D800E282A8 /* SDWebImageCompat.m in Sources */,
 				EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */,
@@ -5069,12 +5223,14 @@
 				EAC2CCD51D4AF5D800E282A8 /* DCWebImageManager.m in Sources */,
 				07E8800B1DC4240F000A13E8 /* HeSearchBeautyZoneVC.m in Sources */,
 				EAC2CE1D1D4AF5E000E282A8 /* NSData+ASE128.m in Sources */,
+				EA1FE4731DE02735006435D3 /* MASViewConstraint.m in Sources */,
 				EA5EC6241D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m in Sources */,
 				EAC2CD661D4AF5D800E282A8 /* SIMenuCell.m in Sources */,
 				EAC2CCF21D4AF5D800E282A8 /* RRDevice.m in Sources */,
 				EAC2CE111D4AF5D800E282A8 /* YLImageView.m in Sources */,
 				EAC2CE991D4AF5EE00E282A8 /* bitstream.c in Sources */,
 				EAC2CD971D4AF5D800E282A8 /* RACEmptySignal.m in Sources */,
+				EA1FE4781DE02735006435D3 /* WMPlayer.m in Sources */,
 				EAC2CE9D1D4AF5EE00E282A8 /* qrinput.c in Sources */,
 				EAC2CE011D4AF5D800E282A8 /* NSString+Catagory.m in Sources */,
 				EAC2CE0A1D4AF5D800E282A8 /* NSMutableArray+convenience.m in Sources */,
@@ -5094,6 +5250,7 @@
 				EAC2CD381D4AF5D800E282A8 /* MJPhotoLoadingView.m in Sources */,
 				EAC2C9081D4AF0E600E282A8 /* AppDelegate.m in Sources */,
 				EAC2CDAA1D4AF5D800E282A8 /* RACSignal+Operations.m in Sources */,
+				EA1FE4711DE02735006435D3 /* MASLayoutConstraint.m in Sources */,
 				07D2A4D11DC05EE80031DDE0 /* HeFaceCreatZoneVC.m in Sources */,
 				EAC2CD6B1D4AF5D800E282A8 /* AHReach.m in Sources */,
 				EAC2CE0B1D4AF5D800E282A8 /* UIColor+expanded.m in Sources */,
@@ -5267,6 +5424,7 @@
 				EAC2CD821D4AF5D800E282A8 /* NSOrderedSet+RACSequenceAdditions.m in Sources */,
 				EAC2CD951D4AF5D800E282A8 /* RACEagerSequence.m in Sources */,
 				EAC2CE9A1D4AF5EE00E282A8 /* mask.c in Sources */,
+				EA1FE46F1DE02735006435D3 /* MASConstraint.m in Sources */,
 				07E8804E1DC44F23000A13E8 /* UMRadialView.m in Sources */,
 				EAC2CE031D4AF5D800E282A8 /* UIButton+associate.m in Sources */,
 				EAC2CCDE1D4AF5D800E282A8 /* DFBaseTabBarController.m in Sources */,
@@ -5303,6 +5461,7 @@
 				EAAB7AEB1DDA9E9B004F1D0C /* HeComplaintUserVC.m in Sources */,
 				EA0508F41D6E9FE8003947EE /* HeUserDistributeVC.m in Sources */,
 				EA4D01441D4CE8FF00A0CCA1 /* BBLaunchAdMonitor.m in Sources */,
+				EA1FE4761DE02735006435D3 /* View+MASAdditions.m in Sources */,
 				07E880481DC44F23000A13E8 /* UMFeedbackViewController.m in Sources */,
 				EA8027EE1D52DC5B008BC4E6 /* RecommendCollectionViewCell.m in Sources */,
 				EAC2CDBE1D4AF5D800E282A8 /* UIButton+RACCommandSupport.m in Sources */,
@@ -5317,10 +5476,12 @@
 				EAC2CDF61D4AF5D800E282A8 /* TZAssetCell.m in Sources */,
 				EA1627981DA8BCA100B64B18 /* HeBalanceEditVC.m in Sources */,
 				EAC2CD021D4AF5D800E282A8 /* DFBaseStorageService.m in Sources */,
+				EA1FE4701DE02735006435D3 /* MASConstraintMaker.m in Sources */,
 				EAC2CDCA1D4AF5D800E282A8 /* UITableViewCell+RACSignalSupport.m in Sources */,
 				EAC2CD641D4AF5D800E282A8 /* SICellSelection.m in Sources */,
 				EAC2CED01D4AF71900E282A8 /* NSString+Valid.m in Sources */,
 				EA0508E91D6E9957003947EE /* HeContestZoneCommentVC.m in Sources */,
+				EA1FE4721DE02735006435D3 /* MASViewAttribute.m in Sources */,
 				EAC2CD141D4AF5D800E282A8 /* EGORefreshTableHeaderView.m in Sources */,
 				EAC2CD871D4AF5D800E282A8 /* NSURLConnection+RACSupport.m in Sources */,
 				EAC2CDBF1D4AF5D800E282A8 /* UICollectionReusableView+RACSignalSupport.m in Sources */,
@@ -5420,6 +5581,7 @@
 				EAC2CDCD1D4AF5D800E282A8 /* UITextView+RACSignalSupport.m in Sources */,
 				EAC2CD8F1D4AF5D800E282A8 /* RACCompoundDisposable.m in Sources */,
 				EA0229401D74178200F57965 /* HeFansTableCell.m in Sources */,
+				EA1FE4741DE02735006435D3 /* NSArray+MASAdditions.m in Sources */,
 				EAC2CD311D4AF5D800E282A8 /* MBProgressHUD+Add.m in Sources */,
 				EAC2CD681D4AF5D800E282A8 /* SIMenuTable.m in Sources */,
 				EAC2CDC91D4AF5D800E282A8 /* UISwitch+RACSignalSupport.m in Sources */,

@@ -138,7 +138,13 @@
             
             NSInteger picIndex = i * MAX_column + j;
             NSDictionary *dict = [dataSource objectAtIndex:picIndex];
-            NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,dict[@"userHeader"]];
+            NSString *userHeader = dict[@"userHeader"];
+            if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
+                userHeader = @"";
+            }
+            if (![userHeader hasPrefix:@"http"]) {
+                userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+            }
             UIImageView *asynImage = [[UIImageView alloc] init];
             [asynImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
 //            asynImage.tag = picIndex;

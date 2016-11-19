@@ -909,7 +909,9 @@
                 }
                 User *userInfo = [HeSysbsModel getSysModel].user;
                 NSString *userHead = userInfo.userHeader;
-                userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];
+                if (![userHead hasPrefix:@"http"]) {
+                    userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];
+                }
                 CGFloat imageY = 5;
                 CGFloat imageH = cellSize.height - 2 * imageY;
                 CGFloat imageW = imageH;
@@ -921,6 +923,8 @@
                 userIcon.layer.masksToBounds = YES;
                 userIcon.layer.cornerRadius = imageH / 2.0;
                 userIcon.contentMode = UIViewContentModeScaleAspectFill;
+                
+                
                 [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead]];
                 [cell addSubview:userIcon];
             }
@@ -971,7 +975,9 @@
             
             User *userInfo = [HeSysbsModel getSysModel].user;
             NSString *userHead = userInfo.userHeader;
-            userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];
+            if (![userHead hasPrefix:@"http"]) {
+                userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];
+            }
             CGFloat imageY = 5;
             CGFloat imageH = cellSize.height - 2 * imageY;
             CGFloat imageW = imageH;

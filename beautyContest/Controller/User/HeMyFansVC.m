@@ -296,7 +296,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[dict objectForKey:@"userHeader"]];
+    NSString *userHeader = [dict objectForKey:@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
+        userHeader = @"";
+    }
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
     NSString *imageKey = [NSString stringWithFormat:@"%@_%ld",userHeader,row];
     UIImageView *imageview = [imageCache objectForKey:imageKey];
     if (!imageview) {

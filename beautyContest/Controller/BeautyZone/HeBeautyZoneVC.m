@@ -673,7 +673,10 @@
     if ([userHear isMemberOfClass:[NSNull class]]) {
         userHear = @"";
     }
-    userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
+    if (![userHear hasPrefix:@"http"]) {
+        userHear = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHear];
+    }
+    
     UIImageView *userHearimageview = [imageCache objectForKey:userHear];
     if (!userHearimageview) {
         [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHear] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];

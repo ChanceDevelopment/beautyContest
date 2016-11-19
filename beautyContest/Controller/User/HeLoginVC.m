@@ -83,7 +83,7 @@
      微信客户端(使用sdk中的isWXAppInstall函数),对于未安装的用户隐藏微信 登录按钮，只提供其他登录方式。
      */
     if ([WXApi isWXAppInstalled]) {
-        wechatLoginButton.hidden = YES;
+        wechatLoginButton.hidden = NO;
     }
     else{
         wechatLoginButton.hidden = YES;
@@ -145,18 +145,17 @@
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
+            [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"isthirdPartyLogin"];
             NSString *myuserId = [respondDict objectForKey:@"json"];
             if ([myuserId isMemberOfClass:[NSNull class]]) {
                 myuserId = @"";
             }
             NSString *userInfoString = loginParams[@"WXinfo"];
             NSDictionary *wechatDict = [userInfoString objectFromJSONString];
+            [[NSUserDefaults standardUserDefaults] setObject:wechatDict forKey:@"thirdPartyData"];
+            
             NSDictionary *userDictInfo = @{@"userState":wechatDict[@"userSex"],@"userId":myuserId};
-//            NSInteger userState = [[userDictInfo objectForKey:@"userState"] integerValue];
-//            if (userState == 0) {
-//                [self showHint:@"当前用户不可用"];
-//                return ;
-//            }
+
             NSDictionary *myUserDict = @{@"data":@"success",@"errorCode":@"200",@"json":userDictInfo};
             respondString = [myUserDict JSONString];
             NSString *userDataPath = [Tool getUserDataPath];
@@ -171,11 +170,19 @@
             if (userId == nil) {
                 userId = @"";
             }
+            NSString *userHeader = wechatDict[@"userHeader"];
+            user.userHeader = userHeader;
+            user.userId = userId;
+            user.userSex = [wechatDict[@"userSex"] integerValue];
+            
             [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:USERACCOUNTKEY];
             [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:USERPASSWORDKEY];
             [[NSUserDefaults standardUserDefaults] setObject:userId forKey:USERIDKEY];
             User *userInfo = [[User alloc] initUserWithDict:userDictInfo];
             [HeSysbsModel getSysModel].user = userInfo;
+            userInfo.userHeader = userHeader;
+            userInfo.userId = userId;
+            userInfo.userSex = [wechatDict[@"userSex"] integerValue];
             
             //发送自动登陆状态通知
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
@@ -230,6 +237,7 @@
     NSDictionary *loginParams = @{@"userName":account,@"userPwd":password};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:loginUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
+        [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:@"isthirdPartyLogin"];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         
         NSDictionary *respondDict = [respondString objectFromJSONString];

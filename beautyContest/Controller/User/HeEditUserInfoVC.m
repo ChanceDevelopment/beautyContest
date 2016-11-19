@@ -141,7 +141,9 @@
     userHeadImage.tag = HEADTAG;
     
     NSString *userHeader = userInfo.userHeader;
-    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
     [userHeadImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:userHeadImage.image];
     
     userHeadImage.userInteractionEnabled = YES;

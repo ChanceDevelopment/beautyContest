@@ -224,7 +224,7 @@
         if (errorCode == REQUESTCODE_SUCCEED) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserAlbum" object:self];
             [self showHint:@"上传成功!"];
-            [self performSelector:@selector(backLastView) withObject:nil afterDelay:0.3];
+            [self performSelector:@selector(backLastView) withObject:nil afterDelay:0.5];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];

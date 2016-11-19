@@ -41,12 +41,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "beautyContest/AppDelegate.m"
-            timestampString = "499960128.131896"
+            timestampString = "501229562.346882"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "739"
-            endingLineNumber = "739"
+            startingLineNumber = "789"
+            endingLineNumber = "789"
             landmarkName = "-application:openURL:sourceApplication:annotation:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "beautyContest/Controller/HeTabBarVC.m"
+            timestampString = "501211947.214991"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
+            landmarkName = "-getUserInfo"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

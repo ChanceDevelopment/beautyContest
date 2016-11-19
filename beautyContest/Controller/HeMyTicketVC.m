@@ -293,7 +293,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    NSString *userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[dict objectForKey:@"voteHostheader"]];
+    NSString *userHeader = [dict objectForKey:@"voteHostheader"];
+    if ([userHeader isMemberOfClass:[NSNull class]]) {
+        userHeader = @"";
+    }
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
     NSString *imageKey = [NSString stringWithFormat:@"%@_%ld",userHeader,row];
     UIImageView *imageview = [imageCache objectForKey:imageKey];
     if (!imageview) {
