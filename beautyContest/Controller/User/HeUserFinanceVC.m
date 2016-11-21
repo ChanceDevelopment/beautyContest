@@ -173,7 +173,7 @@
     tipLabel.textColor = [UIColor grayColor];
     [sectionHeaderView addSubview:tipLabel];
     
-    MLLink *labelLink = [MLLink linkWithType:MLLinkTypeURL value:@"http://www.baidu.com" range:range1];
+    MLLink *labelLink = [MLLink linkWithType:MLLinkTypeURL value:BEAUTYCONTESTOFFICIALWEBSITE range:range1];
     [tipLabel addLink:labelLink];
     __weak HeUserFinanceVC *weakSelf = self;
     [labelLink setDidClickLinkBlock:^(MLLink *link, NSString *linkText, MLLinkLabel *label) {

@@ -9,6 +9,7 @@
 #ifndef appAPIDefine_h
 #define appAPIDefine_h
 
+#define BEAUTYCONTESTOFFICIALWEBSITE @"http://114.55.226.224:8088/xuanmei/ReceptionAllRoundPic.action"
 #define FL_URL @"http://114.55.226.224:8088/xuanmei/"
 #define BASEURL @"http://114.55.226.224:8088/xuanmei/"
 #define WEBBASEURL @"http://huayoutong.com/mobilex/"
