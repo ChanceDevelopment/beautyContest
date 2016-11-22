@@ -178,14 +178,6 @@
 - (void)moreItemClick:(id)sender
 {
     NSArray *menuArray = @[@"分享",@"举报",@"屏蔽该发布人"];
-//    NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
-//    if ([userId isMemberOfClass:[NSNull class]]) {
-//        userId = nil;
-//    }
-//    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-//    if ([userId isEqualToString:myUserId]) {
-//        menuArray = @[@"分享"];
-//    }
     [FTPopOverMenu setTintColor:APPDEFAULTORANGE];
     [FTPopOverMenu showForSender:sender
                         withMenu:menuArray
