@@ -9,24 +9,26 @@
 #import "HeAlbumImage.h"
 
 @implementation HeAlbumImage
+@synthesize imageView;
+@synthesize selectBox;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self addSubview:_imageView];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [self addSubview:imageView];
         
         CGFloat boxWidth = 25;
         CGFloat boxHeight = boxWidth;
-        _selectBox = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - boxWidth, 0, boxWidth, boxHeight)];
-        [_selectBox setBackgroundImage:[UIImage imageNamed:@"album_uncheckBox0000"] forState:UIControlStateNormal];
-        [_selectBox setBackgroundImage:[UIImage imageNamed:@"album_checkBox"] forState:UIControlStateSelected];
-        [_selectBox addTarget:self action:@selector(selectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        _selectBox.hidden = YES;
-        self.selected = _selectBox.selected;
-        [self addSubview:_selectBox];
+        selectBox = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - boxWidth, 0, boxWidth, boxHeight)];
+        [selectBox setBackgroundImage:[UIImage imageNamed:@"album_uncheckBox0000"] forState:UIControlStateNormal];
+        [selectBox setBackgroundImage:[UIImage imageNamed:@"album_checkBox"] forState:UIControlStateSelected];
+        [selectBox addTarget:self action:@selector(selectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        selectBox.hidden = YES;
+        self.selected = selectBox.selected;
+        [self addSubview:selectBox];
         
 //        UILongPressGestureRecognizer *longGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
 //        longGes.minimumPressDuration = 0.3;

@@ -8,6 +8,6 @@
 
 #import "HeBaseViewController.h"
 
-@interface HeUserVC : HeBaseViewController
+@interface HeUserVC : HeBaseViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
 
 @end

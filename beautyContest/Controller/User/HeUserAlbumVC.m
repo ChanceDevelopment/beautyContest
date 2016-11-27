@@ -139,7 +139,6 @@
                 [photoArray addObject:wallUrl];
                 [photoDetailArray addObject:dict];
             }
-//            photoArray = [[NSMutableArray alloc] initWithArray:myArray];
             [self addPhotoView];
         }
         else{
@@ -373,7 +372,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserAlbum" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateUserAlbum" object:nil];
 }
 /*
 #pragma mark - Navigation

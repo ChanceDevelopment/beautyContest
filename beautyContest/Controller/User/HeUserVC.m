@@ -36,6 +36,10 @@
 @property(strong,nonatomic)UILabel *addressLabel;
 @property(strong,nonatomic)UIImageView *userBGImage;
 @property(strong,nonatomic)User *userInfo;
+@property(assign,nonatomic)BOOL isGettingFans;
+@property(assign,nonatomic)BOOL isGettingTicket;
+@property(assign,nonatomic)BOOL isGettingFollow;
+@property(assign,nonatomic)BOOL isFirstLoad;
 
 @end
 
@@ -73,19 +77,30 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
-    
+    [self getUserFans];
+    [self getUserTicket];
+    [self getUserFollow];
+    [self getUserPic];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = YES;
-    [self getUserFans];
-    [self getUserTicket];
-    [self getUserFollow];
-    
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    if (self.isFirstLoad) {
+        self.isFirstLoad = NO;
+    }
+    else{
+        [self getUserFans];
+        [self getUserTicket];
+        [self getUserFollow];
+    }
+}
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
@@ -95,6 +110,10 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    self.isGettingFans = NO;
+    self.isGettingFollow = NO;
+    self.isGettingTicket = NO;
+    self.isFirstLoad = YES;
     dataSource = @[@[@"我的相册",@"我的发布",@"我的参与",@"我的资金"],@[@"设置"]];
     iconDataSource = @[@[@"icon_album",@"icon_put",@"icon_participation",@"icon_reward_green"],@[@"icon_setting"]];
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
@@ -119,9 +138,20 @@
     
     userBGImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_can_change_bg_09.jpg"]];
     userBGImage.layer.masksToBounds = YES;
+    userBGImage.backgroundColor = [UIColor whiteColor];
     userBGImage.contentMode = UIViewContentModeScaleAspectFill;
     userBGImage.frame = CGRectMake(0, 0, SCREENWIDTH, headerH);
     [sectionHeaderView addSubview:userBGImage];
+    
+    
+    CGFloat buttonW = 20;
+    CGFloat buttonH = 20;
+    CGFloat buttonX = SCREENWIDTH - buttonW - 20;
+    CGFloat buttonY = 30;
+    UIButton *userBGImageButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
+    [userBGImage addSubview:userBGImageButton];
+    [userBGImageButton setBackgroundImage:[UIImage imageNamed:@"icon_edit"] forState:UIControlStateNormal];
+    [userBGImageButton addTarget:self action:@selector(editBGImageClick:) forControlEvents:UIControlEventTouchUpInside];
     
     UIFont *textFont = [UIFont systemFontOfSize:20.0];
     
@@ -221,17 +251,231 @@
     
 }
 
-- (void)getUserFans
+- (void)editBGImageClick:(UIButton *)button
+{
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
+    sheet.tag = 2;
+    [sheet showInView:button];
+}
+
+- (void)uploadUserImage
+{
+    UIImage *imageData = userBGImage.image;
+    NSData *data = UIImageJPEGRepresentation(imageData,0.2);
+    NSData *base64Data = [GTMBase64 encodeData:data];
+    NSString *userHeader = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+    
+    NSString *uploadImageUrl = [NSString stringWithFormat:@"%@/paperWall/uploadOederPic.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (userId == nil) {
+        userId = @"";
+    }
+    NSDictionary *params = @{@"userId":userId,@"uploadPic":userHeader};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:uploadImageUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            
+//            [userBGImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userPic]] placeholderImage:userBGImage.image];
+        }
+        
+        
+    } failure:^(NSError *error){
+        
+    }];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == 2){
+        switch (buttonIndex) {
+            case 0:
+            {
+                [self pickerPhotoLibrary];
+                break;
+            }
+            case 1:{
+                //查看大图
+                [self pickerCamer];
+                break;
+            }
+            case 2:
+                //取消
+                break;
+            default:
+                break;
+        }
+        
+    }
+    
+}
+
+#pragma mark -
+#pragma mark ImagePicker method
+//从相册中打开照片选择画面(图片库)：UIImagePickerControllerSourceTypePhotoLibrary
+//启动摄像头打开照片摄影画面(照相机)：UIImagePickerControllerSourceTypeCamera
+
+//按下相机触发事件
+-(void)pickerCamer
+{
+    //照相机类型
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+    //判断属性值是否可用
+    if([UIImagePickerController isSourceTypeAvailable:sourceType]){
+        //UIImagePickerController是UINavigationController的子类
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+        imagePicker.delegate = self;
+        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+        //设置可以编辑
+        //        imagePicker.allowsEditing = YES;
+        //设置类型为照相机
+        imagePicker.sourceType = sourceType;
+        //进入照相机画面
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+}
+
+//当按下相册按钮时触发事件
+-(void)pickerPhotoLibrary
+{
+    //图片库类型
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    UIImagePickerController *photoAlbumPicker = [[UIImagePickerController alloc] init];
+    photoAlbumPicker.delegate = self;
+    photoAlbumPicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+    //设置可以编辑
+    //    photoAlbumPicker.allowsEditing = YES;
+    //设置类型
+    photoAlbumPicker.sourceType = sourceType;
+    //进入图片库画面
+    [self presentViewController:photoAlbumPicker animated:YES completion:nil];
+}
+
+
+#pragma mark -
+#pragma mark imagePickerController method
+//当拍完照或者选取好照片之后所要执行的方法
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    CGSize sizeImage = image.size;
+    float a = [self getSize:sizeImage];
+    if (a>0) {
+        CGSize size = CGSizeMake(sizeImage.width/a, sizeImage.height/a);
+        image = [self scaleToSize:image size:size];
+    }
+    
+    //    [self initButtonWithImage:image];
+    
+    //    AsynImageView *asyncImage = [[AsynImageView alloc] init];
+    
+    UIImageJPEGRepresentation(image, 0.6);
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [userBGImage setImage:image];
+        [self uploadUserImage];
+    }];
+    
+}
+
+
+//相应取消动作
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     
-    NSString *getUserFansUrl = [NSString stringWithFormat:@"%@/user/getFansNum.action",BASEURL];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(float)getSize:(CGSize)size
+{
+    float a = size.width / 480.0;
+    if (a > 1) {
+        return a;
+    }
+    else
+        return -1;
+}
+
+- (UIImage *)scaleToSize:(UIImage *)img size:(CGSize)size{
+    // 创建一个bitmap的context
+    // 并把它设置成为当前正在使用的context
+    UIGraphicsBeginImageContext(size);
+    // 绘制改变大小的图片
+    [img drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    // 从当前context中创建一个改变大小后的图片
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    // 使当前的context出堆栈
+    UIGraphicsEndImageContext();
+    // 返回新的改变大小后的图片
+    return scaledImage;
+}
+
+- (void)getUserPic
+{
+    NSString *getUserFansUrl = [NSString stringWithFormat:@"%@/paperWall/GetUserPic.action",BASEURL];
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (userId == nil) {
         userId = @"";
     }
     NSDictionary *params = @{@"userId":userId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserFansUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
-        [self hideHud];
+        
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            NSString *userPic = [respondDict objectForKey:@"json"];
+            if ([userPic isMemberOfClass:[NSNull class]]) {
+                userPic = @"";
+            }
+            [userBGImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userPic]] placeholderImage:userBGImage.image completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
+                if (!error) {
+                    CGFloat scale = 1;
+                    @try {
+                        scale = image.size.height / image.size.width;
+                    } @catch (NSException *exception) {
+                        
+                    } @finally {
+                        
+                    }
+                    CGFloat imageW = SCREENWIDTH;
+                    CGFloat imageH = scale * imageW;
+                    CGFloat imageX = 0;
+                    CGFloat imageY = 0;
+                    if (imageH > userBGImage.superview.frame.size.height) {
+                        imageY = userBGImage.superview.frame.size.height - imageH;
+                    }
+                    userBGImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
+                }
+                
+            }];
+        }
+        
+        
+    } failure:^(NSError *error){
+        
+    }];
+}
+
+- (void)getUserFans
+{
+    if (self.isGettingFans) {
+        return;
+    }
+    NSString *getUserFansUrl = [NSString stringWithFormat:@"%@/user/getFansNum.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (userId == nil) {
+        userId = @"";
+    }
+    NSDictionary *params = @{@"userId":userId};
+    self.isGettingFans = YES;
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserFansUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        self.isGettingFans = NO;
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         
         NSDictionary *respondDict = [respondString objectFromJSONString];
@@ -251,17 +495,14 @@
         
         
     } failure:^(NSError *error){
-        [self hideHud];
-        [self showHint:ERRORREQUESTTIP];
+        self.isGettingFans = NO;
     }];
 }
 - (void)getUserTicket
 {
-    //    User *user = [HeSysbsModel getSysModel].user;
-    //    NSMutableArray *ticketArray = user.ticketArray;
-    //    if (ticketArray == nil) {
-    //        ticketArray = [[NSMutableArray alloc] initWithCapacity:0];
-    //    }
+    if (self.isGettingTicket) {
+        return;
+    }
     NSString *getUserTicketUrl = [NSString stringWithFormat:@"%@/vote/selectVoteCount.action",BASEURL];
     NSString *voteUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     
@@ -269,8 +510,9 @@
         voteUser = @"";
     }
     NSDictionary *params = @{@"voteUser":voteUser};
+    self.isGettingTicket = YES;
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserTicketUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
-        [self hideHud];
+        self.isGettingTicket = NO;
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         
         NSDictionary *respondDict = [respondString objectFromJSONString];
@@ -286,28 +528,24 @@
             UILabel *label = [button viewWithTag:200];
             label.text = [NSString stringWithFormat:@"%ld",[HeSysbsModel getSysModel].ticketNum];
         }
-        
-        
     } failure:^(NSError *error){
-        [self hideHud];
-        [self showHint:ERRORREQUESTTIP];
+        self.isGettingTicket = NO;
     }];
 }
 - (void)getUserFollow
 {
-    //    User *user = [HeSysbsModel getSysModel].user;
-    //    NSMutableArray *followArray = user.followArray;
-    //    if (followArray == nil) {
-    //        followArray = [[NSMutableArray alloc] initWithCapacity:0];
-    //    }
+    if (self.isGettingFollow) {
+        return;
+    }
     NSString *getUserFollowUrl = [NSString stringWithFormat:@"%@/user/getFollowNum.action",BASEURL];
     NSString *hostId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (hostId == nil) {
         hostId = @"";
     }
     NSDictionary *params = @{@"hostId":hostId};
+    self.isGettingFollow = YES;
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:getUserFollowUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
-        [self hideHud];
+        self.isGettingFollow = NO;
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         
         NSDictionary *respondDict = [respondString objectFromJSONString];
@@ -326,8 +564,7 @@
         
         
     } failure:^(NSError *error){
-        [self hideHud];
-        [self showHint:ERRORREQUESTTIP];
+        self.isGettingFollow = NO;
     }];
 }
 
