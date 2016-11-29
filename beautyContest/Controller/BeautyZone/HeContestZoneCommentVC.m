@@ -16,6 +16,7 @@
 #import "HeUserJoinCell.h"
 #import "HeCommentView.h"
 #import "HeZoneCommentCell.h"
+#import "UIButton+Bootstrap.h"
 
 #define TextLineHeight 1.2f
 #define DELETETAG 100
@@ -156,11 +157,52 @@
     commentButton.layer.masksToBounds = YES;
     commentButton.hidden = YES;
     
+    CGFloat buttonW = 60;
+    CGFloat buttonY = 8;
+    CGFloat buttonH = 50 - 2 * buttonY;
+    CGFloat buttonX = SCREENWIDTH - buttonW - 8;
     
+    CGFloat commentX = 8;
+    CGFloat commentY = 8;
+    CGFloat commentH = 50 - 2 * buttonY;
+    CGFloat commentW = SCREENWIDTH - 3 * commentX - buttonW;
+    UITextField *commentTextField = [[UITextField alloc] initWithFrame:CGRectMake(commentX, commentY, commentW, commentH)];
+    commentBGView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    commentTextField.tag = 10000;
+    commentTextField.backgroundColor = [UIColor whiteColor];
+    commentTextField.font = [UIFont systemFontOfSize:15.0];
+    commentTextField.delegate = self;
+    commentTextField.layer.borderColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0].CGColor;
+    commentTextField.layer.cornerRadius = 5.0;
+    commentTextField.placeholder = @"请输入内容";
+    commentTextField.layer.masksToBounds = YES;
+    [commentBGView addSubview:commentTextField];
     
+    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
+    [submitButton setTitle:@"提交" forState:UIControlStateNormal];
+    [commentBGView addSubview:submitButton];
+    [submitButton dangerStyle];
+    [submitButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:submitButton.frame.size] forState:UIControlStateNormal];
+    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
+- (void)submitButtonClick:(UIButton *)button
+{
+    UITextField *textField = [commentBGView viewWithTag:10000];
+    if ([textField isFirstResponder]) {
+        [textField resignFirstResponder];
+        return;
+    }
+    NSString *commentText = textField.text;
+    if (commentText == nil || [commentText isEqualToString:@""]) {
+        [self showHint:@"请输入评论内容"];
+        return;
+    }
+    [self creatCommentWithCommentText:commentText];
+}
+    
 - (IBAction)commentButtonClick:(id)sender
 {
     HeCommentView *commentView = [[HeCommentView alloc] init];

@@ -10,7 +10,7 @@
 #import "EGORefreshTableFootView.h"
 #import "EGORefreshTableHeaderView.h"
 
-@interface HeContestZoneCommentVC : HeBaseViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,EGORefreshTableFootDelegate,EGORefreshTableHeaderDelegate,UISearchBarDelegate>
+@interface HeContestZoneCommentVC : HeBaseViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,EGORefreshTableFootDelegate,EGORefreshTableHeaderDelegate,UISearchBarDelegate,UITextFieldDelegate>
 {
     int updateOption;  //1:上拉刷新   2:下拉加载
     BOOL _reloading;

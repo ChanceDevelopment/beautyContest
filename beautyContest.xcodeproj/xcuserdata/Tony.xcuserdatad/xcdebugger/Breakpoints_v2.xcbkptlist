@@ -41,12 +41,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "beautyContest/AppDelegate.m"
-            timestampString = "501229562.346882"
+            timestampString = "502120083.889165"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "789"
-            endingLineNumber = "789"
-            landmarkName = "-application:openURL:sourceApplication:annotation:"
+            startingLineNumber = "736"
+            endingLineNumber = "736"
+            landmarkName = "-application:openURL:options:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

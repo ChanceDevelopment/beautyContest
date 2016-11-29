@@ -33,6 +33,9 @@
 
 #define ALERTTAG 400
 
+#define REDPOCKETMIN 0.5
+#define REDPOCKETMAX 200
+
 @interface HeDistributeRecommendVC ()<UITextViewDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,TZImagePickerControllerDelegate,UIAlertViewDelegate,CRMediaPickerControllerDelegate>
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)IBOutlet UIButton *distributeButton;
@@ -243,6 +246,11 @@
     NSString *redPocketNum = redPocketNumField.text;
     if ([redPocketNum integerValue] <= 0) {
         [self showHint:@"请输入红包个数"];
+        return;
+    }
+    CGFloat singleMoney = [money floatValue] / [redPocketNum integerValue];
+    if (singleMoney < REDPOCKETMIN || singleMoney > REDPOCKETMAX) {
+        [self showHint:@"单个红包的大小应该为0.5→200之间"];
         return;
     }
     BOOL notShowAlert = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notShowRecommendReviewAlert"] boolValue];
