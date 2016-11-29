@@ -36,6 +36,7 @@
 @property(strong,nonatomic)NSCache *imageCache;
 @property(strong,nonatomic)IBOutlet UIButton *commentButton;
 @property(strong,nonatomic)NSDictionary *prepareDeleteDict;
+@property(strong,nonatomic)IBOutlet UIView *commentBGView;
 
 @end
 
@@ -51,6 +52,7 @@
 @synthesize imageCache;
 @synthesize commentButton;
 @synthesize contestZoneDict;
+@synthesize commentBGView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -152,6 +154,11 @@
     [commentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     commentButton.layer.cornerRadius = 5.0;
     commentButton.layer.masksToBounds = YES;
+    commentButton.hidden = YES;
+    
+    
+    
+    
 }
 
 - (IBAction)commentButtonClick:(id)sender

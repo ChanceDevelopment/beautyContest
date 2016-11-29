@@ -12,6 +12,9 @@
 #import "DataSigner.h"
 #import <AlipaySDK/AlipaySDK.h>
 
+#define WITHDRAWMIN 200
+#define WITHDRAWMAX 2000
+
 @interface HeBalanceEditVC ()<UITextFieldDelegate>
 @property(strong,nonatomic)IBOutlet UITextField *editField;
 @property(strong,nonatomic)IBOutlet UIButton *commitButton;
@@ -138,15 +141,17 @@
                 [self showHint:@"请输入提现金额"];
                 return;
             }
-            if (money >= 5 && money <= 2000) {
+            if (money >= WITHDRAWMIN && money <= WITHDRAWMAX) {
                 [self withDrawMoney:money];
             }
             else{
-                if (money < 5) {
-                    [self showHint:@"提现金额至少5块钱"];
+                if (money < WITHDRAWMIN) {
+                    NSString *errorTip = [NSString stringWithFormat:@"提现金额至少%d块钱",WITHDRAWMIN];
+                    [self showHint:errorTip];
                 }
-                else if (money > 2000){
-                    [self showHint:@"每次提现不能超过2000块"];
+                else if (money > WITHDRAWMAX){
+                    NSString *errorTip = [NSString stringWithFormat:@"每次提现不能超过%d块",WITHDRAWMAX];
+                    [self showHint:errorTip];
                 }
             }
             break;

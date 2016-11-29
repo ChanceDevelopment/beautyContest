@@ -33,6 +33,7 @@
 #endif
 
 @interface AppDelegate ()<JPUSHRegisterDelegate>
+@property (strong, nonatomic) UIImageView *splashView;
 
 @end
 
@@ -40,9 +41,21 @@ BMKMapManager* _mapManager;
 
 @implementation AppDelegate
 @synthesize queue;
+@synthesize splashView;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    splashView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
+    [splashView setImage:[UIImage imageNamed:@"splash_bg_01"]];
+    
+    [self.window addSubview:splashView];
+    [self.window bringSubviewToFront:splashView];
+    
+    
+    [self performSelector:@selector(scale_1) withObject:nil afterDelay:0.0f];
+    [self performSelector:@selector(scale_2) withObject:nil afterDelay:0.5f];
+    
     
     [self initialization];
     [self initShareSDK];
@@ -74,6 +87,46 @@ BMKMapManager* _mapManager;
     [self.window makeKeyAndVisible];
     return YES;
 }
+
+-(void)scale_1
+{
+    UIImageView *round_1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGH)];
+    round_1.contentMode = UIViewContentModeScaleAspectFill;
+    round_1.layer.masksToBounds = YES;
+    round_1.image = [UIImage imageNamed:@"splash_bg_01"];
+    [splashView addSubview:round_1];
+//    [self setAnimation:round_1];
+}
+
+-(void)scale_2
+{
+    UIImageView *round_2 = [[UIImageView alloc]initWithFrame:CGRectMake(105, 210, 20, 20)];
+    round_2.contentMode = UIViewContentModeScaleAspectFill;
+    round_2.layer.masksToBounds = YES;
+    round_2.image = [UIImage imageNamed:@"splash_bg_02"];
+    [splashView addSubview:round_2];
+//    [self setAnimation:round_2];
+}
+
+-(void)setAnimation:(UIImageView *)nowView
+{
+    
+    [UIView animateWithDuration:0.6f delay:0.0f options:UIViewAnimationOptionCurveLinear
+                     animations:^
+     {
+         // 执行的动画code
+         [nowView setFrame:CGRectMake(nowView.frame.origin.x- nowView.frame.size.width*0.1, nowView.frame.origin.y-nowView.frame.size.height*0.1, nowView.frame.size.width*1.2, nowView.frame.size.height*1.2)];
+     }
+                     completion:^(BOOL finished)
+     {
+         // 完成后执行code
+         [nowView removeFromSuperview];
+     }
+     ];
+    
+    
+}
+
 
 - (void)setUpRootVC
 {

@@ -90,8 +90,9 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    dataSource = @[@[@"充值",@"提现",@"明细",@"绑定账号",@"支付密码"]];
-    iconDataSource = @[@[@"icon_recharge",@"icon_withdrawals",@"icon_withdrawals_detail",@"icon_alipay",@"icon_pay_password"]];
+    dataSource = @[@[@"充值",@"提现",@"绑定账号",@"支付密码"]];
+    iconDataSource = @[@[@"icon_recharge",@"icon_withdrawals",@"icon_alipay",@"icon_pay_password"]];
+//    @"icon_withdrawals_detail",
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modifyAlipayAccountSucceed:) name:@"modifyAlipayAccountSucceed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(GetAlipayResult:) name:@"GetAlipayResult" object:nil];
@@ -463,15 +464,15 @@
                     [self.navigationController pushViewController:recharegeVC animated:YES];
                     break;
                 }
+//                case 2:
+//                {
+//                    //明细
+//                    HeBalanceDetailVC *balanceDetailVC = [[HeBalanceDetailVC alloc] init];
+//                    balanceDetailVC.hidesBottomBarWhenPushed = YES;
+//                    [self.navigationController pushViewController:balanceDetailVC animated:YES];
+//                    break;
+//                }
                 case 2:
-                {
-                    //明细
-                    HeBalanceDetailVC *balanceDetailVC = [[HeBalanceDetailVC alloc] init];
-                    balanceDetailVC.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:balanceDetailVC animated:YES];
-                    break;
-                }
-                case 3:
                 {
                     //账号绑定
                     HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
@@ -481,7 +482,7 @@
                     [self.navigationController pushViewController:recharegeVC animated:YES];
                     break;
                 }
-                case 4:
+                case 3:
                 {
                     //支付密码
                     HeModifyPayPasswordVC *modifyPasswordVC = [[HeModifyPayPasswordVC alloc] init];
