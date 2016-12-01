@@ -16,6 +16,7 @@
 @synthesize signLabel;
 @synthesize favButton;
 @synthesize userInfo;
+@synthesize prizeMoneyLabel;
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -76,6 +77,21 @@
         favButton.layer.masksToBounds = YES;
         [favButton addTarget:self action:@selector(favButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:favButton];
+        
+        
+        CGFloat prizeMoneyY = 0;
+        CGFloat prizeMoneyW = 70;
+        CGFloat prizeMoneyX = SCREENWIDTH - prizeMoneyW - 10;
+        CGFloat prizeMoneyH = cellsize.height;
+        prizeMoneyLabel = [[UILabel alloc] init];
+        prizeMoneyLabel.frame = CGRectMake(prizeMoneyX, prizeMoneyY, prizeMoneyW, prizeMoneyH);
+        prizeMoneyLabel.textAlignment = NSTextAlignmentRight;
+        prizeMoneyLabel.backgroundColor = [UIColor clearColor];
+        prizeMoneyLabel.textColor = [UIColor grayColor];
+        prizeMoneyLabel.font = [UIFont systemFontOfSize:17.0];
+        prizeMoneyLabel.text = @"";
+        [self addSubview:prizeMoneyLabel];
+        
     }
     return self;
 }

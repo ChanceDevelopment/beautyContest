@@ -573,10 +573,10 @@
             }
             NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
             if ([myUserId isEqualToString:userId]) {
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@""];
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@"icon_glory"];
             }
             else{
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@""];
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory"];
             }
             id zoneComment = contestDetailDict[@"zoneComment"];
             if ([zoneComment isMemberOfClass:[NSNull class]]) {
@@ -881,19 +881,19 @@
             if (![myUserId isEqualToString:userId]){
                 cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.topicLabel.text = @"我的排名:";
-                CGRect topFrame = cell.topicLabel.frame;
-                topFrame.origin.x = 10;
-                topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
-                cell.topicLabel.frame = topFrame;
-                cell.topicLabel.textColor = [UIColor blackColor];
+                cell.topicLabel.text = @"光荣榜";
+//                CGRect topFrame = cell.topicLabel.frame;
+//                topFrame.origin.x = 10;
+//                topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
+//                cell.topicLabel.frame = topFrame;
+//                cell.topicLabel.textColor = [UIColor blackColor];
                 
-                UILabel *rankLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 0, SCREENWIDTH - 90, cellSize.height)];
+                UILabel *rankLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, SCREENWIDTH - 100, cellSize.height)];
                 rankLabel.backgroundColor = [UIColor clearColor];
                 rankLabel.textColor = [UIColor redColor];
                 rankLabel.font = [UIFont systemFontOfSize:15.0];
                 rankLabel.text = [NSString stringWithFormat:@"%ld",myRank];
-                [cell addSubview:rankLabel];
+//                [cell addSubview:rankLabel];
                 
                 if (myRank == 0) {
                     rankLabel.text = @"未参赛";
@@ -918,7 +918,7 @@
                 
                 
                 [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead]];
-                [cell addSubview:userIcon];
+//                [cell addSubview:userIcon];
             }
             else{
                 cell.topicLabel.text = @"赛区评论";
@@ -951,7 +951,7 @@
         case 7:{
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.topicLabel.text = @"我的排名";
+            cell.topicLabel.text = @"光荣榜";
             CGRect topFrame = cell.topicLabel.frame;
             topFrame.origin.x = 10;
             topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;

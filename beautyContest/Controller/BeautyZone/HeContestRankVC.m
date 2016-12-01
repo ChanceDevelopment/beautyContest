@@ -51,10 +51,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的排名";
+        label.text = @"光荣榜";
         [label sizeToFit];
         
-        self.title = @"我的排名";
+        self.title = @"光荣榜";
     }
     return self;
 }
@@ -64,8 +64,8 @@
     [super viewDidLoad];
     [self initializaiton];
     [self initView];
-    if ([topManRank count] == 0) {
-        [self getManTopRank];
+    if ([topWomanRank count] == 0) {
+        [self getWomanRank];
     }
 }
 
@@ -94,7 +94,7 @@
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
     
-    NSArray *buttonArray = @[@"我的男神",@"我的女神"];
+    NSArray *buttonArray = @[@"女神",@"男神"];
     for (NSInteger index = 0; index < [buttonArray count]; index++) {
         CGFloat buttonW = SCREENWIDTH / [buttonArray count];
         CGFloat buttonH = sectionHeaderView.frame.size.height;
@@ -255,10 +255,10 @@
         requestReply = NO;
     }
     if (button.tag == 100 && [topManRank count] == 0) {
-        [self getManTopRank];
+        [self getWomanRank];
     }
     else if (button.tag == 101 && [topWomanRank count] == 0){
-        [self getWomanRank];
+        [self getManTopRank];
     }
     else if (button.tag == 100){
         dataSource = [[NSMutableArray alloc] initWithArray:topManRank];
@@ -476,6 +476,19 @@
     else{
         cell.favButton.hidden = NO;
     }
+    cell.favButton.hidden = YES;
+    
+    id prizeMoneyObj = dict[@"prizeMoney"];
+    if ([prizeMoneyObj isMemberOfClass:[NSNull class]]) {
+        prizeMoneyObj = @"";
+    }
+    CGFloat prizeMoney = [prizeMoneyObj floatValue];
+    if (prizeMoney < 0.1) {
+        cell.prizeMoneyLabel.text = @"￥0";
+    }
+    else{
+        cell.prizeMoneyLabel.text = [NSString stringWithFormat:@"%.2f",prizeMoney];
+    }
     return cell;
 }
 
@@ -491,7 +504,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 70;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

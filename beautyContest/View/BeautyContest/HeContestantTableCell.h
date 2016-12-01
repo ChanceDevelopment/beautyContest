@@ -16,6 +16,8 @@
 @property(strong,nonatomic)UILabel *signLabel;
 @property(strong,nonatomic)UIButton *favButton;
 
+@property(strong,nonatomic)UILabel *prizeMoneyLabel;
+
 @property(strong,nonatomic)NSDictionary *userInfo;
 
 @end

@@ -275,7 +275,7 @@
     titleField = [[UITextField alloc] init];
     titleField.layer.borderColor = [UIColor clearColor].CGColor;
     titleField.delegate = self;
-    titleField.placeholder = @"请输入比赛主题";
+    titleField.placeholder = @"例如：浙大15届选美赛-寻找最美同学";
     titleField.font = [UIFont systemFontOfSize:16.0];
     titleField.textColor = APPDEFAULTORANGE;
     
@@ -1717,6 +1717,9 @@
     if (!minDate) {
         pickerView.datePickerView.minimumDate = [NSDate date];
     }
+    NSDate *maxDate = [minDate dateByAddingTimeInterval:365 * 24 * 60 * 60];
+    pickerView.datePickerView.maximumDate = maxDate;
+    
     pickerView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     [pickerView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]];
     pickerView.delegate = self;
