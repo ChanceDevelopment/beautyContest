@@ -193,7 +193,6 @@
     UITextField *textField = [commentBGView viewWithTag:10000];
     if ([textField isFirstResponder]) {
         [textField resignFirstResponder];
-        return;
     }
     NSString *commentText = textField.text;
     if (commentText == nil || [commentText isEqualToString:@""]) {
@@ -310,6 +309,8 @@
         
         if (statueCode == REQUESTCODE_SUCCEED){
             //重新加载
+            UITextField *commentTextField = [commentBGView viewWithTag:10000];
+            commentTextField.text = nil;//清空评论框
             pageNo = 0;
             [self loadBeautyContestShow:YES];
         }

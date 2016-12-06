@@ -10,6 +10,7 @@
 #import "HeUserMessageCell.h"
 #import "MLLabel+Size.h"
 #import "HeCommentView.h"
+#import "HeMyMessageCell.h"
 
 #define TextLineHeight 1.2f
 
@@ -432,9 +433,9 @@
         dict = [replyArray objectAtIndex:row - 1];
         
     }
-    HeUserMessageCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeMyMessageCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeUserMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell = [[HeMyMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }

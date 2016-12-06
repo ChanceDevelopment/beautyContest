@@ -87,6 +87,7 @@
 		EA0508FA1D6EA000003947EE /* HeUserAlbumVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0508F81D6EA000003947EE /* HeUserAlbumVC.xib */; };
 		EA0509021D6EA1AB003947EE /* HeUserDistributeContestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0509011D6EA1AB003947EE /* HeUserDistributeContestCell.m */; };
 		EA0509041D6EC24D003947EE /* icon_reward.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0509031D6EC24D003947EE /* icon_reward.png */; };
+		EA088A3C1DF6B4BE00C65559 /* HeMyMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA088A3B1DF6B4BE00C65559 /* HeMyMessageCell.m */; };
 		EA0E9D091D4C2676009CBF64 /* tabbar_normal_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9CFF1D4C2676009CBF64 /* tabbar_normal_background.png */; };
 		EA0E9D0A1D4C2676009CBF64 /* tabbar_normal_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D001D4C2676009CBF64 /* tabbar_normal_background@2x.png */; };
 		EA0E9D101D4C269E009CBF64 /* comonDefaultImage.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9D0C1D4C269E009CBF64 /* comonDefaultImage.png */; };
@@ -885,6 +886,8 @@
 		EA0509001D6EA1AB003947EE /* HeUserDistributeContestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserDistributeContestCell.h; sourceTree = "<group>"; };
 		EA0509011D6EA1AB003947EE /* HeUserDistributeContestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserDistributeContestCell.m; sourceTree = "<group>"; };
 		EA0509031D6EC24D003947EE /* icon_reward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_reward.png; sourceTree = "<group>"; };
+		EA088A3A1DF6B4BE00C65559 /* HeMyMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeMyMessageCell.h; sourceTree = "<group>"; };
+		EA088A3B1DF6B4BE00C65559 /* HeMyMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeMyMessageCell.m; sourceTree = "<group>"; };
 		EA0E9CFF1D4C2676009CBF64 /* tabbar_normal_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_normal_background.png; sourceTree = "<group>"; };
 		EA0E9D001D4C2676009CBF64 /* tabbar_normal_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_normal_background@2x.png"; sourceTree = "<group>"; };
 		EA0E9D0C1D4C269E009CBF64 /* comonDefaultImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comonDefaultImage.png; sourceTree = "<group>"; };
@@ -2810,6 +2813,8 @@
 				EA5090461DB07337007E721A /* HeUserReplyCell.m */,
 				EAC1B89C1DD0F90B00505B45 /* HeUserTicketCell.h */,
 				EAC1B89D1DD0F90B00505B45 /* HeUserTicketCell.m */,
+				EA088A3A1DF6B4BE00C65559 /* HeMyMessageCell.h */,
+				EA088A3B1DF6B4BE00C65559 /* HeMyMessageCell.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -5274,6 +5279,7 @@
 				EAC2CDBD1D4AF5D800E282A8 /* UIBarButtonItem+RACCommandSupport.m in Sources */,
 				EAC2CD6A1D4AF5D800E282A8 /* UIColor+Extension.m in Sources */,
 				EAC2CE0F1D4AF5D800E282A8 /* README.md in Sources */,
+				EA088A3C1DF6B4BE00C65559 /* HeMyMessageCell.m in Sources */,
 				EAC2CDB21D4AF5D800E282A8 /* RACSubscriptingAssignmentTrampoline.m in Sources */,
 				EAC2CDB71D4AF5D800E282A8 /* RACTupleSequence.m in Sources */,
 				EAC2CDA91D4AF5D800E282A8 /* RACSerialDisposable.m in Sources */,

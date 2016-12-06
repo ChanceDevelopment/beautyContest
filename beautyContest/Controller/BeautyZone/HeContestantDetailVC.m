@@ -781,7 +781,7 @@
             cell.textLabel.textColor = APPDEFAULTORANGE;
             
             UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(cellSize.width - 110, 0, 100, cellSize.height)];
-            tipLabel.text = @"发布人可见";
+            tipLabel.text = @"个人信息页公开";
             tipLabel.textColor = [UIColor grayColor];
             tipLabel.textAlignment = NSTextAlignmentRight;
             tipLabel.font = textFont;

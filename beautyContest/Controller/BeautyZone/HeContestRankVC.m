@@ -85,6 +85,13 @@
 - (void)initView
 {
     [super initView];
+    if (self.isUserRank) {
+        UILabel *label = (UILabel *)self.navigationItem.titleView;
+        label.text = @"我的排名";
+        [label sizeToFit];
+        
+        self.title = @"我的排名";
+    }
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
@@ -476,19 +483,22 @@
     else{
         cell.favButton.hidden = NO;
     }
-    cell.favButton.hidden = YES;
+    if (!self.isUserRank) {
+        cell.favButton.hidden = YES;
+        
+        id prizeMoneyObj = dict[@"prizeMoney"];
+        if ([prizeMoneyObj isMemberOfClass:[NSNull class]]) {
+            prizeMoneyObj = @"";
+        }
+        CGFloat prizeMoney = [prizeMoneyObj floatValue];
+        if (prizeMoney < 0.1) {
+            cell.prizeMoneyLabel.text = @"￥0";
+        }
+        else{
+            cell.prizeMoneyLabel.text = [NSString stringWithFormat:@"%.2f",prizeMoney];
+        }
+    }
     
-    id prizeMoneyObj = dict[@"prizeMoney"];
-    if ([prizeMoneyObj isMemberOfClass:[NSNull class]]) {
-        prizeMoneyObj = @"";
-    }
-    CGFloat prizeMoney = [prizeMoneyObj floatValue];
-    if (prizeMoney < 0.1) {
-        cell.prizeMoneyLabel.text = @"￥0";
-    }
-    else{
-        cell.prizeMoneyLabel.text = [NSString stringWithFormat:@"%.2f",prizeMoney];
-    }
     return cell;
 }
 

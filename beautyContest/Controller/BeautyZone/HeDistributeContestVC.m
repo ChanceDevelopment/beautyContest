@@ -155,8 +155,8 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    iconDataSource = @[@[@"",@""],@[@"",@"",@""],@[@"",@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"icon_pay_password",@"",@""]];
-    titleDataSource = @[@[@"",@""],@[@"",@"宣传图片",@""],@[@"",@"截止时间",@"定位",@"男生参加",@"女生参加",@"我要验证",@"",@""]];
+    iconDataSource = @[@[@"",@""],@[@"",@"",@""],@[@"",@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"icon_pay_password",@""]];
+    titleDataSource = @[@[@"",@""],@[@"",@"宣传图片",@""],@[@"",@"截止时间",@"定位",@"男生参加",@"女生参加",@"我要验证",@""]];
     switchDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     [switchDict setObject:@YES forKey:@"2"];
     [switchDict setObject:@YES forKey:@"3"];
@@ -1210,7 +1210,7 @@
     CGSize sizeImage = image.size;
     float a = [self getSize:sizeImage];
     if (a > 0) {
-        CGSize size = CGSizeMake(sizeImage.width/a, sizeImage.height/a);
+        CGSize size = CGSizeMake(sizeImage.width / a, sizeImage.height / a);
         image = [self scaleToSize:image size:size];
     }
     
@@ -1221,9 +1221,13 @@
     if (hight < width) {
         sizewidth = hight;
     }
-    CGRect newframe = CGRectMake(0, 0, sizewidth, sizewidth);
-    UIImage *scaleImage = [self imageFromImage:image inRect:newframe];
+    
+    
     if (!currentSelectBanner) {
+        UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
+        CGRect newframe = CGRectMake(0, 0, 512, 297);
+        UIImage *scaleImage = [self imageFromImage:editedImage inRect:newframe];
+        
         coverImage.image = scaleImage;
         [picker dismissViewControllerAnimated:YES completion:^{
             coverImageHaveTake = YES;
@@ -1530,7 +1534,7 @@
                     tipLabel.textColor = APPDEFAULTORANGE;
                     tipLabel.font = textFont;
                     tipLabel.text = @"平台回收10%赏金";
-                    [cell addSubview:tipLabel];
+//                    [cell addSubview:tipLabel];
                     break;
                 }
                 default:

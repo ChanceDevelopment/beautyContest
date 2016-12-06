@@ -129,7 +129,7 @@
 #define UPDATEUSER @"updateUser"
 
 //黄金比例
-#define BESTSCALE (0.618)
+#define BESTSCALE (297.0 / 512.0)
 //系统的设置
 #define NEWSNOTIFY        @"newsNotify"         //消息通知
 #define PLAYSOUND         @"playSound"          //声音

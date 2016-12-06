@@ -97,7 +97,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@""];
+    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"",@""];
     myRank = 0;
     topManRank = [[NSMutableArray alloc] initWithCapacity:0];
     topWomanRank = [[NSMutableArray alloc] initWithCapacity:0];
@@ -118,7 +118,9 @@
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
-    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
+    CGFloat scale = 512 / 297.0;
+    CGFloat headerHeight = SCREENWIDTH / scale;
+    sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, headerHeight)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
     tableview.tableHeaderView = sectionHeaderView;
@@ -126,9 +128,9 @@
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
     bgImage.userInteractionEnabled = YES;
     bgImage.layer.masksToBounds = YES;
-//    bgImage.contentMode = UIViewContentModeScaleAspectFill;
+    bgImage.contentMode = UIViewContentModeScaleAspectFill;
     bgImage.tag = BGTAG;
-    bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, 200);
+    bgImage.frame = CGRectMake(0, 0, SCREENWIDTH, headerHeight);
     bgImage.userInteractionEnabled = YES;
     [sectionHeaderView addSubview:bgImage];
     
@@ -573,10 +575,10 @@
             }
             NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
             if ([myUserId isEqualToString:userId]) {
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@"icon_glory"];
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@"icon_glory",@""];
             }
             else{
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory"];
+                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory",@""];
             }
             id zoneComment = contestDetailDict[@"zoneComment"];
             if ([zoneComment isMemberOfClass:[NSNull class]]) {
@@ -837,7 +839,7 @@
             NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
             
             NSString *endtime = [Tool convertTimespToString:[zoneDeathlinezoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
-            cell.topicLabel.text = [NSString stringWithFormat:@"截止于 %@",time,endtime];
+            cell.topicLabel.text = [NSString stringWithFormat:@"截止于 %@",endtime];
             break;
         }
         case 2:
@@ -882,43 +884,6 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.topicLabel.text = @"光荣榜";
-//                CGRect topFrame = cell.topicLabel.frame;
-//                topFrame.origin.x = 10;
-//                topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
-//                cell.topicLabel.frame = topFrame;
-//                cell.topicLabel.textColor = [UIColor blackColor];
-                
-                UILabel *rankLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, SCREENWIDTH - 100, cellSize.height)];
-                rankLabel.backgroundColor = [UIColor clearColor];
-                rankLabel.textColor = [UIColor redColor];
-                rankLabel.font = [UIFont systemFontOfSize:15.0];
-                rankLabel.text = [NSString stringWithFormat:@"%ld",myRank];
-//                [cell addSubview:rankLabel];
-                
-                if (myRank == 0) {
-                    rankLabel.text = @"未参赛";
-                    rankLabel.textColor = [UIColor redColor];
-                }
-                User *userInfo = [HeSysbsModel getSysModel].user;
-                NSString *userHead = userInfo.userHeader;
-                if (![userHead hasPrefix:@"http"]) {
-                    userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];
-                }
-                CGFloat imageY = 5;
-                CGFloat imageH = cellSize.height - 2 * imageY;
-                CGFloat imageW = imageH;
-                CGFloat imageX = cellSize.width - imageW - 10;
-                UIImageView *userIcon = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
-                userIcon.image = [UIImage imageNamed:@"userDefalut_icon"];
-                userIcon.layer.borderWidth = 1.0;
-                userIcon.layer.borderColor = [UIColor whiteColor].CGColor;
-                userIcon.layer.masksToBounds = YES;
-                userIcon.layer.cornerRadius = imageH / 2.0;
-                userIcon.contentMode = UIViewContentModeScaleAspectFill;
-                
-                
-                [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead]];
-//                [cell addSubview:userIcon];
             }
             else{
                 cell.topicLabel.text = @"赛区评论";
@@ -936,6 +901,49 @@
             break;
         }
         case 6:{
+            NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
+            if ([userId isMemberOfClass:[NSNull class]]) {
+                userId = nil;
+            }
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            if (![myUserId isEqualToString:userId]){
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.topicLabel.text = @"我的排名";
+                CGRect topFrame = cell.topicLabel.frame;
+                topFrame.origin.x = 10;
+                topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
+                cell.topicLabel.frame = topFrame;
+                cell.topicLabel.textColor = [UIColor blackColor];
+                
+                UILabel *rankLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 0, SCREENWIDTH - 90, cellSize.height)];
+                rankLabel.backgroundColor = [UIColor clearColor];
+                rankLabel.textColor = [UIColor redColor];
+                rankLabel.font = [UIFont systemFontOfSize:15.0];
+                rankLabel.text = [NSString stringWithFormat:@"%ld",myRank];
+                [cell addSubview:rankLabel];
+                
+                User *userInfo = [HeSysbsModel getSysModel].user;
+                NSString *userHead = userInfo.userHeader;
+                if (![userHead hasPrefix:@"http"]) {
+                    userHead = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHead];
+                }
+                CGFloat imageY = 5;
+                CGFloat imageH = cellSize.height - 2 * imageY;
+                CGFloat imageW = imageH;
+                CGFloat imageX = cellSize.width - imageW - 35;
+                UIImageView *userIcon = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
+                userIcon.image = [UIImage imageNamed:@"userDefalut_icon"];
+                userIcon.layer.borderWidth = 1.0;
+                userIcon.layer.borderColor = [UIColor whiteColor].CGColor;
+                userIcon.layer.masksToBounds = YES;
+                userIcon.layer.cornerRadius = imageH / 2.0;
+                userIcon.contentMode = UIViewContentModeScaleAspectFill;
+                [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead] placeholderImage:userIcon.image];
+                [cell addSubview:userIcon];
+                
+                break;
+            }
             cell.topicLabel.text = @"我要验证";
             CGFloat zjSwitchW = 50;
             CGFloat zjSwitchH = 30;
@@ -952,6 +960,12 @@
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.topicLabel.text = @"光荣榜";
+            break;
+        }
+        case 8:{
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.topicLabel.text = @"我的排名";
             CGRect topFrame = cell.topicLabel.frame;
             topFrame.origin.x = 10;
             topFrame.size.width = SCREENWIDTH - 2 * topFrame.origin.x;
@@ -973,7 +987,7 @@
             CGFloat imageY = 5;
             CGFloat imageH = cellSize.height - 2 * imageY;
             CGFloat imageW = imageH;
-            CGFloat imageX = cellSize.width - imageW - 10;
+            CGFloat imageX = cellSize.width - imageW - 35;
             UIImageView *userIcon = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
             userIcon.image = [UIImage imageNamed:@"userDefalut_icon"];
             userIcon.layer.borderWidth = 1.0;
@@ -981,7 +995,7 @@
             userIcon.layer.masksToBounds = YES;
             userIcon.layer.cornerRadius = imageH / 2.0;
             userIcon.contentMode = UIViewContentModeScaleAspectFill;
-            [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead]];
+            [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead] placeholderImage:userIcon.image];
             [cell addSubview:userIcon];
             break;
         }
@@ -1051,6 +1065,7 @@
     NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (![myUserId isEqualToString:userId]){
         if (row == 5) {
+            //光荣榜
             HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
             contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
             contestRankVC.topManRank = [[NSMutableArray alloc] initWithArray:topManRank];
@@ -1058,11 +1073,32 @@
             contestRankVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:contestRankVC animated:YES];
         }
+        else if (row == 6){
+            //我的排名
+            HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
+            contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
+            contestRankVC.topManRank = [[NSMutableArray alloc] initWithArray:topManRank];
+            contestRankVC.isUserRank = YES;
+            contestRankVC.topWomanRank = [[NSMutableArray alloc] initWithArray:topWomanRank];
+            contestRankVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contestRankVC animated:YES];
+        }
     }
     else{
         if (row == 7) {
+            //光荣榜
             HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
             contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
+            contestRankVC.topManRank = [[NSMutableArray alloc] initWithArray:topManRank];
+            contestRankVC.topWomanRank = [[NSMutableArray alloc] initWithArray:topWomanRank];
+            contestRankVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contestRankVC animated:YES];
+        }
+        else if (row == 8){
+            //我的排名
+            HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
+            contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
+            contestRankVC.isUserRank = YES;
             contestRankVC.topManRank = [[NSMutableArray alloc] initWithArray:topManRank];
             contestRankVC.topWomanRank = [[NSMutableArray alloc] initWithArray:topWomanRank];
             contestRankVC.hidesBottomBarWhenPushed = YES;

@@ -19,5 +19,6 @@
 @property(strong,nonatomic)NSDictionary *contestDict;
 @property(strong,nonatomic)NSMutableArray *topManRank; //排名前面的男神
 @property(strong,nonatomic)NSMutableArray *topWomanRank; //排名前面的女神
+@property(assign,nonatomic)BOOL isUserRank; //是否排名
 
 @end

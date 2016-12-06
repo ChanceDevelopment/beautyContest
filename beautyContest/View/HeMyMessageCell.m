@@ -6,23 +6,24 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeUserMessageCell.h"
+#import "HeMyMessageCell.h"
 
-@implementation HeUserMessageCell
+@implementation HeMyMessageCell
 @synthesize messageDict;
 @synthesize userNameLabel;
 @synthesize contentLabel;
 @synthesize timeLabel;
 @synthesize tipLabel;
 @synthesize replyLabel;
+@synthesize userIcon;
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellSize:(CGSize)cellsize
 {
@@ -38,10 +39,13 @@
         tipLabel.backgroundColor = [UIColor clearColor];
         tipLabel.text = @"留言给";
         tipLabel.textColor = [UIColor grayColor];
-        [self.contentView addSubview:tipLabel];
+//        [self.contentView addSubview:tipLabel];
         tipLabel.font = smallFont;
         
-        CGFloat userX = CGRectGetMaxX(tipLabel.frame) + 5;
+        CGFloat userIconX = 10;
+        userIcon = [[UIImageView alloc] init];
+        
+        CGFloat userX = 10;
         CGFloat userY = tipY;
         CGFloat userW = 150;
         CGFloat userH = tipH;
@@ -51,6 +55,7 @@
         userNameLabel.textColor = APPDEFAULTORANGE;
         [self.contentView addSubview:userNameLabel];
         userNameLabel.font = smallFont;
+        
         
         
         CGFloat timeY = tipY;
