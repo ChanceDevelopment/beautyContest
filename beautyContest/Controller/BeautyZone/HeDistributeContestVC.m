@@ -218,6 +218,7 @@
     distributeItem.action = @selector(distributeContest:);
 //    self.navigationItem.rightBarButtonItem = distributeItem;
     
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
@@ -833,8 +834,11 @@
 //    NSString *zoneSwith = @"";
 //    NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
     
-    NSString * requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZone.action",BASEURL];
-    
+    NSString *requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZone.action",BASEURL];
+    if (self.isFaceContest) {
+        
+        requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZoneFace.action",BASEURL];
+    }
     NSDictionary *params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState};
     if (zonePassword) {
         NSString *zonePwd = zonePassword;
@@ -858,6 +862,9 @@
             if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
                 zoneId = @"";
             }
+            if (self.isFaceContest) {
+                [self delTemporary];
+            }
             HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
             contestDetailVC.myzoneId = [[NSString alloc] initWithFormat:@"%@",zoneId];
             contestDetailVC.hidesBottomBarWhenPushed = YES;
@@ -877,6 +884,32 @@
         [self showHint:ERRORREQUESTTIP];
     }];
     
+}
+//删除临时赛区
+- (void)delTemporary
+{
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSDictionary *params = @{@"userid":userid};
+    NSString *requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/delTemporayByUserid.action",BASEURL];
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+//            [self showHint:data];
+        }
+        
+        
+    } failure:^(NSError *error){
+    }];
 }
 
 - (void)backLastView

@@ -59,22 +59,22 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    BOOL haveUserPayPwd = [balanceDict[@"userPayPwd"] boolValue];
-    if (!haveUserPayPwd) {
-        cpswTF.hidden = YES;
-        CGRect pswFrame = pswTF.frame;
-        pswFrame.origin.y = pswFrame.origin.y - 55;
-        pswTF.frame = pswFrame;
-        
-        pswFrame = commitpswTF.frame;
-        pswFrame.origin.y = pswFrame.origin.y - 55;
-        commitpswTF.frame = pswFrame;
-        
-        pswFrame = loginButton.frame;
-        pswFrame.origin.y = pswFrame.origin.y - 55;
-        loginButton.frame = pswFrame;
-        
-    }
+//    BOOL haveUserPayPwd = [balanceDict[@"userPayPwd"] boolValue];
+//    if (!haveUserPayPwd) {
+//        cpswTF.hidden = YES;
+//        CGRect pswFrame = pswTF.frame;
+//        pswFrame.origin.y = pswFrame.origin.y - 55;
+//        pswTF.frame = pswFrame;
+//        
+//        pswFrame = commitpswTF.frame;
+//        pswFrame.origin.y = pswFrame.origin.y - 55;
+//        commitpswTF.frame = pswFrame;
+//        
+//        pswFrame = loginButton.frame;
+//        pswFrame.origin.y = pswFrame.origin.y - 55;
+//        loginButton.frame = pswFrame;
+//        
+//    }
 }
 
 
@@ -276,7 +276,7 @@
         [self showHint:@"两次密码输入不一致"];
         return;
     }
-    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/setPassword.actionn",BASEURL];
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/money/setPassword.action",BASEURL];
     
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (!userId) {
@@ -309,6 +309,7 @@
             [self performSelector:@selector(backToLastView) withObject:nil afterDelay:0.2];
         }
     } failure:^(NSError *error){
+        [self hideHud];
         [self showHint:ERRORREQUESTTIP];
     }];
 }

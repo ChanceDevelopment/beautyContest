@@ -128,7 +128,7 @@
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
-    CGFloat headerH = 200;
+    CGFloat headerH = SCREENWIDTH;
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, headerH)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
@@ -140,7 +140,7 @@
     userBGImage.layer.masksToBounds = YES;
     userBGImage.backgroundColor = [UIColor whiteColor];
     userBGImage.contentMode = UIViewContentModeScaleAspectFill;
-    userBGImage.frame = CGRectMake(0, 0, SCREENWIDTH, headerH);
+    userBGImage.frame = CGRectMake(0, 0, SCREENWIDTH, SCREENWIDTH);
     [sectionHeaderView addSubview:userBGImage];
     
     
@@ -149,7 +149,7 @@
     CGFloat buttonX = SCREENWIDTH - buttonW - 20;
     CGFloat buttonY = 30;
     UIButton *userBGImageButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
-    [userBGImage addSubview:userBGImageButton];
+    [sectionHeaderView addSubview:userBGImageButton];
     [userBGImageButton setBackgroundImage:[UIImage imageNamed:@"icon_edit"] forState:UIControlStateNormal];
     [userBGImageButton addTarget:self action:@selector(editBGImageClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -330,7 +330,7 @@
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         //设置可以编辑
-        //        imagePicker.allowsEditing = YES;
+        imagePicker.allowsEditing = YES;
         //设置类型为照相机
         imagePicker.sourceType = sourceType;
         //进入照相机画面
@@ -347,7 +347,7 @@
     photoAlbumPicker.delegate = self;
     photoAlbumPicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
     //设置可以编辑
-    //    photoAlbumPicker.allowsEditing = YES;
+    photoAlbumPicker.allowsEditing = YES;
     //设置类型
     photoAlbumPicker.sourceType = sourceType;
     //进入图片库画面
@@ -360,12 +360,12 @@
 //当拍完照或者选取好照片之后所要执行的方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     
     CGSize sizeImage = image.size;
     float a = [self getSize:sizeImage];
-    if (a>0) {
-        CGSize size = CGSizeMake(sizeImage.width/a, sizeImage.height/a);
+    if (a > 0) {
+        CGSize size = CGSizeMake(sizeImage.width/a, sizeImage.height / a);
         image = [self scaleToSize:image size:size];
     }
     
@@ -377,7 +377,7 @@
     
     [self dismissViewControllerAnimated:YES completion:^{
         [userBGImage setImage:image];
-        [self uploadUserImage];
+//        [self uploadUserImage];
     }];
     
 }

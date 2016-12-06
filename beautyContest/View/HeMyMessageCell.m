@@ -43,9 +43,18 @@
         tipLabel.font = smallFont;
         
         CGFloat userIconX = 10;
-        userIcon = [[UIImageView alloc] init];
+        CGFloat userIconY = 10;
+        CGFloat userIconW = 30;
+        CGFloat userIconH = 30;
         
-        CGFloat userX = 10;
+        userIcon = [[UIImageView alloc] initWithFrame:CGRectMake(userIconX, userIconY, userIconW, userIconH)];
+        userIcon.layer.masksToBounds = YES;
+        userIcon.layer.cornerRadius = userIconW / 2.0;
+        userIcon.contentMode = UIViewContentModeScaleAspectFill;
+        userIcon.image = [UIImage imageNamed:@"userDefalut_icon"];
+        [self.contentView addSubview:userIcon];
+        
+        CGFloat userX = CGRectGetMaxX(userIcon.frame) + 5;
         CGFloat userY = tipY;
         CGFloat userW = 150;
         CGFloat userH = tipH;
@@ -71,7 +80,7 @@
         timeLabel.font = smallFont;
         
         UIFont *bigFont = [UIFont systemFontOfSize:15.0];
-        CGFloat contentX = 10;
+        CGFloat contentX = userX;
         CGFloat contentY = CGRectGetMaxY(tipLabel.frame);
         CGFloat contentW = SCREENWIDTH - 10 - 50;
         CGFloat contentH = tipH;

@@ -75,7 +75,7 @@
     [super initializaiton];
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
     replyDict = [[NSMutableDictionary alloc] initWithCapacity:0];
-    pageNo = 1;
+    pageNo = 0;
     updateOption = 1;
     imageCache = [[NSCache alloc] init];
     replyIndexDict = [[NSMutableDictionary alloc] initWithCapacity:0];
@@ -180,7 +180,7 @@
 
 - (void)loadUserMessageShow:(BOOL)show
 {
-    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getMyMessagesList.action",BASEURL];
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getMessaageForReplyList.action",BASEURL];
     ///user/getMyMessagesList.action 留言
     ///user/getMessageReply.action  回复
     NSString *blogUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
@@ -188,7 +188,8 @@
         blogUser = @"";
     }
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
-    NSDictionary *requestMessageParams = @{@"blogUser":blogUser};
+    NSDictionary *requestMessageParams = @{@"userId":blogUser,@"number":pageNum};
+    
     [self showHudInView:self.tableview hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
@@ -222,7 +223,7 @@
         else{
             NSArray *resultArray = [respondDict objectForKey:@"json"];
             if (updateOption == 2 && [resultArray count] == 0) {
-                pageNo--;
+                pageNo = [dataSource count];
                 return;
             }
         }
@@ -337,7 +338,7 @@
 - (void)egoRefreshTableFootDidTriggerRefresh:(EGORefreshTableFootView*)view
 {
     updateOption = 2;//加载历史标志
-    pageNo++;
+    pageNo = [dataSource count];
     
     @try {
         
@@ -366,7 +367,7 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {
     updateOption = 1;//刷新加载标志
-    pageNo = 1;
+    pageNo = 0;
     @try {
     }
     @catch (NSException *exception) {
@@ -445,8 +446,8 @@
     if (row != 0) {
         blogContent = dict[@"replyContent"];
         CGRect contentFrame = cell.contentLabel.frame;
-        contentFrame.origin.x = contentFrame.origin.x + 10;
-        contentFrame.size.width = contentFrame.size.width - 10;
+        contentFrame.origin.x = 15;
+        contentFrame.size.width = contentFrame.size.width + 10;
         cell.contentLabel.frame = contentFrame;
     }
     if ([blogContent isMemberOfClass:[NSNull class]] || blogContent == nil) {
@@ -464,26 +465,57 @@
     cell.contentLabel.text = blogContent;
     cell.contentLabel.frame = contentFrame;
     
-    NSString *userNick = dict[@"userNick"];
+    NSString *hostHeader = dict[@"hostHeader"];
     if (row != 0) {
-        userNick = dict[@"userNick"];
-        cell.tipLabel.text = nil;
-        CGRect tipFrame = cell.tipLabel.frame;
-        tipFrame.origin.x = tipFrame.origin.x + 10;
-        cell.tipLabel.frame = tipFrame;
-        
-        NSString *tipString = @"我回复";
-        NSString *subString = @"我";
-        NSMutableAttributedString *hintString = [[NSMutableAttributedString alloc]initWithString:tipString];
-        //获取要调整颜色的文字位置,调整颜色
-        NSRange range1 = [[hintString string]rangeOfString:subString];
-        [hintString addAttribute:NSForegroundColorAttributeName value:APPDEFAULTORANGE range:range1];
-        cell.tipLabel.attributedText = hintString;
-        
-        CGRect userNameFrame = cell.userNameLabel.frame;
-        userNameFrame.origin.x = userNameFrame.origin.x + 10;
-        userNameFrame.size.width = userNameFrame.size.width - 10;
-        cell.userNameLabel.frame = userNameFrame;
+        hostHeader = dict[@"userHeader"];
+    }
+    if ([hostHeader isMemberOfClass:[NSNull class]]) {
+        hostHeader = @"";
+    }
+    NSString *imageKey = [NSString stringWithFormat:@"%@_%ld_%ld",hostHeader,section,row];
+    UIImageView *userIcon = [imageCache objectForKey:imageKey];
+    if (!userIcon) {
+        NSString *imageUrl = hostHeader;
+        if (![imageUrl hasPrefix:@"http"]) {
+            imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,hostHeader];
+        }
+        cell.userIcon.tag = 100;
+        [cell.userIcon sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        userIcon = cell.userIcon;
+        [imageCache setObject:userIcon forKey:imageKey];
+    }
+    cell.userIcon = userIcon;
+    [cell.contentView addSubview:userIcon];
+    if (row != 0) {
+        CGRect userIconFrame = cell.userIcon.frame;
+        userIconFrame.size.height = 20;
+        userIconFrame.size.width = 20;
+        userIconFrame.origin.x = 15;
+        cell.userIcon.frame = userIconFrame;
+        cell.userIcon.layer.cornerRadius = userIconFrame.size.width / 2.0;
+        cell.userIcon.layer.masksToBounds = YES;
+    }
+    
+    NSString *userNick = dict[@"hostNick"];
+    if (row != 0) {
+//        userNick = dict[@"userNick"];
+//        cell.tipLabel.text = nil;
+//        CGRect tipFrame = cell.tipLabel.frame;
+//        tipFrame.origin.x = tipFrame.origin.x + 10;
+//        cell.tipLabel.frame = tipFrame;
+//        
+//        NSString *tipString = @"我回复";
+//        NSString *subString = @"我";
+//        NSMutableAttributedString *hintString = [[NSMutableAttributedString alloc]initWithString:tipString];
+//        //获取要调整颜色的文字位置,调整颜色
+//        NSRange range1 = [[hintString string]rangeOfString:subString];
+//        [hintString addAttribute:NSForegroundColorAttributeName value:APPDEFAULTORANGE range:range1];
+//        cell.tipLabel.attributedText = hintString;
+//        
+//        CGRect userNameFrame = cell.userNameLabel.frame;
+//        userNameFrame.origin.x = userNameFrame.origin.x + 10;
+//        userNameFrame.size.width = userNameFrame.size.width - 10;
+//        cell.userNameLabel.frame = userNameFrame;
     }
     if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
         userNick = @"";

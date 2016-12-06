@@ -420,7 +420,7 @@
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         //设置可以编辑
-        //        imagePicker.allowsEditing = YES;
+        imagePicker.allowsEditing = YES;
         //设置类型为照相机
         imagePicker.sourceType = sourceType;
         //进入照相机画面
@@ -437,7 +437,7 @@
     photoAlbumPicker.delegate = self;
     photoAlbumPicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
     //设置可以编辑
-    //    photoAlbumPicker.allowsEditing = YES;
+    photoAlbumPicker.allowsEditing = YES;
     //设置类型
     photoAlbumPicker.sourceType = sourceType;
     //进入图片库画面
@@ -450,7 +450,7 @@
 //当拍完照或者选取好照片之后所要执行的方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     
     CGSize sizeImage = image.size;
     float a = [self getSize:sizeImage];

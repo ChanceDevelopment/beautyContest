@@ -165,7 +165,7 @@
     nameLabel.text = name;
     nameLabel.numberOfLines = 0;
     nameLabel.textColor = APPDEFAULTORANGE;
-    nameLabel.font = textFont;
+    nameLabel.font = [UIFont systemFontOfSize:14.0];
     nameLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
     [bgImage addSubview:nameLabel];
     
@@ -231,7 +231,7 @@
     supportNumLabel.text = @"票数:62";
     supportNumLabel.numberOfLines = 1;
     supportNumLabel.textColor = [UIColor whiteColor];
-    supportNumLabel.font = [UIFont systemFontOfSize:13.0];
+    supportNumLabel.font = [UIFont systemFontOfSize:11.0];
     supportNumLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
     [bgImage addSubview:supportNumLabel];
     
@@ -246,7 +246,7 @@
     userRankLabel.text = @"排名:第一名";
     userRankLabel.numberOfLines = 1;
     userRankLabel.textColor = [UIColor whiteColor];
-    userRankLabel.font = [UIFont systemFontOfSize:13.0];
+    userRankLabel.font = [UIFont systemFontOfSize:11.0];
     userRankLabel.frame = CGRectMake(userRankX, userRankY, userRankW, userRankH);
     [bgImage addSubview:userRankLabel];
     
@@ -263,11 +263,11 @@
     [footerView addSubview:joinButton];
     
     
-    UIButton *voteButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"投票" image:nil];
+    UIButton *voteButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"谢谢您" image:nil];
     voteButton.hidden = YES;
     voteButton.tag = VOTETAGSUCCESS;
     [voteButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [voteButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+    [voteButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor colorWithRed:252.0 / 255.0 green:168.0 / 255.0 blue:46.0 / 255.0 alpha:1.0] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
     [footerView addSubview:voteButton];
     
     UIButton *commentButton = [Tool getButton:CGRectMake(SCREENWIDTH / 2.0 + buttonX, buttonY, buttonW, buttonH) title:@"留言" image:@"icon_comment"];
@@ -586,12 +586,16 @@
                 [subview removeFromSuperview];
             }
             [contestantImageArray removeAllObjects];
+            CGFloat imageDistance = 5;
+            CGFloat imageDistanceY = 5;
             CGFloat imageX = 0;
             CGFloat imageY = 0;
-            CGFloat imageH = myScrollView.frame.size.height;
-            CGFloat imageW = imageH;
-            CGFloat imageDistance = 5;
+            CGFloat imageW = (myScrollView.frame.size.width - 2 * imageDistance) / 3.0;
+            CGFloat imageH = imageW;
+            
+            
             NSInteger index = 0;
+            CGFloat contentHeight = 0;
             for (NSString *url in wallArray) {
                 NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
                 [contestantImageArray addObject:imageurl];
@@ -603,7 +607,19 @@
                 imageview.contentMode = UIViewContentModeScaleAspectFill;
                 [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
                 [myScrollView addSubview:imageview];
+                
+                contentHeight = CGRectGetMaxY(imageview.frame);
+                
+                index++;
+                
                 imageX = imageX + imageW + imageDistance;
+                if (index % 3 == 0) {
+                    imageX = 0;
+                    
+                }
+                NSInteger column = index / 3.0;
+                
+                imageY = column * (imageH + imageDistanceY);
                 
                 imageview.userInteractionEnabled = YES;
                 UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanImageTap:)];
@@ -611,11 +627,11 @@
                 tapGes.numberOfTouchesRequired = 1;
                 [imageview addGestureRecognizer:tapGes];
                 
-                index++;
             }
-            if (imageX > myScrollView.frame.size.width) {
-                myScrollView.contentSize = CGSizeMake(imageX, 0);
-            }
+            CGRect scrollViewFrame = myScrollView.frame;
+            scrollViewFrame.size.height = contentHeight;
+            myScrollView.frame = scrollViewFrame;
+            myScrollView.contentSize = CGSizeMake(0, contentHeight);
             [tableview reloadData];
         }
         else{
@@ -785,7 +801,7 @@
             tipLabel.textColor = [UIColor grayColor];
             tipLabel.textAlignment = NSTextAlignmentRight;
             tipLabel.font = textFont;
-            [cell addSubview:tipLabel];
+//            [cell addSubview:tipLabel];
             break;
         }
         case 1:
@@ -843,7 +859,7 @@
             switch (row) {
                 case 1:
                 {
-                    return imageScrollViewHeigh + 2 * myScrollView.frame.origin.y;
+                    return myScrollView.frame.size.height + 2 * myScrollView.frame.origin.y;
                     break;
                 }
                 default:

@@ -81,7 +81,7 @@
     editItem.title = @"编辑";
     editItem.target = self;
     editItem.action = @selector(editAlbum:);
-//    self.navigationItem.rightBarButtonItem = editItem;
+    self.navigationItem.rightBarButtonItem = editItem;
     
     self.view.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     CGFloat viewX = 0;
@@ -173,7 +173,12 @@
         if ([myview isMemberOfClass:[HeAlbumImage class]]) {
             HeAlbumImage *albumImage = (HeAlbumImage *)myview;
             if (albumImage.selected) {
-                [deleteArray addObject:photoArray[albumImage.tag - 200]];
+                NSDictionary *dict = photoDetailArray[albumImage.tag - 200];
+                NSString *wallId = dict[@"wallId"];
+                if ([wallId isMemberOfClass:[NSNull class]] || wallId == nil) {
+                    wallId = @"";
+                }
+                [deleteArray addObject:wallId];
             }
         }
     }
@@ -202,7 +207,7 @@
             [paper appendFormat:@",%@",string];
         }
     }
-    NSDictionary *requestMessageParams = @{@"userId":userid,@"paper":paper};
+    NSDictionary *requestMessageParams = @{@"userId":userid,@"paperWallId":paper};
     [self showHudInView:self.view hint:@"删除中..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
@@ -265,7 +270,7 @@
 
 - (void)addPhotoView
 {
-    NSInteger number = [photoArray count];
+    NSInteger number = [photoDetailArray count];
     
     int row = [Tool getRowNumWithTotalNum:number withMaxRow:MAx_row MaxColumn:MAx_column];
     int column = [Tool getColumnNumWithTotalNum:number withMaxColumn:MAx_column];
@@ -298,13 +303,24 @@
             CGRect buttonFrame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
             
             NSInteger index = i * MAx_column + j;
-            NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[photoArray objectAtIndex:index]];
             
+            NSDictionary *dict = [photoDetailArray objectAtIndex:index];
+            NSString *wallUrl = dict[@"wallUrl"];
+            if ([wallUrl isMemberOfClass:[NSNull class]]) {
+                wallUrl = @"";
+            }
+            
+            NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,wallUrl];
+            NSString * wallId = dict[@"wallId"];
+            if ([wallId isMemberOfClass:[NSNull class]]) {
+                wallId = @"";
+            }
             NSString *imageKey = imageUrl;
             HeAlbumImage *albumImage = [imageCache objectForKey:imageKey];
             if (albumImage == nil) {
                 albumImage = [[HeAlbumImage alloc] initWithFrame:buttonFrame];
                 albumImage.selected = NO;
+                albumImage.photoID = wallId;
                 albumImage.selectBox.selected = NO;
                 albumImage.selectBox.hidden = YES;
                 albumImage.imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -350,9 +366,11 @@
     
     NSMutableArray *photos = [NSMutableArray array];
     MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    for (NSInteger index = 0; index < photoArray.count; index++) {
+    for (NSInteger index = 0; index < photoDetailArray.count; index++) {
         
-        NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[photoArray objectAtIndex:index]];
+        NSDictionary *dict = photoDetailArray[index];
+        NSString *wallUrl = dict[@"wallUrl"];
+        NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,wallUrl];
         HeAlbumImage *srcImageView = [myScrollView viewWithTag:index + 200];
         
         MJPhoto *photo = [[MJPhoto alloc] init];

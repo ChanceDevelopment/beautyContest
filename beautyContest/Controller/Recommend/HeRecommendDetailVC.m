@@ -88,13 +88,14 @@
     [self initializaiton];
     [self initView];
     [self loadRecommendDetail];
+    [self getUserPic];
 }
 
 - (void)initializaiton
 {
     [super initializaiton];
     redPocketArray = [[NSMutableArray alloc] initWithCapacity:0];
-    imageScrollViewHeigh = 200;
+    imageScrollViewHeigh = 100;
     receiveScrollViewHeigh = 60;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullScreenBtnClick:) name:@"fullScreenBtnClickNotice" object:nil];
@@ -561,8 +562,14 @@
 
 - (void)loadRecommendDetail
 {
-    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *userId = recommendDict[@"recommendUser"];
+    if ([userId isMemberOfClass:[NSNull class]]) {
+        userId = @"";
+    }
     NSString *recommendId = recommendDict[@"recommendId"];
+    if ([recommendId isMemberOfClass:[NSNull class]]) {
+        recommendId = @"";
+    }
     [self showHudInView:self.tableview hint:@"加载中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/recommend/recommendUserInfo.action",BASEURL];
@@ -620,10 +627,43 @@
     }];
 }
 
+- (void)getUserPic
+{
+    NSString *userId = recommendDict[@"recommendUser"];
+    if ([userId isMemberOfClass:[NSNull class]]) {
+        userId = @"";
+    }
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/paperWall/GetUserPic.action",BASEURL];
+    NSDictionary *params = @{@"userId":userId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            id jsonObj = [respondDict objectForKey:@"json"];
+            NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,jsonObj];
+            UIImageView *imageView = [sectionHeaderView viewWithTag:BGTAG];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            //            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+//        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
 - (void)addVideoView
 {
     NSString *recommendVideo = recommendDetailDict[@"recommendVideo"];
-    if ([recommendVideo isMemberOfClass:[NSNull class]] || recommendVideo == nil) {
+    if ([recommendVideo isMemberOfClass:[NSNull class]] || recommendVideo == nil || [recommendVideo isEqualToString:@""]) {
         recommendVideo = nil;
     }
     if (!recommendVideo) {
@@ -900,11 +940,11 @@
     }
     [userImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:userImage.image];
     
-    if ([paperArray count] == 0 || [paperArray[0] isEqualToString:@""]) {
-        //如果没有图，用头像替代
-        UIImageView *bgImage = [sectionHeaderView viewWithTag:BGTAG];
-        [bgImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:bgImage.image];
-    }
+//    if ([paperArray count] == 0 || [paperArray[0] isEqualToString:@""]) {
+//        //如果没有图，用头像替代
+//        UIImageView *bgImage = [sectionHeaderView viewWithTag:BGTAG];
+//        [bgImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:bgImage.image];
+//    }
     
     
     UIImageView *sexIcon = [sectionHeaderView viewWithTag:USERSEXTAG];

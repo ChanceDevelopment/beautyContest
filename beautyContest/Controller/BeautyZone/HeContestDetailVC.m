@@ -160,7 +160,7 @@
     UIButton *joinButton = [Tool getButton:CGRectMake(buttonX, buttonY, buttonW, buttonH) title:@"参加" image:@"icon_join_in"];
     joinButton.tag = 1;
     [joinButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [joinButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
+    [joinButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor colorWithRed:252.0 / 255.0 green:168.0 / 255.0 blue:46.0 / 255.0 alpha:1.0] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
     [footerView addSubview:joinButton];
     joinButton.layer.cornerRadius = 3.0;
     joinButton.layer.masksToBounds = YES;

@@ -13,5 +13,6 @@
 
 @interface HeDistributeContestVC : HeBaseViewController<DeleteImageProtocol,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIAlertViewDelegate>
 @property(strong,nonatomic)NSString *zonePassword;
+@property(assign,nonatomic)BOOL isFaceContest;
 
 @end

@@ -64,6 +64,7 @@
 - (void)initView
 {
     [super initView];
+    passwordLabel.text = self.zonePassword;
 }
 
 - (void)backItemClick:(id)sender
@@ -146,11 +147,12 @@
                 userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
             }
             UIImageView *asynImage = [[UIImageView alloc] init];
-            [asynImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+            [asynImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
 //            asynImage.tag = picIndex;
             asynImage.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
             asynImage.layer.borderColor = [UIColor clearColor].CGColor;
             asynImage.layer.borderWidth = 0;
+            asynImage.layer.cornerRadius = buttonW / 2.0;
             asynImage.layer.masksToBounds = YES;
             asynImage.contentMode = UIViewContentModeScaleAspectFill;
             asynImage.userInteractionEnabled = YES;
@@ -166,6 +168,7 @@
 - (IBAction)creatBeautyZoneWithPassword:(id)sender
 {
     HeDistributeContestVC *distributeContestVC = [[HeDistributeContestVC alloc] init];
+    distributeContestVC.isFaceContest = YES;
     distributeContestVC.zonePassword = [[NSString alloc] initWithString:zonePassword];
     distributeContestVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:distributeContestVC animated:YES];
