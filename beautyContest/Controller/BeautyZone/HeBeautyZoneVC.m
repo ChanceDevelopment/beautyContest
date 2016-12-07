@@ -17,6 +17,7 @@
 #import "HeFaceToFaceZoneVC.h"
 #import "HeZoneConfirmVC.h"
 #import "HeSearchBeautyZoneVC.h"
+#import "HeNewUserInfoVC.h"
 
 #define TextLineHeight 1.2f
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -100,6 +101,7 @@
 {
     [super initializaiton];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blockUserSucceed:) name:@"blockUserSucceed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(delTemporary:) name:@"delTemporaryNotification" object:nil];
     imageCache = [[NSCache alloc] init];
     requestReply = NO;
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
@@ -200,6 +202,32 @@
     UIBarButtonItem *distributeItem = [[UIBarButtonItem alloc] initWithCustomView:distributeButton];
     distributeItem.target = self;
     self.navigationItem.rightBarButtonItem = distributeItem;
+}
+//删除临时赛区
+- (void)delTemporary:(NSNotification *)notification
+{
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSDictionary *params = @{@"userid":userid};
+    NSString *requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/delTemporayByUserid.action",BASEURL];
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            //            [self showHint:data];
+        }
+        
+        
+    } failure:^(NSError *error){
+    }];
 }
 
 - (void)blockUserSucceed:(NSNotification *)notificaition
@@ -851,6 +879,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateContestZone" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"blockUserSucceed" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"delTemporaryNotification" object:nil];
 }
 /*
  #pragma mark - Navigation

@@ -17,6 +17,7 @@
 #import "HeCommentView.h"
 #import "HeZoneCommentCell.h"
 #import "UIButton+Bootstrap.h"
+#import "HeContestantDetailVC.h"
 
 #define TextLineHeight 1.2f
 #define DELETETAG 100
@@ -619,7 +620,15 @@
     if (!imageview) {
         [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
         imageview = cell.bgImage;
+        
+        cell.bgImage.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanUserDetail:)];
+        tapGes.numberOfTapsRequired = 1;
+        tapGes.numberOfTouchesRequired = 1;
+        cell.bgImage.tag = row;
+        [cell.bgImage addGestureRecognizer:tapGes];
     }
+    
     cell.bgImage = imageview;
     [cell addSubview:cell.bgImage];
     
@@ -671,6 +680,40 @@
     
     return cell;
 }
+
+- (void)scanUserDetail:(UITapGestureRecognizer *)ges
+{
+    NSInteger row = ges.view.tag;
+    NSDictionary *dict = nil;
+    @try {
+        dict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    NSString *userId = dict[@"commentUser"];
+    if ([userId isMemberOfClass:[NSNull class]] || !userId) {
+        userId = @"";
+    }
+    NSString *userHeader = dict[@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]] || !userHeader) {
+        userHeader = @"";
+    }
+    NSString *userNick = dict[@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || !userNick) {
+        userNick = @"";
+    }
+    NSDictionary *userDict = @{@"userId":userId,@"userHeader":userHeader,@"userNick":userNick};
+    HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
+    contantDetailVC.contestantBaseDict = [[NSDictionary alloc] initWithDictionary:userDict];
+    contantDetailVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:contestZoneDict];
+    contantDetailVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:contantDetailVC animated:YES];
+}
+
 
 //- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 //{

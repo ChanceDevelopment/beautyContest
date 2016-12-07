@@ -15,6 +15,7 @@
 #import "FTPopOverMenu.h"
 #import "HeComplaintVC.h"
 #import "HeComplaintUserVC.h"
+#import "HeNewUserInfoVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -883,7 +884,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
-    
+    if (section == 0 && row == 0) {
+        
+        HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
+        userInfoVC.hidesBottomBarWhenPushed = YES;
+        userInfoVC.isScanUser = YES;
+        userInfoVC.userInfo = [[User alloc] initUserWithDict:contestantDetailDict];
+        [self.navigationController pushViewController:userInfoVC animated:YES];
+    }
     
 }
 

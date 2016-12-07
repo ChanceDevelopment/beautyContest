@@ -550,16 +550,16 @@
     if (row == 0) {
         if (![myUserId isEqualToString:blogHost]) {
             //如果是别人留言给用户
-            NSString *hostNick = dict[@"hostNick"];
-            if ([hostNick isMemberOfClass:[NSNull class]] || hostNick == nil) {
-                hostNick = @"";
-            }
-            cell.userNameLabel.text = hostNick;
-            
-            cell.tipLabel.hidden = YES;
-            CGRect userNameFrame = cell.userNameLabel.frame;
-            userNameFrame.origin.x = 10;
-            cell.userNameLabel.frame = userNameFrame;
+//            NSString *hostNick = dict[@"hostNick"];
+//            if ([hostNick isMemberOfClass:[NSNull class]] || hostNick == nil) {
+//                hostNick = @"";
+//            }
+//            cell.userNameLabel.text = hostNick;
+//            
+//            cell.tipLabel.hidden = YES;
+//            CGRect userNameFrame = cell.userNameLabel.frame;
+//            userNameFrame.origin.x = 10;
+//            cell.userNameLabel.frame = userNameFrame;
             cell.replyLabel.hidden = NO;
         }
         else{
@@ -567,7 +567,13 @@
         }
     }
     else{
-        cell.replyLabel.hidden = YES;
+        blogHost = dict[@"replyHost"];
+        if (![myUserId isEqualToString:blogHost]){
+            cell.replyLabel.hidden = NO;
+        }
+        else{
+            cell.replyLabel.hidden = YES;
+        }
     }
     
     cell.messageDict = [[NSDictionary alloc] initWithDictionary:dict];

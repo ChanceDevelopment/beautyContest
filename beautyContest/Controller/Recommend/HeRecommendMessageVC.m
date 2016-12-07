@@ -197,8 +197,6 @@
 - (void)loadUserMessageShow:(BOOL)show
 {
     NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/user/getMyMessagesForPeople.action",BASEURL];
-    ///user/getMyMessagesList.action 留言
-    ///user/getMessageReply.action  回复
     NSString *OtherUserid = userId;
     NSString *blogUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (!blogUser) {

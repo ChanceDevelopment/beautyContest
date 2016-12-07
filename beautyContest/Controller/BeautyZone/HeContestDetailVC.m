@@ -922,6 +922,9 @@
                 rankLabel.font = [UIFont systemFontOfSize:15.0];
                 rankLabel.text = [NSString stringWithFormat:@"%ld",myRank];
                 [cell addSubview:rankLabel];
+                if (myRank == 0) {
+                    rankLabel.text = @"未参赛";
+                }
                 
                 User *userInfo = [HeSysbsModel getSysModel].user;
                 NSString *userHead = userInfo.userHeader;
@@ -941,6 +944,9 @@
                 userIcon.contentMode = UIViewContentModeScaleAspectFill;
                 [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead] placeholderImage:userIcon.image];
                 [cell addSubview:userIcon];
+                if (myRank == 0) {
+                    userIcon.hidden = YES;
+                }
                 
                 break;
             }

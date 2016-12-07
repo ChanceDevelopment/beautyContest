@@ -87,10 +87,10 @@
     [super initView];
     if (self.isUserRank) {
         UILabel *label = (UILabel *)self.navigationItem.titleView;
-        label.text = @"我的排名";
+        label.text = @"排名榜";
         [label sizeToFit];
         
-        self.title = @"我的排名";
+        self.title = @"排名榜";
     }
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor whiteColor];

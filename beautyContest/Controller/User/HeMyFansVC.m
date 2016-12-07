@@ -348,6 +348,7 @@
     @finally {
         
     }
+    
     HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
     userInfoVC.hidesBottomBarWhenPushed = YES;
     userInfoVC.isScanUser = YES;

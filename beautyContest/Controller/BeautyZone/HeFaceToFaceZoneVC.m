@@ -109,6 +109,33 @@
     }];
 }
 
+//删除临时赛区
+- (void)delTemporary
+{
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSDictionary *params = @{@"userid":userid};
+    NSString *requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/delTemporayByUserid.action",BASEURL];
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            //            [self showHint:data];
+        }
+        
+        
+    } failure:^(NSError *error){
+    }];
+}
+
 - (UIToolbar *)addToolbar
 {
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 35)];
@@ -209,6 +236,12 @@
     }
     
     return YES;
+}
+
+- (void)backItemClick:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"delTemporaryNotification" object:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
