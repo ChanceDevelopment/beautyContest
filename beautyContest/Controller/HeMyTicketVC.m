@@ -10,6 +10,7 @@
 #import "HeFansTableCell.h"
 #import "HeUserInfoVC.h"
 #import "HeUserTicketCell.h"
+#import "HeNewUserInfoVC.h"
 
 @interface HeMyTicketVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -347,7 +348,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
@@ -361,7 +361,7 @@
     @finally {
         
     }
-    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
     userInfoVC.hidesBottomBarWhenPushed = YES;
     userInfoVC.isScanUser = YES;
     userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];

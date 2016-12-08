@@ -646,7 +646,7 @@
             id jsonObj = [respondDict objectForKey:@"json"];
             NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,jsonObj];
             UIImageView *imageView = [sectionHeaderView viewWithTag:BGTAG];
-            [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"home_can_change_bg_09.jpg"]];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];

@@ -201,6 +201,7 @@
 		EA71A1751DDD525C00B16333 /* HeBlockUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */; };
 		EA71A1761DDD525C00B16333 /* HeBlockUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */; };
 		EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */; };
+		EA7F0BD61DF9472700F24C96 /* HeRecommendMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7F0BD51DF9472600F24C96 /* HeRecommendMessageCell.m */; };
 		EA7F2FCF1DD37C10001857F4 /* UWDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */; };
 		EA7F2FD01DD37C10001857F4 /* UWDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */; };
 		EA7FF0611DF7A94100F24C96 /* HeNewUserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA7FF0601DF7A94100F24C96 /* HeNewUserInfoVC.xib */; };
@@ -1055,6 +1056,8 @@
 		EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBlockUserVC.xib; sourceTree = "<group>"; };
 		EA71A1781DDEE86500B16333 /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMediaPickerController.h; sourceTree = "<group>"; };
 		EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMediaPickerController.m; sourceTree = "<group>"; };
+		EA7F0BD41DF9472600F24C96 /* HeRecommendMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeRecommendMessageCell.h; sourceTree = "<group>"; };
+		EA7F0BD51DF9472600F24C96 /* HeRecommendMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendMessageCell.m; sourceTree = "<group>"; };
 		EA7F2FCC1DD37C10001857F4 /* UWDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWDatePickerView.h; sourceTree = "<group>"; };
 		EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWDatePickerView.m; sourceTree = "<group>"; };
 		EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UWDatePickerView.xib; sourceTree = "<group>"; };
@@ -2823,6 +2826,8 @@
 				EAC1B89D1DD0F90B00505B45 /* HeUserTicketCell.m */,
 				EA088A3A1DF6B4BE00C65559 /* HeMyMessageCell.h */,
 				EA088A3B1DF6B4BE00C65559 /* HeMyMessageCell.m */,
+				EA7F0BD41DF9472600F24C96 /* HeRecommendMessageCell.h */,
+				EA7F0BD51DF9472600F24C96 /* HeRecommendMessageCell.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -5617,6 +5622,7 @@
 				EAC2CCC11D4AF5D800E282A8 /* UIAlertView+AFNetworking.m in Sources */,
 				EA46452B1D51884000CD539F /* HeNearbyVC.m in Sources */,
 				EAC2CE1E1D4AF5E000E282A8 /* Tool.m in Sources */,
+				EA7F0BD61DF9472700F24C96 /* HeRecommendMessageCell.m in Sources */,
 				EAC2CED11D4AF71900E282A8 /* UIResponder+Router.m in Sources */,
 				EAC2CDAC1D4AF5D800E282A8 /* RACSignalProvider.d in Sources */,
 				EA4D01881D4D93E500A0CCA1 /* HeBaseTableViewCell.m in Sources */,

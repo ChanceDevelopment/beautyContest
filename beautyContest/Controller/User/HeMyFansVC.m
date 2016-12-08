@@ -9,6 +9,7 @@
 #import "HeMyFansVC.h"
 #import "HeFansTableCell.h"
 #import "HeUserInfoVC.h"
+#import "HeNewUserInfoVC.h"
 
 @interface HeMyFansVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -349,7 +350,7 @@
         
     }
     
-    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
     userInfoVC.hidesBottomBarWhenPushed = YES;
     userInfoVC.isScanUser = YES;
     userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];

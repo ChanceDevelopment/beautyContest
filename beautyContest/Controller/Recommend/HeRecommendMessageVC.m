@@ -10,10 +10,14 @@
 #import "HeUserMessageCell.h"
 #import "MLLabel+Size.h"
 #import "HeCommentView.h"
+#import "UIButton+Bootstrap.h"
+#import "HeRecommendMessageCell.h"
+#import "HeContestantDetailVC.h"
+#import "HeNewUserInfoVC.h"
 
 #define TextLineHeight 1.2f
 
-@interface HeRecommendMessageVC ()<CommentProtocol>
+@interface HeRecommendMessageVC ()<CommentProtocol,UITextFieldDelegate>
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)UIView *sectionHeaderView;
 @property(strong,nonatomic)NSMutableArray *dataSource;
@@ -24,8 +28,8 @@
 @property(strong,nonatomic)NSMutableDictionary *replyDict;
 @property(strong,nonatomic)NSMutableDictionary *replyIndexDict;
 @property(strong,nonatomic)NSMutableDictionary *replyShowDict;
-
 @property(strong,nonatomic)NSDictionary *currentReplyDict;
+@property(strong,nonatomic)IBOutlet UIView *commentBGView;
 
 @end
 
@@ -42,6 +46,7 @@
 @synthesize replyShowDict;
 @synthesize currentReplyDict;
 @synthesize userId;
+@synthesize commentBGView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,10 +59,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"我的留言";
+        label.text = @"留言";
         [label sizeToFit];
         
-        self.title = @"我的留言";
+        self.title = @"留言";
     }
     return self;
 }
@@ -100,7 +105,51 @@
     messageItem.title = @"留言";
     messageItem.target = self;
     messageItem.action = @selector(leaveMessage:);
-    self.navigationItem.rightBarButtonItem = messageItem;
+//    self.navigationItem.rightBarButtonItem = messageItem;
+    
+    CGFloat buttonW = 60;
+    CGFloat buttonY = 8;
+    CGFloat buttonH = 50 - 2 * buttonY;
+    CGFloat buttonX = SCREENWIDTH - buttonW - 8;
+    
+    CGFloat commentX = 8;
+    CGFloat commentY = 8;
+    CGFloat commentH = 50 - 2 * buttonY;
+    CGFloat commentW = SCREENWIDTH - 3 * commentX - buttonW;
+    UITextField *commentTextField = [[UITextField alloc] initWithFrame:CGRectMake(commentX, commentY, commentW, commentH)];
+    commentBGView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    commentTextField.tag = 10000;
+    commentTextField.backgroundColor = [UIColor whiteColor];
+    commentTextField.font = [UIFont systemFontOfSize:15.0];
+    commentTextField.delegate = self;
+    commentTextField.layer.borderColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0].CGColor;
+    commentTextField.layer.cornerRadius = 5.0;
+    commentTextField.placeholder = @"请输入内容";
+    commentTextField.layer.masksToBounds = YES;
+    [commentBGView addSubview:commentTextField];
+    
+    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
+    [submitButton setTitle:@"提交" forState:UIControlStateNormal];
+    [commentBGView addSubview:submitButton];
+    [submitButton dangerStyle];
+    [submitButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:submitButton.frame.size] forState:UIControlStateNormal];
+    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)submitButtonClick:(UIButton *)button
+{
+    UITextField *textField = [commentBGView viewWithTag:10000];
+    if ([textField isFirstResponder]) {
+        [textField resignFirstResponder];
+    }
+    NSString *commentText = textField.text;
+    if (commentText == nil || [commentText isEqualToString:@""]) {
+        [self showHint:@"请输入评论内容"];
+        return;
+    }
+    User *userInfo = [HeSysbsModel getSysModel].user;
+    [self commentWithText:commentText user:userInfo];
 }
 
 - (void)showTableWithBlogId:(NSString *)blogId
@@ -140,7 +189,7 @@
     }
     NSString *blogUser = userId;
     NSString *blogContent = [NSString stringWithFormat:@"%@",commentText];
-    [self showHudInView:self.view hint:@"回复中..."];
+    [self showHudInView:self.view hint:@"留言中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/user/message.action",BASEURL];
     NSDictionary *params = @{@"blogHost":blogHost,@"blogUser":blogUser,@"blogContent":blogContent};
@@ -153,8 +202,11 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             NSString *data = [respondDict objectForKey:@"data"];
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
-                data = @"回复成功";
+                data = @"留言成功";
             }
+            UITextField *commentTextField = [commentBGView viewWithTag:10000];
+            commentTextField.text = nil;//清空评论框
+            
             [self showHint:data];
             updateOption = 1;
             [self loadUserMessageShow:YES];
@@ -402,6 +454,39 @@
     return [NSDate date]; // should return date data source was last changed
 }
 
+- (void)scanUserDetail:(UITapGestureRecognizer *)ges
+{
+    NSInteger row = ges.view.tag;
+    NSDictionary *dict = nil;
+    @try {
+        dict = [dataSource objectAtIndex:row];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    NSString *commentUser = dict[@"commentUser"];
+    if ([commentUser isMemberOfClass:[NSNull class]] || !commentUser) {
+        commentUser = @"";
+    }
+    NSString *userHeader = dict[@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]] || !userHeader) {
+        userHeader = @"";
+    }
+    NSString *userNick = dict[@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || !userNick) {
+        userNick = @"";
+    }
+    NSDictionary *userDict = @{@"userId":commentUser,@"userHeader":userHeader,@"userNick":userNick};
+    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    userInfoVC.isScanUser = YES;
+    userInfoVC.userInfo = [[User alloc] initUserWithDict:userDict];
+    [self.navigationController pushViewController:userInfoVC animated:YES];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 //    NSDictionary *dict = dataSource[section];
@@ -448,9 +533,9 @@
 //        dict = [replyArray objectAtIndex:row - 1];
 //        
 //    }
-    HeUserMessageCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeRecommendMessageCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeUserMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell = [[HeRecommendMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
@@ -473,7 +558,7 @@
     cell.contentLabel.text = blogContent;
     cell.contentLabel.frame = contentFrame;
     
-    NSString *userNick = dict[@"userNick"];
+    NSString *userNick = dict[@"hostNick"];
     
     if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
         userNick = @"";
@@ -504,12 +589,36 @@
         blogHost = @"";
     }
     
+    NSString *userHeader = [dict objectForKey:@"hostHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]]) {
+        userHeader = @"";
+    }
+    if (![userHeader hasPrefix:@"http"]) {
+        userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    }
+    
+    UIImageView *imageview = [imageCache objectForKey:userHeader];
+    if (!imageview) {
+        [cell.userIcon sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        imageview = cell.userIcon;
+        
+        cell.userIcon.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanUserDetail:)];
+        tapGes.numberOfTapsRequired = 1;
+        tapGes.numberOfTouchesRequired = 1;
+        cell.userIcon.tag = row;
+        [cell.userIcon addGestureRecognizer:tapGes];
+    }
+    
+    cell.userIcon = imageview;
+    [cell addSubview:cell.userIcon];
+    
     cell.replyLabel.hidden = YES;
     cell.tipLabel.hidden = YES;
     
-    CGRect userNickFrame = cell.userNameLabel.frame;
-    userNickFrame.origin.x = 10;
-    cell.userNameLabel.frame = userNickFrame;
+//    CGRect userNickFrame = cell.userNameLabel.frame;
+//    userNickFrame.origin.x = 10;
+//    cell.userNameLabel.frame = userNickFrame;
     
     cell.messageDict = [[NSDictionary alloc] initWithDictionary:dict];
     

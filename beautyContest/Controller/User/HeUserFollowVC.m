@@ -9,6 +9,7 @@
 #import "HeUserFollowVC.h"
 #import "HeUserFollowTableCell.h"
 #import "HeUserInfoVC.h"
+#import "HeNewUserInfoVC.h"
 
 @interface HeUserFollowVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -390,7 +391,7 @@
     @finally {
         
     }
-    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
     userInfoVC.hidesBottomBarWhenPushed = YES;
     userInfoVC.isScanUser = YES;
     userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];

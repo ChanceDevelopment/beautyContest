@@ -11,6 +11,7 @@
 #import <BaiduMapAPI_Location/BMKLocationService.h>
 #import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
 #import "HeUserInfoVC.h"
+#import "HeNewUserInfoVC.h"
 
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
 
@@ -404,6 +405,9 @@
         distance = @"";
     }
     cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[distance floatValue]];
+    if ([[dict objectForKey:@"distance"] floatValue] < 1000) {
+        cell.distanceLabel.text = @"1公里以内";
+    }
     
     NSString *userHeader = dict[@"userHeader"];
     if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
@@ -457,7 +461,7 @@
     @finally {
         
     }
-    HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
+    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
     userInfoVC.hidesBottomBarWhenPushed = YES;
     userInfoVC.isScanUser = YES;
     userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
