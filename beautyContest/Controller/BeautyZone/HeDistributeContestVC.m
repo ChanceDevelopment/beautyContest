@@ -1768,8 +1768,17 @@
 - (void)getUserInfoWithDict:(NSDictionary *)addressDict
 {
     NSString *zoneLocationX = addressDict[@"zoneLocationX"];
+    if (zoneLocationX == nil) {
+        zoneLocationX = @"";
+    }
     NSString *zoneLocationY = addressDict[@"zoneLocationY"];
+    if (zoneLocationY == nil) {
+        zoneLocationY = @"";
+    }
     NSString *address = addressDict[@"address"];
+    if (address == nil) {
+        address = @"";
+    }
     [userLocationDict setObject:zoneLocationX forKey:@"zoneLocationX"];
     [userLocationDict setObject:zoneLocationY forKey:@"zoneLocationY"];
     [userLocationDict setObject:address forKey:@"address"];
@@ -1792,6 +1801,12 @@
         if (locationSucceedNum >= MinLocationSucceedNum) {
             [self hideHud];
             locationSucceedNum = 0;
+            if (latitudeStr == nil) {
+                latitudeStr = @"";
+            }
+            if (longitudeStr == nil) {
+                longitudeStr = @"";
+            }
             [userLocationDict setObject:latitudeStr forKey:@"latitude"];
             [userLocationDict setObject:longitudeStr forKey:@"longitude"];
             [_locService stopUserLocationService];
@@ -1841,6 +1856,12 @@
         if (locationSucceedNum >= MinLocationSucceedNum) {
             [self hideHud];
             locationSucceedNum = 0;
+            if (latitudeStr == nil) {
+                latitudeStr = @"";
+            }
+            if (longitudeStr == nil) {
+                longitudeStr = @"";
+            }
             [userLocationDict setObject:latitudeStr forKey:@"latitude"];
             [userLocationDict setObject:longitudeStr forKey:@"longitude"];
             [_locService stopUserLocationService];

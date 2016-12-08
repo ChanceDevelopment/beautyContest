@@ -11,6 +11,7 @@
 #import "HeUserInfoVC.h"
 #import "HeUserTicketCell.h"
 #import "HeNewUserInfoVC.h"
+#import "HeContestantDetailVC.h"
 
 @interface HeMyTicketVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -361,11 +362,24 @@
     @finally {
         
     }
-    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
-    userInfoVC.hidesBottomBarWhenPushed = YES;
-    userInfoVC.isScanUser = YES;
-    userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
-    [self.navigationController pushViewController:userInfoVC animated:YES];
+    NSString *userId = dict[@"commentUser"];
+    if ([userId isMemberOfClass:[NSNull class]] || !userId) {
+        userId = @"";
+    }
+    NSString *userHeader = dict[@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]] || !userHeader) {
+        userHeader = @"";
+    }
+    NSString *userNick = dict[@"userNick"];
+    if ([userNick isMemberOfClass:[NSNull class]] || !userNick) {
+        userNick = @"";
+    }
+    NSDictionary *userDict = @{@"userId":userId,@"userHeader":userHeader,@"userNick":userNick};
+    HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
+    contantDetailVC.contestantBaseDict = [[NSDictionary alloc] initWithDictionary:userDict];
+//    contantDetailVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:contestZoneDict];
+    contantDetailVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:contantDetailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

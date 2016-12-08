@@ -376,6 +376,9 @@
     [self showHudInView:self.view hint:@"加载中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/partInUserInfo.action",BASEURL];
+    if (zoneId == nil) {
+        
+    }
     NSDictionary *params = @{@"zoneId":zoneId,@"userId":userId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
