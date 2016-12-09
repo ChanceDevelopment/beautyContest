@@ -14,6 +14,7 @@
 #import "HeRecommendMessageCell.h"
 #import "HeContestantDetailVC.h"
 #import "HeNewUserInfoVC.h"
+#import "HeContestantUserInfoVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -467,23 +468,13 @@
     @finally {
         
     }
-    NSString *commentUser = dict[@"commentUser"];
-    if ([commentUser isMemberOfClass:[NSNull class]] || !commentUser) {
-        commentUser = @"";
+    NSString *recommendUserId = dict[@"blogHost"];
+    if ([recommendUserId isMemberOfClass:[NSNull class]] || recommendUserId == nil) {
+        recommendUserId = @"";
     }
-    NSString *userHeader = dict[@"userHeader"];
-    if ([userHeader isMemberOfClass:[NSNull class]] || !userHeader) {
-        userHeader = @"";
-    }
-    NSString *userNick = dict[@"userNick"];
-    if ([userNick isMemberOfClass:[NSNull class]] || !userNick) {
-        userNick = @"";
-    }
-    NSDictionary *userDict = @{@"userId":commentUser,@"userHeader":userHeader,@"userNick":userNick};
-    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
+    HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+    userInfoVC.userId = [NSString stringWithFormat:@"%@",recommendUserId];
     userInfoVC.hidesBottomBarWhenPushed = YES;
-    userInfoVC.isScanUser = YES;
-    userInfoVC.userInfo = [[User alloc] initUserWithDict:userDict];
     [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 

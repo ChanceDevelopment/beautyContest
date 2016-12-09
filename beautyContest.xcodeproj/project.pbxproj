@@ -202,6 +202,8 @@
 		EA71A1761DDD525C00B16333 /* HeBlockUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */; };
 		EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */; };
 		EA7F0BD61DF9472700F24C96 /* HeRecommendMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7F0BD51DF9472600F24C96 /* HeRecommendMessageCell.m */; };
+		EA7F0BD91DFA4D4600F24C96 /* HeContestantUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7F0BD81DFA4D4600F24C96 /* HeContestantUserInfoVC.m */; };
+		EA7F0BDB1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA7F0BDA1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib */; };
 		EA7F2FCF1DD37C10001857F4 /* UWDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */; };
 		EA7F2FD01DD37C10001857F4 /* UWDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */; };
 		EA7FF0611DF7A94100F24C96 /* HeNewUserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA7FF0601DF7A94100F24C96 /* HeNewUserInfoVC.xib */; };
@@ -1058,6 +1060,9 @@
 		EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMediaPickerController.m; sourceTree = "<group>"; };
 		EA7F0BD41DF9472600F24C96 /* HeRecommendMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeRecommendMessageCell.h; sourceTree = "<group>"; };
 		EA7F0BD51DF9472600F24C96 /* HeRecommendMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendMessageCell.m; sourceTree = "<group>"; };
+		EA7F0BD71DFA4D4600F24C96 /* HeContestantUserInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeContestantUserInfoVC.h; sourceTree = "<group>"; };
+		EA7F0BD81DFA4D4600F24C96 /* HeContestantUserInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeContestantUserInfoVC.m; sourceTree = "<group>"; };
+		EA7F0BDA1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeContestantUserInfoVC.xib; sourceTree = "<group>"; };
 		EA7F2FCC1DD37C10001857F4 /* UWDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWDatePickerView.h; sourceTree = "<group>"; };
 		EA7F2FCD1DD37C10001857F4 /* UWDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWDatePickerView.m; sourceTree = "<group>"; };
 		EA7F2FCE1DD37C10001857F4 /* UWDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UWDatePickerView.xib; sourceTree = "<group>"; };
@@ -2397,6 +2402,9 @@
 				07D2A4CE1DC05EE80031DDE0 /* HeFaceCreatZoneVC.h */,
 				07D2A4CF1DC05EE80031DDE0 /* HeFaceCreatZoneVC.m */,
 				07D2A4D01DC05EE80031DDE0 /* HeFaceCreatZoneVC.xib */,
+				EA7F0BD71DFA4D4600F24C96 /* HeContestantUserInfoVC.h */,
+				EA7F0BD81DFA4D4600F24C96 /* HeContestantUserInfoVC.m */,
+				EA7F0BDA1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib */,
 			);
 			path = BeautyZone;
 			sourceTree = "<group>";
@@ -4969,6 +4977,7 @@
 				EA0E9D111D4C269E009CBF64 /* NavBarIOS7_white.png in Resources */,
 				EA1FE4661DE02735006435D3 /* message_s@2x.png in Resources */,
 				EACC98341D50E5DB00E627B8 /* icon_nearby_beauty.png in Resources */,
+				EA7F0BDB1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib in Resources */,
 				EAE88BC51DAF5BC900AD946F /* AlipaySDK.bundle in Resources */,
 				07E880391DC44F22000A13E8 /* bubble_min@2x.png in Resources */,
 				EAC2CEBC1D4AF5FC00E282A8 /* loading_anim2.png in Resources */,
@@ -5395,6 +5404,7 @@
 				EAC2CE101D4AF5D800E282A8 /* YLGIFImage.m in Sources */,
 				EAC2CD251D4AF5D800E282A8 /* IQSegmentedNextPrevious.m in Sources */,
 				EAC2CD8E1D4AF5D800E282A8 /* RACCommand.m in Sources */,
+				EA7F0BD91DFA4D4600F24C96 /* HeContestantUserInfoVC.m in Sources */,
 				EAC2CDA41D4AF5D800E282A8 /* RACReplaySubject.m in Sources */,
 				EA0229481D74180800F57965 /* HeUserFollowTableCell.m in Sources */,
 				EAC2CD0D1D4AF5D800E282A8 /* i2KEPCSingleComponentPickerView.m in Sources */,

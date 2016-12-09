@@ -194,16 +194,6 @@
                                case 1:
                                {
                                    //投诉
-//                                   NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
-//                                   if ([userId isMemberOfClass:[NSNull class]]) {
-//                                       userId = nil;
-//                                   }
-//                                   NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-//                                   if ([userId isEqualToString:myUserId]) {
-//                                       [self showHint:@"不能投诉自己"];
-//                                       return;
-//                                   }
-                                   
                                    HeComplaintVC *complaintVC = [[HeComplaintVC alloc] init];
                                    complaintVC.hidesBottomBarWhenPushed = YES;
                                    [self.navigationController pushViewController:complaintVC animated:YES];
@@ -334,6 +324,8 @@
     browser.photos = photos;
     [browser show];
 }
+
+
 
 - (void)massageButtonClick:(UIButton *)button
 {

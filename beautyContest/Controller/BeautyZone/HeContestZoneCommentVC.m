@@ -18,6 +18,7 @@
 #import "HeZoneCommentCell.h"
 #import "UIButton+Bootstrap.h"
 #import "HeContestantDetailVC.h"
+#import "HeContestantUserInfoVC.h"
 
 #define TextLineHeight 1.2f
 #define DELETETAG 100
@@ -694,24 +695,14 @@
     @finally {
         
     }
-    NSString *userId = dict[@"commentUser"];
-    if ([userId isMemberOfClass:[NSNull class]] || !userId) {
+    NSString *userId = dict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
         userId = @"";
     }
-    NSString *userHeader = dict[@"userHeader"];
-    if ([userHeader isMemberOfClass:[NSNull class]] || !userHeader) {
-        userHeader = @"";
-    }
-    NSString *userNick = dict[@"userNick"];
-    if ([userNick isMemberOfClass:[NSNull class]] || !userNick) {
-        userNick = @"";
-    }
-    NSDictionary *userDict = @{@"userId":userId,@"userHeader":userHeader,@"userNick":userNick};
-    HeContestantDetailVC *contantDetailVC = [[HeContestantDetailVC alloc] init];
-    contantDetailVC.contestantBaseDict = [[NSDictionary alloc] initWithDictionary:userDict];
-    contantDetailVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:contestZoneDict];
-    contantDetailVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:contantDetailVC animated:YES];
+    HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+    userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 

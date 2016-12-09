@@ -6,7 +6,7 @@
 //  Copyright © 2016年 iMac. All rights reserved.
 //
 
-#import "HeContestantDetailVC.h"
+#import "HeContestantUserInfoVC.h"
 #import "MLLabel+Size.h"
 #import "HeBaseTableViewCell.h"
 #import "MLLinkLabel.h"
@@ -26,7 +26,7 @@
 #define MESSAGETAG 400
 #define FOLLOWTAG 500
 
-@interface HeContestantDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol>
+@interface HeContestantUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol>
 {
     BOOL requestReply; //是否已经完成
     NSInteger contestantRank; //排名
@@ -50,7 +50,7 @@
 
 @end
 
-@implementation HeContestantDetailVC
+@implementation HeContestantUserInfoVC
 @synthesize tableview;
 @synthesize sectionHeaderView;
 @synthesize footerView;
@@ -66,6 +66,7 @@
 @synthesize contestantImageArray;
 @synthesize contestantImageDetailArray;
 @synthesize myScrollView;
+@synthesize userId;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -92,8 +93,6 @@
     [self initializaiton];
     [self initView];
     [self getContestantDetail];
-    [self getContestantRank];
-    [self getContestantVote];
     [self getContestantHaveVote];
     [self getPaperWall];
     [self getUserPic];
@@ -110,9 +109,9 @@
 - (void)initView
 {
     [super initView];
-    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     [Tool setExtraCellLineHidden:tableview];
     
     UIButton *moreButton = [[UIButton alloc] init];
@@ -135,12 +134,6 @@
     CGFloat imageW = SCREENWIDTH - 2 * imageX;
     CGFloat imageH = headerH - 2 * imageY;
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_can_change_bg_09.jpg"]];
-    NSString *zoneCover = [NSString stringWithFormat:@"%@",[contestZoneDict objectForKey:@"zoneCover"]];
-    NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
-    if (zoneCoverArray) {
-        zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCoverArray[0]];
-    }
-//    [bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
     
     bgImage.tag = BGTAG;
     bgImage.frame = CGRectMake(imageX, imageY, imageW, imageH);
@@ -153,30 +146,25 @@
     
     UIFont *textFont = [UIFont systemFontOfSize:16.0];
     
-    CGFloat titleX = 10;
-    CGFloat titleH = 20;
-    CGFloat titleY = imageH - titleH - 50;
-    CGFloat titleW = (imageW - 2 *titleX) / 2.0;
+    CGFloat detailImageW = 50;
+    CGFloat detailImageH = 50;
+    CGFloat detailImageX = (imageW - detailImageW) / 2.0;
+    CGFloat detailImageY = (imageH - detailImageH) / 2.0 - 20;
     
-    NSString *name = @"何栋明";
+    detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userDefalut_icon"]];
+    detailImage.layer.borderWidth = 1.0;
+    detailImage.layer.borderColor = [UIColor whiteColor].CGColor;
+    detailImage.frame = CGRectMake(detailImageX, detailImageY, detailImageW, detailImageH);
+    detailImage.layer.cornerRadius = detailImageW / 2.0;
+    detailImage.layer.masksToBounds = YES;
+    detailImage.contentMode = UIViewContentModeScaleAspectFill;
+    [bgImage addSubview:detailImage];
     
-    CGSize nameSize = [MLLinkLabel getViewSizeByString:name maxWidth:200 font:textFont lineHeight:TextLineHeight lines:0];
-    titleW = nameSize.width;
-    
-    nameLabel = [[UILabel alloc] init];
-    nameLabel.textAlignment = NSTextAlignmentLeft;
-    nameLabel.backgroundColor = [UIColor clearColor];
-    nameLabel.text = name;
-    nameLabel.numberOfLines = 0;
-    nameLabel.textColor = APPDEFAULTORANGE;
-    nameLabel.font = [UIFont systemFontOfSize:14.0];
-    nameLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
-    [bgImage addSubview:nameLabel];
-    
-    CGFloat buttonX = titleX + titleW + 10;
-    CGFloat buttonY = titleY;
     CGFloat buttonW = 50;
-    CGFloat buttonH = titleH;
+    CGFloat buttonH = 20;
+    CGFloat buttonX = CGRectGetMaxX(detailImage.frame) + 5;
+    CGFloat buttonY = detailImageY + (detailImageH - buttonH) / 2.0;
+    
     followButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
     [followButton setTitle:@"关注" forState:UIControlStateNormal];
     [followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -190,69 +178,77 @@
     followButton.layer.borderColor = APPDEFAULTORANGE.CGColor;
     [bgImage addSubview:followButton];
     
-    CGFloat detailImageW = 40;
-    CGFloat detailImageH = 40;
-    CGFloat detailImageX = imageW - detailImageW - titleX;
-    CGFloat detailImageY = CGRectGetMinY(nameLabel.frame);
+    CGFloat titleX = 10;
+    CGFloat titleH = 25;
+    CGFloat titleY = imageH - titleH - 50;
+    CGFloat titleW = (imageW - 2 *titleX) / 2.0;
     
-    detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userDefalut_icon"]];
-    detailImage.layer.borderWidth = 1.0;
-    detailImage.layer.borderColor = [UIColor whiteColor].CGColor;
-    detailImage.frame = CGRectMake(detailImageX, detailImageY, detailImageW, detailImageH);
-    detailImage.layer.cornerRadius = detailImageW / 2.0;
-    detailImage.layer.masksToBounds = YES;
-    detailImage.contentMode = UIViewContentModeScaleAspectFill;
-    [bgImage addSubview:detailImage];
+    NSString *name = @"何栋明";
     
-    CGFloat iconX = titleX;
+    CGSize nameSize = [MLLinkLabel getViewSizeByString:name maxWidth:200 font:textFont lineHeight:TextLineHeight lines:0];
+    titleW = nameSize.width;
+    
+    nameLabel = [[UILabel alloc] init];
+    nameLabel.textAlignment = NSTextAlignmentLeft;
+    nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.text = name;
+    nameLabel.numberOfLines = 0;
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.font = [UIFont systemFontOfSize:15.0];
+    nameLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
+    [bgImage addSubview:nameLabel];
+    
+    
+    CGFloat iconX = CGRectGetMaxX(nameLabel.frame) + 5;
     CGFloat iconW = 20;
     CGFloat iconH = 20;
-    CGFloat iconY = CGRectGetMaxY(nameLabel.frame) + 5;
+    CGFloat iconY = titleY + 5;
     
     UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_sex_boy"]];
     icon.tag = SEXTAG;
     icon.frame = CGRectMake(iconX, iconY, iconW, iconH);
     [bgImage addSubview:icon];
     
-    userNoLabel = [[UILabel alloc] init];
-    userNoLabel.textAlignment = NSTextAlignmentLeft;
-    userNoLabel.backgroundColor = [UIColor clearColor];
-    userNoLabel.text = @"选美号:10086";
-    userNoLabel.numberOfLines = 1;
-    userNoLabel.textColor = [UIColor whiteColor];
-    userNoLabel.font = [UIFont systemFontOfSize:13.0];
-    userNoLabel.frame = CGRectMake(iconX + iconW + 5, iconY, 100, iconH);
-    [bgImage addSubview:userNoLabel];
-    
-    CGFloat tiptitleX = (imageW - 2 *titleX) / 2.0;
-    CGFloat tiptitleH = detailImageH / 2.0;
-    CGFloat tiptitleY = detailImageY;
-    CGFloat tiptitleW = (imageW - 2 *titleX) / 2.0 - detailImageW - titleX;
-    
-    supportNumLabel = [[UILabel alloc] init];
-    supportNumLabel.textAlignment = NSTextAlignmentRight;
-    supportNumLabel.backgroundColor = [UIColor clearColor];
-    supportNumLabel.text = @"票数:62";
-    supportNumLabel.numberOfLines = 1;
-    supportNumLabel.textColor = [UIColor whiteColor];
-    supportNumLabel.font = [UIFont systemFontOfSize:11.0];
-    supportNumLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
-    [bgImage addSubview:supportNumLabel];
-    
-    CGFloat userRankX = (imageW - 2 *titleX) / 2.0;
-    CGFloat userRankH = detailImageH / 2.0;
-    CGFloat userRankY = CGRectGetMaxY(supportNumLabel.frame);
-    CGFloat userRankW = (imageW - 2 *titleX) / 2.0 - detailImageW - titleX;
-    
-    userRankLabel = [[UILabel alloc] init];
-    userRankLabel.textAlignment = NSTextAlignmentRight;
-    userRankLabel.backgroundColor = [UIColor clearColor];
-    userRankLabel.text = @"排名:第一名";
-    userRankLabel.numberOfLines = 1;
-    userRankLabel.textColor = [UIColor whiteColor];
-    userRankLabel.font = [UIFont systemFontOfSize:11.0];
-    userRankLabel.frame = CGRectMake(userRankX, userRankY, userRankW, userRankH);
-    [bgImage addSubview:userRankLabel];
+//    return;
+//    userNoLabel = [[UILabel alloc] init];
+//    userNoLabel.textAlignment = NSTextAlignmentLeft;
+//    userNoLabel.backgroundColor = [UIColor clearColor];
+//    userNoLabel.text = @"选美号:10086";
+//    userNoLabel.numberOfLines = 1;
+//    userNoLabel.textColor = [UIColor whiteColor];
+//    userNoLabel.font = [UIFont systemFontOfSize:13.0];
+//    userNoLabel.frame = CGRectMake(iconX + iconW + 5, iconY, 100, iconH);
+//    [bgImage addSubview:userNoLabel];
+//    
+//    CGFloat tiptitleX = (imageW - 2 *titleX) / 2.0;
+//    CGFloat tiptitleH = detailImageH / 2.0;
+//    CGFloat tiptitleY = detailImageY;
+//    CGFloat tiptitleW = (imageW - 2 *titleX) / 2.0 - detailImageW - titleX;
+//    
+//    supportNumLabel = [[UILabel alloc] init];
+//    supportNumLabel.textAlignment = NSTextAlignmentRight;
+//    supportNumLabel.backgroundColor = [UIColor clearColor];
+//    supportNumLabel.text = @"票数:62";
+//    supportNumLabel.numberOfLines = 1;
+//    supportNumLabel.textColor = [UIColor whiteColor];
+//    supportNumLabel.font = [UIFont systemFontOfSize:11.0];
+//    supportNumLabel.frame = CGRectMake(tiptitleX, tiptitleY, tiptitleW, tiptitleH);
+//    [bgImage addSubview:supportNumLabel];
+//    
+//    CGFloat userRankX = (imageW - 2 *titleX) / 2.0;
+//    CGFloat userRankH = detailImageH / 2.0;
+//    CGFloat userRankY = CGRectGetMaxY(supportNumLabel.frame);
+//    CGFloat userRankW = (imageW - 2 *titleX) / 2.0 - detailImageW - titleX;
+//    
+//    userRankLabel = [[UILabel alloc] init];
+//    userRankLabel.textAlignment = NSTextAlignmentRight;
+//    userRankLabel.backgroundColor = [UIColor clearColor];
+//    userRankLabel.text = @"排名:第一名";
+//    userRankLabel.numberOfLines = 1;
+//    userRankLabel.textColor = [UIColor whiteColor];
+//    userRankLabel.font = [UIFont systemFontOfSize:11.0];
+//    userRankLabel.frame = CGRectMake(userRankX, userRankY, userRankW, userRankH);
+//    [bgImage addSubview:userRankLabel];
     
     
     buttonX = 10;
@@ -278,10 +274,10 @@
     joinButton.tag = 2;
     [commentButton addTarget:self action:@selector(massageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    NSString *userId = contestantBaseDict[@"userId"];
-    if ([userId isMemberOfClass:[NSNull class]]) {
-        userId = @"";
-    }
+//    NSString *userId = contestantBaseDict[@"userId"];
+//    if ([userId isMemberOfClass:[NSNull class]]) {
+//        userId = @"";
+//    }
     NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if ([myUserId isEqualToString:userId]) {
         [commentButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor grayColor] withImageSize:joinButton.frame.size] forState:UIControlStateNormal];
@@ -331,9 +327,9 @@
     recommendMessageVC.userId = messageUserId;
     recommendMessageVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:recommendMessageVC animated:YES];
-//    HeCommentView *commentView = [[HeCommentView alloc] init];
-//    commentView.commentDelegate = self;
-//    [self presentViewController:commentView animated:YES completion:nil];
+    //    HeCommentView *commentView = [[HeCommentView alloc] init];
+    //    commentView.commentDelegate = self;
+    //    [self presentViewController:commentView animated:YES completion:nil];
 }
 
 - (void)commentWithText:(NSString *)commentText user:(User *)commentUser
@@ -379,18 +375,15 @@
     if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
         zoneId = @"";
     }
-    NSString *userId = contestantBaseDict[@"userId"];
-    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
-        userId = @"";
-    }
+    NSString *contestantUserId = userId;
     
     [self showHudInView:self.view hint:@"加载中..."];
     
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/partInUserInfo.action",BASEURL];
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/getUserinfo.action",BASEURL];
     if (zoneId == nil) {
         
     }
-    NSDictionary *params = @{@"zoneId":zoneId,@"userId":userId};
+    NSDictionary *params = @{@"zoneId":zoneId,@"userId":contestantUserId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -400,10 +393,19 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             NSDictionary *jsonDict = [respondDict objectForKey:@"json"];
             contestantDetailDict = [[NSDictionary alloc] initWithDictionary:jsonDict];
+            contestantBaseDict = [[NSDictionary alloc] initWithDictionary:jsonDict];
             NSString *userNick = [contestantDetailDict objectForKey:@"userNick"];
             if ([userNick isMemberOfClass:[NSNull class]] || userNick == nil) {
                 userNick = @"";
             }
+            
+            CGSize nameSize = [MLLinkLabel getViewSizeByString:userNick maxWidth:200 font:nameLabel.font lineHeight:TextLineHeight lines:0];
+            CGRect nameFrame = nameLabel.frame;
+            CGFloat titleY = nameFrame.origin.y;
+            CGFloat titleH = nameFrame.size.height;
+            CGFloat titleW = nameSize.width;
+            CGFloat titleX = (nameLabel.superview.frame.size.width - titleW) / 2.0;
+            nameLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
             nameLabel.textColor = [UIColor whiteColor];
             nameLabel.text = userNick;
             
@@ -412,11 +414,21 @@
             if (userSex == 1) {
                 UIImageView *sexIcon = [[sectionHeaderView viewWithTag:BGTAG] viewWithTag:SEXTAG];
                 sexIcon.image = [UIImage imageNamed:@"icon_sex_boy"];
+                
+                CGRect sexFrame = sexIcon.frame;
+                sexFrame.origin.x = titleX + titleW + 5;
+                sexIcon.frame = sexFrame;
             }
             else{
                 UIImageView *sexIcon = [[sectionHeaderView viewWithTag:BGTAG] viewWithTag:SEXTAG];
                 sexIcon.image = [UIImage imageNamed:@"icon_sex_girl"];
+                
+                CGRect sexFrame = sexIcon.frame;
+                sexFrame.origin.x = titleX + titleW + 5;
+                sexIcon.frame = sexFrame;
             }
+            
+            
             NSString *userNo = [NSString stringWithFormat:@"%@",contestantDetailDict[@"userDisplayid"]];
             userNoLabel.text = userNo;
             
@@ -433,60 +445,23 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-//            [self showHint:data];
+            //            [self showHint:data];
         }
     } failure:^(NSError *error){
-        [self showHint:ERRORREQUESTTIP];
-    }];
-}
-//排名
-- (void)getContestantRank
-{
-    NSString *voteZone = contestZoneDict[@"zoneId"];
-    if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
-        voteZone = @"";
-    }
-    NSString *voteUser = contestantBaseDict[@"userId"];
-    if ([voteUser isMemberOfClass:[NSNull class]] || voteUser == nil) {
-        voteUser = @"";
-    }
-    
-    [self showHudInView:self.view hint:@"加载中..."];
-    
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/getMyZoneRank.action",BASEURL];
-    NSDictionary *params = @{@"voteZone":voteZone,@"voteUser":voteUser};
-    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
-        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
-        NSDictionary *respondDict = [respondString objectFromJSONString];
-        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
-        
-        if (statueCode == REQUESTCODE_SUCCEED){
-            id jsonObj = [respondDict objectForKey:@"json"];
-            contestantRank = [jsonObj integerValue];
-            userRankLabel.text = [NSString stringWithFormat:@"排名:第%ld名",contestantRank];
-        }
-        else{
-            NSString *data = [respondDict objectForKey:@"data"];
-            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
-                data = ERRORREQUESTTIP;
-            }
-//            [self showHint:data];
-        }
-    } failure:^(NSError *error){
-//        [self showHint:ERRORREQUESTTIP];
+        [self showHint:ERRORREQUESTTIP];
     }];
 }
 
 - (void)getUserPic
 {
-    NSString *userId = contestantBaseDict[@"userId"];
-    if ([userId isMemberOfClass:[NSNull class]]) {
-        userId = @"";
+    NSString *contestantUserId = userId;
+    if ([contestantUserId isMemberOfClass:[NSNull class]] || contestantUserId == nil) {
+        contestantUserId = @"";
     }
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/paperWall/GetUserPic.action",BASEURL];
-    NSDictionary *params = @{@"userId":userId};
+    NSDictionary *params = @{@"userId":contestantUserId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -523,7 +498,7 @@
         voteUser = @"";
     }
     
-    [self showHudInView:self.view hint:@"加载中..."];
+//    [self showHudInView:self.view hint:@"加载中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/selectVoteCount.action",BASEURL];
     NSDictionary *params = @{@"voteZone":voteZone,@"voteUser":voteUser};
@@ -543,10 +518,10 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-//            [self showHint:data];
+            //            [self showHint:data];
         }
     } failure:^(NSError *error){
-//        [self showHint:ERRORREQUESTTIP];
+        //        [self showHint:ERRORREQUESTTIP];
     }];
 }
 //是否参选
@@ -561,7 +536,7 @@
         voteUser = @"";
     }
     
-    [self showHudInView:self.view hint:@"加载中..."];
+//    [self showHudInView:self.view hint:@"加载中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/havedVote.action",BASEURL];
     NSDictionary *params = @{@"voteHost":voteHost,@"voteUser":voteUser};
@@ -601,15 +576,15 @@
 //获取照片墙
 - (void)getPaperWall
 {
-    NSString *userId = contestantBaseDict[@"userId"];
-    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
-        userId = @"";
+    NSString *contestantUserId = userId;
+    if ([contestantUserId isMemberOfClass:[NSNull class]] || contestantUserId == nil) {
+        contestantUserId = @"";
     }
     
-    [self showHudInView:self.view hint:@"加载中..."];
+//    [self showHudInView:self.view hint:@"加载中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/paperWall/selectPaperWall.action",BASEURL];
-    NSDictionary *params = @{@"userId":userId};
+    NSDictionary *params = @{@"userId":contestantUserId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -688,7 +663,8 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-//            [self showHint:data];
+            [tableview reloadData];
+            //            [self showHint:data];
         }
     } failure:^(NSError *error){
         //        [self showHint:ERRORREQUESTTIP];
@@ -726,15 +702,15 @@
     if ([hostId isMemberOfClass:[NSNull class]] || hostId == nil) {
         hostId = @"";
     }
-    NSString *userId = contestantBaseDict[@"userId"];
-    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
-        userId = @"";
+    NSString *contestantUserId = contestantBaseDict[@"userId"];
+    if ([contestantUserId isMemberOfClass:[NSNull class]] || contestantUserId == nil) {
+        contestantUserId = @"";
     }
     
     [self showHudInView:self.view hint:@"关注中..."];
     
     NSString *requestUrl = [NSString stringWithFormat:@"%@/user/follow.action",BASEURL];
-    NSDictionary *params = @{@"userId":userId,@"hostId":hostId};
+    NSDictionary *params = @{@"userId":contestantUserId,@"hostId":hostId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -804,7 +780,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case 1:
+        case 0:
         {
             if ([contestantImageArray count] == 0) {
                 return 1;
@@ -820,7 +796,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -841,20 +817,6 @@
     switch (section) {
         case 0:
         {
-            cell.textLabel.text = @"个人信息";
-            cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
-            cell.textLabel.textColor = APPDEFAULTORANGE;
-            
-            UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(cellSize.width - 110, 0, 100, cellSize.height)];
-            tipLabel.text = @"个人信息页公开";
-            tipLabel.textColor = [UIColor grayColor];
-            tipLabel.textAlignment = NSTextAlignmentRight;
-            tipLabel.font = textFont;
-//            [cell addSubview:tipLabel];
-            break;
-        }
-        case 1:
-        {
             switch (row) {
                 case 0:
                 {
@@ -869,22 +831,6 @@
                 }
                 case 1:{
                     [cell addSubview:myScrollView];
-//                    CGFloat imageNum = 3;
-//                    CGFloat imageDistance = 10;
-//                    CGFloat imageX = 10;
-//                    CGFloat imageY = 10;
-//                    CGFloat imageH = cellSize.height - 2 * imageY;
-//                    CGFloat imageW = (cellSize.width - 2 * imageX - 20 - (imageNum - 1) * imageDistance) / imageNum;
-//                    for (NSInteger index = 0; index < imageNum; index++) {
-//                        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index3.jpg"]];
-//                        imageView.frame = CGRectMake(imageX, imageY, imageW, imageH);
-//                        imageView.contentMode = UIViewContentModeScaleAspectFill;
-//                        imageView.layer.masksToBounds = YES;
-//                        imageX = imageX + imageW + imageDistance;
-//                        [cell addSubview:imageView];
-//                    }
-//                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-//                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 }
                 default:
@@ -903,7 +849,7 @@
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     switch (section) {
-        case 1:
+        case 0:
         {
             switch (row) {
                 case 1:
@@ -930,16 +876,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSInteger row = indexPath.row;
-    NSInteger section = indexPath.section;
-    if (section == 0 && row == 0) {
-        
-        HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
-        userInfoVC.hidesBottomBarWhenPushed = YES;
-        userInfoVC.isScanUser = YES;
-        userInfoVC.userInfo = [[User alloc] initUserWithDict:contestantDetailDict];
-        [self.navigationController pushViewController:userInfoVC animated:YES];
-    }
+    
     
 }
 

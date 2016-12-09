@@ -71,6 +71,7 @@
 {
     [super initView];
     tableview.backgroundView = nil;
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
 }

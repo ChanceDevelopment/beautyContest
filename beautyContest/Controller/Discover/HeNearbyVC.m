@@ -12,6 +12,7 @@
 #import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
 #import "HeUserInfoVC.h"
 #import "HeNewUserInfoVC.h"
+#import "HeContestantUserInfoVC.h"
 
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
 
@@ -461,10 +462,13 @@
     @finally {
         
     }
-    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
+    NSString *userId = dict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+        userId = @"";
+    }
+    HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+    userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
     userInfoVC.hidesBottomBarWhenPushed = YES;
-    userInfoVC.isScanUser = YES;
-    userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
     [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
