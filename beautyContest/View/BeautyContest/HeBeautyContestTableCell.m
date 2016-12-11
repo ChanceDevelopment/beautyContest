@@ -16,6 +16,8 @@
 @synthesize bgView;
 @synthesize infoView;
 @synthesize timeLabel;
+@synthesize distributeButton;
+@synthesize contestInfo;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellSize:(CGSize)cellsize
 {
@@ -46,6 +48,19 @@
         bgImage.layer.masksToBounds = YES;
         bgImage.contentMode = UIViewContentModeScaleAspectFill;
         [bgView addSubview:bgImage];
+        
+        CGFloat buttonW = 80;
+        CGFloat buttonH = 40;
+        CGFloat buttonX = imageW - buttonW;
+        CGFloat buttonY = imageH - buttonH;
+        
+        distributeButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
+        [distributeButton setTitle:@"再次发布" forState:UIControlStateNormal];
+        [distributeButton setBackgroundColor:[UIColor redColor]];
+        [distributeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        distributeButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        [distributeButton addTarget:self action:@selector(distributeContest:) forControlEvents:UIControlEventTouchUpInside];
+        [self.bgView addSubview:distributeButton];
         
 //        infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewW, 50)];
 //        infoView.backgroundColor = [UIColor whiteColor];
@@ -134,6 +149,11 @@
 //        detailImage.center = detailImageCenterPoint;
     }
     return self;
+}
+
+- (void)distributeContest:(UIButton *)button
+{
+    [self routerEventWithName:@"distributeContestAgain" userInfo:contestInfo];
 }
 
 - (void)drawRect:(CGRect)rect

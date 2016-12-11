@@ -16,5 +16,7 @@
 @property(strong,nonatomic)UILabel *topicLabel;
 @property(strong,nonatomic)UILabel *tipLabel;
 @property(strong,nonatomic)UILabel *timeLabel;
+@property(strong,nonatomic)UIButton *distributeButton;
+@property(strong,nonatomic)NSDictionary *contestInfo;
 
 @end

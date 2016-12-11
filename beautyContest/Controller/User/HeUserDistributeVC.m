@@ -18,6 +18,7 @@
 #import "HeContestDetailVC.h"
 #import "HeNewRecommendCell.h"
 #import "HeRecommendDetailVC.h"
+#import "HeDistributeContestVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -122,6 +123,17 @@
     return button;
 }
 
+- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
+{
+    if ([eventName isEqualToString:@"distributeContestAgain"]) {
+        HeDistributeContestVC *distributeContestVC = [[HeDistributeContestVC alloc] init];
+        distributeContestVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:distributeContestVC animated:YES];
+        return;
+    }
+    [super routerEventWithName:eventName userInfo:userInfo];
+}
+
 - (void)filterButtonClick:(UIButton *)button
 {
     if ((requestReply == NO && button.tag == 100) || (requestReply == YES && button.tag == 101)) {
@@ -154,8 +166,6 @@
         requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/getHistoryZone.action",BASEURL];
         requestMessageParams = @{@"zoneUser":userid,@"start":pageNum};
     }
-    
-    
     [self showHudInView:self.tableview hint:@"正在获取..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestMessageParams success:^(AFHTTPRequestOperation* operation,id response){
@@ -451,7 +461,7 @@
     cell.detailImage = userHearimageview;
     [cell.bgView addSubview:cell.detailImage];
     
-    id zoneCreatetimeObj = [dict objectForKey:@"zoneCreatetime"];
+    id zoneCreatetimeObj = [dict objectForKey:@"zoneDeathline"];
     if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
         NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
         zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
@@ -463,9 +473,22 @@
         zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
     }
     
-    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY-MM-dd"];
+    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY-MM-dd HH:mm"];
     cell.tipLabel.text = [NSString stringWithFormat:@"$%.2f",[zoneReward floatValue]];
     cell.timeLabel.text = time;
+    
+    NSDate *deathLineDate = [Tool convertTimespToDate:[zoneCreatetime longLongValue]];
+    long long timeInterVal = [[NSDate date] timeIntervalSinceDate:deathLineDate];
+    if (timeInterVal < 0) {
+        //赛区还没结束
+        cell.distributeButton.hidden = YES;
+    }
+    else{
+        //赛区还没结束
+        cell.bgView.userInteractionEnabled = YES;
+        cell.distributeButton.hidden = NO;
+        cell.contestInfo = dict;
+    }
     
     return cell;
 }

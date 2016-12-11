@@ -742,12 +742,12 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
     [formatter setTimeStyle:NSDateFormatterShortStyle];
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm"];
+    [formatter setDateFormat:@"yyyyMMddHHMMss"];
     
-    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
-    [formatter setTimeZone:timeZone];
-    NSString *timeString = [NSString stringWithFormat:@"%lld",timesp];
-    NSDate *date = [formatter dateFromString:timeString];
+//    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+//    [formatter setTimeZone:timeZone];
+//    NSString *timeString = [NSString stringWithFormat:@"%lld",timesp];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timesp];
     return date;
 }
 
