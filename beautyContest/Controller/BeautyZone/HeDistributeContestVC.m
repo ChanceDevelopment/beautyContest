@@ -101,6 +101,8 @@
 @synthesize zonePassword;
 @synthesize takePhotoArray;
 @synthesize userBalance;
+@synthesize distributeAgain;
+@synthesize oldContestDict;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -239,6 +241,18 @@
 //    coverImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:coverImage];
     
+    if (distributeAgain) {
+        
+        NSString *zoneCover = oldContestDict[@"zoneCover"];
+        NSString *coverImageUrl = [[NSString alloc] initWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
+        [coverImage sd_setImageWithURL:[NSURL URLWithString:coverImageUrl] placeholderImage:[Tool buttonImageFromColor:[UIColor colorWithWhite:237.0 / 255.0 alpha:1.0] withImageSize:coverImage.frame.size] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
+            if (!error) {
+                [coverImage viewWithTag:8888].hidden = YES;
+            }
+        }];
+    }
+    
+    
     addPictureButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, IMAGEWIDTH, IMAGEWIDTH)];
     [addPictureButton setBackgroundImage:[UIImage imageNamed:@"icon_add_pho"] forState:UIControlStateNormal];
     addPictureButton.tag = 100;
@@ -279,6 +293,13 @@
     titleField.placeholder = @"例如：浙大15届选美赛-寻找最美同学";
     titleField.font = [UIFont systemFontOfSize:16.0];
     titleField.textColor = APPDEFAULTORANGE;
+    if (distributeAgain) {
+        NSString *zoneTitle = oldContestDict[@"zoneTitle"];
+        if ([zoneTitle isMemberOfClass:[NSNull class]] || [zoneTitle isEqualToString:@""]) {
+            zoneTitle = nil;
+        }
+        titleField.text = zoneTitle;
+    }
     
     addressField = [[UITextField alloc] init];
     addressField.layer.borderColor = [UIColor clearColor].CGColor;
@@ -782,20 +803,41 @@
     NSString *zoneCover = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
     
     NSMutableString *cover = [[NSMutableString alloc] initWithString:zoneCover];
-    for (NSInteger index = 0; index < self.bannerImageDataSource.count; index++) {
-        AsynImageView *imageview = self.bannerImageDataSource[index];
-        
-        UIImage *imageData = imageview.image;
-        NSData *data = UIImageJPEGRepresentation(imageData,0.2);
-        NSData *base64Data = [GTMBase64 encodeData:data];
-        NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
-        [cover appendFormat:@"%@,%@",cover,base64String];
-//        if (index == 0) {
-//            [cover appendString:base64String];
-//        }
-//        else {
-//            [cover appendFormat:@"%@,%@",cover,base64String];
-//        }
+    //重新发布赛区的时候，赛区宣传图的字段
+    NSMutableString *zonePassPic = [[NSMutableString alloc] initWithCapacity:0];
+    if (!distributeAgain) {
+        for (NSInteger index = 0; index < self.bannerImageDataSource.count; index++) {
+            AsynImageView *imageview = self.bannerImageDataSource[index];
+            
+            UIImage *imageData = imageview.image;
+            NSData *data = UIImageJPEGRepresentation(imageData,0.2);
+            NSData *base64Data = [GTMBase64 encodeData:data];
+            NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+            [cover appendFormat:@"%@,%@",cover,base64String];
+        }
+    }
+    else{
+        if (!coverImageHaveTake) {
+            zoneCover = oldContestDict[@"zoneCover"];
+            if ([zoneCover isMemberOfClass:[NSNull class]] || zoneCover == nil) {
+                zoneCover = @"";
+            }
+        }
+        //赛区宣传图
+        for (NSInteger index = 0; index < self.bannerImageDataSource.count; index++) {
+            AsynImageView *imageview = self.bannerImageDataSource[index];
+            
+            UIImage *imageData = imageview.image;
+            NSData *data = UIImageJPEGRepresentation(imageData,0.1);
+            NSData *base64Data = [GTMBase64 encodeData:data];
+            NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+            if (index == 0) {
+                [zonePassPic appendString:base64String];
+            }
+            else {
+                [zonePassPic appendFormat:@"%@,%@",zonePassPic,base64String];
+            }
+        }
     }
     
     
@@ -840,11 +882,28 @@
         requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZoneFace.action",BASEURL];
     }
     NSDictionary *params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState};
-    if (zonePassword) {
-        NSString *zonePwd = zonePassword;
+    if (distributeAgain) {
+        
+        NSString *paper = @"";
+        NSString *zonePwd = @"";
+        NSString *zoneSwith = @"";
         NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
-        params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zonePwd":zonePwd,@"zoneTeststate":zoneTeststate};
+        NSString *zoneOld = [oldContestDict objectForKey:@"zoneId"];
+        if ([zoneOld isMemberOfClass:[NSNull class]] || zoneOld == nil) {
+            zoneOld = @"";
+        }
+        
+        
+        params = @{@"zoneOld":zoneOld,@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zonePassPic":zonePassPic,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"paper":paper,@"zonePwd":zonePwd,@"zoneSwith":zoneSwith,@"zoneTeststate":zoneTeststate};
     }
+    else{
+        if (zonePassword) {
+            NSString *zonePwd = zonePassword;
+            NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
+            params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zonePwd":zonePwd,@"zoneTeststate":zoneTeststate};
+        }
+    }
+    
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestRecommendDataPath params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -939,7 +998,7 @@
 
 - (IBAction)distributeButtonClick:(id)sender
 {
-    if (!coverImageHaveTake) {
+    if (!coverImageHaveTake && !distributeAgain) {
         [self showHint:@"请选择封面图片"];
         return;
     }

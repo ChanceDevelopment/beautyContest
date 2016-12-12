@@ -127,6 +127,8 @@
 {
     if ([eventName isEqualToString:@"distributeContestAgain"]) {
         HeDistributeContestVC *distributeContestVC = [[HeDistributeContestVC alloc] init];
+        distributeContestVC.distributeAgain = YES;
+        distributeContestVC.oldContestDict = [[NSDictionary alloc] initWithDictionary:userInfo];
         distributeContestVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:distributeContestVC animated:YES];
         return;
@@ -484,10 +486,12 @@
         cell.distributeButton.hidden = YES;
     }
     else{
-        //赛区还没结束
+        //赛区结束
         cell.bgView.userInteractionEnabled = YES;
         cell.distributeButton.hidden = NO;
         cell.contestInfo = dict;
+        cell.bgImage.userInteractionEnabled = YES;
+//        [cell.bgView addSubview:cell.distributeButton];
     }
     
     return cell;
@@ -563,7 +567,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary *zoneDict = nil;
     @try {
-        zoneDict = [dataSource objectAtIndex:row];
+        zoneDict = [zoneDataSource objectAtIndex:row];
     }
     @catch (NSException *exception) {
         

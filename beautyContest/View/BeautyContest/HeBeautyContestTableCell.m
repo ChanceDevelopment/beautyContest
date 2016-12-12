@@ -49,8 +49,8 @@
         bgImage.contentMode = UIViewContentModeScaleAspectFill;
         [bgView addSubview:bgImage];
         
-        CGFloat buttonW = 80;
-        CGFloat buttonH = 40;
+        CGFloat buttonW = 70;
+        CGFloat buttonH = 35;
         CGFloat buttonX = imageW - buttonW;
         CGFloat buttonY = imageH - buttonH;
         
@@ -60,7 +60,8 @@
         [distributeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         distributeButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         [distributeButton addTarget:self action:@selector(distributeContest:) forControlEvents:UIControlEventTouchUpInside];
-        [self.bgView addSubview:distributeButton];
+        distributeButton.hidden = YES;
+        [bgImage addSubview:distributeButton];
         
 //        infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewW, 50)];
 //        infoView.backgroundColor = [UIColor whiteColor];

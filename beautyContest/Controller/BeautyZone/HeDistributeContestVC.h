@@ -15,4 +15,7 @@
 @property(strong,nonatomic)NSString *zonePassword;
 @property(assign,nonatomic)BOOL isFaceContest;
 
+@property(assign,nonatomic)BOOL distributeAgain; //是否再次发布赛区
+@property(strong,nonatomic)NSDictionary *oldContestDict; //旧赛区
+
 @end
