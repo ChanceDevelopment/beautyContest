@@ -802,11 +802,19 @@
 //处理方向变更信息
 - (void)didUpdateUserHeading:(BMKUserLocation *)userLocation
 {
+    
+    //NSLog(@"heading is %@",userLocation.heading);
+}
+
+
+//处理位置坐标更新
+- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+{
     CLLocation *newLocation = userLocation.location;
     CLLocationCoordinate2D coordinate = newLocation.coordinate;
     
-    NSString *latitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.latitude];
-    NSString *longitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.longitude];
+    NSString *latitudeStr = [NSString stringWithFormat:@"%f",coordinate.latitude];
+    NSString *longitudeStr = [NSString stringWithFormat:@"%f",coordinate.longitude];
     
     
     if (newLocation) {
@@ -821,13 +829,6 @@
             [HeSysbsModel getSysModel].userLocationDict = [[NSDictionary alloc] initWithDictionary:userLocationDict];
         }
     }
-    //NSLog(@"heading is %@",userLocation.heading);
-}
-
-
-//处理位置坐标更新
-- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
-{
     //NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
 }
 

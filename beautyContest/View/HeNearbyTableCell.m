@@ -53,7 +53,7 @@
         distanceLabel.frame = CGRectMake(nameLabelX, nameLabelY + nameLabelH, nameLabelW, nameLabelH);
         distanceLabel.backgroundColor = [UIColor clearColor];
         distanceLabel.textColor = [UIColor grayColor];
-        distanceLabel.font = [UIFont systemFontOfSize:15.0];
+        distanceLabel.font = [UIFont systemFontOfSize:14.0];
         distanceLabel.text = @"100米以内";
         [self addSubview:distanceLabel];
         
