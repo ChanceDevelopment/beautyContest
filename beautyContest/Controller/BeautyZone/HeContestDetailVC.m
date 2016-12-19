@@ -329,6 +329,11 @@
 
 - (void)massageButtonClick:(UIButton *)button
 {
+    BOOL zoneTeststate = [[switchDict objectForKey:@"4"] boolValue];
+    if (zoneTeststate) {
+        [self showHint:@"该赛区已禁止评论"];
+        return;
+    }
     HeContestZoneCommentVC *commentZoneVC = [[HeContestZoneCommentVC alloc] init];
     commentZoneVC.contestZoneDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
     commentZoneVC.hidesBottomBarWhenPushed = YES;
@@ -561,17 +566,6 @@
             UIImageView *imageview = [sectionHeaderView viewWithTag:BGTAG];
             [imageview sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
             
-            NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
-            if ([userId isMemberOfClass:[NSNull class]]) {
-                userId = nil;
-            }
-            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-            if ([myUserId isEqualToString:userId]) {
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@"icon_glory",@""];
-            }
-            else{
-                iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory",@""];
-            }
             id zoneComment = contestDetailDict[@"zoneComment"];
             if ([zoneComment isMemberOfClass:[NSNull class]]) {
                 zoneComment = @"";
@@ -582,6 +576,33 @@
             }
             [switchDict setObject:[NSNumber numberWithBool:[zoneComment boolValue]] forKey:@"3"];
             [switchDict setObject:[NSNumber numberWithBool:[zoneTeststate boolValue]] forKey:@"4"];
+            
+            NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
+            if ([userId isMemberOfClass:[NSNull class]]) {
+                userId = nil;
+            }
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            //1.赛区的需要验证时，不能评论，且不能访问排行榜以及奖金榜
+            //2.赛区的不需要验证时，能评论，且能访问排行榜以及奖金榜
+            if ([zoneTeststate boolValue]) {
+                //如果赛区需要验证
+                if ([myUserId isEqualToString:userId]) {
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password"];
+                }
+                else{
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green"];
+                }
+            }
+            else{
+                if ([myUserId isEqualToString:userId]) {
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@"icon_glory",@""];
+                }
+                else{
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory",@""];
+                }
+            }
+            
+            
             
             CGFloat imageX = 5;
             CGFloat imageY = 5;
@@ -995,6 +1016,10 @@
             userIcon.contentMode = UIViewContentModeScaleAspectFill;
             [userIcon sd_setImageWithURL:[NSURL URLWithString:userHead] placeholderImage:userIcon.image];
             [cell addSubview:userIcon];
+            if (myRank == 0) {
+                rankLabel.text = @"未参赛";
+                userIcon.hidden = YES;
+            }
             break;
         }
         default:
