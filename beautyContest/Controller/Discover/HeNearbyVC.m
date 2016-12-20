@@ -406,7 +406,7 @@
         distance = @"";
     }
     cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[distance floatValue]];
-    if ([[dict objectForKey:@"distance"] floatValue] < 1000) {
+    if ([[dict objectForKey:@"distance"] floatValue] < CRITICALDISTANCE) {
         cell.distanceLabel.text = @"1公里以内";
     }
     

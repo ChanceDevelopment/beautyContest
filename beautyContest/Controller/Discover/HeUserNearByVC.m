@@ -401,7 +401,7 @@
 //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[[dict objectForKey:@"distance"] floatValue]];
-    if ([[dict objectForKey:@"distance"] floatValue] < 1000) {
+    if ([[dict objectForKey:@"distance"] floatValue] < CRITICALDISTANCE) {
         cell.distanceLabel.text = @"1公里以内";
     }
     
