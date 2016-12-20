@@ -518,6 +518,32 @@
             else{
                 [switchDict setObject:number forKey:@"4"];
             }
+            
+            id zoneTeststate = switchDict[@"4"];
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
+            if ([userId isMemberOfClass:[NSNull class]]) {
+                userId = nil;
+            }
+            
+            if ([zoneTeststate boolValue]) {
+                //如果赛区需要验证
+                if ([myUserId isEqualToString:userId]) {
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password"];
+                }
+                else{
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green"];
+                }
+            }
+            else{
+                if ([myUserId isEqualToString:userId]) {
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
+                }
+                else{
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory",@""];
+                }
+            }
+            
             [tableview reloadData];
         }
         else{
@@ -587,7 +613,7 @@
             if ([zoneTeststate boolValue]) {
                 //如果赛区需要验证
                 if ([myUserId isEqualToString:userId]) {
-                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password"];
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password"];
                 }
                 else{
                     iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green"];
@@ -595,7 +621,7 @@
             }
             else{
                 if ([myUserId isEqualToString:userId]) {
-                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_message",@"icon_pay_password",@"icon_glory",@""];
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
                 }
                 else{
                     iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory",@""];
@@ -606,7 +632,7 @@
             
             CGFloat imageX = 5;
             CGFloat imageY = 5;
-            CGFloat imageH = 200;
+            CGFloat imageH = 200 - 2 * imageY;
             CGFloat imageW = 150;
             for (NSInteger index = 0; index < [bannerImageDataSource count]; index++) {
                 UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
@@ -899,16 +925,27 @@
                 cell.topicLabel.text = @"光荣榜";
             }
             else{
-                cell.topicLabel.text = @"赛区评论";
+                cell.topicLabel.text = @"我要验证";
                 CGFloat zjSwitchW = 50;
                 CGFloat zjSwitchH = 30;
                 CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
                 CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
                 ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
-                zjSwitch.on = [[switchDict objectForKey:@"3"] boolValue];
+                zjSwitch.on = [[switchDict objectForKey:@"4"] boolValue];
                 [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
-                zjSwitch.tag = 3;
+                zjSwitch.tag = 4;
                 [cell addSubview:zjSwitch];
+                
+//                cell.topicLabel.text = @"赛区评论";
+//                CGFloat zjSwitchW = 50;
+//                CGFloat zjSwitchH = 30;
+//                CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
+//                CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
+//                ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
+//                zjSwitch.on = [[switchDict objectForKey:@"3"] boolValue];
+//                [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
+//                zjSwitch.tag = 3;
+//                [cell addSubview:zjSwitch];
             }
             
             break;
@@ -963,25 +1000,28 @@
                 
                 break;
             }
-            cell.topicLabel.text = @"我要验证";
-            CGFloat zjSwitchW = 50;
-            CGFloat zjSwitchH = 30;
-            CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
-            CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
-            ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
-            zjSwitch.on = [[switchDict objectForKey:@"4"] boolValue];
-            [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
-            zjSwitch.tag = 4;
-            [cell addSubview:zjSwitch];
-            break;
-        }
-        case 7:{
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.topicLabel.text = @"光荣榜";
+//            cell.topicLabel.text = @"我要验证";
+//            CGFloat zjSwitchW = 50;
+//            CGFloat zjSwitchH = 30;
+//            CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
+//            CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
+//            ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
+//            zjSwitch.on = [[switchDict objectForKey:@"4"] boolValue];
+//            [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
+//            zjSwitch.tag = 4;
+//            [cell addSubview:zjSwitch];
             break;
         }
-        case 8:{
+//        case 7:{
+//            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            cell.topicLabel.text = @"光荣榜";
+//            break;
+//        }
+        case 7:{
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.topicLabel.text = @"我的排名";
@@ -1108,7 +1148,7 @@
         }
     }
     else{
-        if (row == 7) {
+        if (row == 6) {
             //光荣榜
             HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
             contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
@@ -1117,7 +1157,7 @@
             contestRankVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:contestRankVC animated:YES];
         }
-        else if (row == 8){
+        else if (row == 7){
             //我的排名
             HeContestRankVC *contestRankVC = [[HeContestRankVC alloc] init];
             contestRankVC.contestDict = [[NSDictionary alloc] initWithDictionary:contestDetailDict];
