@@ -123,6 +123,7 @@
 - (void)initView
 {
     [super initView];
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationController.navigationBarHidden = YES;
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];

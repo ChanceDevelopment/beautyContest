@@ -158,7 +158,10 @@
     CGFloat titleY = imageH - titleH - 50;
     CGFloat titleW = (imageW - 2 *titleX) / 2.0;
     
-    NSString *name = @"何栋明";
+    NSString *name = contestantBaseDict[@"userNick"];
+    if (name == nil || [name isMemberOfClass:[NSNull class]]) {
+        name = @"";
+    }
     
     CGSize nameSize = [MLLinkLabel getViewSizeByString:name maxWidth:200 font:textFont lineHeight:TextLineHeight lines:0];
     titleW = nameSize.width;
@@ -173,7 +176,7 @@
     nameLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
     [bgImage addSubview:nameLabel];
     
-    CGFloat buttonX = titleX + titleW + 10;
+    CGFloat buttonX = titleX + titleW + 3;
     CGFloat buttonY = titleY;
     CGFloat buttonW = 50;
     CGFloat buttonH = titleH;

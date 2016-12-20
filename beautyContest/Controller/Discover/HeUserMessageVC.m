@@ -11,6 +11,7 @@
 #import "MLLabel+Size.h"
 #import "HeCommentView.h"
 #import "HeMyMessageCell.h"
+#import "HeContestantUserInfoVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -164,6 +165,19 @@
         if ([blogId isMemberOfClass:[NSNull class]] || blogId == nil) {
             blogId = @"";
         }
+    }
+    else if ([eventName isEqualToString:@"scanUserDetail"]){
+        NSString *userId = userInfo[@"blogHost"];
+        if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+            userId = userInfo[@"replyHost"];
+        }
+        if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
+            userId = @"";
+        }
+        HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+        userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
+        userInfoVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:userInfoVC animated:YES];
     }
     else if ([eventName isEqualToString:@"replyMessage"]){
         NSString *blogId = userInfo[@"blogId"];
@@ -472,7 +486,7 @@
     if ([hostHeader isMemberOfClass:[NSNull class]]) {
         hostHeader = @"";
     }
-    NSString *imageKey = [NSString stringWithFormat:@"%@_%ld_%ld",hostHeader,section,row];
+    NSString *imageKey = [NSString stringWithFormat:@"%@_%@",hostHeader,dict[@"blogId"]];
     UIImageView *userIcon = [imageCache objectForKey:imageKey];
     if (!userIcon) {
         NSString *imageUrl = hostHeader;
@@ -484,6 +498,7 @@
         userIcon = cell.userIcon;
         [imageCache setObject:userIcon forKey:imageKey];
     }
+    [cell.userIcon removeFromSuperview];
     cell.userIcon = userIcon;
     [cell.contentView addSubview:userIcon];
     if (row != 0) {

@@ -54,6 +54,14 @@
         userIcon.image = [UIImage imageNamed:@"userDefalut_icon"];
         [self.contentView addSubview:userIcon];
         
+        userIcon.userInteractionEnabled = YES;
+        self.userInteractionEnabled = YES;
+        self.contentView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanUserDetail:)];
+        tapGes.numberOfTapsRequired = 1;
+        tapGes.numberOfTouchesRequired = 1;
+        [userIcon addGestureRecognizer:tapGes];
+        
         CGFloat userX = CGRectGetMaxX(userIcon.frame) + 5;
         CGFloat userY = tipY;
         CGFloat userW = 150;
@@ -130,6 +138,11 @@
 - (void)replyMessage:(UITapGestureRecognizer *)tap
 {
     [super routerEventWithName:@"replyMessage" userInfo:messageDict];
+}
+
+- (void)scanUserDetail:(UITapGestureRecognizer *)tap
+{
+    [super routerEventWithName:@"scanUserDetail" userInfo:messageDict];
 }
 
 - (void)drawRect:(CGRect)rect

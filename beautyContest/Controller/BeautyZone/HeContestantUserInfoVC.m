@@ -780,7 +780,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:
+        case 1:
         {
             if ([contestantImageArray count] == 0) {
                 return 1;
@@ -796,7 +796,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -816,6 +816,14 @@
     UIFont *textFont = [UIFont systemFontOfSize:16.0];
     switch (section) {
         case 0:
+        {
+            cell.textLabel.text = @"个人信息";
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
+            cell.textLabel.textColor = APPDEFAULTORANGE;
+            
+            break;
+        }
+        case 1:
         {
             switch (row) {
                 case 0:
@@ -849,7 +857,7 @@
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     switch (section) {
-        case 0:
+        case 1:
         {
             switch (row) {
                 case 1:
@@ -876,7 +884,16 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    if (section == 0 && row == 0) {
+        
+        HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
+        userInfoVC.hidesBottomBarWhenPushed = YES;
+        userInfoVC.isScanUser = YES;
+        userInfoVC.userInfo = [[User alloc] initUserWithDict:contestantDetailDict];
+        [self.navigationController pushViewController:userInfoVC animated:YES];
+    }
     
 }
 

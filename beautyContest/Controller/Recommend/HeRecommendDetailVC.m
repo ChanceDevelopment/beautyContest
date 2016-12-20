@@ -20,6 +20,7 @@
 #import "HeRecommendMessageVC.h"
 #import "HeComplaintUserVC.h"
 #import "WMPlayer.h"
+#import "HeContestantUserInfoVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -595,18 +596,28 @@
             CGFloat imageH = userReceivePocketScrollView.frame.size.height;
             CGFloat imageW = imageH;
             CGFloat imageDistance = 5;
+            NSInteger imageTag = 0;
             for (NSString *url in redPocketArray) {
                 NSString *imageurl = url;
                 if (![url hasPrefix:@"http"]) {
                     imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
                 }
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
+                imageview.tag = imageTag;
+                imageTag++;
                 imageview.layer.masksToBounds = YES;
                 imageview.layer.cornerRadius = imageH / 2.0;
                 imageview.contentMode = UIViewContentModeScaleAspectFill;
                 [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
                 [userReceivePocketScrollView addSubview:imageview];
                 imageX = imageX + imageW + imageDistance;
+                
+                UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanUserDetail:)];
+                tapGes.numberOfTapsRequired = 1;
+                tapGes.numberOfTouchesRequired = 1;
+                imageview.userInteractionEnabled = YES;
+                [imageview addGestureRecognizer:tapGes];
+                userReceivePocketScrollView.userInteractionEnabled = YES;
             }
             if (imageX > userReceivePocketScrollView.frame.size.width) {
                 userReceivePocketScrollView.contentSize = CGSizeMake(imageX, 0);
@@ -704,6 +715,32 @@
     [self godVoteWithUserId:userId];
 }
 
+- (void)scanUserDetail:(UITapGestureRecognizer *)tap
+{
+    NSInteger tag = tap.view.tag;
+    id userIdArrayString = recommendDetailDict[@"userId"];
+    if ([userIdArrayString isMemberOfClass:[NSNull class]] || userIdArrayString == nil) {
+        userIdArrayString = @"";
+    }
+    NSArray *userIdArray = [userIdArrayString componentsSeparatedByString:@","];
+    NSString *userId = nil;
+    @try {
+        userId = userIdArray[tag];
+    } @catch (NSException *exception) {
+        userId = nil;
+    } @finally {
+        
+    }
+    if (!userId) {
+        [self showHint:@"该用户不存在"];
+        return;
+    }
+    HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+    userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
+    userInfoVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:userInfoVC animated:YES];
+    
+}
 - (void)showAlerWithText:(NSString *)text
 {
     if (!alertBG) {

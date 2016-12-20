@@ -10,6 +10,7 @@
 #import "HeFansTableCell.h"
 #import "HeUserInfoVC.h"
 #import "HeNewUserInfoVC.h"
+#import "HeContestantUserInfoVC.h"
 
 @interface HeMyFansVC ()
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -349,12 +350,20 @@
     @finally {
         
     }
-    
-    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
+    NSString *userId = dict[@"userId"];
+    if ([userId isMemberOfClass:[NSNull class]]) {
+        userId = @"";
+    }
+    HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+    userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
     userInfoVC.hidesBottomBarWhenPushed = YES;
-    userInfoVC.isScanUser = YES;
-    userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
     [self.navigationController pushViewController:userInfoVC animated:YES];
+    
+//    HeNewUserInfoVC *userInfoVC = [[HeNewUserInfoVC alloc] init];
+//    userInfoVC.hidesBottomBarWhenPushed = YES;
+//    userInfoVC.isScanUser = YES;
+//    userInfoVC.userInfo = [[User alloc] initUserWithDict:dict];
+//    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
