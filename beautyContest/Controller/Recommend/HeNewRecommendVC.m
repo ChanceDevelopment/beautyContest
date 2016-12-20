@@ -185,6 +185,7 @@
             }
         }
     } failure:^(NSError *error){
+        [self hideHud];
         [self showHint:ERRORREQUESTTIP];
     }];
 }
