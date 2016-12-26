@@ -127,6 +127,8 @@
     self.navigationController.navigationBarHidden = YES;
     tableview.backgroundView = nil;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 /255.0 alpha:1.0];
+    tableview.showsVerticalScrollIndicator = NO;
+    tableview.showsHorizontalScrollIndicator = NO;
     [Tool setExtraCellLineHidden:tableview];
     
     CGFloat headerH = SCREENWIDTH;
@@ -378,7 +380,7 @@
     
     [self dismissViewControllerAnimated:YES completion:^{
         [userBGImage setImage:image];
-//        [self uploadUserImage];
+        [self uploadUserImage];
     }];
     
 }
