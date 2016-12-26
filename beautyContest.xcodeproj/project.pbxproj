@@ -229,6 +229,7 @@
 		EAB538D81D6F4CAE008BCC17 /* icon_add_pho.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D71D6F4CAE008BCC17 /* icon_add_pho.png */; };
 		EAB538DA1D6F4EB2008BCC17 /* icon_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D91D6F4EB2008BCC17 /* icon_delete.png */; };
 		EAB538DD1D6F5509008BCC17 /* HeZoneCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */; };
+		EAB75B381E110B3A00DFAF19 /* beautyContestRule.html in Resources */ = {isa = PBXBuildFile; fileRef = EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */; };
 		EAC1B8751DD0D76200505B45 /* HeComplaintVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC1B8731DD0D76200505B45 /* HeComplaintVC.m */; };
 		EAC1B8761DD0D76200505B45 /* HeComplaintVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC1B8741DD0D76200505B45 /* HeComplaintVC.xib */; };
 		EAC1B8791DD0D8CB00505B45 /* 加图片图标.png in Resources */ = {isa = PBXBuildFile; fileRef = EAC1B8771DD0D8CB00505B45 /* 加图片图标.png */; };
@@ -1104,6 +1105,7 @@
 		EAB538D91D6F4EB2008BCC17 /* icon_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_delete.png; sourceTree = "<group>"; };
 		EAB538DB1D6F5509008BCC17 /* HeZoneCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeZoneCommentCell.h; sourceTree = "<group>"; };
 		EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeZoneCommentCell.m; sourceTree = "<group>"; };
+		EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = beautyContestRule.html; sourceTree = "<group>"; };
 		EAC1B8721DD0D76200505B45 /* HeComplaintVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeComplaintVC.h; sourceTree = "<group>"; };
 		EAC1B8731DD0D76200505B45 /* HeComplaintVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeComplaintVC.m; sourceTree = "<group>"; };
 		EAC1B8741DD0D76200505B45 /* HeComplaintVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeComplaintVC.xib; sourceTree = "<group>"; };
@@ -2934,6 +2936,7 @@
 		EAC2C9031D4AF0E600E282A8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */,
 				07F3AB331DC4B871008AD00E /* userProtocol.html */,
 				07F3AB311DC4B5A0008AD00E /* 用户协议.doc */,
 				EADA67C21D8E67AC00ECE722 /* 选美-颜值榜.entitlements */,
@@ -4961,6 +4964,7 @@
 				EAC1B8791DD0D8CB00505B45 /* 加图片图标.png in Resources */,
 				EACC98421D50F4D700E627B8 /* icon_add.png in Resources */,
 				EAC2C9C81D4AF5CC00E282A8 /* HeBaseViewController.xib in Resources */,
+				EAB75B381E110B3A00DFAF19 /* beautyContestRule.html in Resources */,
 				EA4D017A1D4D8FF100A0CCA1 /* index5.jpg in Resources */,
 				EA4D01661D4CF0A300A0CCA1 /* tabar_discover_icon_normal@2x.png in Resources */,
 				EACC983F1D50E82200E627B8 /* icon_album.png in Resources */,

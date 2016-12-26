@@ -14,6 +14,9 @@
 //@property(assign,nonatomic)BOOL isFile;
 
 -(id)initWithWebSite:(NSString*)string;
+
 -(id)initWithURL:(NSString *)filePath;
+
+-(id)initWithURL:(NSString *)filePath withTitle:(NSString *)title;
 
 @end

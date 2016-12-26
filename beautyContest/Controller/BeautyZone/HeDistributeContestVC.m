@@ -35,6 +35,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
 #import "TZImageManager.h"
+#import "BrowserView.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -232,6 +233,23 @@
     sectionHeaderView.userInteractionEnabled = YES;
 //    tableview.tableHeaderView = sectionHeaderView;
     
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 50)];
+    footerView.backgroundColor = [UIColor whiteColor];
+    footerView.userInteractionEnabled = YES;
+    MLLinkLabel *linkLabel = [[MLLinkLabel alloc] initWithFrame:CGRectMake(10, 0, SCREENWIDTH - 10, 50)];
+    linkLabel.textColor = APPDEFAULTORANGE;
+    linkLabel.text = @"选美比赛规则";
+    linkLabel.font = [UIFont systemFontOfSize:15.0];
+    linkLabel.userInteractionEnabled = YES;
+    
+    UITapGestureRecognizer *scanContestRuleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanContestRule:)];
+    scanContestRuleTap.numberOfTapsRequired = 1;
+    scanContestRuleTap.numberOfTouchesRequired = 1;
+    [linkLabel addGestureRecognizer:scanContestRuleTap];
+    
+    [footerView addSubview:linkLabel];
+    tableview.tableFooterView = footerView;
+    
     coverImage = [[UIImageView alloc] init];
     
     coverImage.frame = CGRectMake(0, 0, SCREENWIDTH, headerHeight);
@@ -356,6 +374,13 @@
     [bannerImageBG addSubview:addPictureButton];
     bannerImageBG.userInteractionEnabled = YES;
     [self updateImageBG];
+}
+
+- (void)scanContestRule:(UITapGestureRecognizer *)tap{
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"beautyContestRule" ofType:@"html"];
+    BrowserView *browserView = [[BrowserView alloc] initWithURL:path withTitle:@"选美赛比赛规则"];
+    browserView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:browserView animated:YES];
 }
 
 - (void)updateImageBG
