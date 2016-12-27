@@ -438,7 +438,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    
+    NSInteger section = indexPath.section;
     static NSString *cellIndentifier = @"HeNewRecommendCell";
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     NSDictionary *zoneDict = nil;
@@ -467,19 +467,39 @@
     cell.topicLabel.text = recommendContent;
     
     
-    NSString *zoneCover = [zoneDict objectForKey:@"recommendCover"];
+    NSString *zoneCover = [zoneDict objectForKey:@"backgroundPic"];
     if ([zoneCover isMemberOfClass:[NSNull class]]) {
         zoneCover = @"";
     }
+    NSString *zoneCoverKey = [NSString stringWithFormat:@"zoneCover_%@_%ld_%ld",zoneCover,section,row];
+    
     NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
     zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[zoneCoverArray firstObject]];
-    UIImageView *imageview = [imageCache objectForKey:zoneCover];
+    UIImageView *imageview = [imageCache objectForKey:zoneCoverKey];
     if (!imageview) {
         [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         imageview = cell.bgImage;
+        [imageCache setObject:imageview forKey:zoneCoverKey];
     }
     cell.bgImage = imageview;
     [cell.bgView addSubview:cell.bgImage];
+    
+    
+    NSString *userHeader = [zoneDict objectForKey:@"userHeader"];
+    if ([userHeader isMemberOfClass:[NSNull class]]) {
+        userHeader = @"";
+    }
+    NSString *userHeaderKey = [NSString stringWithFormat:@"userHeader_%@_%ld_%ld",userHeader,section,row];
+    
+    userHeader = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,userHeader];
+    UIImageView *userHeaderImage = [imageCache objectForKey:userHeaderKey];
+    if (!userHeaderImage) {
+        [cell.detailImage sd_setImageWithURL:[NSURL URLWithString:userHeader] placeholderImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        userHeaderImage = cell.detailImage;
+        [imageCache setObject:userHeaderImage forKey:userHeaderKey];
+    }
+    cell.detailImage = userHeaderImage;
+    [cell.bgView addSubview:cell.detailImage];
     
     id userNick = [zoneDict objectForKey:@"userNick"];
     if ([userNick isMemberOfClass:[NSNull class]]) {
@@ -487,6 +507,15 @@
     }
     cell.tipLabel.text = userNick;
     
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    NSString *recommendUserId = zoneDict[@"recommendUser"];
+    if ([recommendUserId isMemberOfClass:[NSNull class]]) {
+        recommendUserId = nil;
+    }
+    if ([userId isEqualToString:recommendUserId]) {
+        cell.commentButton.hidden = YES;
+        cell.favButton.hidden = YES;
+    }
     return cell;
 }
 

@@ -80,12 +80,25 @@
         [self.bgView addSubview:commentButton];
         [commentButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         
+        CGFloat detailX = 10;
+        CGFloat detailY = CGRectGetMaxY(bgImage.frame) + 5;
+        CGFloat detailH = 30;
+        CGFloat detailW = detailH;
+        
+        detailImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userDefalut_icon"]];
+        detailImage.frame = CGRectMake(detailX, detailY, detailW, detailH);
+        detailImage.layer.cornerRadius = detailW / 2.0;
+        detailImage.layer.masksToBounds = YES;
+        detailImage.contentMode = UIViewContentModeScaleAspectFill;
+        [bgView addSubview:detailImage];
+        
         CGFloat tiptitleX = 10;
         CGFloat tiptitleY = CGRectGetMaxY(bgImage.frame) + 5;
         CGFloat tiptitleH = 30;
         CGFloat tiptitleW = agreeX - tiptitleX - 10;
         
         tipLabel = [[UILabel alloc] init];
+        tipLabel.hidden = YES;
 //        tipLabel.textAlignment = NSTextAlignmentRight;
         tipLabel.backgroundColor = [UIColor clearColor];
         tipLabel.text = @"王琦";
