@@ -572,8 +572,6 @@
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-//    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择宣传图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相册",@"来自拍照", nil];
-//    [sheet showInView:bannerImageBG];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

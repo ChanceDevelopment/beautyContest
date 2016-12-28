@@ -230,6 +230,7 @@
 		EAB538DA1D6F4EB2008BCC17 /* icon_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB538D91D6F4EB2008BCC17 /* icon_delete.png */; };
 		EAB538DD1D6F5509008BCC17 /* HeZoneCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */; };
 		EAB75B381E110B3A00DFAF19 /* beautyContestRule.html in Resources */ = {isa = PBXBuildFile; fileRef = EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */; };
+		EAB75B3B1E139EC200DFAF19 /* PicUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB75B3A1E139EC200DFAF19 /* PicUpload.m */; };
 		EAC1B8751DD0D76200505B45 /* HeComplaintVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC1B8731DD0D76200505B45 /* HeComplaintVC.m */; };
 		EAC1B8761DD0D76200505B45 /* HeComplaintVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC1B8741DD0D76200505B45 /* HeComplaintVC.xib */; };
 		EAC1B8791DD0D8CB00505B45 /* 加图片图标.png in Resources */ = {isa = PBXBuildFile; fileRef = EAC1B8771DD0D8CB00505B45 /* 加图片图标.png */; };
@@ -1106,6 +1107,8 @@
 		EAB538DB1D6F5509008BCC17 /* HeZoneCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeZoneCommentCell.h; sourceTree = "<group>"; };
 		EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeZoneCommentCell.m; sourceTree = "<group>"; };
 		EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = beautyContestRule.html; sourceTree = "<group>"; };
+		EAB75B391E139EC200DFAF19 /* PicUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicUpload.h; sourceTree = "<group>"; };
+		EAB75B3A1E139EC200DFAF19 /* PicUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicUpload.m; sourceTree = "<group>"; };
 		EAC1B8721DD0D76200505B45 /* HeComplaintVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeComplaintVC.h; sourceTree = "<group>"; };
 		EAC1B8731DD0D76200505B45 /* HeComplaintVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeComplaintVC.m; sourceTree = "<group>"; };
 		EAC1B8741DD0D76200505B45 /* HeComplaintVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeComplaintVC.xib; sourceTree = "<group>"; };
@@ -4360,6 +4363,8 @@
 				EAC2CE2E1D4AF5E800E282A8 /* HeSysbsModel.m */,
 				EAC2CE311D4AF5E800E282A8 /* User.h */,
 				EAC2CE321D4AF5E800E282A8 /* User.m */,
+				EAB75B391E139EC200DFAF19 /* PicUpload.h */,
+				EAB75B3A1E139EC200DFAF19 /* PicUpload.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5629,6 +5634,7 @@
 				EAC2CD681D4AF5D800E282A8 /* SIMenuTable.m in Sources */,
 				EAC2CDC91D4AF5D800E282A8 /* UISwitch+RACSignalSupport.m in Sources */,
 				EAC2CDDF1D4AF5D800E282A8 /* UIImageView+HighlightedWebCache.m in Sources */,
+				EAB75B3B1E139EC200DFAF19 /* PicUpload.m in Sources */,
 				EAC2CCC11D4AF5D800E282A8 /* UIAlertView+AFNetworking.m in Sources */,
 				EA46452B1D51884000CD539F /* HeNearbyVC.m in Sources */,
 				EAC2CE1E1D4AF5E000E282A8 /* Tool.m in Sources */,
