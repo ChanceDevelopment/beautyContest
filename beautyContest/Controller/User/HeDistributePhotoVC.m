@@ -268,6 +268,7 @@
                 
             } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 weakSelf.uploadSuccessNum++;
+                NSLog(@"uploadSuccessNum = %ld",weakSelf.uploadSuccessNum);
                 if (weakSelf.uploadSuccessNum != [woodImgData count]) {
                     return;
                 }
@@ -295,6 +296,7 @@
 //                }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 weakSelf.uploadSuccessNum++;
+                NSLog(@"uploadSuccessNum = %ld",weakSelf.uploadSuccessNum);
                 if (weakSelf.uploadSuccessNum != [woodImgData count]) {
                     return;
                 }
