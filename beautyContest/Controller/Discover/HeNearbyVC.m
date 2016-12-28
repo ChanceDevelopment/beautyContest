@@ -406,8 +406,9 @@
         distance = @"";
     }
     cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[distance floatValue]];
-    if ([[dict objectForKey:@"distance"] floatValue] < CRITICALDISTANCE) {
-        cell.distanceLabel.text = @"1公里以内";
+    if ([[dict objectForKey:@"distance"] floatValue] > CRITICALDISTANCE) {
+        CGFloat kilometer = [distance floatValue] / 1000.0;
+        cell.distanceLabel.text = [NSString stringWithFormat:@"%.2f公里",kilometer];
     }
     
     NSString *userHeader = dict[@"userHeader"];

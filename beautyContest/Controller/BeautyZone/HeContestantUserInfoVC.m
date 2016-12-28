@@ -754,8 +754,8 @@
     }
     [self showHudInView:self.view hint:@"投票中..."];
     
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/voteUser.action",BASEURL];
-    NSDictionary *params = @{@"voteHost":voteHost,@"voteUser":voteUser,@"voteZone":voteZone};
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/GodVoteUser.action",BASEURL];
+    NSDictionary *params = @{@"voteHost":voteHost,@"voteUser":voteUser};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];

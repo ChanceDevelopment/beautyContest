@@ -769,10 +769,10 @@
         UILabel *tipLabel = [[UILabel alloc] init];
         tipLabel.backgroundColor = [UIColor clearColor];
         tipLabel.textColor = [UIColor orangeColor];
-        tipLabel.font = [UIFont systemFontOfSize:16.0];
+        tipLabel.font = [UIFont boldSystemFontOfSize:24.0];
         tipLabel.textAlignment = NSTextAlignmentCenter;
         tipLabel.text = text;
-        tipLabel.frame = CGRectMake(0, alertH - 50, alertW, 20);
+        tipLabel.frame = CGRectMake(0, alertH - 60, alertW, 30);
         [alertBG addSubview:tipLabel];
         
         
@@ -875,14 +875,11 @@
             if ([redPocketNum isMemberOfClass:[NSNull class]]) {
                 redPocketNum = @"";
             }
-            if (![redPocketNum isKindOfClass:[NSString class]]) {
-                redPocketNum = @"";
-            }
             if ([redPocketNum integerValue] == 0) {
-                [self showHint:@"红包已领取完"];
+                [self showHint:@"领取过了"];
                 return;
             }
-            NSString *data = [NSString stringWithFormat:@"恭喜获得\n￥%ld",(long)[redPocketNum integerValue]];
+            NSString *data = [NSString stringWithFormat:@"￥%ld",(long)[redPocketNum integerValue]];
             [self showAlerWithText:data];
 //            [self showHint:data];
         }
