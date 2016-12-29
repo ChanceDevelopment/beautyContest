@@ -130,6 +130,13 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             [photoDetailArray removeAllObjects];
             [photoArray removeAllObjects];
+            
+            [imageCache removeAllObjects];
+            NSArray *subViewArray = myScrollView.subviews;
+            for (UIView *subview in subViewArray) {
+                [subview removeFromSuperview];
+            }
+            
             NSArray *myArray = [respondDict objectForKey:@"json"];
             for (NSDictionary *dict in myArray) {
                 NSString *wallUrl = dict[@"wallUrl"];
@@ -155,6 +162,7 @@
 
 - (void)updateUserAlbum:(NSNotification *)notification
 {
+    
     [self loadPhoto];
 }
 
