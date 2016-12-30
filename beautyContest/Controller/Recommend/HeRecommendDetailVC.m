@@ -87,7 +87,7 @@
 {
     [super viewDidLoad];
     [self initializaiton];
-    [self initView];
+    [self performSelectorOnMainThread:@selector(initView) withObject:nil waitUntilDone:YES];
     [self loadRecommendDetail];
     [self getUserPic];
 }
@@ -357,12 +357,11 @@
     NSInteger index = 0;
     for (NSString *url in paperArray) {
         NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
-        
         UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
+        [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         imageview.layer.masksToBounds = YES;
         imageview.layer.cornerRadius = 5.0;
         imageview.contentMode = UIViewContentModeScaleAspectFill;
-        [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         [photoScrollView addSubview:imageview];
         imageX = imageX + imageW + imageDistance;
         imageview.tag = index + 10000;

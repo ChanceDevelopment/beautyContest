@@ -392,16 +392,20 @@
         cell.topicLabel.text = recommendContent;
         
         
-        NSString *zoneCover = [dict objectForKey:@"recommendCover"];
+        NSString *zoneCover = [dict objectForKey:@"backgroundPic"];
         if ([zoneCover isMemberOfClass:[NSNull class]]) {
             zoneCover = @"";
         }
-        NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
-        zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[zoneCoverArray firstObject]];
-        UIImageView *imageview = [imageCache objectForKey:zoneCover];
+        NSString *recommendId = dict[@"recommendId"];
+        
+        zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
+        NSString *imageKey = [NSString stringWithFormat:@"%@_%@",zoneCover,recommendId];
+        
+        UIImageView *imageview = [imageCache objectForKey:imageKey];
         if (!imageview) {
             [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
             imageview = cell.bgImage;
+            [imageCache setObject:imageview forKey:imageKey];
         }
         cell.bgImage = imageview;
         [cell.bgView addSubview:cell.bgImage];
@@ -439,10 +443,15 @@
     }
     NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
     zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,[zoneCoverArray firstObject]];
-    UIImageView *imageview = [imageCache objectForKey:zoneCover];
+    
+    NSString *zoneId = dict[@"zoneId"];
+    NSString *imageKey = [NSString stringWithFormat:@"%@_%@",zoneCover,zoneId];
+    
+    UIImageView *imageview = [imageCache objectForKey:imageKey];
     if (!imageview) {
         [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
         imageview = cell.bgImage;
+        [imageCache setObject:imageview forKey:imageKey];
     }
     cell.bgImage = imageview;
     [cell.bgView addSubview:cell.bgImage];
