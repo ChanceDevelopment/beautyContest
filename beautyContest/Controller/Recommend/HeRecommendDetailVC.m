@@ -598,6 +598,9 @@
             CGFloat imageDistance = 5;
             NSInteger imageTag = 0;
             for (NSString *url in redPocketArray) {
+                if ([url isEqualToString:@""]) {
+                    continue;
+                }
                 NSString *imageurl = url;
                 if (![url hasPrefix:@"http"]) {
                     imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
@@ -1097,7 +1100,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     CGFloat heigth = 0;
-    if ([redPocketArray count] != 0) {
+    
+    NSInteger redPocketNum = 0;
+    for (id obj in redPocketArray) {
+        if ([obj isEqualToString:@""]) {
+            continue;
+        }
+        redPocketNum++;
+    }
+    
+    if (redPocketNum != 0) {
         if ([paperArray count] == 0) {
             heigth = 30;
         }
@@ -1113,16 +1125,23 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    NSInteger redPocketNum = 0;
+    for (id obj in redPocketArray) {
+        if ([obj isEqualToString:@""]) {
+            continue;
+        }
+        redPocketNum++;
+    }
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
     bgView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:bgView.bounds];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:12.0];
     titleLabel.textColor = [UIColor grayColor];
-    titleLabel.text = [NSString stringWithFormat:@"  %ld人领取过红包",[redPocketArray count]];
+    titleLabel.text = [NSString stringWithFormat:@"  %ld人领取过红包",redPocketNum];
     [bgView addSubview:titleLabel];
     
-    if ([redPocketArray count] != 0) {
+    if (redPocketNum != 0) {
         if ([paperArray count] == 0) {
             return bgView;
         }

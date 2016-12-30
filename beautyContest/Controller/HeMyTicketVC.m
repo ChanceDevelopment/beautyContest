@@ -363,7 +363,7 @@
     @finally {
         
     }
-    NSString *userId = dict[@"userId"];
+    NSString *userId = dict[@"voteHostUserId"];
     if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
         userId = @"";
     }

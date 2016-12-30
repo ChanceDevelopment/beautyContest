@@ -79,10 +79,10 @@
         label.textColor = APPDEFAULTTITLECOLOR;
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"参赛者详情";
+        label.text = @"用户详情";
         [label sizeToFit];
         
-        self.title = @"参赛者详情";
+        self.title = @"用户详情";
     }
     return self;
 }
@@ -548,7 +548,12 @@
         
         if (statueCode == REQUESTCODE_SUCCEED){
             id jsonObj = [respondDict objectForKey:@"json"];
-            haveNOVoted = [jsonObj boolValue];
+            if ([jsonObj boolValue]) {
+                haveNOVoted = NO;
+            }
+            else{
+                haveNOVoted = YES;
+            }
             if (!haveNOVoted) {
                 UIButton *button = [footerView viewWithTag:VOTETAG];
                 button.hidden = YES;
@@ -763,6 +768,7 @@
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         
         if (statueCode == REQUESTCODE_SUCCEED){
+            haveNOVoted = NO;
             [self showHint:@"投票成功"];
         }
         else{

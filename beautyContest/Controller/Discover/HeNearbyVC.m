@@ -399,13 +399,13 @@
     if (!cell) {
         cell = [[HeNearbyTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     id distance = [dict objectForKey:@"distance"];
     if ([distance isMemberOfClass:[NSNull class]]) {
         distance = @"";
     }
-    cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[distance floatValue]];
+    cell.distanceLabel.text = @"200米内";
     if ([[dict objectForKey:@"distance"] floatValue] > CRITICALDISTANCE) {
         CGFloat kilometer = [distance floatValue] / 1000.0;
         cell.distanceLabel.text = [NSString stringWithFormat:@"%.2f公里",kilometer];

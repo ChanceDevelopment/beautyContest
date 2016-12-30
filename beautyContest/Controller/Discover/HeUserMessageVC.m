@@ -221,6 +221,10 @@
                 [replyIndexDict removeAllObjects];
             }
             NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if ([resultArray isMemberOfClass:[NSNull class]]) {
+                [self showHint:@"更多加载完毕"];
+                return ;
+            }
             NSInteger index = 0;
             for (NSDictionary *zoneDict in resultArray) {
                 [dataSource addObject:zoneDict];
@@ -486,7 +490,7 @@
     if ([hostHeader isMemberOfClass:[NSNull class]]) {
         hostHeader = @"";
     }
-    NSString *imageKey = [NSString stringWithFormat:@"%@_%@",hostHeader,dict[@"blogId"]];
+    NSString *imageKey = [NSString stringWithFormat:@"%@_%@_%ld_%ld",hostHeader,dict[@"blogId"],row,section];
     UIImageView *userIcon = [imageCache objectForKey:imageKey];
     if (!userIcon) {
         NSString *imageUrl = hostHeader;

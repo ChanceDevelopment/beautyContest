@@ -128,7 +128,7 @@
 #define LOGINKEY   @"login"       //登录
 #define UPDATEUSER @"updateUser"
 
-#define CRITICALDISTANCE 500
+#define CRITICALDISTANCE 200
 
 //黄金比例
 #define BESTSCALE (297.0 / 512.0)

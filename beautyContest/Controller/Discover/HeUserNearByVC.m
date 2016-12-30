@@ -195,7 +195,6 @@
     if (longitudeStr == nil) {
         longitudeStr = @"";
     }
-    
     NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (!userid) {
         userid = @"";
@@ -404,12 +403,11 @@
     if ([distance isMemberOfClass:[NSNull class]]) {
         distance = @"";
     }
-    cell.distanceLabel.text = [NSString stringWithFormat:@"%.1fm",[distance floatValue]];
+    cell.distanceLabel.text = @"200m内";
     if ([[dict objectForKey:@"distance"] floatValue] > CRITICALDISTANCE) {
         CGFloat kilometer = [distance floatValue] / 1000.0;
         cell.distanceLabel.text = [NSString stringWithFormat:@"%.2f公里",kilometer];
     }
-    
     NSString *userHeader = dict[@"userHeader"];
     if ([userHeader isMemberOfClass:[NSNull class]] || userHeader == nil) {
         userHeader = @"";

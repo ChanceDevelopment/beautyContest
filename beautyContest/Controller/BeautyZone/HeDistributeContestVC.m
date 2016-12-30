@@ -308,7 +308,8 @@
     titleField = [[UITextField alloc] init];
     titleField.layer.borderColor = [UIColor clearColor].CGColor;
     titleField.delegate = self;
-    titleField.placeholder = @"例如：浙大15届选美赛-寻找最美同学";
+    titleField.text = @"例如：浙大15届选美赛-寻找最美同学";
+    titleField.placeholder = @"请输入赛区主题";
     titleField.font = [UIFont systemFontOfSize:16.0];
     titleField.textColor = APPDEFAULTORANGE;
     if (distributeAgain) {
