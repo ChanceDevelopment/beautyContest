@@ -13,8 +13,9 @@
 #import "HeDiscoverVC.h"
 #import "HeUserVC.h"
 #import "HeNewRecommendVC.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface HeTabBarVC : RDVTabBarController<UIAlertViewDelegate>
+@interface HeTabBarVC : RDVTabBarController<UIAlertViewDelegate,CLLocationManagerDelegate>
 @property(strong,nonatomic)HeUserVC *userVC;
 @property(strong,nonatomic)HeBeautyZoneVC *beautyZoneVC;
 @property(strong,nonatomic)HeNewRecommendVC *recommendVC;

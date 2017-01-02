@@ -281,7 +281,22 @@
     }
     NSString *infoZodiac = [NSString stringWithFormat:@"%ld",[userInfo.infoZodiac integerValue]];
     
-    NSDictionary *userInfo_param = @{@"infoBirth":infoBirth,@"infoBlood":infoBlood,@"infoProfession":infoProfession,@"infoTall":infoTall,@"infoUser":infoUser,@"infoWeight":infoWeight,@"infoZodiac":infoZodiac,@"infoMeasurements":@""};
+    NSMutableDictionary *userInfo_param = [[NSMutableDictionary alloc] initWithCapacity:0];
+    [userInfo_param setObject:infoBirth forKey:@"infoBirth"];
+    [userInfo_param setObject:infoBlood forKey:@"infoBlood"];
+    [userInfo_param setObject:infoUser forKey:@"infoUser"];
+    [userInfo_param setObject:infoZodiac forKey:@"infoZodiac"];
+    if (![infoProfession isEqualToString:@""]) {
+        [userInfo_param setObject:infoProfession forKey:@"infoProfession"];
+    }
+    if ([infoTall floatValue] > 0.1) {
+        [userInfo_param setObject:infoTall forKey:@"infoTall"];
+    }
+    if ([infoWeight floatValue] > 0.1) {
+        [userInfo_param setObject:infoWeight forKey:@"infoWeight"];
+    }
+    
+//    NSDictionary *userInfo_param = @{@"infoBirth":infoBirth,@"infoBlood":infoBlood,@"infoProfession":infoProfession,@"infoTall":infoTall,@"infoUser":infoUser,@"infoWeight":infoWeight,@"infoZodiac":infoZodiac,@"infoMeasurements":@""};
     
     if (userNick == nil || [userNick isEqualToString:@""]) {
         [self showHint:@"请输入用户昵称"];
@@ -341,7 +356,7 @@
         }
     } failure:^(NSError *error){
         
-        [self showHint:ERRORREQUESTTIP];
+//        [self showHint:ERRORREQUESTTIP];
     }];
 }
 

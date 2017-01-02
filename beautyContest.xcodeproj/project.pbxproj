@@ -104,6 +104,13 @@
 		EA1627981DA8BCA100B64B18 /* HeBalanceEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */; };
 		EA1627991DA8BCA100B64B18 /* HeBalanceEditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */; };
 		EA1A03D81DD21B1000C575EC /* icon_reward_green.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1A03D71DD21B1000C575EC /* icon_reward_green.png */; };
+		EA1EF1D81E18953A00849911 /* HKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1EF1CC1E18953A00849911 /* HKViewController.m */; };
+		EA1EF1D91E18953A00849911 /* HKClipperVeiw.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1EF1D01E18953A00849911 /* HKClipperVeiw.m */; };
+		EA1EF1DA1E18953A00849911 /* UIImage+ClipperExtends.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1EF1D21E18953A00849911 /* UIImage+ClipperExtends.m */; };
+		EA1EF1DB1E18953A00849911 /* UIBarButtonItem+Extends.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1EF1D51E18953A00849911 /* UIBarButtonItem+Extends.m */; };
+		EA1EF1DC1E18953A00849911 /* UIImage+Extends.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1EF1D71E18953A00849911 /* UIImage+Extends.m */; };
+		EA1EF1DF1E1895E800849911 /* HKImageClipperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1EF1DE1E1895E800849911 /* HKImageClipperViewController.m */; };
+		EA1EF1E11E1958CF00849911 /* filterButtonBG.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1EF1E01E1958CF00849911 /* filterButtonBG.png */; };
 		EA1FE4601DE02735006435D3 /* clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4361DE02735006435D3 /* clear@2x.png */; };
 		EA1FE4611DE02735006435D3 /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4371DE02735006435D3 /* close@2x.png */; };
 		EA1FE4621DE02735006435D3 /* found@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE4381DE02735006435D3 /* found@2x.png */; };
@@ -915,6 +922,19 @@
 		EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBalanceEditVC.m; sourceTree = "<group>"; };
 		EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBalanceEditVC.xib; sourceTree = "<group>"; };
 		EA1A03D71DD21B1000C575EC /* icon_reward_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_reward_green.png; sourceTree = "<group>"; };
+		EA1EF1CB1E18953A00849911 /* HKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HKViewController.h; sourceTree = "<group>"; };
+		EA1EF1CC1E18953A00849911 /* HKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HKViewController.m; sourceTree = "<group>"; };
+		EA1EF1CF1E18953A00849911 /* HKClipperVeiw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HKClipperVeiw.h; sourceTree = "<group>"; };
+		EA1EF1D01E18953A00849911 /* HKClipperVeiw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HKClipperVeiw.m; sourceTree = "<group>"; };
+		EA1EF1D11E18953A00849911 /* UIImage+ClipperExtends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ClipperExtends.h"; sourceTree = "<group>"; };
+		EA1EF1D21E18953A00849911 /* UIImage+ClipperExtends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ClipperExtends.m"; sourceTree = "<group>"; };
+		EA1EF1D41E18953A00849911 /* UIBarButtonItem+Extends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Extends.h"; sourceTree = "<group>"; };
+		EA1EF1D51E18953A00849911 /* UIBarButtonItem+Extends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Extends.m"; sourceTree = "<group>"; };
+		EA1EF1D61E18953A00849911 /* UIImage+Extends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extends.h"; sourceTree = "<group>"; };
+		EA1EF1D71E18953A00849911 /* UIImage+Extends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extends.m"; sourceTree = "<group>"; };
+		EA1EF1DD1E1895E800849911 /* HKImageClipperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HKImageClipperViewController.h; sourceTree = "<group>"; };
+		EA1EF1DE1E1895E800849911 /* HKImageClipperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HKImageClipperViewController.m; sourceTree = "<group>"; };
+		EA1EF1E01E1958CF00849911 /* filterButtonBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filterButtonBG.png; sourceTree = "<group>"; };
 		EA1FE4361DE02735006435D3 /* clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear@2x.png"; sourceTree = "<group>"; };
 		EA1FE4371DE02735006435D3 /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
 		EA1FE4381DE02735006435D3 /* found@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "found@2x.png"; sourceTree = "<group>"; };
@@ -2373,6 +2393,8 @@
 		EA0E9D1C1D4C295F009CBF64 /* BeautyZone */ = {
 			isa = PBXGroup;
 			children = (
+				EA1EF1DD1E1895E800849911 /* HKImageClipperViewController.h */,
+				EA1EF1DE1E1895E800849911 /* HKImageClipperViewController.m */,
 				EA0E9D1D1D4C295F009CBF64 /* HeBeautyZoneVC.h */,
 				EA0E9D1E1D4C295F009CBF64 /* HeBeautyZoneVC.m */,
 				EA0E9D1F1D4C295F009CBF64 /* HeBeautyZoneVC.xib */,
@@ -2514,6 +2536,63 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		EA1EF1C81E18953A00849911 /* HKClipper */ = {
+			isa = PBXGroup;
+			children = (
+				EA1EF1C91E18953A00849911 /* CommonBase */,
+				EA1EF1CD1E18953A00849911 /* CustomUI */,
+				EA1EF1D31E18953A00849911 /* Extends */,
+			);
+			path = HKClipper;
+			sourceTree = "<group>";
+		};
+		EA1EF1C91E18953A00849911 /* CommonBase */ = {
+			isa = PBXGroup;
+			children = (
+				EA1EF1CA1E18953A00849911 /* HKViewController */,
+			);
+			path = CommonBase;
+			sourceTree = "<group>";
+		};
+		EA1EF1CA1E18953A00849911 /* HKViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA1EF1CB1E18953A00849911 /* HKViewController.h */,
+				EA1EF1CC1E18953A00849911 /* HKViewController.m */,
+			);
+			path = HKViewController;
+			sourceTree = "<group>";
+		};
+		EA1EF1CD1E18953A00849911 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				EA1EF1CE1E18953A00849911 /* HKClipperVeiw */,
+			);
+			path = CustomUI;
+			sourceTree = "<group>";
+		};
+		EA1EF1CE1E18953A00849911 /* HKClipperVeiw */ = {
+			isa = PBXGroup;
+			children = (
+				EA1EF1CF1E18953A00849911 /* HKClipperVeiw.h */,
+				EA1EF1D01E18953A00849911 /* HKClipperVeiw.m */,
+				EA1EF1D11E18953A00849911 /* UIImage+ClipperExtends.h */,
+				EA1EF1D21E18953A00849911 /* UIImage+ClipperExtends.m */,
+			);
+			path = HKClipperVeiw;
+			sourceTree = "<group>";
+		};
+		EA1EF1D31E18953A00849911 /* Extends */ = {
+			isa = PBXGroup;
+			children = (
+				EA1EF1D41E18953A00849911 /* UIBarButtonItem+Extends.h */,
+				EA1EF1D51E18953A00849911 /* UIBarButtonItem+Extends.m */,
+				EA1EF1D61E18953A00849911 /* UIImage+Extends.h */,
+				EA1EF1D71E18953A00849911 /* UIImage+Extends.m */,
+			);
+			path = Extends;
+			sourceTree = "<group>";
+		};
 		EA1FE4341DE02722006435D3 /* WMPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -2621,6 +2700,7 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EA1EF1E01E1958CF00849911 /* filterButtonBG.png */,
 				EA4D13C11E03CD0F00BBE450 /* navigationBar_back_icon.png */,
 				EA9489461DF063C900092E92 /* icon_glory.png */,
 				EA1A03D71DD21B1000C575EC /* icon_reward_green.png */,
@@ -3055,6 +3135,7 @@
 		EAC2C9CE1D4AF5D700E282A8 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EA1EF1C81E18953A00849911 /* HKClipper */,
 				EA1FE4341DE02722006435D3 /* WMPlayer */,
 				EA71A1771DDEE86500B16333 /* CRMediaPickerController */,
 				EA7F2FCB1DD37C10001857F4 /* UWDatePickerView */,
@@ -5002,6 +5083,7 @@
 				EA1FE4651DE02735006435D3 /* message@2x.png in Resources */,
 				EA4645541D51ECC100CD539F /* FLCollectionSeparator.xib in Resources */,
 				EAC2CEA31D4AF5EE00E282A8 /* ShareSDKUI.bundle in Resources */,
+				EA1EF1E11E1958CF00849911 /* filterButtonBG.png in Resources */,
 				EA4645461D51A36700CD539F /* appIcon30.png in Resources */,
 				EA4D01771D4D8FF100A0CCA1 /* index2.jpg in Resources */,
 				EA4D01981D4D9ABF00A0CCA1 /* HeContestantDetailVC.xib in Resources */,
@@ -5465,6 +5547,7 @@
 				07E8804F1DC44F23000A13E8 /* UMTextView.m in Sources */,
 				EAC1B8931DD0E37400505B45 /* HcdDateTimePickerView.m in Sources */,
 				EA46453F1D5193DE00CD539F /* HeBaseIconTitleTableCell.m in Sources */,
+				EA1EF1D81E18953A00849911 /* HKViewController.m in Sources */,
 				EAC2CDE11D4AF5D800E282A8 /* UIView+WebCacheOperation.m in Sources */,
 				EAC2CE9B1D4AF5EE00E282A8 /* QRCodeGenerator.m in Sources */,
 				EAC2CE3B1D4AF5E800E282A8 /* HeSysbsModel.m in Sources */,
@@ -5480,6 +5563,7 @@
 				EAC2CD3C1D4AF5D800E282A8 /* README.md in Sources */,
 				07F3AB2A1DC473E8008AD00E /* HeUserLocatiVC.m in Sources */,
 				EAC2CD041D4AF5D800E282A8 /* DFUserDefaultStorageService.m in Sources */,
+				EA1EF1DC1E18953A00849911 /* UIImage+Extends.m in Sources */,
 				EAC2CD5F1D4AF5D800E282A8 /* MRZoomScrollView.m in Sources */,
 				EAC2CDC11D4AF5D800E282A8 /* UIControl+RACSignalSupportPrivate.m in Sources */,
 				EAC2CCED1D4AF5D800E282A8 /* DFImageHelper.m in Sources */,
@@ -5517,6 +5601,7 @@
 				EAC2CDF71D4AF5D800E282A8 /* TZAssetModel.m in Sources */,
 				EAE88BCE1DAF5BC900AD946F /* NSDataEx.m in Sources */,
 				EAC2CCB31D4AF5D800E282A8 /* AFHttpTool.m in Sources */,
+				EA1EF1D91E18953A00849911 /* HKClipperVeiw.m in Sources */,
 				EAC2CD9B1D4AF5D800E282A8 /* RACImmediateScheduler.m in Sources */,
 				EAE88BC91DAF5BC900AD946F /* Order.m in Sources */,
 				EAC2CE091D4AF5D800E282A8 /* NSDate+convenience.m in Sources */,
@@ -5561,6 +5646,7 @@
 				EAC2CDA21D4AF5D800E282A8 /* RACPassthroughSubscriber.m in Sources */,
 				EAC2CCD81D4AF5D800E282A8 /* NSMutableDictionary+JSON.m in Sources */,
 				EAC2CDE01D4AF5D800E282A8 /* UIImageView+WebCache.m in Sources */,
+				EA1EF1DB1E18953A00849911 /* UIBarButtonItem+Extends.m in Sources */,
 				EAC2CDC31D4AF5D800E282A8 /* UIGestureRecognizer+RACSignalSupport.m in Sources */,
 				EADE32FF1D76B5310025492B /* ScanPictureView.m in Sources */,
 				EAC2CE9C1D4AF5EE00E282A8 /* qrencode.c in Sources */,
@@ -5644,6 +5730,7 @@
 				EA4D01881D4D93E500A0CCA1 /* HeBaseTableViewCell.m in Sources */,
 				EAC2CCEB1D4AF5D800E282A8 /* DFReachabilityUtil.m in Sources */,
 				EAC1B89A1DD0F74200505B45 /* HeMyTicketVC.m in Sources */,
+				EA1EF1DF1E1895E800849911 /* HKImageClipperViewController.m in Sources */,
 				EAE88B5D1DAF587B00AD946F /* HeBalanceDetailCell.m in Sources */,
 				EAC2CDD71D4AF5D800E282A8 /* SDWebImageDownloader.m in Sources */,
 				0784C0541DD1740A004BF89F /* LocationViewController.m in Sources */,
@@ -5654,6 +5741,7 @@
 				EAE88B4F1DAF55C600AD946F /* HeBalanceDetailVC.m in Sources */,
 				EAC2CD331D4AF5D800E282A8 /* MBProgressHUD.m in Sources */,
 				07E8804B1DC44F23000A13E8 /* UMChatToolBar.m in Sources */,
+				EA1EF1DA1E18953A00849911 /* UIImage+ClipperExtends.m in Sources */,
 				EAC2CCD61D4AF5D800E282A8 /* MLLabel+Size.m in Sources */,
 				EAC2CCEF1D4AF5D800E282A8 /* DFToolUtil.m in Sources */,
 				EAC2CDF81D4AF5D800E282A8 /* TZImageManager.m in Sources */,

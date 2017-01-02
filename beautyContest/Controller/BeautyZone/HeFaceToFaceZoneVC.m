@@ -91,7 +91,9 @@
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         
         if (statueCode == REQUESTCODE_SUCCEED){
+            BOOL isContestExtit = [[respondDict objectForKey:@"json"] boolValue];
             HeFaceCreatZoneVC *faceZoneVC = [[HeFaceCreatZoneVC alloc] init];
+            faceZoneVC.isContestExtit = isContestExtit;
             faceZoneVC.zonePassword = [[NSString alloc] initWithFormat:@"%@",password];
             faceZoneVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:faceZoneVC animated:YES];

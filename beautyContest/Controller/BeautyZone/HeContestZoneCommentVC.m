@@ -229,7 +229,7 @@
     [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithWhite:143.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [button setBackgroundImage:[Tool buttonImageFromColor:[UIColor whiteColor] withImageSize:button.frame.size] forState:UIControlStateSelected];
+    [button setBackgroundImage:[UIImage imageNamed:@"filterButtonBG"] forState:UIControlStateSelected];
     [button setBackgroundImage:[Tool buttonImageFromColor:sectionHeaderView.backgroundColor withImageSize:button.frame.size] forState:UIControlStateNormal];
     
     return button;
@@ -695,12 +695,13 @@
     @finally {
         
     }
-    NSString *userId = dict[@"userId"];
-    if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
-        userId = @"";
+    //评论人的ID
+    NSString *commentUser = dict[@"commentUser"];
+    if ([commentUser isMemberOfClass:[NSNull class]] || commentUser == nil) {
+        commentUser = @"";
     }
     HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
-    userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
+    userInfoVC.userId = [NSString stringWithFormat:@"%@",commentUser];
     userInfoVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:userInfoVC animated:YES];
 }

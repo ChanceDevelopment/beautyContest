@@ -17,6 +17,7 @@
 #import "HeFaceToFaceZoneVC.h"
 #import "HeZoneConfirmVC.h"
 #import "HeUserInfoVC.h"
+#import "HeContestantUserInfoVC.h"
 
 @interface HeSearchBeautyZoneVC ()
 {
@@ -553,10 +554,9 @@
         
     }
     if (searchUser) {
-        HeUserInfoVC *userInfoVC = [[HeUserInfoVC alloc] init];
-        User *userInfo = [[User alloc] initUserWithDict:zoneDict];
-        userInfoVC.userInfo = userInfo;
-        userInfoVC.isScanUser = YES;
+        NSString *userId = zoneDict[@"userId"];
+        HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+        userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
         userInfoVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:userInfoVC animated:YES];
         return;

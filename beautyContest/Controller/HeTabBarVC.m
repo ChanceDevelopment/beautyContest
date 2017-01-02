@@ -12,6 +12,8 @@
 #import "RDVTabBarController.h"
 #import "HeSysbsModel.h"
 #import "HeNewRecommendVC.h"
+#import <BaiduMapAPI_Location/BMKLocationService.h>
+#import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
 
 @interface HeTabBarVC ()
 
@@ -67,13 +69,11 @@
         [self showHint:ERRORREQUESTTIP];
     }];
 }
+
+
+
 - (void)getUserTicket
 {
-//    User *user = [HeSysbsModel getSysModel].user;
-//    NSMutableArray *ticketArray = user.ticketArray;
-//    if (ticketArray == nil) {
-//        ticketArray = [[NSMutableArray alloc] initWithCapacity:0];
-//    }
     NSString *getUserTicketUrl = [NSString stringWithFormat:@"%@/vote/selectVoteCount.action",BASEURL];
     NSString *voteUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     
@@ -104,11 +104,6 @@
 }
 - (void)getUserFollow
 {
-//    User *user = [HeSysbsModel getSysModel].user;
-//    NSMutableArray *followArray = user.followArray;
-//    if (followArray == nil) {
-//        followArray = [[NSMutableArray alloc] initWithCapacity:0];
-//    }
     NSString *getUserFollowUrl = [NSString stringWithFormat:@"%@/user/getFollowNum.action",BASEURL];
     NSString *hostId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if (hostId == nil) {

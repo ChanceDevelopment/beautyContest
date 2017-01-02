@@ -8,6 +8,7 @@
 
 #import "HeZoneConfirmVC.h"
 #import "HeBeautyConfirmCell.h"
+#import "HeContestantUserInfoVC.h"
 
 @interface HeZoneConfirmVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
@@ -131,28 +132,44 @@
         if (agree) {
             NSLog(@"agree");
             NSString *zoneId = userInfo[@"zoneId"];
-            NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-            if (!userId) {
+            if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
+                zoneId = @"";
+            }
+            NSString *userId = userInfo[@"userId"];
+            if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
                 userId = @"";
             }
             NSString *state = @"1";
-            NSDictionary *params = @{@"zoneId":zoneId,@"userId":userId,@"state":state};
+            NSDictionary *params = @{@"zondId":zoneId,@"userId":userId,@"state":state};
             [self confirmZoneWithParam:params];
 //            TestZonepassed
         }
         else{
             NSLog(@"reject");
-            NSString *zoneId = @"";
-            NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-            if (!userId) {
+            NSString *zoneId = userInfo[@"zoneId"];
+            if ([zoneId isMemberOfClass:[NSNull class]] || zoneId == nil) {
+                zoneId = @"";
+            }
+            NSString *userId = userInfo[@"userId"];
+            if ([userId isMemberOfClass:[NSNull class]] || userId == nil) {
                 userId = @"";
             }
-            NSString *state = @"0";
-            NSDictionary *params = @{@"zoneId":zoneId,@"userId":userId,@"state":state};
+            NSString *state = @"2";
+            NSDictionary *params = @{@"zondId":zoneId,@"userId":userId,@"state":state};
             [self confirmZoneWithParam:params];
         }
         return;
     }
+    else if ([eventName isEqualToString:@"scanUserDetail"]){
+        NSString *userId = userInfo[@"userId"];
+        HeContestantUserInfoVC *userInfoVC = [[HeContestantUserInfoVC alloc] init];
+        userInfoVC.userId = [NSString stringWithFormat:@"%@",userId];
+        userInfoVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:userInfoVC animated:YES];
+        
+        return;
+    }
+    [super routerEventWithName:eventName userInfo:userInfo];
 }
 
 - (void)confirmZoneWithParam:(NSDictionary *)params
@@ -373,6 +390,9 @@
         cell.stateLabel.hidden = NO;
         cell.rejectButton.hidden = YES;
         cell.agreeButton.hidden = YES;
+        if ([testState integerValue] == 2) {
+            cell.stateLabel.text = @"已拒绝";
+        }
     }
     else{
         cell.stateLabel.hidden = YES;
@@ -386,7 +406,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 70;
+    return 80;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

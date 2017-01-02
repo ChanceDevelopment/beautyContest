@@ -165,6 +165,13 @@
     joinButton.layer.cornerRadius = 3.0;
     joinButton.layer.masksToBounds = YES;
     
+//    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+//    NSString *userId = contestBaseDict[@"userId"];
+//    if ([userId isMemberOfClass:[NSNull class]]) {
+//        userId = @"";
+//    }
+    
+    
     UIButton *commentButton = [Tool getButton:CGRectMake(SCREENWIDTH / 2.0 + buttonX, buttonY, buttonW, buttonH) title:@"评论" image:@"icon_comment"];
     joinButton.tag = 2;
     [commentButton addTarget:self action:@selector(massageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -173,7 +180,7 @@
     commentButton.layer.cornerRadius = 3.0;
     commentButton.layer.masksToBounds = YES;
     
-    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 200)];
+    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 300)];
 
 }
 
@@ -285,6 +292,9 @@
                 break;
         }
     }
+    else if (alertView.tag == 300 && buttonIndex == 1){
+        [self sendTest];
+    }
 }
 
 - (void)blockUserWithUser:(NSDictionary *)userDict
@@ -348,6 +358,24 @@
 
 - (void)buttonClick:(UIButton *)button
 {
+    BOOL zoneTeststate = [[switchDict objectForKey:@"4"] boolValue];
+    if (zoneTeststate) {
+        if (ISIOS8) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"该赛区需发布人验证才能参加" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+                [self sendTest];
+            }];
+            [alertController addAction:cancelAction];
+            [alertController addAction:sureAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+            return;
+        }
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该赛区需发布人验证才能参加" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+        alertView.tag = 200;
+        [alertView show];
+        return;
+    }
     NSString *partInUser = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if ([partInUser isMemberOfClass:[NSNull class]] || partInUser == nil) {
         partInUser = @"";
@@ -371,6 +399,44 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             [self showHint:@"成功参加"];
             [self getContestDetail];
+        }
+        else{
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+    } failure:^(NSError *error){
+        [self showHint:ERRORREQUESTTIP];
+    }];
+}
+
+//发出赛区验证消息
+- (void)sendTest
+{
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/TestZone.action",BASEURL];
+    NSString *testuserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if ([testuserId isMemberOfClass:[NSNull class]] || testuserId == nil) {
+        testuserId = @"";
+    }
+    NSString *zoneuserId = contestDetailDict[@"zoneUser"];
+    if ([zoneuserId isMemberOfClass:[NSNull class]] || zoneuserId == nil) {
+        zoneuserId = @"";
+    }
+    NSString *testzoneId = contestDetailDict[@"zoneId"];
+    if ([testzoneId isMemberOfClass:[NSNull class]] || testzoneId == nil) {
+        testzoneId = @"";
+    }
+    NSDictionary *params = @{@"testuserId":testuserId,@"zoneuserId":zoneuserId,@"testzoneId":testzoneId};
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            [self showHint:@"发送验证成功，请等待赛区验证"];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
@@ -529,7 +595,7 @@
             if ([zoneTeststate boolValue]) {
                 //如果赛区需要验证
                 if ([myUserId isEqualToString:userId]) {
-                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password"];
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
                 }
                 else{
                     iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green"];
@@ -613,7 +679,7 @@
             if ([zoneTeststate boolValue]) {
                 //如果赛区需要验证
                 if ([myUserId isEqualToString:userId]) {
-                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password"];
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
                 }
                 else{
                     iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green"];

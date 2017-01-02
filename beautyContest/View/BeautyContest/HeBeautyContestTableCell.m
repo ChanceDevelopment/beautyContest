@@ -140,7 +140,7 @@
         timeLabel.text = @"2016-10-28";
         timeLabel.numberOfLines = 1;
         timeLabel.textColor = [UIColor grayColor];
-        timeLabel.font = [UIFont systemFontOfSize:13.5];
+        timeLabel.font = [UIFont systemFontOfSize:11.0];
         timeLabel.frame = CGRectMake(timeX, timeY, timeW, timeH);
         [bgView addSubview:timeLabel];
         

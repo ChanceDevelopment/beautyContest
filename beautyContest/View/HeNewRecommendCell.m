@@ -41,7 +41,7 @@
         CGFloat imageX = 0;
         CGFloat imageY = 0;
         CGFloat imageW = viewW;
-        CGFloat imageH = viewH - 70;
+        CGFloat imageH = imageW;
         
         bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index5.jpg"]];
         bgImage.frame = CGRectMake(imageX, imageY, imageW, imageH);

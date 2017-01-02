@@ -10,5 +10,6 @@
 
 @interface HeFaceCreatZoneVC : HeBaseViewController
 @property(strong,nonatomic)NSString *zonePassword;
+@property(assign,nonatomic)BOOL isContestExtit;
 
 @end

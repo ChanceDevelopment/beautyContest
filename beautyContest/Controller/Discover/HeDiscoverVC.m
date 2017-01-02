@@ -82,7 +82,7 @@
     [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithWhite:143.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [button setBackgroundImage:[Tool buttonImageFromColor:[UIColor whiteColor] withImageSize:button.frame.size] forState:UIControlStateSelected];
+    [button setBackgroundImage:[UIImage imageNamed:@"filterButtonBG"] forState:UIControlStateSelected];
     [button setBackgroundImage:[Tool buttonImageFromColor:sectionHeaderView.backgroundColor withImageSize:button.frame.size] forState:UIControlStateNormal];
     
     return button;

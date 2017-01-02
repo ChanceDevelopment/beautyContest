@@ -473,7 +473,7 @@
             [cover appendString:base64String];
         }
         else {
-            [cover appendFormat:@"%@,%@",cover,base64String];
+            [cover appendFormat:@",%@",base64String];
         }
     }
     

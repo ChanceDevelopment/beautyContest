@@ -89,6 +89,7 @@
 {
     [super viewWillAppear:YES];
     _locService.delegate = self;
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -203,9 +204,38 @@
     distributeItem.target = self;
     self.navigationItem.rightBarButtonItem = distributeItem;
 }
+
+- (void)updateUserPositionWithPosition:(NSDictionary *)positionDict userId:(NSString *)userId
+{
+    NSString *longitude = positionDict[@"longitude"];
+    NSString *latitude = positionDict[@"latitude"];
+    NSDictionary *params = @{@"userId":userId,@"latitude":latitude,@"longitude":longitude};
+    NSString *updateUserPositionUrl = [NSString stringWithFormat:@"%@/user/updateUserPosition.action",BASEURL];
+    
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:updateUserPositionUrl params:params  success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            NSLog(@"update position succeed");
+        }
+        else{
+            NSString *errorInfo = respondDict[@"data"];
+            NSLog(@"update position faild, error info = %@",errorInfo);
+        }
+        
+    } failure:^(NSError *error){
+        NSLog(@"访问服务器出错");
+    }];
+}
+
 //删除临时赛区
 - (void)delTemporary:(NSNotification *)notification
 {
+    [[self rdv_tabBarController] setTabBarHidden:NO animated:YES];
+    
     NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     NSDictionary *params = @{@"userid":userid};
     NSString *requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/delTemporayByUserid.action",BASEURL];
@@ -224,9 +254,8 @@
             }
             //            [self showHint:data];
         }
-        
-        
     } failure:^(NSError *error){
+        NSLog(@"errorInfo = %@",error);
     }];
 }
 
@@ -315,7 +344,7 @@
     [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithWhite:143.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [button setBackgroundImage:[Tool buttonImageFromColor:[UIColor whiteColor] withImageSize:button.frame.size] forState:UIControlStateSelected];
+    [button setBackgroundImage:[UIImage imageNamed:@"filterButtonBG"] forState:UIControlStateSelected];
     [button setBackgroundImage:[Tool buttonImageFromColor:sectionHeaderView.backgroundColor withImageSize:button.frame.size] forState:UIControlStateNormal];
     
     return button;
@@ -417,6 +446,9 @@
         }
         else{
             NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if ([resultArray isMemberOfClass:[NSNull class]]) {
+                resultArray = nil;
+            }
             if (updateOption == 2 && [resultArray count] == 0) {
                 pageNo--;
                 return;
@@ -713,7 +745,7 @@
     cell.detailImage = userHearimageview;
     [cell.bgView addSubview:cell.detailImage];
     
-    id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
+    id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneDeathline"];
     if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
         NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
         zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
@@ -816,6 +848,14 @@
     NSString *latitudeStr = [NSString stringWithFormat:@"%f",coordinate.latitude];
     NSString *longitudeStr = [NSString stringWithFormat:@"%f",coordinate.longitude];
     
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    //更新用户的地理位置
+    NSDictionary *positionDict = @{@"longitude":longitudeStr,@"latitude":latitudeStr};
+    [HeSysbsModel getSysModel].userLocationDict = [[NSDictionary alloc] initWithDictionary:positionDict];
+    [self updateUserPositionWithPosition:positionDict userId:userId];
     
     if (newLocation) {
         locationSucceedNum = locationSucceedNum + 1;

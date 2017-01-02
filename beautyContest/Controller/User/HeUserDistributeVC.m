@@ -92,7 +92,7 @@
     [self pullUpUpdate];
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
-    sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    sectionHeaderView.backgroundColor = [UIColor whiteColor];
     sectionHeaderView.userInteractionEnabled = YES;
     
     NSArray *buttonArray = @[@"推荐",@"赛区"];
@@ -117,7 +117,7 @@
     [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithWhite:143.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(filterButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [button setBackgroundImage:[Tool buttonImageFromColor:[UIColor whiteColor] withImageSize:button.frame.size] forState:UIControlStateSelected];
+    [button setBackgroundImage:[UIImage imageNamed:@"filterButtonBG"] forState:UIControlStateSelected];
     [button setBackgroundImage:[Tool buttonImageFromColor:sectionHeaderView.backgroundColor withImageSize:button.frame.size] forState:UIControlStateNormal];
     
     return button;
@@ -534,7 +534,13 @@
     }
     
     if (!requestReply) {
-        return 270;
+        CGFloat viewX = 10;
+        CGFloat viewY = 10;
+        CGFloat viewW = SCREENWIDTH - 2 * viewX;
+        CGFloat viewH = viewW + 2 * viewY + 70;
+        
+        return viewH;
+        
         NSString *recommendContent = dict[@"recommendContent"];
         if ([recommendContent isMemberOfClass:[NSNull class]] || recommendContent == nil) {
             recommendContent = @"";

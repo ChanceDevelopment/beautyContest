@@ -36,6 +36,7 @@
 #import <Photos/Photos.h>
 #import "TZImageManager.h"
 #import "BrowserView.h"
+#import "HKImageClipperViewController.h"
 
 #define ALERTTAG 200
 #define MinLocationSucceedNum 1   //要求最少成功定位的次数
@@ -255,7 +256,7 @@
     coverImage.frame = CGRectMake(0, 0, SCREENWIDTH, headerHeight);
     coverImage.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     coverImage.userInteractionEnabled = YES;
-    coverImage.layer.masksToBounds = YES;
+//    coverImage.layer.masksToBounds = YES;
 //    coverImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:coverImage];
     
@@ -692,18 +693,7 @@
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_logoImage"]];
     logoImage.frame = CGRectMake(20, 5, 30, 30);
     [shareAlert addSubview:logoImage];
-    
-//    labelY = labelY + labelH + 10;
-//    UILabel *shareTitleLabel = [[UILabel alloc] init];
-//    shareTitleLabel.font = shareFont;
-//    shareTitleLabel.textColor = [UIColor whiteColor];
-//    shareTitleLabel.textAlignment = NSTextAlignmentLeft;
-//    shareTitleLabel.backgroundColor = [UIColor clearColor];
-//    shareTitleLabel.text = @"网评员";
-//    shareTitleLabel.frame = CGRectMake(10, labelY, viewW - 20, labelH);
-//    [shareAlert addSubview:shareTitleLabel];
-    
-    
+
     
     labelY = labelY + labelH + 10;
     UITextField *textview = [[UITextField alloc] init];
@@ -715,7 +705,7 @@
     textview.delegate = self;
     textview.frame = CGRectMake(10, labelY, shareAlert.frame.size.width - 20, labelH);
     textview.layer.borderWidth = 1.0;
-    textview.layer.cornerRadius = 2.0;
+    textview.layer.cornerRadius = 5.0;
     textview.layer.masksToBounds = YES;
     textview.layer.borderColor = [UIColor colorWithWhite:0xcc / 255.0 alpha:1.0].CGColor;
     [shareAlert addSubview:textview];
@@ -837,7 +827,8 @@
             NSData *data = UIImageJPEGRepresentation(imageData,0.2);
             NSData *base64Data = [GTMBase64 encodeData:data];
             NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
-            [cover appendFormat:@"%@,%@",cover,base64String];
+//            cover = [NSString stringWithFormat:@"%@,%@",cover,base64String];
+            [cover appendFormat:@",%@",base64String];
         }
     }
     else{
@@ -859,7 +850,7 @@
                 [zonePassPic appendString:base64String];
             }
             else {
-                [zonePassPic appendFormat:@"%@,%@",zonePassPic,base64String];
+                [zonePassPic appendFormat:@",%@",base64String];
             }
         }
     }
@@ -878,7 +869,7 @@
     NSString *zoneReward = rewardField.text;
     NSNumber *zoneManin = [NSNumber numberWithBool:[[switchDict objectForKey:@"2"] boolValue]];
     NSNumber *zoneWomanin = [NSNumber numberWithBool:[[switchDict objectForKey:@"3"] boolValue]];
-    NSNumber *zoneState	= [NSNumber numberWithInteger:0];
+    NSNumber *zoneState	= [NSNumber numberWithInteger:1];
     
     NSString *zoneLocationY = [userLocationDict objectForKey:@"latitude"];
     if (!zoneLocationY) {
@@ -907,7 +898,7 @@
     }
     NSDictionary *params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState};
     if (distributeAgain) {
-        
+        //修改赛区，重新发布赛区
         NSString *paper = @"";
         NSString *zonePwd = @"";
         NSString *zoneSwith = @"";
@@ -916,15 +907,19 @@
         if ([zoneOld isMemberOfClass:[NSNull class]] || zoneOld == nil) {
             zoneOld = @"";
         }
-        
-        
+    
         params = @{@"zoneOld":zoneOld,@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zonePassPic":zonePassPic,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"paper":paper,@"zonePwd":zonePwd,@"zoneSwith":zoneSwith,@"zoneTeststate":zoneTeststate};
     }
     else{
         if (zonePassword) {
+            //面对面创建赛区，需要验证
             NSString *zonePwd = zonePassword;
             NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
             params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zonePwd":zonePwd,@"zoneTeststate":zoneTeststate};
+        }
+        else{
+            NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
+            params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zoneTeststate":zoneTeststate};
         }
     }
     
@@ -1222,6 +1217,9 @@
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
         //设置可以编辑
         imagePicker.allowsEditing = YES;
+        if (!currentSelectBanner) {
+            imagePicker.allowsEditing = NO;
+        }
         //设置类型为照相机
         imagePicker.sourceType = sourceType;
         //进入照相机画面
@@ -1309,6 +1307,9 @@
     photoAlbumPicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
     //设置可以编辑
     photoAlbumPicker.allowsEditing = YES;
+    if (!currentSelectBanner) {
+        photoAlbumPicker.allowsEditing = NO;
+    }
     //设置类型
     photoAlbumPicker.sourceType = sourceType;
     //进入图片库画面
@@ -1323,32 +1324,59 @@
 {
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     
-    CGSize sizeImage = image.size;
-    float a = [self getSize:sizeImage];
-    if (a > 0) {
-        CGSize size = CGSizeMake(sizeImage.width / a, sizeImage.height / a);
-        image = [self scaleToSize:image size:size];
+    if (currentSelectBanner) {
+        CGSize sizeImage = image.size;
+        float a = [self getSize:sizeImage];
+        if (a > 0) {
+            CGSize size = CGSizeMake(sizeImage.width / a, sizeImage.height / a);
+            image = [self scaleToSize:image size:size];
+        }
+        
+        CGSize imagesize = image.size;
+        CGFloat width = imagesize.width;
+        CGFloat hight = imagesize.height;
+        CGFloat sizewidth = width;
+        if (hight < width) {
+            sizewidth = hight;
+        }
     }
-    
-    CGSize imagesize = image.size;
-    CGFloat width = imagesize.width;
-    CGFloat hight = imagesize.height;
-    CGFloat sizewidth = width;
-    if (hight < width) {
-        sizewidth = hight;
+    else{
+        image = [self turnImageWithInfo:info];
     }
-    
     
     if (!currentSelectBanner) {
-        UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
-        CGRect newframe = CGRectMake(0, 0, 512, 297);
-        UIImage *scaleImage = [self imageFromImage:editedImage inRect:newframe];
         
-        coverImage.image = scaleImage;
-        [picker dismissViewControllerAnimated:YES completion:^{
-            coverImageHaveTake = YES;
-            [coverImage viewWithTag:8888].hidden = YES;
-        }];
+        HKImageClipperViewController *clipperVC = [[HKImageClipperViewController alloc]initWithBaseImg:image
+                                                                                         resultImgSize:coverImage.frame.size clipperType:ClipperTypeImgStay];
+        
+        __weak typeof(self)weakSelf = self;
+        clipperVC.cancelClippedHandler = ^(){
+            [picker dismissViewControllerAnimated:YES completion:nil];
+        };
+        clipperVC.successClippedHandler = ^(UIImage *clippedImage){
+            __strong typeof(self)strongSelf = weakSelf;
+            strongSelf.coverImage.image = clippedImage;
+            //            strongSelf.layerView.layer.contents =(__bridge id _Nullable)(clippedImage.CGImage);
+            //            strongSelf.layerView.contentMode = UIViewContentModeScaleAspectFit;
+            //            strongSelf.layerView.layer.contentsGravity = kCAGravityResizeAspect;
+            [picker dismissViewControllerAnimated:YES completion:^{
+                coverImageHaveTake = YES;
+                [coverImage viewWithTag:8888].hidden = YES;
+            }];
+        };
+        
+        [picker pushViewController:clipperVC animated:YES];
+        
+        
+//        UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
+//        CGRect newframe = CGRectMake(0, 0, 512, 297);
+//        UIImage *scaleImage = [self imageFromImage:editedImage inRect:newframe];
+//        
+//        coverImage.image = scaleImage;
+//        [picker dismissViewControllerAnimated:YES completion:^{
+//            coverImageHaveTake = YES;
+//            [coverImage viewWithTag:8888].hidden = YES;
+//        }];
     }
     else{
         AsynImageView *asyncImage = [[AsynImageView alloc] init];
@@ -1363,6 +1391,24 @@
             [self updateImageBG];
         }];
     }
+}
+
+- (UIImage *)turnImageWithInfo:(NSDictionary<NSString *,id> *)info {
+    UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
+    //类型为 UIImagePickerControllerOriginalImage 时调整图片角度
+    NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
+    if ([type isEqualToString:@"public.image"]) {
+        UIImageOrientation imageOrientation=image.imageOrientation;
+        if(imageOrientation!=UIImageOrientationUp) {
+            // 原始图片可以根据照相时的角度来显示，但 UIImage无法判定，于是出现获取的图片会向左转90度的现象。
+            UIGraphicsBeginImageContext(image.size);
+            [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+            image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+        }
+    }
+    return image;
+    
 }
 
 -(float)getSize:(CGSize)size

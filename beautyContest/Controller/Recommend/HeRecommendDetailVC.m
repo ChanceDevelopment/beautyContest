@@ -87,7 +87,7 @@
 {
     [super viewDidLoad];
     [self initializaiton];
-    [self performSelectorOnMainThread:@selector(initView) withObject:nil waitUntilDone:YES];
+    [self initView];
     [self loadRecommendDetail];
     [self getUserPic];
 }
@@ -347,8 +347,10 @@
     else{
         [bgImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,paperArray[0]]] placeholderImage:bgImage.image];
     }
-    
-    
+}
+
+- (void)addPhotoScrollView
+{
     CGFloat imageX = 0;
     CGFloat imageY = 0;
     CGFloat imageH = photoScrollView.frame.size.height;
@@ -572,10 +574,11 @@
     }
     [self showHudInView:self.tableview hint:@"加载中..."];
     
+    __weak typeof(self) weakSelf = self;
     NSString *requestUrl = [NSString stringWithFormat:@"%@/recommend/recommendUserInfo.action",BASEURL];
     NSDictionary *params = @{@"userId":userId,@"recommendId":recommendId};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
-        [self hideHud];
+        [weakSelf hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
@@ -624,8 +627,9 @@
             if (imageX > userReceivePocketScrollView.frame.size.width) {
                 userReceivePocketScrollView.contentSize = CGSizeMake(imageX, 0);
             }
-            [self updateUserInfo];
-            [self addVideoView];
+            [weakSelf addPhotoScrollView];
+            [weakSelf updateUserInfo];
+            [weakSelf addVideoView];
             [tableview reloadData];
         }
         else{
@@ -633,10 +637,10 @@
             if ([data isMemberOfClass:[NSNull class]] || data == nil) {
                 data = ERRORREQUESTTIP;
             }
-//            [self showHint:data];
+            NSLog(@"errorInfo = %@",data);
         }
     } failure:^(NSError *error){
-        [self showHint:ERRORREQUESTTIP];
+        [weakSelf showHint:ERRORREQUESTTIP];
     }];
 }
 

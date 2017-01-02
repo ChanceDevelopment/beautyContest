@@ -17,6 +17,7 @@
 @property(strong,nonatomic)IBOutlet UIButton *creatButton;
 @property(strong,nonatomic)IBOutlet UIScrollView *scrollView;
 @property(strong,nonatomic)IBOutlet UILabel *passwordLabel;
+@property(strong,nonatomic)NSTimer *myTimer;
 
 @end
 
@@ -26,7 +27,8 @@
 @synthesize creatButton;
 @synthesize scrollView;
 @synthesize passwordLabel;
-
+@synthesize isContestExtit;
+@synthesize myTimer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,7 +54,19 @@
     // Do any additional setup after loading the view from its nib.
     [self initializaiton];
     [self initView];
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(loadJoinZoneUser) userInfo:nil repeats:YES];
+    myTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(loadJoinZoneUser) userInfo:nil repeats:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [myTimer fire];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    [myTimer invalidate];
 }
 
 - (void)initializaiton
@@ -65,10 +79,16 @@
 {
     [super initView];
     passwordLabel.text = self.zonePassword;
+    if (isContestExtit) {
+        creatButton.hidden = YES;
+        [self showHudInView:self.view hint:@"等待发布人发布"];
+    }
 }
 
 - (void)backItemClick:(id)sender
 {
+    //发出通知，退出赛区
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"delTemporaryNotification" object:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -84,7 +104,6 @@
 //    [self showHudInView:self.view hint:@"获取中..."];
     
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestParamDict success:^(AFHTTPRequestOperation* operation,id response){
-        [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
@@ -94,6 +113,13 @@
         }
         id jsonArray = respondDict[@"json"];
         if ([jsonArray isMemberOfClass:[NSNull class]]) {
+            return;
+        }
+        if ([jsonArray isKindOfClass:[NSArray class]] && [jsonArray count] == 0) {
+            //发布人已经创建赛区
+            [self hideHud];
+            [self showHint:@"发布人已创建赛区"];
+            [self performSelector:@selector(backToLastView) withObject:nil afterDelay:1.0];
             return;
         }
         dataSource = [[NSMutableArray alloc] initWithArray:jsonArray];
@@ -173,6 +199,12 @@
     distributeContestVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:distributeContestVC animated:YES];
 }
+
+- (void)backToLastView
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
