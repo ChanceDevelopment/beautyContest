@@ -340,7 +340,8 @@
 - (void)massageButtonClick:(UIButton *)button
 {
     BOOL zoneTeststate = [[switchDict objectForKey:@"4"] boolValue];
-    if (zoneTeststate) {
+    //如果没有参加赛区，而且赛区需要验证，是无法查看评论
+    if (zoneTeststate && myRank == 0) {
         [self showHint:@"该赛区已禁止评论"];
         return;
     }
@@ -358,6 +359,10 @@
 
 - (void)buttonClick:(UIButton *)button
 {
+    if (myRank != 0) {
+        [self showHint:@"该赛区您已参加"];
+        return;
+    }
     BOOL zoneTeststate = [[switchDict objectForKey:@"4"] boolValue];
     if (zoneTeststate) {
         if (ISIOS8) {

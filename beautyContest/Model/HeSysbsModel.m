@@ -18,6 +18,7 @@
         instance = [[self alloc] init];
         instance.user = [[User alloc] init];
         instance.albumArray = [[NSArray alloc] init];
+        instance.waitingConfirmNum = 0;
     });
     return instance;
 }

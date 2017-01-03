@@ -21,6 +21,7 @@
 @property(strong,nonatomic)NSMutableArray *ticketArray;
 @property(strong,nonatomic)NSMutableArray *followArray;
 @property(strong,nonatomic)NSDictionary *userLocationDict;
+@property(assign,nonatomic)NSInteger waitingConfirmNum;
 
 + (HeSysbsModel *)getSysModel;
 

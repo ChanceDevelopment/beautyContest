@@ -563,12 +563,12 @@ BMKMapManager* _mapManager;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+//    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    [application setApplicationIconBadgeNumber:0];
+//    [application setApplicationIconBadgeNumber:0];
     [application cancelAllLocalNotifications];
 }
 
@@ -589,7 +589,7 @@ BMKMapManager* _mapManager;
 {
     // Required
     //IOS6.0上面接收到推送的时候执行的方法
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+//    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [JPUSHService handleRemoteNotification:userInfo];
     NSLog(@"iOS6及以下系统，收到通知:%@", userInfo);
     //    [self performSelector:@selector(receiveNotification:) withObject:userInfo afterDelay:0.5];
@@ -600,7 +600,7 @@ BMKMapManager* _mapManager;
 #ifdef __IPHONE_7_0
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     //IOS7收到推送执行的方法
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+//    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNoData);
     

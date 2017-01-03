@@ -78,6 +78,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
+    pageNo = 0;
     dataSource = [[NSMutableArray alloc] initWithCapacity:0];
     zoneDataSource = [[NSMutableArray alloc] initWithCapacity:0];
     imageCache = [[NSCache alloc] init];
@@ -291,7 +292,7 @@
 - (void)egoRefreshTableFootDidTriggerRefresh:(EGORefreshTableFootView*)view
 {
     updateOption = 2;//加载历史标志
-    pageNo++;
+    pageNo = [dataSource count];
     
     @try {
         
@@ -320,7 +321,7 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {
     updateOption = 1;//刷新加载标志
-    pageNo = 1;
+    pageNo = 0;
     @try {
     }
     @catch (NSException *exception) {

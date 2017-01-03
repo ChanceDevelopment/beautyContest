@@ -105,10 +105,18 @@
             if ([resultArray isMemberOfClass:[NSNull class]]) {
                 return;
             }
+            NSInteger waitingConfirmNum = 0;
             for (NSDictionary *zoneDict in resultArray) {
+                id testState = zoneDict[@"testState"];
+                if ([testState integerValue] == 0) {
+                    waitingConfirmNum++;
+                }
                 [dataSource addObject:zoneDict];
             }
-            [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.3];
+            [HeSysbsModel getSysModel].waitingConfirmNum = waitingConfirmNum;
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:waitingConfirmNum];
+            
+//            [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.3];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableview reloadData];
             });

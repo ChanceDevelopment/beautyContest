@@ -16,6 +16,7 @@
 #import <BaiduMapAPI_Search/BMKGeocodeSearch.h>
 
 @interface HeTabBarVC ()
+@property(strong,nonatomic)NSTimer *myTimer;
 
 @end
 
@@ -38,6 +39,45 @@
     [self getActivityTypeAddress];
     [self autoLogin];
     [self setupSubviews];
+    _myTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(loadConfirmData) userInfo:nil repeats:YES];
+    [_myTimer fire];
+}
+
+- (void)loadConfirmData
+{
+    NSString *requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/TestZoneQueInfo.action",BASEURL];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSDictionary *requestParamDict = @{@"userId":userId};
+   
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestWorkingTaskPath params:requestParamDict success:^(AFHTTPRequestOperation* operation,id response){
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [respondString objectFromJSONString];
+        NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        
+        if (statueCode == REQUESTCODE_SUCCEED){
+            
+            NSArray *resultArray = [respondDict objectForKey:@"json"];
+            if ([resultArray isMemberOfClass:[NSNull class]]) {
+                return;
+            }
+            NSInteger waitingConfirmNum = 0;
+            for (NSDictionary *zoneDict in resultArray) {
+                id testState = zoneDict[@"testState"];
+                if ([testState integerValue] == 0) {
+                    waitingConfirmNum++;
+                }
+                [HeSysbsModel getSysModel].waitingConfirmNum = waitingConfirmNum;
+                [[UIApplication sharedApplication] setApplicationIconBadgeNumber:waitingConfirmNum];
+            }
+            
+        }
+       
+    } failure:^(NSError *error){
+//        [self showHint:ERRORREQUESTTIP];
+    }];
 }
 
 - (void)getUserFans
@@ -292,6 +332,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    if ([_myTimer isValid]) {
+        [_myTimer invalidate];
+    }
+}
 /*
 #pragma mark - Navigation
 

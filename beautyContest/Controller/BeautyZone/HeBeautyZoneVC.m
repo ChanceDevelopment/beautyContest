@@ -219,11 +219,11 @@
         NSDictionary *respondDict = [respondString objectFromJSONString];
         NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         if (errorCode == REQUESTCODE_SUCCEED) {
-            NSLog(@"update position succeed");
+//            NSLog(@"update position succeed");
         }
         else{
             NSString *errorInfo = respondDict[@"data"];
-            NSLog(@"update position faild, error info = %@",errorInfo);
+//            NSLog(@"update position faild, error info = %@",errorInfo);
         }
         
     } failure:^(NSError *error){
