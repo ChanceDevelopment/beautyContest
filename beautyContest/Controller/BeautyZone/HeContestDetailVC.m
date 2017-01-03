@@ -342,7 +342,7 @@
     BOOL zoneTeststate = [[switchDict objectForKey:@"4"] boolValue];
     //如果没有参加赛区，而且赛区需要验证，是无法查看评论
     if (zoneTeststate && myRank == 0) {
-        [self showHint:@"该赛区已禁止评论"];
+        [self showHint:@"您还没参加该赛区，无法进行评论！"];
         return;
     }
     HeContestZoneCommentVC *commentZoneVC = [[HeContestZoneCommentVC alloc] init];
@@ -597,8 +597,8 @@
                 userId = nil;
             }
             
-            if ([zoneTeststate boolValue]) {
-                //如果赛区需要验证
+            if ([zoneTeststate boolValue] && myRank == 0) {
+                //如果赛区需要验证,而且用户还没参加比赛
                 if ([myUserId isEqualToString:userId]) {
                     iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
                 }
@@ -681,8 +681,8 @@
             NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
             //1.赛区的需要验证时，不能评论，且不能访问排行榜以及奖金榜
             //2.赛区的不需要验证时，能评论，且能访问排行榜以及奖金榜
-            if ([zoneTeststate boolValue]) {
-                //如果赛区需要验证
+            if ([zoneTeststate boolValue] && myRank == 0) {
+                //如果赛区需要验证，而且用户还没参加赛区
                 if ([myUserId isEqualToString:userId]) {
                     iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
                 }
@@ -786,6 +786,36 @@
         if (statueCode == REQUESTCODE_SUCCEED){
             id jsonObj = [respondDict objectForKey:@"json"];
             myRank = [jsonObj integerValue];
+            
+            id zoneTeststate = contestDetailDict[@"zoneTeststate"];
+            if ([zoneTeststate isMemberOfClass:[NSNull class]]) {
+                zoneTeststate = @"";
+            }
+            NSString *userId = contestDetailDict[@"userId"]; //发布人的ID
+            if ([userId isMemberOfClass:[NSNull class]]) {
+                userId = nil;
+            }
+            NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+            //1.赛区的需要验证时，不能评论，且不能访问排行榜以及奖金榜
+            //2.赛区的不需要验证时，能评论，且能访问排行榜以及奖金榜
+            if ([zoneTeststate boolValue] && myRank == 0) {
+                //如果赛区需要验证，而且用户还没参加赛区
+                if ([myUserId isEqualToString:userId]) {
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
+                }
+                else{
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green"];
+                }
+            }
+            else{
+                if ([myUserId isEqualToString:userId]) {
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_pay_password",@"icon_glory",@""];
+                }
+                else{
+                    iconDataSource = @[@"",@"icon_time",@"icon_location",@"icon_puter",@"icon_reward_green",@"icon_glory",@""];
+                }
+            }
+            
             [tableview reloadData];
         }
         else{
