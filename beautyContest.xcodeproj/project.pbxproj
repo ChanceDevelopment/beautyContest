@@ -921,6 +921,7 @@
 		EA1627951DA8BCA100B64B18 /* HeBalanceEditVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBalanceEditVC.h; sourceTree = "<group>"; };
 		EA1627961DA8BCA100B64B18 /* HeBalanceEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBalanceEditVC.m; sourceTree = "<group>"; };
 		EA1627971DA8BCA100B64B18 /* HeBalanceEditVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBalanceEditVC.xib; sourceTree = "<group>"; };
+		EA17435E1E1F4AAD0038E805 /* 选美-颜值榜.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "选美-颜值榜.entitlements"; sourceTree = "<group>"; };
 		EA1A03D71DD21B1000C575EC /* icon_reward_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_reward_green.png; sourceTree = "<group>"; };
 		EA1EF1CB1E18953A00849911 /* HKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HKViewController.h; sourceTree = "<group>"; };
 		EA1EF1CC1E18953A00849911 /* HKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HKViewController.m; sourceTree = "<group>"; };
@@ -1996,7 +1997,6 @@
 		EACC98441D50F59400E627B8 /* HeDistributeContestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeDistributeContestVC.m; sourceTree = "<group>"; };
 		EACC98451D50F59400E627B8 /* HeDistributeContestVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeDistributeContestVC.xib; sourceTree = "<group>"; };
 		EAD0B1BE1D4F200D0017C20B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		EADA67C21D8E67AC00ECE722 /* 选美-颜值榜.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "选美-颜值榜.entitlements"; sourceTree = "<group>"; };
 		EADE32D41D76A57C0025492B /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
 		EADE32D51D76A57C0025492B /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
 		EADE32D61D76A57C0025492B /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Location.framework; sourceTree = "<group>"; };
@@ -2992,6 +2992,7 @@
 		EAC2C9021D4AF0E600E282A8 /* beautyContest */ = {
 			isa = PBXGroup;
 			children = (
+				EA17435E1E1F4AAD0038E805 /* 选美-颜值榜.entitlements */,
 				EA4D01831D4D93C600A0CCA1 /* View */,
 				EA0E9CF51D4C258A009CBF64 /* Resource */,
 				EAC2CEBE1D4AF71900E282A8 /* Category */,
@@ -3022,7 +3023,6 @@
 				EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */,
 				07F3AB331DC4B871008AD00E /* userProtocol.html */,
 				07F3AB311DC4B5A0008AD00E /* 用户协议.doc */,
-				EADA67C21D8E67AC00ECE722 /* 选美-颜值榜.entitlements */,
 				EAC2C9041D4AF0E600E282A8 /* main.m */,
 				EAC2C9B21D4AF40F00E282A8 /* appAPIDefine.h */,
 				EAC2C9B11D4AF3FE00E282A8 /* beautyContest-Prefix.pch */,
@@ -4974,7 +4974,7 @@
 				TargetAttributes = {
 					EAC2C8FF1D4AF0E600E282A8 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = E6CUH72B23;
+						DevelopmentTeam = D39C3GJQR6;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -5913,9 +5913,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "beautyContest/选美-颜值榜.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer: jun zhou (ZM3AW8VQ6N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: jun zhou (ZM3AW8VQ6N)";
-				DEVELOPMENT_TEAM = E6CUH72B23;
+				CODE_SIGN_IDENTITY = "iPhone Developer: DeXing Fan (WCRFTD4W56)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: DeXing Fan (WCRFTD4W56)";
+				DEVELOPMENT_TEAM = D39C3GJQR6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5949,8 +5949,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "d8851ef9-561f-4b16-9d61-cc318ea635d3";
-				PROVISIONING_PROFILE_SPECIFIER = 20161025_beautyContest_Development;
+				PROVISIONING_PROFILE = "9a97c59b-4d3f-4edb-ad95-48f5776f54ae";
+				PROVISIONING_PROFILE_SPECIFIER = 20170106_beautyContest_Development;
 			};
 			name = Debug;
 		};
@@ -5960,9 +5960,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "beautyContest/选美-颜值榜.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
-				DEVELOPMENT_TEAM = E6CUH72B23;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Xiumayaohe Network Technology Co., Ltd. (D39C3GJQR6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hangzhou Xiumayaohe Network Technology Co., Ltd. (D39C3GJQR6)";
+				DEVELOPMENT_TEAM = D39C3GJQR6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5996,8 +5996,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "ccfbe67a-ee4a-4a7c-b2c6-8029da4d20b9";
-				PROVISIONING_PROFILE_SPECIFIER = 20161104_beautyContest_Release;
+				PROVISIONING_PROFILE = "f446ae76-7f47-4a95-a9ed-0654f253b04a";
+				PROVISIONING_PROFILE_SPECIFIER = 20170106_beautyContest_Release;
 			};
 			name = Release;
 		};
@@ -6091,9 +6091,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "beautyContest/选美-颜值榜.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hangzhou Chance Network Technology Co.,Ltd (E6CUH72B23)";
-				DEVELOPMENT_TEAM = E6CUH72B23;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Xiumayaohe Network Technology Co., Ltd. (D39C3GJQR6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hangzhou Xiumayaohe Network Technology Co., Ltd. (D39C3GJQR6)";
+				DEVELOPMENT_TEAM = D39C3GJQR6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6127,8 +6127,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "f4acace1-d153-40b3-9d97-1784ed609ff5";
-				PROVISIONING_PROFILE_SPECIFIER = 20161025_beautyContest_Distribution;
+				PROVISIONING_PROFILE = "fb4d878b-31b5-4ea9-902b-e956a6730cb8";
+				PROVISIONING_PROFILE_SPECIFIER = 20170106_beautyContest_Distribution;
 			};
 			name = Distribution;
 		};

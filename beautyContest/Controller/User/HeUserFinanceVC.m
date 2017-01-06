@@ -90,8 +90,8 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    dataSource = @[@[@"充值",@"提现",@"绑定账号",@"支付密码"]];
-    iconDataSource = @[@[@"icon_recharge",@"icon_withdrawals",@"icon_alipay",@"icon_pay_password"]];
+    dataSource = @[@[@"充值",@"提现",@"明细",@"绑定账号",@"支付密码"]];
+    iconDataSource = @[@[@"icon_recharge",@"icon_withdrawals",@"icon_withdrawals_detail",@"icon_alipay",@"icon_pay_password"]];
 //    @"icon_withdrawals_detail",
     userInfo = [[User alloc] initUserWithUser:[HeSysbsModel getSysModel].user];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modifyAlipayAccountSucceed:) name:@"modifyAlipayAccountSucceed" object:nil];
@@ -300,7 +300,7 @@
         
         if (statueCode == REQUESTCODE_SUCCEED){
             self.userBalance = respondDict[@"json"];
-            balanceLabel.text = [NSString stringWithFormat:@"%.2f",[[userBalance objectForKey:@"userBalance"] floatValue]];
+            balanceLabel.text = [NSString stringWithFormat:@"%.2f",[[userBalance objectForKey:@"userBalance"] doubleValue]];
         }
         else{
             NSString *data = respondDict[@"data"];
@@ -446,6 +446,15 @@
             switch (row) {
                 case 0:
                 {
+                    NSString *userAlipay = userBalance[@"userAlipay"];
+                    if ([userAlipay isMemberOfClass:[NSNull class]] || userAlipay == nil) {
+                        userAlipay = @"";
+                    }
+                    if ([userAlipay isEqualToString:@""]) {
+                        //账号绑定
+                        [self showHint:@"请先绑定支付宝账号"];
+                        return;
+                    }
                     //充值
                     HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
                     recharegeVC.banlanceType = Balance_Edit_Recharge;
@@ -456,7 +465,16 @@
                 case 1:
                 {
                     //提现
-                    CGFloat maxWithDrawMoney = [[userBalance objectForKey:@"userBalance"] floatValue];
+                    id userPayPwd = userBalance[@"userPayPwd"];
+                    if ([userPayPwd isMemberOfClass:[NSNull class]] || userPayPwd == nil) {
+                        userPayPwd = @"";
+                    }
+                    if (![userPayPwd boolValue]) {
+                        //设置密码
+                        [self showHint:@"请先设置支付密码"];
+                        return;
+                    }
+                    CGFloat maxWithDrawMoney = [[userBalance objectForKey:@"userBalance"] doubleValue];
                     HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
                     recharegeVC.banlanceType = Balance_Edit_Withdraw;
                     recharegeVC.maxWithDrawMoney = maxWithDrawMoney;
@@ -464,15 +482,15 @@
                     [self.navigationController pushViewController:recharegeVC animated:YES];
                     break;
                 }
-//                case 2:
-//                {
-//                    //明细
-//                    HeBalanceDetailVC *balanceDetailVC = [[HeBalanceDetailVC alloc] init];
-//                    balanceDetailVC.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:balanceDetailVC animated:YES];
-//                    break;
-//                }
                 case 2:
+                {
+                    //明细
+                    HeBalanceDetailVC *balanceDetailVC = [[HeBalanceDetailVC alloc] init];
+                    balanceDetailVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:balanceDetailVC animated:YES];
+                    break;
+                }
+                case 3:
                 {
                     //账号绑定
                     HeBalanceEditVC *recharegeVC = [[HeBalanceEditVC alloc] init];
@@ -482,7 +500,7 @@
                     [self.navigationController pushViewController:recharegeVC animated:YES];
                     break;
                 }
-                case 3:
+                case 4:
                 {
                     //支付密码
                     HeModifyPayPasswordVC *modifyPasswordVC = [[HeModifyPayPasswordVC alloc] init];

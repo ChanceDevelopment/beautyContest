@@ -81,6 +81,9 @@
             label.text = @"提现";
             [label sizeToFit];
             self.title = @"提现";
+            if (maxWithDrawMoney > 2000) {
+                maxWithDrawMoney = 2000;
+            }
             editField.placeholder = [NSString stringWithFormat:@"本次最多可提现%.2f元",maxWithDrawMoney];
             tipLabel.hidden = NO;
             editField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
@@ -182,7 +185,7 @@
     if (!userId) {
         userId = @"";
     }
-    NSString *moneyStr = @"0.1";
+    NSString *moneyStr = [NSString stringWithFormat:@"%.2f",money];
     NSDictionary *requestMessageParams = @{@"userId":userId,@"money":moneyStr};
     [self showHudInView:self.view hint:@"充值中..."];
     
