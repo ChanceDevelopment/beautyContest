@@ -1973,9 +1973,9 @@
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *newLocation = [locations objectAtIndex:0];
-    CLLocationCoordinate2D coordinate1 = newLocation.coordinate;
+    CLLocationCoordinate2D coordinate = newLocation.coordinate;
     
-    CLLocationCoordinate2D coordinate = [self returnBDPoi:coordinate1];
+//    CLLocationCoordinate2D coordinate = [self returnBDPoi:coordinate1];
     NSString *latitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.latitude];
     NSString *longitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.longitude];
     

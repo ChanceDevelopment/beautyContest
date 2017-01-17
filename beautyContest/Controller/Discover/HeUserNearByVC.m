@@ -132,9 +132,9 @@
 {
     //NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
     CLLocation *newLocation = userLocation.location;
-    CLLocationCoordinate2D coordinate1 = newLocation.coordinate;
+    CLLocationCoordinate2D coordinate = newLocation.coordinate;
     
-    CLLocationCoordinate2D coordinate = [self returnBDPoi:coordinate1];
+//    CLLocationCoordinate2D coordinate = [self returnBDPoi:coordinate1];
     NSString *latitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.latitude];
     NSString *longitudeStr = [NSString stringWithFormat:@"%.6f",coordinate.longitude];
     
