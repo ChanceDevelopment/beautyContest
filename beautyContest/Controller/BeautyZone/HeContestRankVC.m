@@ -65,6 +65,7 @@
     [self initializaiton];
     [self initView];
     if ([topWomanRank count] == 0) {
+        [self showHudInView:self.view hint:@"加载中..."];
         [self getWomanRank];
     }
 }
@@ -119,20 +120,27 @@
 
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
 {
-    if ([eventName isEqualToString:@"favButtonClick"]) {
+    if ([eventName isEqualToString:@"favButtonClick"] || [eventName isEqualToString:@"notfavButtonClick"]) {
+        if ([dataSource count] <= 3) {
+            [self showHint:@"参赛人数太少，无法顶踩"];
+            return;
+        }
         NSString *userId = userInfo[@"userId"];
         if (userId == nil) {
             userId = @"";
         }
-        NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-        if (![myUserId isEqualToString:userId]) {
-            return;
-        }
+//        NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+//        if (![myUserId isEqualToString:userId]) {
+//            return;
+//        }
         NSString *voteZone = contestDict[@"zoneId"];
         if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
             voteZone = @"";
         }
         NSString *requestUrl = [NSString stringWithFormat:@"%@/vote/flopOne.action",BASEURL];
+        if ([eventName isEqualToString:@"favButtonClick"]) {
+            requestUrl = [NSString stringWithFormat:@"%@/vote/upOne.action",BASEURL];
+        }
         NSDictionary *params = @{@"selectedZone":voteZone,@"selectedUser":userId};
         [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
             [self hideHud];
@@ -141,7 +149,19 @@
             NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
             
             if (statueCode == REQUESTCODE_SUCCEED){
-                [self showHint:@"成功锤一位"];
+                
+                if ([eventName isEqualToString:@"notfavButtonClick"]) {
+                    [self showHint:@"成功踩一位"];
+                }
+                else{
+                    [self showHint:@"成功顶一位"];
+                }
+                if (requestReply) {
+                    [self getManTopRank];
+                }
+                else{
+                    [self getWomanRank];
+                }
             }
             else{
                 NSString *data = [respondDict objectForKey:@"data"];
@@ -160,7 +180,7 @@
 
 - (void)getManTopRank
 {
-    [self showHudInView:self.view hint:@"加载中..."];
+    
     NSString *voteZone = contestDict[@"zoneId"];
     if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
         voteZone = @"";
@@ -198,7 +218,7 @@
 
 - (void)getWomanRank
 {
-    [self showHudInView:self.view hint:@"加载中..."];
+//    [self showHudInView:self.view hint:@"加载中..."];
     NSString *voteZone = contestDict[@"zoneId"];
     if ([voteZone isMemberOfClass:[NSNull class]] || voteZone == nil) {
         voteZone = @"";
@@ -261,18 +281,18 @@
     if (button.tag == 100) {
         requestReply = NO;
     }
-    if (button.tag == 100 && [topManRank count] == 0) {
+    if (button.tag == 100 && [topWomanRank count] == 0) {
         [self getWomanRank];
     }
-    else if (button.tag == 101 && [topWomanRank count] == 0){
+    else if (button.tag == 101 && [topManRank count] == 0){
         [self getManTopRank];
     }
     else if (button.tag == 100){
-        dataSource = [[NSMutableArray alloc] initWithArray:topManRank];
+        dataSource = [[NSMutableArray alloc] initWithArray:topWomanRank];
         [tableview reloadData];
     }
     else if (button.tag == 101){
-        dataSource = [[NSMutableArray alloc] initWithArray:topWomanRank];
+        dataSource = [[NSMutableArray alloc] initWithArray:topManRank];
         [tableview reloadData];
     }
 }
@@ -475,17 +495,24 @@
     if ([userId isMemberOfClass:[NSNull class]]) {
         userId = @"";
     }
-    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
-    if (![myUserId isEqualToString:userId]) {
-        //按钮不能显示在非发布用户的页面中
+    if (row < 3) {
+        cell.noFavButton.hidden = NO;
         cell.favButton.hidden = YES;
     }
     else{
+        cell.noFavButton.hidden = YES;
         cell.favButton.hidden = NO;
     }
+    cell.rankLabel.text = [NSString stringWithFormat:@"%ld",row];
+//    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+//    if (![myUserId isEqualToString:userId]) {
+//        //按钮不能显示在非发布用户的页面中
+//        cell.favButton.hidden = YES;
+//    }
+//    else{
+//        cell.favButton.hidden = NO;
+//    }
     if (!self.isUserRank) {
-        cell.favButton.hidden = YES;
-        
         id prizeMoneyObj = dict[@"prizeMoney"];
         if ([prizeMoneyObj isMemberOfClass:[NSNull class]]) {
             prizeMoneyObj = @"";

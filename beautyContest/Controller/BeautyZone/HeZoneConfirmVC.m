@@ -390,6 +390,12 @@
     }
     cell.contentLabel.text = [NSString stringWithFormat:@"申请加入赛区: %@",zoneTitle];
     
+    NSString *testUpdatetimedate = zoneDict[@"testUpdatetimedate"];
+    if ([testUpdatetimedate isMemberOfClass:[NSNull class]] || testUpdatetimedate == nil) {
+        testUpdatetimedate = @"";
+    }
+    cell.markLabel.text = [NSString stringWithFormat:@"备注信息：%@",testUpdatetimedate];
+
     id testState = zoneDict[@"testState"];
     if ([testState isMemberOfClass:[NSNull class]]) {
         testState = @"1";
@@ -414,7 +420,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 90;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

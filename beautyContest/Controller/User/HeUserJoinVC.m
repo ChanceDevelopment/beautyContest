@@ -14,6 +14,7 @@
 #import "DropDownListView.h"
 #import "HeDistributeContestVC.h"
 #import "HeUserJoinCell.h"
+#import "HeUserNewJoinCell.h"
 
 #define TextLineHeight 1.2f
 
@@ -438,9 +439,9 @@
         
     }
     
-    HeBeautyContestTableCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeUserNewJoinCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeBeautyContestTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell = [[HeUserNewJoinCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
@@ -501,107 +502,44 @@
     cell.tipLabel.text = [NSString stringWithFormat:@"$%.2f",[zoneReward floatValue]];
     cell.timeLabel.text = time;
     
+    id timeLeftObj = zoneDict[@"timeLeft"];
+    
+    NSString *timeTip = @"赛区马上截止";
+    if ([timeLeftObj floatValue] <= 0) {
+        timeTip = @"赛区已经截止";
+    }
+    
+    //秒
+    CGFloat timeLeft_second = [timeLeftObj integerValue] / 1000.0;
+    if (timeLeft_second < 60.0) {
+        timeTip = @"赛区马上截止";
+    }
+    else{
+        timeLeft_second = timeLeft_second / 60.0;
+    }
+    
+    if (timeLeft_second < 60.0) {
+        timeTip = [NSString stringWithFormat:@"%d分钟后赛区截止",(int)ceil(timeLeft_second) - 1];
+    }
+    else{
+        timeLeft_second = timeLeft_second / 60.0;
+    }
+    
+    if (timeLeft_second < 60.0) {
+        timeTip = [NSString stringWithFormat:@"%d小时后赛区截止",(int)ceil(timeLeft_second) - 1];
+    }
+    else{
+        timeLeft_second = timeLeft_second / 24.0;
+        timeTip = [NSString stringWithFormat:@"%d天后赛区截止",(int)ceil(timeLeft_second) - 1];
+    }
+    cell.distanceTimeLabel.text = timeTip;
+    
     return cell;
-//    NSInteger row = indexPath.row;
-//    
-//    static NSString *cellIndentifier = @"HeUserJoinCell";
-//    CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
-//    NSDictionary *zoneDict = nil;
-//    @try {
-//        zoneDict = [dataSource objectAtIndex:row];
-//    }
-//    @catch (NSException *exception) {
-//        
-//    }
-//    @finally {
-//        
-//    }
-//    
-//    HeUserJoinCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
-//    if (!cell) {
-//        cell = [[HeUserJoinCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        cell.accessoryType = UITableViewCellAccessoryNone;
-//    }
-//    
-//    id zoneTitle = [zoneDict objectForKey:@"zoneTitle"];
-//    if ([zoneTitle isMemberOfClass:[NSNull class]]) {
-//        zoneTitle = @"";
-//    }
-//    cell.topicLabel.text = zoneTitle;
-//    
-//    id zoneAddress = [zoneDict objectForKey:@"zoneAddress"];
-//    if ([zoneAddress isMemberOfClass:[NSNull class]]) {
-//        zoneAddress = @"";
-//    }
-//    cell.addressLabel.text = zoneAddress;
-//    
-//    NSString *zoneCover = [zoneDict objectForKey:@"zoneCover"];
-//    if ([zoneCover isMemberOfClass:[NSNull class]]) {
-//        zoneCover = @"";
-//    }
-//    NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
-//    if (zoneCoverArray) {
-//        zoneCover = zoneCoverArray[0];
-//    }
-//    zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
-//    UIImageView *imageview = [imageCache objectForKey:zoneCover];
-//    if (!imageview) {
-//        [cell.bgImage sd_setImageWithURL:[NSURL URLWithString:zoneCover] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
-//        imageview = cell.bgImage;
-//    }
-//    cell.bgImage = imageview;
-//    [cell addSubview:cell.bgImage];
-//    
-//    
-//    id zoneCreatetimeObj = [zoneDict objectForKey:@"zoneCreatetime"];
-//    if ([zoneCreatetimeObj isMemberOfClass:[NSNull class]] || zoneCreatetimeObj == nil) {
-//        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
-//        zoneCreatetimeObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
-//    }
-//    long long timestamp = [zoneCreatetimeObj longLongValue];
-//    NSString *zoneCreatetime = [NSString stringWithFormat:@"%lld",timestamp];
-//    if ([zoneCreatetime length] > 3) {
-//        //时间戳
-//        zoneCreatetime = [zoneCreatetime substringToIndex:[zoneCreatetime length] - 3];
-//    }
-//    
-//    
-//    id zoneDeathlineObj = [zoneDict objectForKey:@"zoneDeathline"];
-//    if ([zoneDeathlineObj isMemberOfClass:[NSNull class]] || zoneDeathlineObj == nil) {
-//        NSTimeInterval  timeInterval = [[NSDate date] timeIntervalSince1970];
-//        zoneDeathlineObj = [NSString stringWithFormat:@"%.0f000",timeInterval];
-//    }
-//    long long zoneDeathlinetimestamp = [zoneDeathlineObj longLongValue];
-//    NSString *zoneDeathlinezoneCreatetime = [NSString stringWithFormat:@"%lld",zoneDeathlinetimestamp];
-//    if ([zoneDeathlinezoneCreatetime length] > 3) {
-//        //时间戳
-//        zoneDeathlinezoneCreatetime = [zoneDeathlinezoneCreatetime substringToIndex:[zoneDeathlinezoneCreatetime length] - 3];
-//    }
-//    
-//    
-//    NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
-//    
-//    NSString *endtime = [Tool convertTimespToString:[zoneDeathlinezoneCreatetime longLongValue] dateFormate:@"YYYY年MM月dd日 HH:mm"];
-//    cell.timeLabel.text = [NSString stringWithFormat:@"%@ - %@",time,endtime];
-//    
-//    return cell;
 }
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    return sectionHeaderView;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return sectionHeaderView.frame.size.height;
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return 150;
-    return 250;
+    return 270;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -624,13 +562,6 @@
     contestDetailVC.contestBaseDict = [[NSDictionary alloc] initWithDictionary:zoneDict];
     contestDetailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:contestDetailVC animated:YES];
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    NSInteger row = indexPath.row;
-//    NSInteger section = indexPath.section;
-//    return;
-//    HeContestDetailVC *contestDetailVC = [[HeContestDetailVC alloc] init];
-//    contestDetailVC.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:contestDetailVC animated:YES];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchbar

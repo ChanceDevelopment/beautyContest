@@ -32,7 +32,9 @@
 #define TextLineHeight 1.2f
 #define BGTAG 100
 
-@interface HeContestDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol,UIAlertViewDelegate>
+#define ALERTTAG 200
+
+@interface HeContestDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol,UIAlertViewDelegate,UITextFieldDelegate>
 {
     BOOL requestReply; //是否已经完成
     NSInteger myRank;
@@ -47,6 +49,8 @@
 @property(strong,nonatomic)NSMutableDictionary *switchDict;
 @property(strong,nonatomic)UIScrollView *myScrollView;
 @property(strong,nonatomic)NSMutableArray *bannerImageDataSource;
+
+@property(strong,nonatomic)UIView *dismissView;
 
 @end
 
@@ -63,6 +67,7 @@
 @synthesize myScrollView;
 @synthesize bannerImageDataSource;
 @synthesize myzoneId;
+@synthesize dismissView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -182,6 +187,15 @@
     
     myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 300)];
 
+    dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, [UIScreen mainScreen].bounds.size.height)];
+    dismissView.backgroundColor = [UIColor blackColor];
+    dismissView.hidden = YES;
+    dismissView.alpha = 0.7;
+    [self.view addSubview:dismissView];
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissViewGes:)];
+    tapGes.numberOfTapsRequired = 1;
+    tapGes.numberOfTouchesRequired = 1;
+    [dismissView addGestureRecognizer:tapGes];
 }
 
 - (void)moreItemClick:(id)sender
@@ -293,7 +307,7 @@
         }
     }
     else if (alertView.tag == 300 && buttonIndex == 1){
-        [self sendTest];
+//        [self sendTest];
     }
 }
 
@@ -365,18 +379,22 @@
     }
     BOOL zoneTeststate = [[switchDict objectForKey:@"4"] boolValue];
     if (zoneTeststate) {
+        [self inputPayPassword];
+        return;
+        
         if (ISIOS8) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"该赛区需发布人验证才能参加" preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"该赛区需发布人验证才能参加，请输入验证信息" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
             UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-                [self sendTest];
+//                [self sendTest];
             }];
             [alertController addAction:cancelAction];
             [alertController addAction:sureAction];
             [self presentViewController:alertController animated:YES completion:nil];
             return;
         }
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该赛区需发布人验证才能参加" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该赛区需发布人验证才能参加，请输入验证信息" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
         alertView.tag = 200;
         [alertView show];
         return;
@@ -418,7 +436,7 @@
 }
 
 //发出赛区验证消息
-- (void)sendTest
+- (void)sendTestWithMark:(NSString *)mark
 {
     NSString *requestUrl = [NSString stringWithFormat:@"%@/zone/TestZone.action",BASEURL];
     NSString *testuserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
@@ -433,7 +451,8 @@
     if ([testzoneId isMemberOfClass:[NSNull class]] || testzoneId == nil) {
         testzoneId = @"";
     }
-    NSDictionary *params = @{@"testuserId":testuserId,@"zoneuserId":zoneuserId,@"testzoneId":testzoneId};
+    NSString *testContest = mark;
+    NSDictionary *params = @{@"testuserId":testuserId,@"zoneuserId":zoneuserId,@"testzoneId":testzoneId,@"testContest":testContest};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
         [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
@@ -1281,6 +1300,152 @@
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (void)dismissViewGes:(UITapGestureRecognizer *)ges
+{
+    
+    UIView *mydismissView = ges.view;
+    mydismissView.hidden = YES;
+    
+    UIView *alertview = [self.view viewWithTag:ALERTTAG];
+    
+    [alertview removeFromSuperview];
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    if ([textView isFirstResponder]) {
+        [textView resignFirstResponder];
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isFirstResponder]) {
+        [textField resignFirstResponder];
+    }
+    return YES;
+}
+
+- (void)inputPayPassword
+{
+    [self.view addSubview:dismissView];
+    dismissView.hidden = NO;
+    
+    CGFloat viewX = 10;
+    CGFloat viewY = 100;
+    CGFloat viewW = SCREENWIDTH - 2 * viewX;
+    CGFloat viewH = 150;
+    UIView *shareAlert = [[UIView alloc] init];
+    shareAlert.frame = CGRectMake(viewX, viewY, viewW, viewH);
+    shareAlert.backgroundColor = [UIColor whiteColor];
+    shareAlert.layer.cornerRadius = 5.0;
+    shareAlert.layer.borderWidth = 0;
+    shareAlert.layer.masksToBounds = YES;
+    shareAlert.tag = ALERTTAG;
+    shareAlert.layer.borderColor = [UIColor clearColor].CGColor;
+    shareAlert.userInteractionEnabled = YES;
+    
+    CGFloat labelH = 40;
+    CGFloat labelY = 0;
+    
+    UIFont *shareFont = [UIFont systemFontOfSize:13.0];
+    
+    UILabel *messageTitleLabel = [[UILabel alloc] init];
+    messageTitleLabel.font = shareFont;
+    messageTitleLabel.textColor = [UIColor blackColor];
+    messageTitleLabel.textAlignment = NSTextAlignmentCenter;
+    messageTitleLabel.backgroundColor = [UIColor clearColor];
+    messageTitleLabel.text = @"该赛区需发布人验证才能加入，请输入备注信息";
+    messageTitleLabel.frame = CGRectMake(0, 0, viewW, labelH);
+    [shareAlert addSubview:messageTitleLabel];
+    
+    UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_logoImage"]];
+    logoImage.frame = CGRectMake(20, 5, 30, 30);
+    [shareAlert addSubview:logoImage];
+    
+    
+    labelY = labelY + labelH + 10;
+    UITextField *textview = [[UITextField alloc] init];
+    textview.tag = 10;
+    textview.backgroundColor = [UIColor whiteColor];
+    textview.placeholder = @"请填写备注信息";
+    textview.font = shareFont;
+    textview.delegate = self;
+    textview.frame = CGRectMake(10, labelY, shareAlert.frame.size.width - 20, labelH);
+    textview.layer.borderWidth = 1.0;
+    textview.layer.cornerRadius = 5.0;
+    textview.layer.masksToBounds = YES;
+    textview.layer.borderColor = [UIColor colorWithWhite:0xcc / 255.0 alpha:1.0].CGColor;
+    [shareAlert addSubview:textview];
+    
+    CGFloat buttonDis = 10;
+    CGFloat buttonW = (viewW - 3 * buttonDis) / 2.0;
+    CGFloat buttonH = 40;
+    CGFloat buttonY = labelY = labelY + labelH + 10;
+    CGFloat buttonX = 10;
+    
+    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonW, buttonH)];
+    [shareButton setTitle:@"确定" forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(alertbuttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    shareButton.tag = 1;
+    [shareButton.titleLabel setFont:shareFont];
+//    [shareButton setBackgroundColor:APPDEFAULTORANGE];
+//    [shareButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:shareButton.frame.size] forState:UIControlStateHighlighted];
+    [shareButton setTitleColor:APPDEFAULTORANGE forState:UIControlStateNormal];
+    [shareAlert addSubview:shareButton];
+    
+    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonX + buttonDis + buttonW, buttonY, buttonW, buttonH)];
+    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(alertbuttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    cancelButton.tag = 0;
+    [cancelButton.titleLabel setFont:shareFont];
+//    [cancelButton setBackgroundColor:APPDEFAULTORANGE];
+//    [cancelButton setBackgroundImage:[Tool buttonImageFromColor:APPDEFAULTORANGE withImageSize:cancelButton.frame.size] forState:UIControlStateHighlighted];
+    [cancelButton setTitleColor:APPDEFAULTORANGE forState:UIControlStateNormal];
+    [shareAlert addSubview:cancelButton];
+    
+    CAKeyframeAnimation *popAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    popAnimation.duration = 0.4;
+    popAnimation.values = @[[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.01f, 0.01f, 1.0f)],
+                            [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.1f, 1.1f, 1.0f)],
+                            [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.9f, 0.9f, 1.0f)],
+                            [NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    popAnimation.keyTimes = @[@0.2f, @0.5f, @0.75f, @1.0f];
+    popAnimation.timingFunctions = @[[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
+                                     [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
+                                     [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [shareAlert.layer addAnimation:popAnimation forKey:nil];
+    [self.view addSubview:shareAlert];
+}
+
+- (void)alertbuttonClick:(UIButton *)button
+{
+    UIView *mydismissView = dismissView;
+    mydismissView.hidden = YES;
+    
+    UIView *alertview = [self.view viewWithTag:ALERTTAG];
+    
+    UIView *subview = [alertview viewWithTag:10];
+    if (button.tag == 0) {
+        [alertview removeFromSuperview];
+        return;
+    }
+    UITextField *textview = nil;
+    if ([subview isMemberOfClass:[UITextField class]]) {
+        textview = (UITextField *)subview;
+    }
+    NSString *password = textview.text;
+    [alertview removeFromSuperview];
+    if (password == nil || [password isEqualToString:@""]) {
+        
+        [self showHint:@"请输入备注信息"];
+        return;
+    }
+    [self sendTestWithMark:password];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

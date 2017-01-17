@@ -17,6 +17,8 @@
 @synthesize favButton;
 @synthesize userInfo;
 @synthesize prizeMoneyLabel;
+@synthesize rankLabel;
+@synthesize noFavButton;
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -29,7 +31,22 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier cellSize:cellsize];
     if (self) {
-        CGFloat imageX = 10;
+        
+        CGFloat rankLabelX = 5;
+        CGFloat rankLabelY = 0;
+        CGFloat rankLabelW = 30;
+        CGFloat rankLabelH = cellsize.height;
+        rankLabel = [[UILabel alloc] init];
+        rankLabel.frame = CGRectMake(rankLabelX, rankLabelY, rankLabelW, rankLabelH);
+        rankLabel.backgroundColor = [UIColor clearColor];
+        rankLabel.textColor = [UIColor blackColor];
+        rankLabel.font = [UIFont systemFontOfSize:15.0];
+        rankLabel.text = @"Tony";
+        rankLabel.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:rankLabel];
+        
+        
+        CGFloat imageX = 40;
         CGFloat imageY = 15;
         CGFloat imageH = cellsize.height - 2 * imageY;
         CGFloat imageW = imageH;
@@ -68,15 +85,30 @@
         
         favButton = [[UIButton alloc] init];
         favButton.frame = CGRectMake(favX, favY, favW, favH);
-        [favButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor orangeColor] withImageSize:favButton.frame.size] forState:UIControlStateNormal];
+        [favButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor colorWithRed:245 / 255.0 green:154 / 255.0 blue:42 / 255.0 alpha:1] withImageSize:favButton.frame.size] forState:UIControlStateNormal];
         favButton.titleLabel.font = [UIFont systemFontOfSize:13.5];
-        [favButton setTitle:@"锤一位" forState:UIControlStateNormal];
+        [favButton setTitle:@"顶一位" forState:UIControlStateNormal];
         [favButton.titleLabel setTextColor:[UIColor whiteColor]];
         [favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         favButton.layer.cornerRadius = 3.0;
         favButton.layer.masksToBounds = YES;
+        favButton.tag = 1;
         [favButton addTarget:self action:@selector(favButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:favButton];
+        
+        noFavButton = [[UIButton alloc] init];
+        noFavButton.frame = CGRectMake(favX, favY, favW, favH);
+        [noFavButton setBackgroundImage:[Tool buttonImageFromColor:[UIColor colorWithRed:245 / 255.0 green:154 / 255.0 blue:42 / 255.0 alpha:1] withImageSize:favButton.frame.size] forState:UIControlStateNormal];
+        noFavButton.titleLabel.font = [UIFont systemFontOfSize:13.5];
+        [noFavButton setTitle:@"踩一位" forState:UIControlStateNormal];
+        [noFavButton.titleLabel setTextColor:[UIColor whiteColor]];
+        noFavButton.tag = 2;
+        [noFavButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        noFavButton.layer.cornerRadius = 3.0;
+        noFavButton.layer.masksToBounds = YES;
+        [noFavButton addTarget:self action:@selector(favButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        noFavButton.hidden = YES;
+        [self addSubview:noFavButton];
         
         
         CGFloat prizeMoneyY = 0;
@@ -96,9 +128,16 @@
     return self;
 }
 
-- (void)favButtonClick:(id)sender
+- (void)favButtonClick:(UIButton *)sender
 {
-    [self routerEventWithName:@"favButtonClick" userInfo:userInfo];
+    if (sender.tag == 1) {
+        //顶一位
+        [self routerEventWithName:@"favButtonClick" userInfo:userInfo];
+    }
+    else{
+        [self routerEventWithName:@"notfavButtonClick" userInfo:userInfo];
+    }
+    
 }
 
 @end

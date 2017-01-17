@@ -109,7 +109,8 @@
     pageNo = 0;
     updateOption = 1;
     
-    orderType = 0;
+    //默认距离排序
+    orderType = 2;
     
     chooseArray = [[NSMutableArray alloc] initWithCapacity:0];
     
@@ -149,7 +150,7 @@
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
     
-    NSArray *defaultArray = @[@"赏金",@"热度",@"距离"];
+    NSArray *defaultArray = @[@"距离",@"热度",@"赏金"];
     DropDownListView *timedropDownView = [[DropDownListView alloc] initWithFrame:CGRectMake(0,0, SCREENWIDTH, sectionHeaderView.frame.size.height) dataSource:self delegate:self defaultTitleArray:defaultArray];
     if (!ISIOS7) {
         timedropDownView.frame = CGRectMake(0,0, SCREENWIDTH, sectionHeaderView.frame.size.height);
@@ -389,12 +390,14 @@
         }
         case 1:
         {
+            //热度
             requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/ZoneHotRank.action",BASEURL];
             requestMessageParams = @{@"start":pageNum};
             break;
         }
         case 2:
         {
+            //距离
             requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/selectZoneByDistance.action",BASEURL];
             
             break;
@@ -495,7 +498,7 @@
     switch (section) {
         case 0:
         {
-            orderType = 0;
+            orderType = 2;
             break;
         }
         case 1:{
@@ -503,7 +506,7 @@
             break;
         }
         case 2:{
-            orderType = 2;
+            orderType = 0;
             break;
         }
         default:
@@ -521,7 +524,7 @@
     switch (section) {
         case 0:
         {
-            orderType = 0;
+            orderType = 2;
             break;
         }
         case 1:{
@@ -529,7 +532,7 @@
             break;
         }
         case 2:{
-            orderType = 2;
+            orderType = 0;
             break;
         }
         default:

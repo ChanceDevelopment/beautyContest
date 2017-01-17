@@ -12,6 +12,7 @@
 @property(strong,nonatomic)UIImageView *userImage;
 @property(strong,nonatomic)UILabel *nameLabel;
 @property(strong,nonatomic)UILabel *contentLabel;
+@property(strong,nonatomic)UILabel *markLabel;
 @property(strong,nonatomic)UIButton *agreeButton;
 @property(strong,nonatomic)UIButton *rejectButton;
 @property(strong,nonatomic)NSDictionary *confirmDict;

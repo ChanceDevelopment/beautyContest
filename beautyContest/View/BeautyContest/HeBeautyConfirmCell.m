@@ -16,6 +16,7 @@
 @synthesize stateLabel;
 @synthesize agreeButton;
 @synthesize rejectButton;
+@synthesize markLabel;
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -48,7 +49,7 @@
         
         CGFloat nameX = CGRectGetMaxX(userImage.frame) + 5;
         CGFloat nameY = imageY;
-        CGFloat nameH = imageH / 2.0;
+        CGFloat nameH = imageH / 3.0;
         CGFloat nameW = SCREENWIDTH - nameX - 70;
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(nameX, nameY, nameW, nameH)];
         nameLabel.backgroundColor = [UIColor clearColor];
@@ -59,7 +60,7 @@
         
         CGFloat contentX = CGRectGetMaxX(userImage.frame) + 5;
         CGFloat contentY = CGRectGetMaxY(nameLabel.frame);
-        CGFloat contentH = imageH / 2.0;
+        CGFloat contentH = imageH / 3.0;
         CGFloat contentW = SCREENWIDTH - contentX - 80;
         contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
         contentLabel.backgroundColor = [UIColor clearColor];
@@ -67,6 +68,18 @@
         contentLabel.font = [UIFont systemFontOfSize:13.0];
         contentLabel.text = @"内容";
         [self addSubview:contentLabel];
+        
+        CGFloat markLabelX = CGRectGetMaxX(userImage.frame) + 5;
+        CGFloat markLabelY = CGRectGetMaxY(contentLabel.frame);
+        CGFloat markLabelH = imageH / 3.0;
+        CGFloat markLabelW = SCREENWIDTH - contentX - 80;
+        markLabel = [[UILabel alloc] initWithFrame:CGRectMake(markLabelX, markLabelY, markLabelW, markLabelH)];
+        markLabel.backgroundColor = [UIColor clearColor];
+        markLabel.textColor = [UIColor blackColor];
+        markLabel.font = [UIFont systemFontOfSize:13.0];
+        markLabel.text = @"内容";
+        [self addSubview:markLabel];
+        
         
         CGFloat agreeH = 30;
         CGFloat agreeY = cellsize.height / 2.0 - agreeH - 5;
