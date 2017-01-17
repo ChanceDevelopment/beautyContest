@@ -6002,8 +6002,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "f446ae76-7f47-4a95-a9ed-0654f253b04a";
-				PROVISIONING_PROFILE_SPECIFIER = 20170106_beautyContest_Release;
+				PROVISIONING_PROFILE = "4094a4c5-7f52-49b8-8137-4169344215fb";
+				PROVISIONING_PROFILE_SPECIFIER = 20170118_beautyContest_Release;
 			};
 			name = Release;
 		};
@@ -6133,8 +6133,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.channce.beautyContest;
 				PRODUCT_NAME = "选美-颜值榜";
-				PROVISIONING_PROFILE = "fb4d878b-31b5-4ea9-902b-e956a6730cb8";
-				PROVISIONING_PROFILE_SPECIFIER = 20170106_beautyContest_Distribution;
+				PROVISIONING_PROFILE = "1c184da9-3c67-46b9-9e50-ab52a31c5a1e";
+				PROVISIONING_PROFILE_SPECIFIER = "20170118_ beautyContest_Distribution";
 			};
 			name = Distribution;
 		};
