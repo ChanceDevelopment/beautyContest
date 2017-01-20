@@ -204,6 +204,7 @@
 		EA5EC6221D77C0FF004D5FEC /* TOActivitySafari.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC6191D77C0FF004D5FEC /* TOActivitySafari.m */; };
 		EA5EC6231D77C0FF004D5FEC /* TOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61B1D77C0FF004D5FEC /* TOWebViewController.m */; };
 		EA5EC6241D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */; };
+		EA6783CD1E3114D300FFF258 /* HeRecommendDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6783CC1E3114D300FFF258 /* HeRecommendDetailCell.m */; };
 		EA71A1751DDD525C00B16333 /* HeBlockUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */; };
 		EA71A1761DDD525C00B16333 /* HeBlockUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */; };
 		EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */; };
@@ -1075,6 +1076,8 @@
 		EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TOWebViewControllerIcons.m"; sourceTree = "<group>"; };
 		EA5EC61E1D77C0FF004D5FEC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/TOWebViewControllerLocalizable.strings"; sourceTree = "<group>"; };
 		EA5EC61F1D77C0FF004D5FEC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/TOWebViewControllerLocalizable.strings"; sourceTree = "<group>"; };
+		EA6783CB1E3114D300FFF258 /* HeRecommendDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeRecommendDetailCell.h; sourceTree = "<group>"; };
+		EA6783CC1E3114D300FFF258 /* HeRecommendDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendDetailCell.m; sourceTree = "<group>"; };
 		EA71A1721DDD525C00B16333 /* HeBlockUserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBlockUserVC.h; sourceTree = "<group>"; };
 		EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBlockUserVC.m; sourceTree = "<group>"; };
 		EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBlockUserVC.xib; sourceTree = "<group>"; };
@@ -2757,6 +2760,8 @@
 				EA4645521D51ECC100CD539F /* FLCollectionSeparator.xib */,
 				07E880051DC39CD1000A13E8 /* HeNewRecommendCell.h */,
 				07E880061DC39CD1000A13E8 /* HeNewRecommendCell.m */,
+				EA6783CB1E3114D300FFF258 /* HeRecommendDetailCell.h */,
+				EA6783CC1E3114D300FFF258 /* HeRecommendDetailCell.m */,
 			);
 			name = Recommend;
 			sourceTree = "<group>";
@@ -2997,7 +3002,6 @@
 		EAC2C9021D4AF0E600E282A8 /* beautyContest */ = {
 			isa = PBXGroup;
 			children = (
-				EA17435E1E1F4AAD0038E805 /* 选美-颜值榜.entitlements */,
 				EA4D01831D4D93C600A0CCA1 /* View */,
 				EA0E9CF51D4C258A009CBF64 /* Resource */,
 				EAC2CEBE1D4AF71900E282A8 /* Category */,
@@ -3025,6 +3029,7 @@
 		EAC2C9031D4AF0E600E282A8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EA17435E1E1F4AAD0038E805 /* 选美-颜值榜.entitlements */,
 				EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */,
 				07F3AB331DC4B871008AD00E /* userProtocol.html */,
 				07F3AB311DC4B5A0008AD00E /* 用户协议.doc */,
@@ -5366,6 +5371,7 @@
 				EAC2CE9D1D4AF5EE00E282A8 /* qrinput.c in Sources */,
 				EAC2CE011D4AF5D800E282A8 /* NSString+Catagory.m in Sources */,
 				EAC2CE0A1D4AF5D800E282A8 /* NSMutableArray+convenience.m in Sources */,
+				EA6783CD1E3114D300FFF258 /* HeRecommendDetailCell.m in Sources */,
 				EAC2CECD1D4AF71900E282A8 /* NSDate+Category.m in Sources */,
 				EAC2CD801D4AF5D800E282A8 /* NSObject+RACPropertySubscribing.m in Sources */,
 				EA8028001D52E654008BC4E6 /* SDRefreshHeaderView.m in Sources */,

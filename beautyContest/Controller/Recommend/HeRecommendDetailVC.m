@@ -21,6 +21,7 @@
 #import "HeComplaintUserVC.h"
 #import "WMPlayer.h"
 #import "HeContestantUserInfoVC.h"
+#import "HeRecommendDetailCell.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -187,13 +188,14 @@
     self.navigationItem.rightBarButtonItem = complaintItem;
     
     tableview.backgroundView = nil;
+    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     [Tool setExtraCellLineHidden:tableview];
     
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 210)];
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
-    tableview.tableHeaderView = sectionHeaderView;
+    
     
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"comonDefaultImage"]];
     bgImage.layer.masksToBounds = YES;
@@ -251,18 +253,7 @@
     nameLabel.text = recommendDict[@"userNick"];
     [sectionHeaderView addSubview:nameLabel];
     
-    CGFloat contentX = 0;
-    CGFloat contentY = CGRectGetMaxY(nameLabel.frame);
-    CGFloat contentH = 25;
-    CGFloat contentW = SCREENWIDTH;
-    UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
-    contentLabel.tag = CONTENTTAG;
-    contentLabel.text = recommendDict[@"recommendContent"];
-    contentLabel.font = [UIFont systemFontOfSize:15.0];
-    contentLabel.textColor = [UIColor whiteColor];
-    contentLabel.textAlignment = NSTextAlignmentCenter;
-    contentLabel.backgroundColor = [UIColor clearColor];
-    [sectionHeaderView addSubview:contentLabel];
+    
     
     UIView *buttonBG = [[UIView alloc] initWithFrame:CGRectMake(0, bgImage.frame.size.height - 40, SCREENWIDTH, 40)];
     buttonBG.userInteractionEnabled = YES;
@@ -304,6 +295,46 @@
     sepLine.backgroundColor = [UIColor whiteColor];
     [buttonBG addSubview:sepLine];
 
+    CGFloat contentBgViewX = 10;
+    CGFloat contentBgViewY = 210;
+    CGFloat contentBgViewW = SCREENWIDTH - 2 * contentBgViewX;
+    CGFloat contentBgViewH = 10;
+    NSString *recommendContent = recommendDict[@"recommendContent"];
+    if ([recommendContent isMemberOfClass:[NSNull class]] || recommendContent == nil) {
+        recommendContent = @"";
+    }
+    UIFont *contentFont = [UIFont systemFontOfSize:16.0];
+    CGSize mySize = [MLLabel getViewSizeByString:recommendContent maxWidth:contentBgViewW - 10 font:contentFont lineHeight:1.2f lines:0];
+    if (mySize.height < 30) {
+        mySize.height = 30;
+    }
+    contentBgViewH = mySize.height + 10;
+    
+    UIView *contentBgView = [[UIView alloc] initWithFrame:CGRectMake(contentBgViewX, contentBgViewY, contentBgViewW, contentBgViewH)];
+    contentBgView.layer.masksToBounds = YES;
+    contentBgView.layer.cornerRadius = 8.0;
+    contentBgView.backgroundColor = [UIColor whiteColor];
+    [sectionHeaderView addSubview:contentBgView];
+    
+    CGFloat contentX = 5;
+    CGFloat contentY = 0;
+    CGFloat contentH = contentBgViewH;
+    CGFloat contentW = contentBgViewW - 2 * contentX;
+    UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentX, contentY, contentW, contentH)];
+    contentLabel.numberOfLines = 0;
+    contentLabel.tag = CONTENTTAG;
+    contentLabel.text = recommendDict[@"recommendContent"];
+    contentLabel.font = contentFont;
+    contentLabel.textColor = [UIColor blackColor];
+    contentLabel.textAlignment = NSTextAlignmentLeft;
+    contentLabel.backgroundColor = [UIColor clearColor];
+    [contentBgView addSubview:contentLabel];
+    
+    CGRect myFrame = sectionHeaderView.frame;
+    myFrame.size.height = myFrame.size.height + contentBgViewH;
+    sectionHeaderView.frame = myFrame;
+    tableview.tableHeaderView = sectionHeaderView;
+    
     
     CGFloat buttonX = 20;
     CGFloat buttonY = 5;
@@ -324,14 +355,14 @@
     voteButton.layer.cornerRadius = 5.0;
     voteButton.layer.masksToBounds = YES;
     
-    CGFloat receivescrollX = 5;
+    CGFloat receivescrollX = 15;
     CGFloat receivescrollY = 5;
     CGFloat receivescrollW = SCREENWIDTH - 2 * receivescrollX;
     CGFloat receivescrollH = receiveScrollViewHeigh;
     userReceivePocketScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(receivescrollX, receivescrollY, receivescrollW, receivescrollH)];
     
-    CGFloat scrollX = 5;
-    CGFloat scrollY = 5;
+    CGFloat scrollX = 15;
+    CGFloat scrollY = 15;
     CGFloat scrollW = SCREENWIDTH - 2 * scrollX;
     CGFloat scrollH = imageScrollViewHeigh;
     photoScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollX, scrollY, scrollW, scrollH)];
@@ -1071,15 +1102,24 @@
     CGSize cellSize = [tableView rectForRowAtIndexPath:indexPath].size;
     
     
-    HeBaseTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
+    HeRecommendDetailCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     if (!cell) {
-        cell = [[HeBaseIconTitleTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
+        cell = [[HeRecommendDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier cellSize:cellSize];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     if ([paperArray count] != 0 && section == 0) {
+        cell.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, cellSize.width - 20, cellSize.height - 20)];
+        bgView.backgroundColor = [UIColor whiteColor];
+        [cell addSubview:bgView];
+        bgView.layer.masksToBounds = YES;
+        bgView.layer.cornerRadius = 8.0;
+        [cell addSubview:bgView];
+        
         [cell addSubview:photoScrollView];
     }
     else {
+        cell.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
         [cell addSubview:userReceivePocketScrollView];
     }
     
@@ -1141,7 +1181,7 @@
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:12.0];
     titleLabel.textColor = [UIColor grayColor];
-    titleLabel.text = [NSString stringWithFormat:@"  %ld人领取过红包",redPocketNum];
+    titleLabel.text = [NSString stringWithFormat:@"      %ld人领取过红包",redPocketNum];
     [bgView addSubview:titleLabel];
     
     if (redPocketNum != 0) {
