@@ -494,9 +494,9 @@
     //    if ([shareUrl isMemberOfClass:[NSNull class]] || shareUrl == nil) {
     //        shareUrl = @"";
     //    }
-    NSString *shareContent = @"选美榜-颜值榜期待您的加入";
+    NSString *shareContent = @"选美-颜值榜期待您的加入";
     
-    NSString *shareTitleStr = @"选美榜-颜值榜";
+    NSString *shareTitleStr = @"选美-颜值榜";
     NSString *imagePath = nil;
     
     NSArray* imageArray = nil;

@@ -388,13 +388,13 @@
     if ([zoneTitle isMemberOfClass:[NSNull class]] || zoneTitle == nil) {
         zoneTitle = @"";
     }
-    cell.contentLabel.text = [NSString stringWithFormat:@"申请加入赛区: %@",zoneTitle];
+    cell.contentLabel.text = [NSString stringWithFormat:@"%@",zoneTitle];
     
     NSString *testUpdatetimedate = zoneDict[@"testUpdatetimedate"];
     if ([testUpdatetimedate isMemberOfClass:[NSNull class]] || testUpdatetimedate == nil) {
         testUpdatetimedate = @"";
     }
-    cell.markLabel.text = [NSString stringWithFormat:@"备注信息：%@",testUpdatetimedate];
+    cell.markLabel.text = [NSString stringWithFormat:@"备注：%@",testUpdatetimedate];
 
     id testState = zoneDict[@"testState"];
     if ([testState isMemberOfClass:[NSNull class]]) {

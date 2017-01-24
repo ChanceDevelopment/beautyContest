@@ -239,7 +239,7 @@
     footerView.userInteractionEnabled = YES;
     MLLinkLabel *linkLabel = [[MLLinkLabel alloc] initWithFrame:CGRectMake(10, 0, SCREENWIDTH - 10, 50)];
     linkLabel.textColor = APPDEFAULTORANGE;
-    linkLabel.text = @"选美比赛规则";
+    linkLabel.text = @"选美-颜值榜比赛规则";
     linkLabel.font = [UIFont systemFontOfSize:15.0];
     linkLabel.userInteractionEnabled = YES;
     
