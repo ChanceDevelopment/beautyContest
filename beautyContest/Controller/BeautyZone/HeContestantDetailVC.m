@@ -105,6 +105,7 @@
     contestantImageArray = [[NSMutableArray alloc] initWithCapacity:0];
     contestantImageDetailArray = [[NSMutableArray alloc] initWithCapacity:0];
     imageScrollViewHeigh = 80;
+    haveNOVoted = YES;
 }
 
 - (void)initView
@@ -555,6 +556,8 @@
 //是否参选
 - (void)getContestantHaveVote
 {
+    //暂时屏蔽
+    return;
     NSString *voteHost = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
     if ([voteHost isMemberOfClass:[NSNull class]] || voteHost == nil) {
         voteHost = @"";
@@ -790,7 +793,11 @@
         NSInteger statueCode = [[respondDict objectForKey:@"errorCode"] integerValue];
         
         if (statueCode == REQUESTCODE_SUCCEED){
-            [self showHint:@"投票成功"];
+            NSString *data = [respondDict objectForKey:@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];
