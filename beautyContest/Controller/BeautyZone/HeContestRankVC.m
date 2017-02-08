@@ -80,7 +80,7 @@
         topWomanRank = [[NSMutableArray alloc] initWithCapacity:0];
     }
     imageCache = [[NSCache alloc] init];
-    dataSource = [[NSMutableArray alloc] initWithArray:topManRank];
+    dataSource = [[NSMutableArray alloc] initWithArray:topWomanRank];
 }
 
 - (void)initView
@@ -503,7 +503,7 @@
         cell.noFavButton.hidden = YES;
         cell.favButton.hidden = NO;
     }
-    cell.rankLabel.text = [NSString stringWithFormat:@"%ld",row];
+    cell.rankLabel.text = [NSString stringWithFormat:@"%ld",row + 1];
 //    NSString *myUserId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
 //    if (![myUserId isEqualToString:userId]) {
 //        //按钮不能显示在非发布用户的页面中
@@ -513,6 +513,8 @@
 //        cell.favButton.hidden = NO;
 //    }
     if (!self.isUserRank) {
+        cell.noFavButton.hidden = YES;
+        cell.favButton.hidden = YES;
         id prizeMoneyObj = dict[@"prizeMoney"];
         if ([prizeMoneyObj isMemberOfClass:[NSNull class]]) {
             prizeMoneyObj = @"";
@@ -525,7 +527,6 @@
             cell.prizeMoneyLabel.text = [NSString stringWithFormat:@"%.2f",prizeMoney];
         }
     }
-    
     return cell;
 }
 
