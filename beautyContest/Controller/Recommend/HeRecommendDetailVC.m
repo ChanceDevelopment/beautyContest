@@ -912,11 +912,15 @@
             if ([redPocketNum isMemberOfClass:[NSNull class]]) {
                 redPocketNum = @"";
             }
-            if ([redPocketNum integerValue] == 0) {
-                [self showHint:@"领取过了"];
+            if ([redPocketNum floatValue] < 0.01) {
+                NSString *data = [respondDict objectForKey:@"data"];
+                if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                    data = @"红包已经领取过";
+                }
+                [self showHint:data];
                 return;
             }
-            NSString *data = [NSString stringWithFormat:@"￥%ld",(long)[redPocketNum integerValue]];
+            NSString *data = [NSString stringWithFormat:@"￥%.2f",[redPocketNum floatValue]];
             [self showAlerWithText:data];
 //            [self showHint:data];
         }
