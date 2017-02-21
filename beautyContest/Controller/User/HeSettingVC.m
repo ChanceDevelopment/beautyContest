@@ -109,6 +109,8 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERPASSWORDKEY];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERIDKEY];
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
     
     return;

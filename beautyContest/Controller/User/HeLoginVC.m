@@ -13,6 +13,7 @@
 #import "HeSysbsModel.h"
 #import "WXApi.h"
 #import <ShareSDK/ShareSDK.h>
+#import "HeForGetPasswordVC.h"
 
 @interface HeLoginVC ()<UITextFieldDelegate>
 @property(strong,nonatomic)IBOutlet UITextField *accountField;
@@ -132,6 +133,14 @@
          
      }];
     
+}
+
+//忘记密码
+- (IBAction)forgetPassword:(id)sender
+{
+    HeForGetPasswordVC *forgetPasswordVC = [[HeForGetPasswordVC alloc] init];
+    forgetPasswordVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:forgetPasswordVC animated:YES];
 }
 
 - (void)loginWithLoginParams:(NSDictionary *)loginParams

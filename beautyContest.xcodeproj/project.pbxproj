@@ -205,6 +205,10 @@
 		EA5EC6231D77C0FF004D5FEC /* TOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61B1D77C0FF004D5FEC /* TOWebViewController.m */; };
 		EA5EC6241D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5EC61D1D77C0FF004D5FEC /* UIImage+TOWebViewControllerIcons.m */; };
 		EA6783CD1E3114D300FFF258 /* HeRecommendDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6783CC1E3114D300FFF258 /* HeRecommendDetailCell.m */; };
+		EA6965031E5C2A1600290BFA /* HeForGetPasswordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6965011E5C2A1600290BFA /* HeForGetPasswordVC.m */; };
+		EA6965041E5C2A1600290BFA /* HeForGetPasswordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA6965021E5C2A1600290BFA /* HeForGetPasswordVC.xib */; };
+		EA6965081E5C350F00290BFA /* HeForgetPayPasswordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6965061E5C350F00290BFA /* HeForgetPayPasswordVC.m */; };
+		EA6965091E5C350F00290BFA /* HeForgetPayPasswordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA6965071E5C350F00290BFA /* HeForgetPayPasswordVC.xib */; };
 		EA71A1751DDD525C00B16333 /* HeBlockUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */; };
 		EA71A1761DDD525C00B16333 /* HeBlockUserVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */; };
 		EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA71A1791DDEE86500B16333 /* CRMediaPickerController.m */; };
@@ -1078,6 +1082,12 @@
 		EA5EC61F1D77C0FF004D5FEC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/TOWebViewControllerLocalizable.strings"; sourceTree = "<group>"; };
 		EA6783CB1E3114D300FFF258 /* HeRecommendDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeRecommendDetailCell.h; sourceTree = "<group>"; };
 		EA6783CC1E3114D300FFF258 /* HeRecommendDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendDetailCell.m; sourceTree = "<group>"; };
+		EA6965001E5C2A1600290BFA /* HeForGetPasswordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeForGetPasswordVC.h; sourceTree = "<group>"; };
+		EA6965011E5C2A1600290BFA /* HeForGetPasswordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeForGetPasswordVC.m; sourceTree = "<group>"; };
+		EA6965021E5C2A1600290BFA /* HeForGetPasswordVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeForGetPasswordVC.xib; sourceTree = "<group>"; };
+		EA6965051E5C350F00290BFA /* HeForgetPayPasswordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeForgetPayPasswordVC.h; sourceTree = "<group>"; };
+		EA6965061E5C350F00290BFA /* HeForgetPayPasswordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeForgetPayPasswordVC.m; sourceTree = "<group>"; };
+		EA6965071E5C350F00290BFA /* HeForgetPayPasswordVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeForgetPayPasswordVC.xib; sourceTree = "<group>"; };
 		EA71A1721DDD525C00B16333 /* HeBlockUserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeBlockUserVC.h; sourceTree = "<group>"; };
 		EA71A1731DDD525C00B16333 /* HeBlockUserVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeBlockUserVC.m; sourceTree = "<group>"; };
 		EA71A1741DDD525C00B16333 /* HeBlockUserVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeBlockUserVC.xib; sourceTree = "<group>"; };
@@ -2482,6 +2492,9 @@
 		EA0E9D2C1D4C2968009CBF64 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				EA6965001E5C2A1600290BFA /* HeForGetPasswordVC.h */,
+				EA6965011E5C2A1600290BFA /* HeForGetPasswordVC.m */,
+				EA6965021E5C2A1600290BFA /* HeForGetPasswordVC.xib */,
 				0784C0521DD1740A004BF89F /* LocationViewController.h */,
 				0784C0531DD1740A004BF89F /* LocationViewController.m */,
 				07F3AB201DC4580F008AD00E /* HeFeedbackVC.h */,
@@ -2538,6 +2551,9 @@
 				EA7FF0621DF7A96100F24C96 /* HeNewUserInfoVC.h */,
 				EA7FF0631DF7A96100F24C96 /* HeNewUserInfoVC.m */,
 				EA7FF0601DF7A94100F24C96 /* HeNewUserInfoVC.xib */,
+				EA6965051E5C350F00290BFA /* HeForgetPayPasswordVC.h */,
+				EA6965061E5C350F00290BFA /* HeForgetPayPasswordVC.m */,
+				EA6965071E5C350F00290BFA /* HeForgetPayPasswordVC.xib */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -5077,6 +5093,7 @@
 				EACC98341D50E5DB00E627B8 /* icon_nearby_beauty.png in Resources */,
 				EA7F0BDB1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib in Resources */,
 				EAE88BC51DAF5BC900AD946F /* AlipaySDK.bundle in Resources */,
+				EA6965091E5C350F00290BFA /* HeForgetPayPasswordVC.xib in Resources */,
 				07E880391DC44F22000A13E8 /* bubble_min@2x.png in Resources */,
 				EAC2CEBC1D4AF5FC00E282A8 /* loading_anim2.png in Resources */,
 				EAC2CD221D4AF5D800E282A8 /* IQActionSheetPickerView.xib in Resources */,
@@ -5144,6 +5161,7 @@
 				EADE33131D76D48A0025492B /* icon_alipay.png in Resources */,
 				EA4D016A1D4CF0A300A0CCA1 /* tabar_user_icon_normal@2x.png in Resources */,
 				EAC1B8761DD0D76200505B45 /* HeComplaintVC.xib in Resources */,
+				EA6965041E5C2A1600290BFA /* HeForGetPasswordVC.xib in Resources */,
 				07E8803D1DC44F23000A13E8 /* ToolViewInputText@2x.png in Resources */,
 				EAC2CD001D4AF5D800E282A8 /* success@2x.png in Resources */,
 				EAC1B8841DD0D99200505B45 /* checkBox.png in Resources */,
@@ -5343,6 +5361,7 @@
 				EAC2CCC71D4AF5D800E282A8 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
 				EA0508F91D6EA000003947EE /* HeUserAlbumVC.m in Sources */,
 				EA1FE46E1DE02735006435D3 /* MASCompositeConstraint.m in Sources */,
+				EA6965081E5C350F00290BFA /* HeForgetPayPasswordVC.m in Sources */,
 				EAC2CED31D4AF71900E282A8 /* UIViewController+HUD.m in Sources */,
 				EAC2CDD51D4AF5D800E282A8 /* SDWebImageCompat.m in Sources */,
 				EA71A17A1DDEE86500B16333 /* CRMediaPickerController.m in Sources */,
@@ -5491,6 +5510,7 @@
 				EA0E9D241D4C295F009CBF64 /* HeBeautyZoneVC.m in Sources */,
 				EAC2CD981D4AF5D800E282A8 /* RACErrorSignal.m in Sources */,
 				EA5EC6221D77C0FF004D5FEC /* TOActivitySafari.m in Sources */,
+				EA6965031E5C2A1600290BFA /* HeForGetPasswordVC.m in Sources */,
 				EAC2CDB81D4AF5D800E282A8 /* RACUnarySequence.m in Sources */,
 				EAC2CD461D4AF5D800E282A8 /* MJRefreshBackGifFooter.m in Sources */,
 				EAE88BCB1DAF5BC900AD946F /* DataSigner.m in Sources */,

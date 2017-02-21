@@ -220,6 +220,7 @@ BMKMapManager* _mapManager;
         self.viewController = tabBarController;
     }
     else{
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
         HeLoginVC *loginVC = [[HeLoginVC alloc] init];
         CustomNavigationController *loginNav = [[CustomNavigationController alloc] initWithRootViewController:loginVC];
         self.viewController = loginNav;
