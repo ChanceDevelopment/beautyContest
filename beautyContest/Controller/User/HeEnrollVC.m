@@ -130,8 +130,37 @@
         [self showHint:@"请输入正确的手机号"];
         return;
     }
+    [sender startWithTime:60 title:@"获取验证码" countDownTitle:@"s" mainColor:[UIColor whiteColor] countColor:[UIColor whiteColor]];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
+    if (!userId) {
+        userId = @"";
+    }
+    NSString *Phone = userPhone;
+    NSDictionary * params  = @{@"phone":Phone};
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/user/sendSmsByUserBindPassword.action",BASEURL];
+    [self showHudInView:self.view hint:@"发送中..."];
+    [AFHttpTool requestWihtMethod:RequestMethodTypePost url:requestUrl params:params success:^(AFHTTPRequestOperation* operation,id response){
+        [self hideHud];
+        NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *respondDict = [NSDictionary dictionaryWithDictionary:[respondString objectFromJSONString]];
+        NSInteger errorCode = [[respondDict objectForKey:@"errorCode"] integerValue];
+        if (errorCode == REQUESTCODE_SUCCEED) {
+            [self showHint:@"验证码发送成功"];
+        }
+        else{
+            NSString *data = respondDict[@"data"];
+            if ([data isMemberOfClass:[NSNull class]] || data == nil) {
+                data = ERRORREQUESTTIP;
+            }
+            [self showHint:data];
+        }
+        
+    } failure:^(NSError* err){
+        [self hideHud];
+        [self showHint:ERRORREQUESTTIP];
+    }];
     
-     [sender startWithTime:60 title:@"获取验证码" countDownTitle:@"s" mainColor:APPDEFAULTORANGE countColor:[UIColor lightGrayColor]];
+    return;
     //获取注册手机号的验证码
     NSString *zone = @"86"; //区域号
     NSString *phoneNumber = acountField.text;
@@ -178,6 +207,8 @@
         [self showHint:@"请输入手机验证码"];
         return;
     }
+    [self registerUser];
+    return;
     //用户输入的手机验证码
     //    [self showHudInView:self.view hint:@"验证中..."];
     NSString *zone = @"86"; //区域号
@@ -224,10 +255,11 @@
         [self showHint:@"请输入正确的手机号"];
         return;
     }
+    NSString *verifyCode = nicknameField.text;
     
     [self showHudInView:self.view hint:@"注册中..."];
     NSString *enrollUrl = [NSString stringWithFormat:@"%@/user/createNewUser.action",BASEURL];
-    NSDictionary *loginParams = @{@"userName":account,@"userPwd":password,@"userNick":userNick};
+    NSDictionary *loginParams = @{@"userName":account,@"userPwd":password,@"userNick":userNick,@"registerCode":verifyCode};
     [AFHttpTool requestWihtMethod:RequestMethodTypePost url:enrollUrl params:loginParams  success:^(AFHTTPRequestOperation* operation,id response){
         //        [self hideHud];
         NSString *respondString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];

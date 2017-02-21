@@ -57,8 +57,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    commitButton.layer.cornerRadius = 3.0;
-    modifyPasswordButton.layer.cornerRadius = 3.0;
+    
 }
 
 - (void)initView
@@ -70,6 +69,8 @@
         phone = @"";
     }
     tipLabel.text = [NSString stringWithFormat:@"请将注册手机号 %@ 收到的验证码填写到下面输入框中",phone];
+    commitButton.layer.cornerRadius = 3.0;
+    modifyPasswordButton.layer.cornerRadius = 3.0;
 }
 
 - (IBAction)modifyPassword:(id)sender
@@ -79,7 +80,7 @@
     }
     NSString *passWord = passwordField.text;
     if ([passWord isEqualToString:@""] || passWord == nil) {
-        [self showHint:@"请输入密码"];
+        [self showHint:@"请输入支付密码"];
         return;
     }
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:USERIDKEY];
@@ -183,6 +184,7 @@
         if (errorCode == REQUESTCODE_SUCCEED) {
             commitButton.hidden = YES;
             modifyPasswordButton.hidden = NO;
+            getCodeButton.hidden = YES;
             
             verifyField.hidden = YES;
             passwordField.hidden = NO;

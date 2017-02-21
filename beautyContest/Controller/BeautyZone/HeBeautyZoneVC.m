@@ -83,6 +83,7 @@
     [self initView];
     //加载比赛
     [self loadBeautyContestShow:YES];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -870,6 +871,8 @@
             
             userLocationDict = @{USERLATITUDEKEY:latitudeStr,USERLONGITUDEKEY:longitudeStr};
             [HeSysbsModel getSysModel].userLocationDict = [[NSDictionary alloc] initWithDictionary:userLocationDict];
+            //加载比赛
+            [self loadBeautyContestShow:YES];
         }
     }
     //NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);

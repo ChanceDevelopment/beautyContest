@@ -476,28 +476,20 @@
 
 - (void)shareButtonClick:(UIButton *)shareButton
 {
-//    http://114.55.226.224:8088/xuanmei/shareZone.action?zoneId=92bcc5d6b58645d9be112d74c140723a&voteUser=73c69cf59b0e4f56badce7de300ac172
     NSString *domain = @"http://114.55.226.224:8088/xuanmei/shareZone.action?";
     NSString *zoneId = contestDetailDict[@"zoneId"];
     NSString *voteUser = contestDetailDict[@"zoneUser"];;
     NSString *shareUrl = [NSString stringWithFormat:@"%@zoneId=%@&voteUser=%@",domain,zoneId,voteUser];
-    //    NSString *shareUrl = [columnDict objectForKey:@"url"];
-    //    if ([shareUrl isMemberOfClass:[NSNull class]] || shareUrl == nil || [shareUrl isEqualToString:@""]) {
-    //        shareUrl = [columnDict objectForKey:@"url_new"];
-    //        if ([shareUrl isMemberOfClass:[NSNull class]] || shareUrl == nil || [shareUrl isEqualToString:@""]){
-    //            shareUrl = @"http://modify.modiauto.com.cn/";
-    //        }
-    //
-    //    }
+    NSString *zoneTitle = contestDetailDict[@"zoneTitle"];
+    if ([zoneTitle isMemberOfClass:[NSNull class]] || zoneTitle == nil) {
+        zoneTitle = @"";
+    }
     
-    //    NSString *shareUrl = [columnDict objectForKey:@"url"];    //分享的链接地址
-    //    if ([shareUrl isMemberOfClass:[NSNull class]] || shareUrl == nil) {
-    //        shareUrl = @"";
-    //    }
-    NSString *shareContent = @"选美-颜值榜期待您的加入";
+    NSString *shareContent = [NSString stringWithFormat:@"选美榜-%@",zoneTitle];
     
-    NSString *shareTitleStr = @"选美-颜值榜";
+    NSString *shareTitleStr = [NSString stringWithFormat:@"选美榜-%@",zoneTitle];
     NSString *imagePath = nil;
+    
     
     NSArray* imageArray = nil;
     if ([imagePath isMemberOfClass:[NSNull class]] || imagePath == nil || [imagePath isEqualToString:@""]) {
