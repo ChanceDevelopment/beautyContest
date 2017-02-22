@@ -62,6 +62,15 @@
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskAll;
+    
+    CustomNavigationController *selectedVC = (CustomNavigationController *)self.selectedViewController;
+    if (![selectedVC respondsToSelector:@selector(supportedInterfaceOrientations)]) {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    else{
+        return [selectedVC supportedInterfaceOrientations];
+    }
+    
     for (UIViewController *viewController in [self viewControllers]) {
         if (![viewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
             return UIInterfaceOrientationMaskPortrait;
@@ -73,26 +82,26 @@
             orientationMask = supportedOrientations;
         }
     }
-    //强制不支持横屏
-    return UIInterfaceOrientationMaskPortrait;
+    return orientationMask;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    for (UIViewController *viewCotroller in [self viewControllers]) {
-        if (![viewCotroller respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)] ||
-            ![viewCotroller shouldAutorotateToInterfaceOrientation:toInterfaceOrientation]) {
-            return NO;
-        }
-    }
-    return NO;
+    return YES;
+//    for (UIViewController *viewCotroller in [self viewControllers]) {
+//        if (![viewCotroller respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)] ||
+//            ![viewCotroller shouldAutorotateToInterfaceOrientation:toInterfaceOrientation]) {
+//            return YES;
+//        }
+//    }
+//    return YES;
 }
-
-
-//强制不支持横屏
-- (BOOL)shouldAutorotate
-{
-    return NO;
-}
+//
+//
+////强制不支持横屏
+//- (BOOL)shouldAutorotate
+//{
+//    return NO;
+//}
 
 #pragma mark - Methods
 

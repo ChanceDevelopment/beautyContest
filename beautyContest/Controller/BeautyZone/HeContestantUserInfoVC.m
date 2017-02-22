@@ -17,6 +17,7 @@
 #import "HeComplaintUserVC.h"
 #import "HeNewUserInfoVC.h"
 #import "HeRecommendMessageVC.h"
+#import "HePhotoScanVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -685,19 +686,34 @@
     NSMutableArray *photos = [NSMutableArray array];
     for (NSString *url in contestantImageArray) {
         NSString *imageurl = url;
-        MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString:imageurl];
-        
         UIImageView *srcImageView = [myScrollView viewWithTag:index + 10000];
-        photo.image = srcImageView.image;
-        photo.srcImageView = srcImageView;
-        [photos addObject:photo];
+        NSDictionary *dict = @{@"url":imageurl,@"placeholderImage":srcImageView.image,@"title":@""};
+        [photos addObject:dict];
         index++;
     }
-    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    browser.currentPhotoIndex = tap.view.tag - 10000;
-    browser.photos = photos;
-    [browser show];
+    
+    HePhotoScanVC *photoScanVC = [[HePhotoScanVC alloc] init];
+    photoScanVC.photoArray = [[NSMutableArray alloc] initWithArray:photos];
+    photoScanVC.currentIndex = tap.view.tag - 10000 + 1;
+    photoScanVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:photoScanVC animated:YES];
+//    NSInteger index = 0;
+//    NSMutableArray *photos = [NSMutableArray array];
+//    for (NSString *url in contestantImageArray) {
+//        NSString *imageurl = url;
+//        MJPhoto *photo = [[MJPhoto alloc] init];
+//        photo.url = [NSURL URLWithString:imageurl];
+//        
+//        UIImageView *srcImageView = [myScrollView viewWithTag:index + 10000];
+//        photo.image = srcImageView.image;
+//        photo.srcImageView = srcImageView;
+//        [photos addObject:photo];
+//        index++;
+//    }
+//    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+//    browser.currentPhotoIndex = tap.view.tag - 10000;
+//    browser.photos = photos;
+//    [browser show];
 }
 
 - (void)followButtonClick:(UIButton *)button

@@ -7,6 +7,7 @@
 //
 
 #import "CustomNavigationController.h"
+#import "HeContestDetailVC.h"
 
 @interface CustomNavigationController ()
 
@@ -141,6 +142,16 @@
 - (UIViewController *) rootViewController
 {
     return ((UIViewController *)self.viewControllers.firstObject);
+}
+
+//支持旋转
+-(BOOL)shouldAutorotate{
+    return [self.topViewController shouldAutorotate];
+}
+
+//支持的方向
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.topViewController supportedInterfaceOrientations];
 }
 
 /*

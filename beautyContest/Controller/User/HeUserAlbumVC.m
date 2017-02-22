@@ -13,6 +13,7 @@
 #import "MJPhoto.h"
 #import "HeAlbumImage.h"
 #import "HeDistributePhotoVC.h"
+#import "HePhotoScanVC.h"
 
 #define MAx_row 100000
 #define MAx_column 4
@@ -381,14 +382,21 @@
         NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,wallUrl];
         HeAlbumImage *srcImageView = [myScrollView viewWithTag:index + 200];
         
-        MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString:imageUrl];
-        photo.srcImageView = srcImageView.imageView;
-        [photos addObject:photo];
+//        MJPhoto *photo = [[MJPhoto alloc] init];
+//        photo.url = [NSURL URLWithString:imageUrl];
+//        photo.srcImageView = srcImageView.imageView;
+        
+        NSDictionary *mydict = @{@"url":imageUrl,@"placeholderImage":srcImageView.imageView.image,@"title":@""};
+        [photos addObject:mydict];
     }
-    browser.photos = photos;
-    browser.currentPhotoIndex = myview.tag - 200;
-    [browser show];
+    HePhotoScanVC *photoScanVC = [[HePhotoScanVC alloc] init];
+    photoScanVC.photoArray = [[NSMutableArray alloc] initWithArray:photos];
+    photoScanVC.currentIndex = myview.tag - 200 + 1;
+    photoScanVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:photoScanVC animated:YES];
+//    browser.photos = photos;
+//    browser.currentPhotoIndex = myview.tag - 200;
+//    [browser show];
 }
 
 - (void)didReceiveMemoryWarning {

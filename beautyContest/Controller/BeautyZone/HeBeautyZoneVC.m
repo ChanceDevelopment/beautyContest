@@ -863,14 +863,14 @@
     
     if (newLocation) {
         locationSucceedNum = locationSucceedNum + 1;
-        if (locationSucceedNum >= MinLocationSucceedNum) {
+        [[NSUserDefaults standardUserDefaults] setObject:latitudeStr forKey:USERLATITUDEKEY];
+        [[NSUserDefaults standardUserDefaults] setObject:longitudeStr forKey:USERLONGITUDEKEY];
+        
+        userLocationDict = @{USERLATITUDEKEY:latitudeStr,USERLONGITUDEKEY:longitudeStr};
+        [HeSysbsModel getSysModel].userLocationDict = [[NSDictionary alloc] initWithDictionary:userLocationDict];
+        
+        if (locationSucceedNum <= MinLocationSucceedNum) {
             [self hideHud];
-            locationSucceedNum = 0;
-            [[NSUserDefaults standardUserDefaults] setObject:latitudeStr forKey:USERLATITUDEKEY];
-            [[NSUserDefaults standardUserDefaults] setObject:longitudeStr forKey:USERLONGITUDEKEY];
-            
-            userLocationDict = @{USERLATITUDEKEY:latitudeStr,USERLONGITUDEKEY:longitudeStr};
-            [HeSysbsModel getSysModel].userLocationDict = [[NSDictionary alloc] initWithDictionary:userLocationDict];
             //加载比赛
             [self loadBeautyContestShow:YES];
         }

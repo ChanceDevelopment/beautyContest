@@ -28,16 +28,19 @@
 #import "MLLabel+Size.h"
 #import "HeComplaintVC.h"
 #import "HeComplaintUserVC.h"
+#import "WBImageBrowserView.h"
+#import "HePhotoScanVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
 
 #define ALERTTAG 200
 
-@interface HeContestDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol,UIAlertViewDelegate,UITextFieldDelegate>
+@interface HeContestDetailVC ()<UITableViewDelegate,UITableViewDataSource,CommentProtocol,UIAlertViewDelegate,UITextFieldDelegate,WBImageBrowserViewDelegate>
 {
     BOOL requestReply; //是否已经完成
     NSInteger myRank;
+    WBImageBrowserView *pictureBrowserView;
 }
 @property(strong,nonatomic)IBOutlet UITableView *tableview;
 @property(strong,nonatomic)NSDictionary *contestDetailDict;
@@ -338,15 +341,27 @@
     }
     
     UIImageView *srcImageView = (UIImageView *)tap.view;
+//    NSMutableArray *photos = [NSMutableArray array];
+//    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+//    MJPhoto *photo = [[MJPhoto alloc] init];
+//    photo.url = [NSURL URLWithString:zoneCover];
+//    photo.image = srcImageView.image;
+//    photo.srcImageView = srcImageView;
+//    [photos addObject:photo];
+//    browser.photos = photos;
+//    [browser show];
+    
+
     NSMutableArray *photos = [NSMutableArray array];
-    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    MJPhoto *photo = [[MJPhoto alloc] init];
-    photo.url = [NSURL URLWithString:zoneCover];
-    photo.image = srcImageView.image;
-    photo.srcImageView = srcImageView;
-    [photos addObject:photo];
-    browser.photos = photos;
-    [browser show];
+    NSDictionary *dict = @{@"url":zoneCover,@"placeholderImage":srcImageView.image,@"title":@""};
+    [photos addObject:dict];
+    
+    HePhotoScanVC *photoScanVC = [[HePhotoScanVC alloc] init];
+    photoScanVC.photoArray = [[NSMutableArray alloc] initWithArray:photos];
+    photoScanVC.currentIndex = 1;
+    photoScanVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:photoScanVC animated:YES];
+    
 }
 
 
@@ -755,25 +770,78 @@
     }];
 }
 
+
+//- (void)pictureBrowserViewhide {
+//    
+//    // 检查屏幕横竖屏 强制竖屏
+//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+//        NSNumber *num = [[NSNumber alloc] initWithInt:UIInterfaceOrientationPortrait];
+//        [[UIDevice currentDevice] performSelector:@selector(setOrientation:) withObject:(id)num];
+//        [UIViewController attemptRotationToDeviceOrientation];
+//    }
+//    SEL selector = NSSelectorFromString(@"setOrientation:");
+//    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+//    [invocation setSelector:selector];
+//    [invocation setTarget:[UIDevice currentDevice]];
+//    int val = UIInterfaceOrientationPortrait ;
+//    [invocation setArgument:&val atIndex:2];
+//    [invocation invoke];
+//}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    CGFloat newVcH;
+    CGFloat newVcW;
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        // 横屏
+        newVcH = [UIScreen mainScreen].bounds.size.width;
+        newVcW = [UIScreen mainScreen].bounds.size.height;
+    } else {
+        // 竖屏
+        newVcW = [UIScreen mainScreen].bounds.size.width ;
+        newVcH = [UIScreen mainScreen].bounds.size.height;
+    }
+    
+    self.view.frame = CGRectMake(CGRectGetMinX(self.view.frame), CGRectGetMinY(self.view.frame), newVcW, newVcH);
+    pictureBrowserView.orientation = self.interfaceOrientation;
+    
+    tableview.frame = self.view.bounds;
+    [tableview reloadData];
+    
+}
+
+
 - (void)scanImageTap:(UITapGestureRecognizer *)tap
 {
+//    placeholderImage
     NSInteger index = 0;
     NSMutableArray *photos = [NSMutableArray array];
     for (NSString *url in bannerImageDataSource) {
         NSString *imageurl = url;
-        MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString:imageurl];
+//        MJPhoto *photo = [[MJPhoto alloc] init];
+//        photo.url = [NSURL URLWithString:imageurl];
         
         UIImageView *srcImageView = [myScrollView viewWithTag:index + 10000];
-        photo.image = srcImageView.image;
-        photo.srcImageView = srcImageView;
-        [photos addObject:photo];
+//        photo.image = srcImageView.image;
+//        photo.srcImageView = srcImageView;
+        NSDictionary *dict = @{@"url":imageurl,@"placeholderImage":srcImageView.image,@"title":@""};
+        [photos addObject:dict];
         index++;
     }
-    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    browser.currentPhotoIndex = tap.view.tag - 10000;
-    browser.photos = photos;
-    [browser show];
+    
+    HePhotoScanVC *photoScanVC = [[HePhotoScanVC alloc] init];
+    photoScanVC.photoArray = [[NSMutableArray alloc] initWithArray:photos];
+    photoScanVC.currentIndex = tap.view.tag - 10000 + 1;
+    photoScanVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:photoScanVC animated:YES];
+    
+    
+//    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+//    browser.currentPhotoIndex = tap.view.tag - 10000;
+//    browser.photos = photos;
+//    [browser show];
 }
 
 - (void)getMyRank

@@ -769,6 +769,17 @@
 		EAE88BD11DAF5BC900AD946F /* RSADataVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE88BC31DAF5BC900AD946F /* RSADataVerifier.m */; };
 		EAE88BD41DAF713600AD946F /* HeUserMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE88BD31DAF713600AD946F /* HeUserMessageCell.m */; };
 		EAFC13651D9B6C39005D00AB /* jpush-ios-2.1.9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAFC13631D9B6C39005D00AB /* jpush-ios-2.1.9.a */; };
+		EAFE60601E5D333700F55125 /* WBImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE605D1E5D333700F55125 /* WBImageBrowserCell.m */; };
+		EAFE60611E5D333700F55125 /* WBImageBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE605F1E5D333700F55125 /* WBImageBrowserView.m */; };
+		EAFE60641E5D339300F55125 /* NSData+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE60631E5D339300F55125 /* NSData+GIF.m */; };
+		EAFE60671E5D605500F55125 /* ViewControllertwo.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE60661E5D605500F55125 /* ViewControllertwo.m */; };
+		EAFE606B1E5D685B00F55125 /* HePhotoScanVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE60691E5D685B00F55125 /* HePhotoScanVC.m */; };
+		EAFE606C1E5D685B00F55125 /* HePhotoScanVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAFE606A1E5D685B00F55125 /* HePhotoScanVC.xib */; };
+		EAFE60721E5D6FCE00F55125 /* icon_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFE606D1E5D6FCE00F55125 /* icon_back@2x.png */; };
+		EAFE60731E5D6FCE00F55125 /* photo_down_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFE606E1E5D6FCE00F55125 /* photo_down_btn@2x.png */; };
+		EAFE60741E5D6FCE00F55125 /* photo_down_btn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFE606F1E5D6FCE00F55125 /* photo_down_btn@3x.png */; };
+		EAFE60751E5D6FCE00F55125 /* photo_share_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFE60701E5D6FCE00F55125 /* photo_share_btn@2x.png */; };
+		EAFE60761E5D6FCE00F55125 /* photo_share_btn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFE60711E5D6FCE00F55125 /* photo_share_btn@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2165,6 +2176,22 @@
 		EAE88BD31DAF713600AD946F /* HeUserMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserMessageCell.m; sourceTree = "<group>"; };
 		EAFC13631D9B6C39005D00AB /* jpush-ios-2.1.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.9.a"; sourceTree = "<group>"; };
 		EAFC13641D9B6C39005D00AB /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
+		EAFE605C1E5D333700F55125 /* WBImageBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImageBrowserCell.h; sourceTree = "<group>"; };
+		EAFE605D1E5D333700F55125 /* WBImageBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImageBrowserCell.m; sourceTree = "<group>"; };
+		EAFE605E1E5D333700F55125 /* WBImageBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImageBrowserView.h; sourceTree = "<group>"; };
+		EAFE605F1E5D333700F55125 /* WBImageBrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImageBrowserView.m; sourceTree = "<group>"; };
+		EAFE60621E5D339300F55125 /* NSData+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GIF.h"; sourceTree = "<group>"; };
+		EAFE60631E5D339300F55125 /* NSData+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GIF.m"; sourceTree = "<group>"; };
+		EAFE60651E5D605500F55125 /* ViewControllertwo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllertwo.h; sourceTree = "<group>"; };
+		EAFE60661E5D605500F55125 /* ViewControllertwo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllertwo.m; sourceTree = "<group>"; };
+		EAFE60681E5D685B00F55125 /* HePhotoScanVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HePhotoScanVC.h; sourceTree = "<group>"; };
+		EAFE60691E5D685B00F55125 /* HePhotoScanVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HePhotoScanVC.m; sourceTree = "<group>"; };
+		EAFE606A1E5D685B00F55125 /* HePhotoScanVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HePhotoScanVC.xib; sourceTree = "<group>"; };
+		EAFE606D1E5D6FCE00F55125 /* icon_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_back@2x.png"; sourceTree = "<group>"; };
+		EAFE606E1E5D6FCE00F55125 /* photo_down_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_down_btn@2x.png"; sourceTree = "<group>"; };
+		EAFE606F1E5D6FCE00F55125 /* photo_down_btn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_down_btn@3x.png"; sourceTree = "<group>"; };
+		EAFE60701E5D6FCE00F55125 /* photo_share_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_share_btn@2x.png"; sourceTree = "<group>"; };
+		EAFE60711E5D6FCE00F55125 /* photo_share_btn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_share_btn@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2444,6 +2471,9 @@
 				EA7F0BD71DFA4D4600F24C96 /* HeContestantUserInfoVC.h */,
 				EA7F0BD81DFA4D4600F24C96 /* HeContestantUserInfoVC.m */,
 				EA7F0BDA1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib */,
+				EAFE60681E5D685B00F55125 /* HePhotoScanVC.h */,
+				EAFE60691E5D685B00F55125 /* HePhotoScanVC.m */,
+				EAFE606A1E5D685B00F55125 /* HePhotoScanVC.xib */,
 			);
 			path = BeautyZone;
 			sourceTree = "<group>";
@@ -2492,6 +2522,8 @@
 		EA0E9D2C1D4C2968009CBF64 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				EAFE60651E5D605500F55125 /* ViewControllertwo.h */,
+				EAFE60661E5D605500F55125 /* ViewControllertwo.m */,
 				EA6965001E5C2A1600290BFA /* HeForGetPasswordVC.h */,
 				EA6965011E5C2A1600290BFA /* HeForGetPasswordVC.m */,
 				EA6965021E5C2A1600290BFA /* HeForGetPasswordVC.xib */,
@@ -2722,6 +2754,11 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EAFE606D1E5D6FCE00F55125 /* icon_back@2x.png */,
+				EAFE606E1E5D6FCE00F55125 /* photo_down_btn@2x.png */,
+				EAFE606F1E5D6FCE00F55125 /* photo_down_btn@3x.png */,
+				EAFE60701E5D6FCE00F55125 /* photo_share_btn@2x.png */,
+				EAFE60711E5D6FCE00F55125 /* photo_share_btn@3x.png */,
 				EA1EF1E01E1958CF00849911 /* filterButtonBG.png */,
 				EA4D13C11E03CD0F00BBE450 /* navigationBar_back_icon.png */,
 				EA9489461DF063C900092E92 /* icon_glory.png */,
@@ -3161,6 +3198,7 @@
 		EAC2C9CE1D4AF5D700E282A8 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EAFE605B1E5D333700F55125 /* WBImageBrowser */,
 				EA1EF1C81E18953A00849911 /* HKClipper */,
 				EA1FE4341DE02722006435D3 /* WMPlayer */,
 				EA71A1771DDEE86500B16333 /* CRMediaPickerController */,
@@ -4247,6 +4285,8 @@
 		EAC2CC341D4AF5D800E282A8 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
+				EAFE60621E5D339300F55125 /* NSData+GIF.h */,
+				EAFE60631E5D339300F55125 /* NSData+GIF.m */,
 				EAC2CC351D4AF5D800E282A8 /* MKAnnotationView+WebCache.h */,
 				EAC2CC361D4AF5D800E282A8 /* MKAnnotationView+WebCache.m */,
 				EAC2CC371D4AF5D800E282A8 /* NSData+ImageContentType.h */,
@@ -4933,6 +4973,17 @@
 			path = JPushSDK;
 			sourceTree = "<group>";
 		};
+		EAFE605B1E5D333700F55125 /* WBImageBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				EAFE605C1E5D333700F55125 /* WBImageBrowserCell.h */,
+				EAFE605D1E5D333700F55125 /* WBImageBrowserCell.m */,
+				EAFE605E1E5D333700F55125 /* WBImageBrowserView.h */,
+				EAFE605F1E5D333700F55125 /* WBImageBrowserView.m */,
+			);
+			path = WBImageBrowser;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -5132,6 +5183,7 @@
 				EAC2CD231D4AF5D800E282A8 /* IQKeyboardManager.bundle in Resources */,
 				07A7E9D11DC5F9900043802C /* icon_search.png in Resources */,
 				07F3AB321DC4B5A0008AD00E /* 用户协议.doc in Resources */,
+				EAFE60761E5D6FCE00F55125 /* photo_share_btn@3x.png in Resources */,
 				07E8803B1DC44F23000A13E8 /* microphone@2x.png in Resources */,
 				EA1FE4631DE02735006435D3 /* found_s@2x.png in Resources */,
 				EA1FE4611DE02735006435D3 /* close@2x.png in Resources */,
@@ -5185,10 +5237,12 @@
 				EAC2CDF11D4AF5D800E282A8 /* btn_021@2x.png in Resources */,
 				EAC2CEB11D4AF5EE00E282A8 /* zbar-help.html in Resources */,
 				EADE32F01D76B3860025492B /* album_uncheckBox.png in Resources */,
+				EAFE60751E5D6FCE00F55125 /* photo_share_btn@2x.png in Resources */,
 				EA0508EA1D6E9957003947EE /* HeContestZoneCommentVC.xib in Resources */,
 				EA46453A1D51916F00CD539F /* icon_puter.png in Resources */,
 				EA1FE4691DE02735006435D3 /* share@2x.png in Resources */,
 				EA0229521D74197800F57965 /* HeUserMessageVC.xib in Resources */,
+				EAFE60731E5D6FCE00F55125 /* photo_down_btn@2x.png in Resources */,
 				EA0E9D271D4C295F009CBF64 /* HeDiscoverVC.xib in Resources */,
 				EA4D01751D4D8FF100A0CCA1 /* index0.jpg in Resources */,
 				EAB538DA1D6F4EB2008BCC17 /* icon_delete.png in Resources */,
@@ -5223,6 +5277,7 @@
 				EADE33061D76BE220025492B /* distribute_addImageIcon_normal.png in Resources */,
 				EA4D01821D4D901700A0CCA1 /* home_can_change_bg_09.jpg in Resources */,
 				EAC2CD0C1D4AF5D800E282A8 /* i2KEPCMultiComponentPickerView.xib in Resources */,
+				EAFE60721E5D6FCE00F55125 /* icon_back@2x.png in Resources */,
 				EAC1B8871DD0D99200505B45 /* had_checkBox@2x.png in Resources */,
 				07E8803E1DC44F23000A13E8 /* ToolViewInputTextHL@2x.png in Resources */,
 				EA1FE4621DE02735006435D3 /* found@2x.png in Resources */,
@@ -5238,6 +5293,7 @@
 				EAC2CD711D4AF5D800E282A8 /* README.textile in Resources */,
 				EA4645341D51913F00CD539F /* icon_time.png in Resources */,
 				EAC2C90E1D4AF0E600E282A8 /* Main.storyboard in Resources */,
+				EAFE60741E5D6FCE00F55125 /* photo_down_btn@3x.png in Resources */,
 				EAC2CD191D4AF5D800E282A8 /* LICENSE.txt in Resources */,
 				EAC2CEB01D4AF5EE00E282A8 /* zbar-back.png in Resources */,
 				EA4D017C1D4D8FF100A0CCA1 /* index7.jpg in Resources */,
@@ -5264,6 +5320,7 @@
 				EACC98471D50F59400E627B8 /* HeDistributeContestVC.xib in Resources */,
 				EA0E9D091D4C2676009CBF64 /* tabbar_normal_background.png in Resources */,
 				EAC2CCD21D4AF5D800E282A8 /* BrowserView.xib in Resources */,
+				EAFE606C1E5D685B00F55125 /* HePhotoScanVC.xib in Resources */,
 				07E880371DC44F22000A13E8 /* UMFeedbackLocalizable.strings in Resources */,
 				EAC2CD601D4AF5D800E282A8 /* arrow_down.png in Resources */,
 				EAC2CCFC1D4AF5D800E282A8 /* fail@2x.png in Resources */,
@@ -5438,6 +5495,7 @@
 				EAC2CD7B1D4AF5D800E282A8 /* NSNotificationCenter+RACSupport.m in Sources */,
 				EAC2CCC81D4AF5D800E282A8 /* ASIAuthenticationDialog.m in Sources */,
 				EAC2CD301D4AF5D800E282A8 /* KxMenu.m in Sources */,
+				EAFE60601E5D333700F55125 /* WBImageBrowserCell.m in Sources */,
 				EAC2CDE81D4AF5D800E282A8 /* SVIndefiniteAnimatedView.m in Sources */,
 				EAC2CD241D4AF5D800E282A8 /* IQKeyboardManager.m in Sources */,
 				EAC2CCDB1D4AF5D800E282A8 /* UILabel+Corner.m in Sources */,
@@ -5593,6 +5651,7 @@
 				EAC2CDB91D4AF5D800E282A8 /* RACUnit.m in Sources */,
 				EAC2CD3C1D4AF5D800E282A8 /* README.md in Sources */,
 				07F3AB2A1DC473E8008AD00E /* HeUserLocatiVC.m in Sources */,
+				EAFE60671E5D605500F55125 /* ViewControllertwo.m in Sources */,
 				EAC2CD041D4AF5D800E282A8 /* DFUserDefaultStorageService.m in Sources */,
 				EA1EF1DC1E18953A00849911 /* UIImage+Extends.m in Sources */,
 				EAC2CD5F1D4AF5D800E282A8 /* MRZoomScrollView.m in Sources */,
@@ -5703,6 +5762,7 @@
 				EAC2CD261D4AF5D800E282A8 /* IQTextView.m in Sources */,
 				EA8027F21D52E299008BC4E6 /* BLImageSize.m in Sources */,
 				EAC2CCB41D4AF5D800E282A8 /* AFHTTPRequestOperation.m in Sources */,
+				EAFE60641E5D339300F55125 /* NSData+GIF.m in Sources */,
 				EAC2CECE1D4AF71900E282A8 /* NSDateFormatter+Category.m in Sources */,
 				EAC2CCDC1D4AF5D800E282A8 /* UITabBar+Badge.m in Sources */,
 				EAC2CD431D4AF5D800E282A8 /* MJRefreshAutoGifFooter.m in Sources */,
@@ -5722,6 +5782,7 @@
 				EAC2CCCB1D4AF5D800E282A8 /* ASIDownloadCache.m in Sources */,
 				EAC2CDB51D4AF5D800E282A8 /* RACTestScheduler.m in Sources */,
 				EAC2CCCA1D4AF5D800E282A8 /* ASIDataDecompressor.m in Sources */,
+				EAFE60611E5D333700F55125 /* WBImageBrowserView.m in Sources */,
 				EAC2CCDF1D4AF5D800E282A8 /* DFBaseTableViewController.m in Sources */,
 				EAC2CD441D4AF5D800E282A8 /* MJRefreshAutoNormalFooter.m in Sources */,
 				EAC2CCE81D4AF5D800E282A8 /* LXActionSheet.m in Sources */,
@@ -5743,6 +5804,7 @@
 				EAC2CD1F1D4AF5D800E282A8 /* FMResultSet.m in Sources */,
 				EAC2CDC61D4AF5D800E282A8 /* UISegmentedControl+RACSignalSupport.m in Sources */,
 				EA91ED4C1DBFB695006460F4 /* HeBeautyConfirmCell.m in Sources */,
+				EAFE606B1E5D685B00F55125 /* HePhotoScanVC.m in Sources */,
 				EAC2CCE01D4AF5D800E282A8 /* DFBaseViewController.m in Sources */,
 				EAC2CDCD1D4AF5D800E282A8 /* UITextView+RACSignalSupport.m in Sources */,
 				EAC2CD8F1D4AF5D800E282A8 /* RACCompoundDisposable.m in Sources */,

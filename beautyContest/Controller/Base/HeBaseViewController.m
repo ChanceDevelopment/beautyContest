@@ -9,6 +9,7 @@
 #import "HeBaseViewController.h"
 #import "RDVTabBarController.h"
 #import "RDVTabBarItem.h"
+#import "HePhotoScanVC.h"
 
 @interface HeBaseViewController ()
 
@@ -57,6 +58,20 @@
     }
 }
 
+//支持旋转
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+
+//支持的方向 因为界面A我们只需要支持竖屏
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    if ([self isKindOfClass:[HePhotoScanVC class]]) {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+
 //变量资源的初始化
 - (void)initializaiton
 {
@@ -86,16 +101,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-//强制不支持横屏
-- (BOOL)shouldAutorotate
-{
-    return NO;
-}
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

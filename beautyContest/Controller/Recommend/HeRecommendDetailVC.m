@@ -22,6 +22,7 @@
 #import "WMPlayer.h"
 #import "HeContestantUserInfoVC.h"
 #import "HeRecommendDetailCell.h"
+#import "HePhotoScanVC.h"
 
 #define TextLineHeight 1.2f
 #define BGTAG 100
@@ -48,6 +49,7 @@
 
 @property(strong,nonatomic)UIScrollView *userReceivePocketScrollView;
 @property(strong,nonatomic)WMPlayer *wmPlayer;
+@property(strong,nonatomic)NSString *userPic;
 
 @end
 
@@ -562,35 +564,55 @@
     NSMutableArray *photos = [NSMutableArray array];
     for (NSString *url in paperArray) {
         NSString *imageurl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,url];
-        MJPhoto *photo = [[MJPhoto alloc] init];
-        photo.url = [NSURL URLWithString:imageurl];
+//        MJPhoto *photo = [[MJPhoto alloc] init];
+//        photo.url = [NSURL URLWithString:imageurl];
         
         UIImageView *srcImageView = [photoScrollView viewWithTag:index + 10000];
-        photo.image = srcImageView.image;
-        photo.srcImageView = srcImageView;
-        [photos addObject:photo];
+//        photo.image = srcImageView.image;
+//        photo.srcImageView = srcImageView;
+        NSDictionary *dict = @{@"url":imageurl,@"placeholderImage":srcImageView.image,@"title":@""};
+        [photos addObject:dict];
         index++;
     }
-    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    browser.currentPhotoIndex = tap.view.tag - 10000;
-    browser.photos = photos;
-    [browser show];
+    HePhotoScanVC *photoScanVC = [[HePhotoScanVC alloc] init];
+    photoScanVC.photoArray = [[NSMutableArray alloc] initWithArray:photos];
+    photoScanVC.currentIndex = tap.view.tag - 10000 + 1;
+    photoScanVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:photoScanVC animated:YES];
+    
+//    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+//    browser.currentPhotoIndex = tap.view.tag - 10000;
+//    browser.photos = photos;
+//    [browser show];
 }
 
 - (void)enlargeImage:(UITapGestureRecognizer *)tap
 {
-    NSString *zoneCover = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,paperArray[0]];
+    NSString *zoneCover = self.userPic;
+    if (zoneCover == nil) {
+        zoneCover = @"";
+    }
     
     UIImageView *srcImageView = (UIImageView *)tap.view;
+//    NSMutableArray *photos = [NSMutableArray array];
+//    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+//    MJPhoto *photo = [[MJPhoto alloc] init];
+//    photo.url = [NSURL URLWithString:zoneCover];
+//    photo.image = srcImageView.image;
+//    photo.srcImageView = srcImageView;
+//    [photos addObject:photo];
+//    browser.photos = photos;
+//    [browser show];
+    
     NSMutableArray *photos = [NSMutableArray array];
-    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    MJPhoto *photo = [[MJPhoto alloc] init];
-    photo.url = [NSURL URLWithString:zoneCover];
-    photo.image = srcImageView.image;
-    photo.srcImageView = srcImageView;
-    [photos addObject:photo];
-    browser.photos = photos;
-    [browser show];
+    NSDictionary *dict = @{@"url":zoneCover,@"placeholderImage":srcImageView.image,@"title":@""};
+    [photos addObject:dict];
+    
+    HePhotoScanVC *photoScanVC = [[HePhotoScanVC alloc] init];
+    photoScanVC.photoArray = [[NSMutableArray alloc] initWithArray:photos];
+    photoScanVC.currentIndex = 1;
+    photoScanVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:photoScanVC animated:YES];
 }
 
 - (void)loadRecommendDetail
@@ -695,6 +717,7 @@
             NSString *imageUrl = [NSString stringWithFormat:@"%@/%@",HYTIMAGEURL,jsonObj];
             UIImageView *imageView = [sectionHeaderView viewWithTag:BGTAG];
             [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"home_can_change_bg_09.jpg"]];
+            self.userPic = imageUrl;
         }
         else{
             NSString *data = [respondDict objectForKey:@"data"];

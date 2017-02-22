@@ -22,6 +22,7 @@
 #import "HeModifyPasswordVC.h"
 #import "HeBalanceDetailVC.h"
 #import "HeModifyPayPasswordVC.h"
+#import "HeForgetPayPasswordVC.h"
 
 #define TextLineHeight 1.2f
 
@@ -503,8 +504,8 @@
                 case 4:
                 {
                     //支付密码
-                    HeModifyPayPasswordVC *modifyPasswordVC = [[HeModifyPayPasswordVC alloc] init];
-                    modifyPasswordVC.balanceDict = [[NSDictionary alloc] initWithDictionary:userBalance];
+                    HeForgetPayPasswordVC *modifyPasswordVC = [[HeForgetPayPasswordVC alloc] init];
+//                    modifyPasswordVC.balanceDict = [[NSDictionary alloc] initWithDictionary:userBalance];
                     modifyPasswordVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:modifyPasswordVC animated:YES];
                     break;

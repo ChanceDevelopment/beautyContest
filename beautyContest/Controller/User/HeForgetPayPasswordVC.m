@@ -71,6 +71,11 @@
     tipLabel.text = [NSString stringWithFormat:@"请将注册手机号 %@ 收到的验证码填写到下面输入框中",phone];
     commitButton.layer.cornerRadius = 3.0;
     modifyPasswordButton.layer.cornerRadius = 3.0;
+    
+    getCodeButton.layer.masksToBounds = YES;
+    getCodeButton.layer.cornerRadius = 5.0;
+    getCodeButton.layer.borderWidth = 0.5;
+    getCodeButton.layer.borderColor = APPDEFAULTORANGE.CGColor;
 }
 
 - (IBAction)modifyPassword:(id)sender
