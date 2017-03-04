@@ -123,13 +123,13 @@
 {
     [super initView];
     tableview.backgroundView = nil;
-    tableview.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    tableview.backgroundColor = [UIColor whiteColor];
     [Tool setExtraCellLineHidden:tableview];
     
     CGFloat scale = 512 / 297.0;
     CGFloat headerHeight = SCREENWIDTH / scale;
     sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, headerHeight)];
-    sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
+    sectionHeaderView.backgroundColor = [UIColor whiteColor];
     sectionHeaderView.userInteractionEnabled = YES;
     tableview.tableHeaderView = sectionHeaderView;
     
@@ -188,7 +188,10 @@
     commentButton.layer.cornerRadius = 3.0;
     commentButton.layer.masksToBounds = YES;
     
-    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 300)];
+    tableview.showsVerticalScrollIndicator = NO;
+    tableview.showsHorizontalScrollIndicator = NO;
+    self.view.backgroundColor = [UIColor whiteColor];
+    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 210)];
 
     dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, [UIScreen mainScreen].bounds.size.height)];
     dismissView.backgroundColor = [UIColor blackColor];
@@ -770,47 +773,6 @@
     }];
 }
 
-
-//- (void)pictureBrowserViewhide {
-//    
-//    // 检查屏幕横竖屏 强制竖屏
-//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-//        NSNumber *num = [[NSNumber alloc] initWithInt:UIInterfaceOrientationPortrait];
-//        [[UIDevice currentDevice] performSelector:@selector(setOrientation:) withObject:(id)num];
-//        [UIViewController attemptRotationToDeviceOrientation];
-//    }
-//    SEL selector = NSSelectorFromString(@"setOrientation:");
-//    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-//    [invocation setSelector:selector];
-//    [invocation setTarget:[UIDevice currentDevice]];
-//    int val = UIInterfaceOrientationPortrait ;
-//    [invocation setArgument:&val atIndex:2];
-//    [invocation invoke];
-//}
-
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
-    CGFloat newVcH;
-    CGFloat newVcW;
-    
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        // 横屏
-        newVcH = [UIScreen mainScreen].bounds.size.width;
-        newVcW = [UIScreen mainScreen].bounds.size.height;
-    } else {
-        // 竖屏
-        newVcW = [UIScreen mainScreen].bounds.size.width ;
-        newVcH = [UIScreen mainScreen].bounds.size.height;
-    }
-    
-    self.view.frame = CGRectMake(CGRectGetMinX(self.view.frame), CGRectGetMinY(self.view.frame), newVcW, newVcH);
-    pictureBrowserView.orientation = self.interfaceOrientation;
-    
-    tableview.frame = self.view.bounds;
-    [tableview reloadData];
-    
-}
 
 
 - (void)scanImageTap:(UITapGestureRecognizer *)tap

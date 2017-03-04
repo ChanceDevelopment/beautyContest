@@ -111,7 +111,7 @@
     updateOption = 1;
     
     //默认距离排序
-    orderType = 2;
+    orderType = 0;
     
     chooseArray = [[NSMutableArray alloc] initWithCapacity:0];
     
@@ -151,7 +151,7 @@
     sectionHeaderView.backgroundColor = [UIColor colorWithWhite:237.0 / 255.0 alpha:1.0];
     sectionHeaderView.userInteractionEnabled = YES;
     
-    NSArray *defaultArray = @[@"距离",@"热度",@"赏金"];
+    NSArray *defaultArray = @[@"距离",@"赏金",@"热度"];
     DropDownListView *timedropDownView = [[DropDownListView alloc] initWithFrame:CGRectMake(0,0, SCREENWIDTH, sectionHeaderView.frame.size.height) dataSource:self delegate:self defaultTitleArray:defaultArray];
     if (!ISIOS7) {
         timedropDownView.frame = CGRectMake(0,0, SCREENWIDTH, sectionHeaderView.frame.size.height);
@@ -382,25 +382,25 @@
     NSNumber *pageNum = [NSNumber numberWithInteger:pageNo];
     NSDictionary *requestMessageParams = @{@"longitude":longitudeNum,@"latitude":latitudeNum,@"number":pageNum};
     switch (orderType) {
-        case 0:
+        case 1:
         {
             //赏金
             requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/zoneRankByZoneReward.action",BASEURL];
             requestMessageParams = @{@"start":pageNum};
             break;
         }
-        case 1:
+        case 2:
         {
             //热度
             requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/ZoneHotRank.action",BASEURL];
             requestMessageParams = @{@"start":pageNum};
             break;
         }
-        case 2:
+        case 0:
         {
             //距离
             requestWorkingTaskPath = [NSString stringWithFormat:@"%@/zone/selectZoneByDistance.action",BASEURL];
-            
+            requestMessageParams = @{@"longitude":longitudeNum,@"latitude":latitudeNum,@"number":pageNum};
             break;
         }
         default:
@@ -446,7 +446,10 @@
                 
             }
             [self performSelector:@selector(addFooterView) withObject:nil afterDelay:0.5];
-            [self.tableview reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableview reloadData];
+            });
+            
         }
         else{
             NSArray *resultArray = [respondDict objectForKey:@"json"];
@@ -459,6 +462,7 @@
             }
         }
     } failure:^(NSError *error){
+        [self hideHud];
         if (show) {
             [Waiting dismiss];
         }
@@ -499,7 +503,7 @@
     switch (section) {
         case 0:
         {
-            orderType = 2;
+            orderType = 0;
             break;
         }
         case 1:{
@@ -507,7 +511,7 @@
             break;
         }
         case 2:{
-            orderType = 0;
+            orderType = 2;
             break;
         }
         default:
@@ -525,7 +529,7 @@
     switch (section) {
         case 0:
         {
-            orderType = 2;
+            orderType = 0;
             break;
         }
         case 1:{
@@ -533,7 +537,7 @@
             break;
         }
         case 2:{
-            orderType = 0;
+            orderType = 2;
             break;
         }
         default:
@@ -624,8 +628,26 @@
 - (void)egoRefreshTableFootDidTriggerRefresh:(EGORefreshTableFootView*)view
 {
     updateOption = 2;//加载历史标志
-    pageNo = [dataSource count];
     
+    switch (orderType) {
+        case 0:
+        {
+            pageNo++;
+            break;
+        }
+        case 1:
+        {
+            pageNo = [dataSource count];
+            break;
+        }
+        case 2:
+        {
+            pageNo = [dataSource count];
+            break;
+        }
+        default:
+            break;
+    }
     @try {
         
     }
@@ -762,7 +784,7 @@
     }
     
     NSString *time = [Tool convertTimespToString:[zoneCreatetime longLongValue] dateFormate:@"YYYY-MM-dd"];
-    cell.tipLabel.text = [NSString stringWithFormat:@"$%.2f",[zoneReward floatValue]];
+    cell.tipLabel.text = [NSString stringWithFormat:@"￥%.2f",[zoneReward floatValue]];
     cell.timeLabel.text = time;
     
     return cell;
