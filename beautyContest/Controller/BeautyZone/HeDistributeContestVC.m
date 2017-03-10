@@ -260,16 +260,7 @@
 //    coverImage.contentMode = UIViewContentModeScaleAspectFill;
     [sectionHeaderView addSubview:coverImage];
     
-    if (distributeAgain) {
-        
-        NSString *zoneCover = oldContestDict[@"zoneCover"];
-        NSString *coverImageUrl = [[NSString alloc] initWithFormat:@"%@/%@",HYTIMAGEURL,zoneCover];
-        [coverImage sd_setImageWithURL:[NSURL URLWithString:coverImageUrl] placeholderImage:[Tool buttonImageFromColor:[UIColor colorWithWhite:237.0 / 255.0 alpha:1.0] withImageSize:coverImage.frame.size] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
-            if (!error) {
-                [coverImage viewWithTag:8888].hidden = YES;
-            }
-        }];
-    }
+    
     
     
     addPictureButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, IMAGEWIDTH, IMAGEWIDTH)];
@@ -291,6 +282,18 @@
     tipLabel.tag = 8888;
     tipLabel.center = coverImage.center;
     [coverImage addSubview:tipLabel];
+    
+    if (distributeAgain) {
+        
+        NSString *zoneCover = oldContestDict[@"zoneCover"];
+        NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+        NSString *coverImageUrl = [[NSString alloc] initWithFormat:@"%@/%@",HYTIMAGEURL,zoneCoverArray[0]];
+        [coverImage sd_setImageWithURL:[NSURL URLWithString:coverImageUrl] placeholderImage:[Tool buttonImageFromColor:[UIColor colorWithWhite:237.0 / 255.0 alpha:1.0] withImageSize:coverImage.frame.size] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
+            if (!error) {
+                [coverImage viewWithTag:8888].hidden = YES;
+            }
+        }];
+    }
     
     UIImageView *editIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_edit"]];
     CGFloat imageW = 20;
@@ -811,12 +814,9 @@
 
 - (void)creatContestZone
 {
-    UIImage *imageData = coverImage.image;
-    NSData *data = UIImageJPEGRepresentation(imageData,0.2);
-    NSData *base64Data = [GTMBase64 encodeData:data];
-    NSString *zoneCover = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
     
-    NSMutableString *cover = [[NSMutableString alloc] initWithString:zoneCover];
+    
+    NSMutableString *cover = [[NSMutableString alloc] initWithCapacity:0];
     //重新发布赛区的时候，赛区宣传图的字段
     NSMutableString *zonePassPic = [[NSMutableString alloc] initWithCapacity:0];
     if (!distributeAgain) {
@@ -827,23 +827,25 @@
             NSData *data = UIImageJPEGRepresentation(imageData,0.2);
             NSData *base64Data = [GTMBase64 encodeData:data];
             NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
-//            cover = [NSString stringWithFormat:@"%@,%@",cover,base64String];
-            [cover appendFormat:@",%@",base64String];
+            [cover appendFormat:@"%@,",base64String];
         }
+        UIImage *imageData = coverImage.image;
+        NSData *data = UIImageJPEGRepresentation(imageData,0.3);
+        NSData *base64Data = [GTMBase64 encodeData:data];
+        NSString *zoneCover = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+        
+        [cover appendFormat:@"%@",zoneCover];
+        
     }
     else{
-        if (!coverImageHaveTake) {
-            zoneCover = oldContestDict[@"zoneCover"];
-            if ([zoneCover isMemberOfClass:[NSNull class]] || zoneCover == nil) {
-                zoneCover = @"";
-            }
-        }
+        
+        
         //赛区宣传图
         for (NSInteger index = 0; index < self.bannerImageDataSource.count; index++) {
             AsynImageView *imageview = self.bannerImageDataSource[index];
             
             UIImage *imageData = imageview.image;
-            NSData *data = UIImageJPEGRepresentation(imageData,0.1);
+            NSData *data = UIImageJPEGRepresentation(imageData,0.2);
             NSData *base64Data = [GTMBase64 encodeData:data];
             NSString *base64String = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
             if (index == 0) {
@@ -853,6 +855,24 @@
                 [zonePassPic appendFormat:@",%@",base64String];
             }
         }
+        
+//        cover = [[NSMutableString alloc] initWithString:zonePassPic];
+        
+        UIImage *imageData = coverImage.image;
+        NSData *data = UIImageJPEGRepresentation(imageData,0.3);
+        NSData *base64Data = [GTMBase64 encodeData:data];
+        NSString *zoneCover = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+        
+        if (!coverImageHaveTake) {
+            zoneCover = oldContestDict[@"zoneCover"];
+            NSArray *zoneCoverArray = [zoneCover componentsSeparatedByString:@","];
+            zoneCover = zoneCoverArray[0];
+            if ([zoneCover isMemberOfClass:[NSNull class]] || zoneCover == nil) {
+                zoneCover = @"";
+            }
+        }
+        
+        cover = [NSMutableString stringWithFormat:@"%@",zoneCover];
     }
     
     
@@ -892,7 +912,10 @@
 //    NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
     
     NSString *requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZone.action",BASEURL];
-    if (self.isFaceContest) {
+    if (distributeAgain) {
+        requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/creatZoneAgain.action",BASEURL];
+    }
+    else if (self.isFaceContest) {
         
         requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZoneFace.action",BASEURL];
     }
@@ -1038,6 +1061,10 @@
     NSString *reward = rewardField.text;
     if ([reward  floatValue] < 0.01) {
         [self showHint:@"请输入比赛的赏金"];
+        return;
+    }
+    if ([reward floatValue] < 200) {
+        [self showHint:@"比赛奖金最低200元起"];
         return;
     }
     BOOL havePayPassword = [userBalance[@"userPayPwd"] boolValue];
