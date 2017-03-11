@@ -191,7 +191,7 @@
     tableview.showsVerticalScrollIndicator = NO;
     tableview.showsHorizontalScrollIndicator = NO;
     self.view.backgroundColor = [UIColor whiteColor];
-    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 210)];
+    myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 110)];
 
     dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, [UIScreen mainScreen].bounds.size.height)];
     dismissView.backgroundColor = [UIColor blackColor];
@@ -732,8 +732,8 @@
             
             CGFloat imageX = 5;
             CGFloat imageY = 5;
-            CGFloat imageH = 200 - 2 * imageY;
-            CGFloat imageW = 150;
+            CGFloat imageH = 110 - 2 * imageY;
+            CGFloat imageW = 100;
             for (NSInteger index = 0; index < [bannerImageDataSource count]; index++) {
                 UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageH)];
                 [imageView sd_setImageWithURL:[NSURL URLWithString:bannerImageDataSource[index]] placeholderImage:[UIImage imageNamed:@"comonDefaultImage"]];
