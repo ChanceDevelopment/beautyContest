@@ -159,12 +159,13 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    iconDataSource = @[@[@"",@""],@[@"",@"",@""],@[@"",@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"icon_pay_password",@""]];
-    titleDataSource = @[@[@"",@""],@[@"",@"宣传图片",@""],@[@"",@"截止时间",@"定位",@"男生参加",@"女生参加",@"我要验证",@""]];
+    iconDataSource = @[@[@"",@""],@[@"",@"",@""],@[@"",@"icon_time",@"icon_location",@"icon_sex_boy",@"icon_sex_girl",@"icon_pay_password",@"icon_comment_vote",@""]];
+    titleDataSource = @[@[@"",@""],@[@"",@"宣传图片",@""],@[@"",@"截止时间",@"定位",@"男生参加",@"女生参加",@"我要验证",@"非参赛者可投票和评论",@""]];
     switchDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     [switchDict setObject:@YES forKey:@"2"];
     [switchDict setObject:@YES forKey:@"3"];
     [switchDict setObject:@NO forKey:@"4"];
+    [switchDict setObject:@YES forKey:@"6"];
     userLocationDict = [[NSMutableDictionary alloc] initWithCapacity:0];
     
     coverImageHaveTake = NO;
@@ -889,6 +890,8 @@
     NSString *zoneReward = rewardField.text;
     NSNumber *zoneManin = [NSNumber numberWithBool:[[switchDict objectForKey:@"2"] boolValue]];
     NSNumber *zoneWomanin = [NSNumber numberWithBool:[[switchDict objectForKey:@"3"] boolValue]];
+    NSNumber *isNotVote  = [NSNumber numberWithBool:[[switchDict objectForKey:@"6"] boolValue]];
+    
     NSNumber *zoneState	= [NSNumber numberWithInteger:1];
     
     NSString *zoneLocationY = [userLocationDict objectForKey:@"latitude"];
@@ -919,7 +922,7 @@
         
         requestRecommendDataPath = [NSString stringWithFormat:@"%@/zone/createNewZoneFace.action",BASEURL];
     }
-    NSDictionary *params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState};
+    NSDictionary *params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"isNotVote":isNotVote};
     if (distributeAgain) {
         //修改赛区，重新发布赛区
         NSString *paper = @"";
@@ -931,18 +934,18 @@
             zoneOld = @"";
         }
     
-        params = @{@"zoneOld":zoneOld,@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zonePassPic":zonePassPic,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"paper":paper,@"zonePwd":zonePwd,@"zoneSwith":zoneSwith,@"zoneTeststate":zoneTeststate};
+        params = @{@"zoneOld":zoneOld,@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zonePassPic":zonePassPic,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"paper":paper,@"zonePwd":zonePwd,@"zoneSwith":zoneSwith,@"zoneTeststate":zoneTeststate,@"isNotVote":isNotVote};
     }
     else{
         if (zonePassword) {
             //面对面创建赛区，需要验证
             NSString *zonePwd = zonePassword;
             NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
-            params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zonePwd":zonePwd,@"zoneTeststate":zoneTeststate};
+            params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zonePwd":zonePwd,@"zoneTeststate":zoneTeststate,@"isNotVote":isNotVote};
         }
         else{
             NSNumber *zoneTeststate = [NSNumber numberWithBool:[[switchDict objectForKey:@"4"] boolValue]];
-            params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zoneTeststate":zoneTeststate};
+            params = @{@"zoneTitle":zoneTitle,@"zoneCover":cover,@"zoneReward":zoneReward,@"zoneUser":zoneUser,@"zoneDeathline":zoneDeathline,@"zoneAddress":zoneAddress,@"zoneLocationX":zoneLocationX,@"zoneLocationY":zoneLocationY,@"zoneManin":zoneManin,@"zoneWomanin":zoneWomanin,@"zoneState":zoneState,@"zoneTeststate":zoneTeststate,@"isNotVote":isNotVote};
         }
     }
     
@@ -1699,6 +1702,19 @@
                 }
                 case 6:
                 {
+                    CGFloat zjSwitchW = 50;
+                    CGFloat zjSwitchH = 30;
+                    CGFloat zjSwitchY = (cellSize.height - zjSwitchH) / 2.0;
+                    CGFloat zjSwitchX = SCREENWIDTH - zjSwitchW - 10;
+                    ZJSwitch *zjSwitch = [[ZJSwitch alloc] initWithFrame:CGRectMake(zjSwitchX, zjSwitchY, zjSwitchW, zjSwitchH)];
+                    zjSwitch.on = [[switchDict objectForKey:@"6"] boolValue];
+                    [zjSwitch addTarget:self action:@selector(zjSwitchChange:) forControlEvents:UIControlEventValueChanged];
+                    zjSwitch.tag = 6;
+                    [cell addSubview:zjSwitch];
+                    break;
+                }
+                case 7:
+                {
                     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 50, 0, 50, cellSize.height)];
                     titleLabel.font = [UIFont systemFontOfSize:16.0];
                     titleLabel.textColor = APPDEFAULTORANGE;
@@ -1715,7 +1731,7 @@
                     [cell addSubview:rewardField];
                     break;
                 }
-                case 7:
+                case 8:
                 {
                     UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, SCREENWIDTH - 110, cellSize.height)];
                     tipLabel.textAlignment = NSTextAlignmentRight;

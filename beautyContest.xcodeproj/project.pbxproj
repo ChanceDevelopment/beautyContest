@@ -136,6 +136,7 @@
 		EA1FE4761DE02735006435D3 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE45B1DE02735006435D3 /* View+MASAdditions.m */; };
 		EA1FE4771DE02735006435D3 /* WMPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EA1FE45D1DE02735006435D3 /* WMPlayer.bundle */; };
 		EA1FE4781DE02735006435D3 /* WMPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1FE45F1DE02735006435D3 /* WMPlayer.m */; };
+		EA2000851E77D35500D66A3C /* icon_comment_vote.png in Resources */ = {isa = PBXBuildFile; fileRef = EA2000841E77D35500D66A3C /* icon_comment_vote.png */; };
 		EA356A7A1D79651C00EE64A2 /* HeUserRecommendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */; };
 		EA356A7D1D79655100EE64A2 /* HeUserContestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA356A7C1D79655100EE64A2 /* HeUserContestCell.m */; };
 		EA428E3B1D79C0390053DC69 /* HeUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA428E391D79C0390053DC69 /* HeUserInfoVC.m */; };
@@ -993,6 +994,7 @@
 		EA1FE45D1DE02735006435D3 /* WMPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WMPlayer.bundle; sourceTree = "<group>"; };
 		EA1FE45E1DE02735006435D3 /* WMPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPlayer.h; sourceTree = "<group>"; };
 		EA1FE45F1DE02735006435D3 /* WMPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPlayer.m; sourceTree = "<group>"; };
+		EA2000841E77D35500D66A3C /* icon_comment_vote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_comment_vote.png; sourceTree = "<group>"; };
 		EA356A781D79651C00EE64A2 /* HeUserRecommendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserRecommendCell.h; sourceTree = "<group>"; };
 		EA356A791D79651C00EE64A2 /* HeUserRecommendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeUserRecommendCell.m; sourceTree = "<group>"; };
 		EA356A7B1D79655100EE64A2 /* HeUserContestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeUserContestCell.h; sourceTree = "<group>"; };
@@ -2754,6 +2756,7 @@
 		EA4645401D519C9F00CD539F /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				EA2000841E77D35500D66A3C /* icon_comment_vote.png */,
 				EAFE606D1E5D6FCE00F55125 /* icon_back@2x.png */,
 				EAFE606E1E5D6FCE00F55125 /* photo_down_btn@2x.png */,
 				EAFE606F1E5D6FCE00F55125 /* photo_down_btn@3x.png */,
@@ -5142,6 +5145,7 @@
 				EA0E9D111D4C269E009CBF64 /* NavBarIOS7_white.png in Resources */,
 				EA1FE4661DE02735006435D3 /* message_s@2x.png in Resources */,
 				EACC98341D50E5DB00E627B8 /* icon_nearby_beauty.png in Resources */,
+				EA2000851E77D35500D66A3C /* icon_comment_vote.png in Resources */,
 				EA7F0BDB1DFA4D6B00F24C96 /* HeContestantUserInfoVC.xib in Resources */,
 				EAE88BC51DAF5BC900AD946F /* AlipaySDK.bundle in Resources */,
 				EA6965091E5C350F00290BFA /* HeForgetPayPasswordVC.xib in Resources */,
