@@ -19,4 +19,6 @@
 
 -(id)initWithURL:(NSString *)filePath withTitle:(NSString *)title;
 
+-(id)initWithWebsite:(NSString *)url withTitle:(NSString *)title;
+
 @end

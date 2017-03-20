@@ -66,7 +66,7 @@
 - (void)initializaiton
 {
     [super initializaiton];
-    dataSource = @[@[@"修改密码",@"黑名单"],@[@"意见反馈",@"关于"]];
+    dataSource = @[@[@"修改密码",@"黑名单"],@[@"意见反馈",@"操作指南"]];
 }
 
 - (void)initView
@@ -266,6 +266,13 @@
                     HeFeedbackVC *feedBackVC = [[HeFeedbackVC alloc] init];
                     feedBackVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:feedBackVC animated:YES];
+                    break;
+                }
+                case 1:{
+                    NSString *path = @"http://x.eqxiu.com/s/RhRHWp7N";
+                    BrowserView *browserView = [[BrowserView alloc] initWithWebsite:path withTitle:@"操作指南"];
+                    browserView.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:browserView animated:YES];
                     break;
                 }
                 default:

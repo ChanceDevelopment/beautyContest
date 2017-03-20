@@ -86,6 +86,25 @@
     return self;
 }
 
+-(id)initWithWebsite:(NSString *)url withTitle:(NSString *)title
+{
+    self = [super init];
+    if (self) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont boldSystemFontOfSize:20.0];
+        label.textColor = [UIColor whiteColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        self.navigationItem.titleView = label;
+        label.text = title;
+        [label sizeToFit];
+        self.title = title;
+        
+        self.webURL =  [[NSURL alloc] initWithString:url];
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
