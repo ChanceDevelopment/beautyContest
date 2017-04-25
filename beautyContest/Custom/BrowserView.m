@@ -58,9 +58,9 @@
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"选美-颜值榜用户协议";
+        label.text = @"爱上榜用户协议";
         [label sizeToFit];
-        self.title = @"选美-颜值榜用户协议";
+        self.title = @"爱上榜用户协议";
         
         self.webURL =  [NSURL fileURLWithPath:filePath];
     }

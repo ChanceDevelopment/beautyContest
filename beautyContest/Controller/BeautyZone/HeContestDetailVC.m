@@ -503,9 +503,9 @@
         zoneTitle = @"";
     }
     
-    NSString *shareContent = [NSString stringWithFormat:@"选美榜-%@",zoneTitle];
+    NSString *shareContent = [NSString stringWithFormat:@"爱上榜-%@",zoneTitle];
     
-    NSString *shareTitleStr = [NSString stringWithFormat:@"选美榜-%@",zoneTitle];
+    NSString *shareTitleStr = [NSString stringWithFormat:@"爱上榜-%@",zoneTitle];
     NSString *imagePath = nil;
     
     

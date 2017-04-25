@@ -240,7 +240,7 @@
     footerView.userInteractionEnabled = YES;
     MLLinkLabel *linkLabel = [[MLLinkLabel alloc] initWithFrame:CGRectMake(10, 0, SCREENWIDTH - 10, 50)];
     linkLabel.textColor = APPDEFAULTORANGE;
-    linkLabel.text = @"选美-颜值榜比赛规则";
+    linkLabel.text = @"爱上榜比赛规则";
     linkLabel.font = [UIFont systemFontOfSize:15.0];
     linkLabel.userInteractionEnabled = YES;
     
@@ -313,7 +313,7 @@
     titleField = [[UITextField alloc] init];
     titleField.layer.borderColor = [UIColor clearColor].CGColor;
     titleField.delegate = self;
-    titleField.text = @"例如：浙大15届选美赛-寻找最美同学";
+    titleField.text = @"例如：浙大15届爱上榜赛-寻找最美同学";
     titleField.placeholder = @"请输入赛区主题";
     titleField.font = [UIFont systemFontOfSize:16.0];
     titleField.textColor = APPDEFAULTORANGE;
@@ -384,7 +384,7 @@
 
 - (void)scanContestRule:(UITapGestureRecognizer *)tap{
     NSString *path = [[NSBundle mainBundle] pathForResource:@"beautyContestRule" ofType:@"html"];
-    BrowserView *browserView = [[BrowserView alloc] initWithURL:path withTitle:@"选美赛比赛规则"];
+    BrowserView *browserView = [[BrowserView alloc] initWithURL:path withTitle:@"爱上榜比赛规则"];
     browserView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:browserView animated:YES];
 }

@@ -35,7 +35,7 @@
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
         self.navigationItem.titleView = label;
-        label.text = @"选美-颜值榜";
+        label.text = @"爱上榜";
         [label sizeToFit];
     }
     return self;

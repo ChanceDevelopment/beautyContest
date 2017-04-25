@@ -805,7 +805,7 @@
 		073BB7DD1DD4614500EB616C /* HeRecommendMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeRecommendMessageVC.m; sourceTree = "<group>"; };
 		073BB7DE1DD4614500EB616C /* HeRecommendMessageVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeRecommendMessageVC.xib; sourceTree = "<group>"; };
 		077D0E9E1DC83368009F48E9 /* HeInstructionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeInstructionView.h; sourceTree = "<group>"; };
-		077D0E9F1DC83368009F48E9 /* HeInstructionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeInstructionView.m; sourceTree = "<group>"; };
+		077D0E9F1DC83368009F48E9 /* HeInstructionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HeInstructionView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		077D0EAB1DC83512009F48E9 /* ios_guide_step_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_guide_step_1.png; sourceTree = "<group>"; };
 		077D0EAC1DC83512009F48E9 /* ios_guide_step_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_guide_step_2.png; sourceTree = "<group>"; };
 		077D0EAD1DC83512009F48E9 /* ios_guide_step_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_guide_step_3.png; sourceTree = "<group>"; };
@@ -1156,7 +1156,7 @@
 		EAB538D91D6F4EB2008BCC17 /* icon_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_delete.png; sourceTree = "<group>"; };
 		EAB538DB1D6F5509008BCC17 /* HeZoneCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeZoneCommentCell.h; sourceTree = "<group>"; };
 		EAB538DC1D6F5509008BCC17 /* HeZoneCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeZoneCommentCell.m; sourceTree = "<group>"; };
-		EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = beautyContestRule.html; sourceTree = "<group>"; };
+		EAB75B371E110B3A00DFAF19 /* beautyContestRule.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; lineEnding = 0; path = beautyContestRule.html; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
 		EAB75B391E139EC200DFAF19 /* PicUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicUpload.h; sourceTree = "<group>"; };
 		EAB75B3A1E139EC200DFAF19 /* PicUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicUpload.m; sourceTree = "<group>"; };
 		EAC1B8721DD0D76200505B45 /* HeComplaintVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeComplaintVC.h; sourceTree = "<group>"; };
@@ -1312,7 +1312,7 @@
 		EAC2CA121D4AF5D700E282A8 /* AsynImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsynImageView.h; sourceTree = "<group>"; };
 		EAC2CA131D4AF5D700E282A8 /* AsynImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsynImageView.m; sourceTree = "<group>"; };
 		EAC2CA141D4AF5D700E282A8 /* BrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserView.h; sourceTree = "<group>"; };
-		EAC2CA151D4AF5D700E282A8 /* BrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserView.m; sourceTree = "<group>"; };
+		EAC2CA151D4AF5D700E282A8 /* BrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BrowserView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		EAC2CA161D4AF5D700E282A8 /* BrowserView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserView.xib; sourceTree = "<group>"; };
 		EAC2CA171D4AF5D700E282A8 /* CPTextViewPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTextViewPlaceholder.h; sourceTree = "<group>"; };
 		EAC2CA181D4AF5D700E282A8 /* CPTextViewPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPTextViewPlaceholder.m; sourceTree = "<group>"; };
@@ -2023,7 +2023,7 @@
 		EACC983E1D50E82200E627B8 /* icon_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_album.png; sourceTree = "<group>"; };
 		EACC98411D50F4D700E627B8 /* icon_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_add.png; sourceTree = "<group>"; };
 		EACC98431D50F59400E627B8 /* HeDistributeContestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeDistributeContestVC.h; sourceTree = "<group>"; };
-		EACC98441D50F59400E627B8 /* HeDistributeContestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeDistributeContestVC.m; sourceTree = "<group>"; };
+		EACC98441D50F59400E627B8 /* HeDistributeContestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HeDistributeContestVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		EACC98451D50F59400E627B8 /* HeDistributeContestVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeDistributeContestVC.xib; sourceTree = "<group>"; };
 		EAD0B1BE1D4F200D0017C20B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EADE32D41D76A57C0025492B /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
